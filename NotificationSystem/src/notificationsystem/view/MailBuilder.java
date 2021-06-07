@@ -2,19 +2,19 @@ package notificationsystem.view;
 
 public class MailBuilder {
 
-    public void buildMail() {
-
+    public EMail buildMail() {
+        return null;
     }
 
-    public void buildAlert() {
-
+    public EMail buildAlert() {
+        return null;
     }
 
-    public void buildReport() {
-
+    public EMail buildReport() {
+        return null;
     }
 
-    public void buildConfirmation() {
-
+    public EMail buildConfirmation() {
+        return null;
     }
 }
