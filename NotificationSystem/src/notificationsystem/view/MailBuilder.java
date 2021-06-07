@@ -1,20 +1,21 @@
 package notificationsystem.view;
 
+//Which design pattern
 public class MailBuilder {
 
     public EMail buildMail() {
         return null;
     }
 
-    public EMail buildAlert() {
+    public Alert buildAlert() {
         return null;
     }
 
-    public EMail buildReport() {
+    public Report buildReport() {
         return null;
     }
 
-    public EMail buildConfirmation() {
+    public ConfirmationMail buildConfirmationMail() {
         return null;
     }
 }
