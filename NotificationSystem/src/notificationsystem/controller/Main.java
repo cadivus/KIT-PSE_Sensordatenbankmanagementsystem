@@ -1,4 +1,4 @@
-package notificationsystem;
+package notificationsystem.controller;
 
 public class Main {
 
