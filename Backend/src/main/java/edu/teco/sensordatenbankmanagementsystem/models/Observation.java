@@ -13,10 +13,9 @@ import java.util.Map;
 @Data
 public class Observation {
 
-
     @Id
     @GeneratedValue
-    int id;
+    long id;
 
     private Map<String, String> properties;
 

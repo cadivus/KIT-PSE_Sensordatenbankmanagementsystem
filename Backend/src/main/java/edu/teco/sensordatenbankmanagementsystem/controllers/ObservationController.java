@@ -1,6 +1,5 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
-
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
