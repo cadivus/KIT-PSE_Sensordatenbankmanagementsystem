@@ -4,6 +4,7 @@ import edu.teco.sensordatenbankmanagement.repository.SensorRepository;
 import edu.teco.sensordatenbankmanagementsystem.controllers.ObservationController;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
+import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,14 +13,13 @@ import org.springframework.stereotype.Service;
 @CommonsLog
 public class ObservationService {
 
-    Observation observation;
     ObservationController observationController;
-    SensorRepository repository;
+    ObservationRepository repository;
 
     @Autowired
-    public ObservationService(ObservationController observationController, SensorRepository repository){
+    public ObservationService(ObservationController observationController, ObservationRepository repository){
         this.observationController = observationController;
-        this.database = Database;
+        this.repository = repository;
     }
 
 
@@ -28,7 +28,6 @@ public class ObservationService {
     }
 
     public Observation getObservation(Long id) {
-        Sensor sensor = database.getById(id);
-        return sensor.getObservations().get(0);
+        return repository.findById(id).get();
     }
 }

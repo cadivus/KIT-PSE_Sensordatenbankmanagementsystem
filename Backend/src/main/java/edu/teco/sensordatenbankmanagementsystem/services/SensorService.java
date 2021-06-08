@@ -17,7 +17,7 @@ public class SensorService {
     @Autowired
     public SensorService(SensorController sensorController, SensorRepository repository){
         this.sensorController = sensorController;
-        this.database = database;
+        this.repository = repository;
     }
 
     public void createNewMetaData() {

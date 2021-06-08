@@ -1,4 +1,4 @@
-package edu.teco.sensordatenbankmanagement.repository;
+package edu.teco.sensordatenbankmanagementsystem.repository;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import org.springframework.data.jpa.repository.JpaRepository;
