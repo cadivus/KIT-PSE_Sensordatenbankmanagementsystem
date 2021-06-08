@@ -7,10 +7,63 @@
     <groupId>groupId</groupId>
     <artifactId>KIT-PSE_Sensordatenbankmanagementsystem</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+           <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>de.elnarion.maven</groupId>
+                <artifactId>plantuml-generator-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <executions>
+                    <execution>
+                    <id>generate-simple-diagram</id>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <outputFilename>testdiagram1.puml</outputFilename>
+                            <scanPackages>
+                                <scanPackage>
+                                    notificationsystem
+                                </scanPackage>
+                            </scanPackages>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin></plugins>
+    </build>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
     </properties>
+    
+    
     
 </project>
