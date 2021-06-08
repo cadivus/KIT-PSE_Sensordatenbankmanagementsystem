@@ -10,10 +10,9 @@ import javax.persistence.Id;
 @Data
 public class Observation {
 
-
     @Id
     @GeneratedValue
-    int id;
+    long id;
 
     @Override
     public String toString() {

@@ -6,9 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Provides abstraction to direct database queries
+ */
 @Repository
-public interface DummyRepository extends JpaRepository<Sensor, Long> {
+public interface SensorRepository extends JpaRepository<Sensor, Long> {
 
     Optional<Sensor> findById(Long id);
+
+
 
 }

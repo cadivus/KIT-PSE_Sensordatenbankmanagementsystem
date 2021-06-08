@@ -1,6 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
-import edu.teco.sensordatenbankmanagement.repository.DummyRepository;
+import edu.teco.sensordatenbankmanagement.repository.SensorRepository;
 import edu.teco.sensordatenbankmanagementsystem.controllers.ObservationController;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
@@ -14,10 +14,10 @@ public class ObservationService {
 
     Observation observation;
     ObservationController observationController;
-    DummyRepository repository;
+    SensorRepository repository;
 
     @Autowired
-    public ObservationService(ObservationController observationController, DummyRepository repository){
+    public ObservationService(ObservationController observationController, SensorRepository repository){
         this.observationController = observationController;
         this.repository = repository;
     }
@@ -26,6 +26,7 @@ public class ObservationService {
     public void createNewDataStream(int id) {
 
     }
+
     public Observation getObservation(Long id) {
         Sensor sensor = repository.getById(id);
         return sensor.getObservations().get(0);
