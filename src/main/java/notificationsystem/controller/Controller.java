@@ -17,4 +17,8 @@ public class Controller {
     public void checkForReports() {
 
     }
+
+    public void updateSubscribers() {
+
+    }
 }
