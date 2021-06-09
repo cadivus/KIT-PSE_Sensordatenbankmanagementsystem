@@ -1,21 +1,18 @@
 package notificationsystem.view;
 
-//Which design pattern
+import notificationsystem.model.Sensor;
+
 public class MailBuilder {
 
-    public EMail buildMail() {
+    public Alert buildAlert(String mailAddresses, String sensorName) {
         return null;
     }
 
-    public Alert buildAlert() {
+    public Report buildReport(String mailAddress, Sensor sensor) {
         return null;
     }
 
-    public Report buildReport() {
-        return null;
-    }
-
-    public ConfirmationMail buildConfirmationMail() {
+    public ConfirmationMail buildConfirmationMail(String mailAddress) {
         return null;
     }
 }

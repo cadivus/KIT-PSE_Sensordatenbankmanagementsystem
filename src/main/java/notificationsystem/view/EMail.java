@@ -5,16 +5,14 @@ public class EMail {
     private String receiverMails;
     private String subject;
     private String message;
-    private String sensorData;
-    private String sensorMetadata;
+    private String attachment;
 
-    public EMail(String senderMail, String receiverMails, String subject, String message, String sensorData, String sensorMetadata) {
+    public EMail(String senderMail, String receiverMails, String subject, String message, String attachment) {
         this.senderMail = senderMail;
         this.receiverMails = receiverMails;
         this.subject = subject;
         this.message = message;
-        this.sensorData = sensorData;
-        this.sensorMetadata = sensorMetadata;
+        this.attachment = attachment;
     }
 
     public String getSenderMail() {
@@ -25,20 +23,10 @@ public class EMail {
         return receiverMails;
     }
 
-    public String getSubject() {
-        return subject;
-    }
+    public String getSubject() { return subject; }
 
     public String getMessage() {
         return message;
-    }
-
-    public String getSensorData() {
-        return sensorData;
-    }
-
-    public String getSensorMetadata() {
-        return sensorMetadata;
     }
 
     public void setSenderMail(String senderMail) {
@@ -57,11 +45,11 @@ public class EMail {
         this.message = message;
     }
 
-    public void setSensorData(String sensorData) {
-        this.sensorData = sensorData;
+    public String getAttachment() {
+        return attachment;
     }
 
-    public void setSensorMetadata(String sensorMetadata) {
-        this.sensorMetadata = sensorMetadata;
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 }
