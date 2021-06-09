@@ -26,4 +26,8 @@ public class Controller {
     public void deleteSubscription() {
 
     }
+
+    public static void main(String[] args) {
+
+    }
 }

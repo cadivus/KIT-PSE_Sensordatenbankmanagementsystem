@@ -2,6 +2,8 @@ package notificationsystem.controller;
 
 public class CheckerUtil {
 
+    private Controller controller;
+
     public void checkForSensorFailure() {
 
     }
