@@ -1,10 +1,10 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import edu.teco.sensordatenbankmanagementsystem.controllers.ObservationController;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import lombok.extern.apachecommons.CommonsLog;
+import org.jooq.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -31,7 +31,7 @@ public class ObservationService {
     }
 
 
-    public UUID createNewDataStream(JsonNode information) {
+    public UUID createNewDataStream(JSON information) {
         SseEmitter emitter = new SseEmitter();
         ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
         sseMvcExecutor.execute(() -> {
@@ -51,6 +51,10 @@ public class ObservationService {
         UUID id = UUID.randomUUID();
         sseStreams.put(id, emitter);
         return id;
+    }
+
+    public UUID createReplay(JSON information){
+        return UUID.randomUUID();
     }
 
     public SseEmitter getDataStream(UUID id) {
