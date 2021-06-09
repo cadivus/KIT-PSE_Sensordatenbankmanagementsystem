@@ -15,11 +15,11 @@ public class SubscriberDAO implements DAO<Subscriber> {
         return null;
     }
 
-    public void getSubscribedSensors() {
-
+    public List<Subscription> getSubscribedSensors() {
+        return null;
     }
 
-    public void getMailAddress() {
-
+    public String getMailAddress() {
+        return null;
     }
 }

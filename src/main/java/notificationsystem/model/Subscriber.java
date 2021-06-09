@@ -1,20 +1,22 @@
 package notificationsystem.model;
 
+import java.util.List;
+
 public class Subscriber {
 
-    private String subscribedSensors;
+    private List<Subscription> subscribedSensors;
     private String mailAddress;
 
-    public Subscriber(String subscribedSensors, String mailAddress) {
+    public Subscriber(List<Subscription> subscribedSensors, String mailAddress) {
         this.subscribedSensors = subscribedSensors;
         this.mailAddress = mailAddress;
     }
 
-    public String getSubscribedSensors() {
+    public List<Subscription> getSubscribedSensors() {
         return subscribedSensors;
     }
 
-    public void setSubscribedSensors(String subscribedSensors) {
+    public void setSubscribedSensors(List<Subscription> subscribedSensors) {
         this.subscribedSensors = subscribedSensors;
     }
 

@@ -6,24 +6,24 @@ import java.util.Optional;
 public class SensorDAO implements DAO<Sensor> {
 
 
-    public void getSensorData() {
-
+    public String getSensorData() {
+        return null;
     }
 
-    public void getSubscribers() {
-
+    public List<String> getSubscribers() {
+        return null;
     }
 
-    public void getFailurerate() {
-
+    public String getFailurerate() {
+        return null;
     }
 
-    public void getLocation() {
-
+    public String getLocation() {
+        return null;
     }
 
-    public void getCategories() {
-
+    public List<String> getCategories() {
+        return null;
     }
 
     @Override

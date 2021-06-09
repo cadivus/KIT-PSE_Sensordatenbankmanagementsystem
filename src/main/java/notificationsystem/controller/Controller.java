@@ -19,11 +19,11 @@ public class Controller {
 
     }
 
-    public void checkForReports() {
+    public void addSubscription() {
 
     }
 
-    public void updateSubscribers() {
+    public void deleteSubscription() {
 
     }
 }

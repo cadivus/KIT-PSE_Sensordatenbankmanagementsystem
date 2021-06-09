@@ -1,8 +1,12 @@
 package notificationsystem.controller;
 
-public class SensorFailureChecker {
+public class CheckerUtil {
 
     public void checkForSensorFailure() {
+
+    }
+
+    public void checkForReports() {
 
     }
 }

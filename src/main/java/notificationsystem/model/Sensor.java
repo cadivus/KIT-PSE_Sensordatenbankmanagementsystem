@@ -1,24 +1,28 @@
 package notificationsystem.model;
 
+import java.util.List;
+
 public class Sensor {
 
     private String data;
-    private double failureRate;
+    private String failureRate;
     private String location;
-    private String categories;
+    private List<String> categories;
+    private List<String> subscribers;
 
-    public Sensor(String data, double failureRate, String location, String categories) {
+    public Sensor(String data, String failureRate, String location, List<String> categories, List<String> subscribers) {
         this.data = data;
         this.failureRate = failureRate;
         this.location = location;
         this.categories = categories;
+        this.subscribers = subscribers;
     }
 
     public String getData() {
         return data;
     }
 
-    public double getFailureRate() {
+    public String getFailureRate() {
         return failureRate;
     }
 
@@ -26,7 +30,7 @@ public class Sensor {
         return location;
     }
 
-    public String getCategories() {
+    public List<String> getCategories() {
         return categories;
     }
 
@@ -34,7 +38,7 @@ public class Sensor {
         this.data = data;
     }
 
-    public void setFailureRate(double failureRate) {
+    public void setFailureRate(String failureRate) {
         this.failureRate = failureRate;
     }
 
@@ -42,7 +46,15 @@ public class Sensor {
         this.location = location;
     }
 
-    public void setCategories(String categories) {
+    public void setCategories(List<String> categories) {
         this.categories = categories;
+    }
+
+    public List<String> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(List<String> subscribers) {
+        this.subscribers = subscribers;
     }
 }
