@@ -2,7 +2,7 @@ package notificationsystem.controller;
 
 import notificationsystem.view.MailBuilder;
 
-public class Controller {
+public class MailManager {
 
     private MailBuilder mailBuilder;
     private MailSender mailSender;
@@ -24,10 +24,6 @@ public class Controller {
     }
 
     public void deleteSubscription() {
-
-    }
-
-    public static void main(String[] args) {
 
     }
 }

@@ -47,7 +47,7 @@
                     </goals>
                         <phase>generate-test-sources</phase>
                         <configuration>
-                            <outputFilename>testdiagram1.puml</outputFilename>
+                            <outputFilename>diagram1.puml</outputFilename>
                             <scanPackages>
                                 <scanPackage>
                                     notificationsystem

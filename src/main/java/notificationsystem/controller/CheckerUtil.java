@@ -2,7 +2,7 @@ package notificationsystem.controller;
 
 public class CheckerUtil {
 
-    private Controller controller;
+    private MailManager mailManager;
 
     public void checkForSensorFailure() {
 
