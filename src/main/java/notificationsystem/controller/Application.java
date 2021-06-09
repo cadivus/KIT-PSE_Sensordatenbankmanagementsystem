@@ -3,6 +3,7 @@ package notificationsystem.controller;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
@@ -16,7 +17,12 @@ public class Application {
     }
 
     @GetMapping("/getConfirmCode")
-    public String getConfirmCode() {
+    public String getConfirmCode(String mailAdress) {
         return (null);
+    }
+
+    @PostMapping("/postNewSubscriber")
+    public void postNewSubscriber(String mailAdress) {
+
     }
 }
