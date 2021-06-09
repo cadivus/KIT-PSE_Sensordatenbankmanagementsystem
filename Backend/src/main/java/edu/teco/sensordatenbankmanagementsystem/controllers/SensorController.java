@@ -2,7 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.SensorNotFoundException;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
-import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
+import edu.teco.sensordatenbankmanagementsystem.services.SensorServiceImp;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +19,11 @@ import java.util.List;
 @CommonsLog
 @EnableWebMvc
 public class SensorController {
-    SensorService sensorService;
+    SensorServiceImp sensorService;
 
 
     @Autowired
-    public SensorController(SensorService sensorService) {
+    public SensorController(SensorServiceImp sensorService) {
         this.sensorService = sensorService;
     }
 

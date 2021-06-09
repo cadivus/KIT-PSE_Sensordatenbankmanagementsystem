@@ -1,6 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
-import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
+import edu.teco.sensordatenbankmanagementsystem.services.ObservationServiceImp;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,10 +19,10 @@ import java.util.concurrent.Executors;
 @Controller
 public class ObservationController {
 
-    ObservationService observationService;
+    ObservationServiceImp observationService;
 
     @Autowired
-    public ObservationController(ObservationService observationService){
+    public ObservationController(ObservationServiceImp observationService){
         this.observationService = observationService;
     }
 
