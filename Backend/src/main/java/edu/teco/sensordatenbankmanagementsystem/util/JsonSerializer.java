@@ -14,11 +14,7 @@ import java.io.IOException;
 
 public class JsonSerializer {
 
-    @Autowired
-    Database database;
-
-
-    private Sensor getSensorFromJson(File file) {
+    private static Sensor getSensorFromJson(File file) {
         Sensor sensor = new Sensor();
         try {
             ObjectMapper om = new ObjectMapper();
@@ -28,8 +24,8 @@ public class JsonSerializer {
         }
         return sensor;
     }
-    private JsonNode convertSensorToJsonNode(Sensor sensor){
+    private static JSON convertSensorToJson(Sensor sensor){
         ObjectMapper om = new ObjectMapper();
-        return om.convertValue(sensor, JsonNode.class);
+        return om.convertValue(sensor, JSON.class);
     }
 }
