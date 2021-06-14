@@ -1,13 +1,15 @@
 package notificationsystem.model;
 
+import notificationsystem.controller.MailAddress;
+
 import java.util.List;
 
 public class Subscriber {
 
     private List<Subscription> subscribedSensors;
-    private String mailAddress;
+    private MailAddress mailAddress;
 
-    public Subscriber(List<Subscription> subscribedSensors, String mailAddress) {
+    public Subscriber(List<Subscription> subscribedSensors, MailAddress mailAddress) {
         this.subscribedSensors = subscribedSensors;
         this.mailAddress = mailAddress;
     }
@@ -20,11 +22,11 @@ public class Subscriber {
         this.subscribedSensors = subscribedSensors;
     }
 
-    public String getMailAddress() {
+    public MailAddress getMailAddress() {
         return mailAddress;
     }
 
-    public void setMailAddress(String mailAddress) {
+    public void setMailAddress(MailAddress mailAddress) {
         this.mailAddress = mailAddress;
     }
 }
