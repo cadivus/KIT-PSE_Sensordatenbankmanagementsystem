@@ -9,5 +9,13 @@ public interface SensorService {
 
     public Sensor getSensorMetaData(long id);
 
+    public Sensor getSensor(long id){
+        return repository.getById(id);
+    }
+
+    public Sensor getSensorMetaData(long id){
+        return repository.getById(id);
+    }
+
 
 }
