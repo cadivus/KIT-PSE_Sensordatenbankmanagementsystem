@@ -9,5 +9,4 @@ public interface SensorService {
 
     public Sensor getSensorMetaData(long id);
 
-
 }
