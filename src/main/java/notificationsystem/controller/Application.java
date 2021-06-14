@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Application {
 
     private MailManager mailManager;
+    private CheckerUtil checkerUtil;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

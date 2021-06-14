@@ -2,20 +2,22 @@ package notificationsystem.controller;
 
 import notificationsystem.view.MailBuilder;
 
+import java.util.UUID;
+
 public class MailManager {
 
     private MailBuilder mailBuilder;
     private MailSender mailSender;
 
-    public void alert(int sensorID) {
+    public void alert(UUID sensorID) {
 
     }
 
-    public String confirmMail(String mailAddress) {
+    public ConfirmCode confirmMail(MailAddress mailAddress) {
         return null;
     }
 
-    public void report(String mailAddress, int sensorID) {
+    public void report(MailAddress mailAddress, UUID sensorID) {
 
     }
 
