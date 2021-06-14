@@ -1,9 +1,12 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
-import edu.teco.sensordatenbankmanagement.repository.SensorRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.JsonSerializable;
+import edu.teco.sensordatenbankmanagementsystem.repository.SensorRepository;
 import edu.teco.sensordatenbankmanagementsystem.controllers.SensorController;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import lombok.extern.apachecommons.CommonsLog;
+import org.jooq.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,14 @@ public class SensorService {
 
     public void createNewMetaData() {
         sensor = new Sensor();
+    }
+
+    public Sensor getSensor(long id){
+        return repository.getById(id);
+    }
+
+    public Sensor getSensorMetaData(long id){
+        return repository.getById(id);
     }
 
 

@@ -28,7 +28,7 @@ public class SensorController {
     }
 
     @GetMapping("")
-    public List<Sensor> getAllData() {
+    public List<Sensor> getAllSensors() {
         return new ArrayList<Sensor>();
     }
 
