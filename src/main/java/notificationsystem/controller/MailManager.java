@@ -1,5 +1,7 @@
 package notificationsystem.controller;
 
+import notificationsystem.model.SensorDAO;
+import notificationsystem.model.SubscriberDAO;
 import notificationsystem.view.MailBuilder;
 
 import java.util.UUID;
@@ -9,23 +11,32 @@ public class MailManager {
     private MailBuilder mailBuilder;
     private MailSender mailSender;
 
+    public MailManager(MailBuilder mailBuilder, MailSender mailSender) {
+        this.mailBuilder = mailBuilder;
+        this.mailSender = mailSender;
+    }
+
     public void alert(UUID sensorID) {
+        SensorDAO sensorDAO;
 
     }
 
     public ConfirmCode confirmMail(MailAddress mailAddress) {
+        SubscriberDAO subscriberDAO;
         return null;
     }
 
     public void report(MailAddress mailAddress, UUID sensorID) {
-
+        SensorDAO sensorDAO;
     }
 
     public void addSubscription() {
-
+        SubscriberDAO subscriberDAO;
+        SensorDAO sensorDAO;
     }
 
     public void deleteSubscription() {
-
+        SubscriberDAO subscriberDAO;
+        SensorDAO sensorDAO;
     }
 }
