@@ -1,13 +1,18 @@
 package notificationsystem.view;
 
+import notificationsystem.controller.MailAddress;
+import org.json.JSONArray;
+
+import java.util.List;
+
 public class EMail {
-    private String senderMail;
-    private String receiverMails;
+    private MailAddress senderMail;
+    private List<MailAddress> receiverMails;
     private String subject;
     private String message;
-    private String attachment;
+    private JSONArray attachment;
 
-    public EMail(String senderMail, String receiverMails, String subject, String message, String attachment) {
+    public EMail(MailAddress senderMail, List<MailAddress> receiverMails, String subject, String message, JSONArray attachment) {
         this.senderMail = senderMail;
         this.receiverMails = receiverMails;
         this.subject = subject;
@@ -15,41 +20,43 @@ public class EMail {
         this.attachment = attachment;
     }
 
-    public String getSenderMail() {
+    public MailAddress getSenderMail() {
         return senderMail;
     }
 
-    public String getReceiverMails() {
-        return receiverMails;
-    }
-
-    public String getSubject() { return subject; }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setSenderMail(String senderMail) {
+    public void setSenderMail(MailAddress senderMail) {
         this.senderMail = senderMail;
     }
 
-    public void setReceiverMails(String receiverMails) {
+    public List<MailAddress> getReceiverMails() {
+        return receiverMails;
+    }
+
+    public void setReceiverMails(List<MailAddress> receiverMails) {
         this.receiverMails = receiverMails;
+    }
+
+    public String getSubject() {
+        return subject;
     }
 
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public String getAttachment() {
+    public JSONArray getAttachment() {
         return attachment;
     }
 
-    public void setAttachment(String attachment) {
+    public void setAttachment(JSONArray attachment) {
         this.attachment = attachment;
     }
 }
