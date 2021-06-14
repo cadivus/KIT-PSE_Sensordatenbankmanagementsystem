@@ -1,9 +1,13 @@
 package edu.teco.sensordatenbankmanagementsystem;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 
-@SpringBootApplication(scanBasePackages={"edu.teco.sensordatenbankmanagement"})
+@SpringBootApplication(scanBasePackages={"edu.teco.sensordatenbankmanagementsystem"}, exclude={DataSourceAutoConfiguration.class,
+		WebSecurityConfiguration.class})
 public class BackendApplication {
 
 	public static void main(String[] args) {
