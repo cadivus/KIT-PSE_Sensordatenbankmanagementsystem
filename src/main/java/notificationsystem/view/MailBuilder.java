@@ -5,7 +5,7 @@ import notificationsystem.model.Sensor;
 
 public class MailBuilder {
 
-    public Alert buildAlert(MailAddress mailAddresses, String sensorName) {
+    public Alert buildAlert(MailAddress mailAddresses, Sensor sensor) {
         return null;
     }
 

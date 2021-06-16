@@ -8,14 +8,12 @@ public class Sensor {
     private String failureRate;
     private String location;
     private List<String> categories;
-    private List<String> subscribers;
 
     public Sensor(String data, String failureRate, String location, List<String> categories, List<String> subscribers) {
         this.data = data;
         this.failureRate = failureRate;
         this.location = location;
         this.categories = categories;
-        this.subscribers = subscribers;
     }
 
     public String getData() {
@@ -50,11 +48,4 @@ public class Sensor {
         this.categories = categories;
     }
 
-    public List<String> getSubscribers() {
-        return subscribers;
-    }
-
-    public void setSubscribers(List<String> subscribers) {
-        this.subscribers = subscribers;
-    }
 }

@@ -32,10 +32,9 @@ public class Application {
     }
 
     @GetMapping("/getConfirmCode")
-    public String getConfirmCode(String address) {
-        MailAddress mailAddress = new MailAddress(address);
+    public String getConfirmCode(MailAddress mailAddress) {
         ConfirmCode code = mailManager.confirmMail(mailAddress);
-        return (code.getCode());
+        return(code.getCode());
     }
 
     @PostMapping("/postSubscription")

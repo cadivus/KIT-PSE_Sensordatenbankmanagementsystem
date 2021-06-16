@@ -7,11 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class SubscriptionDAO implements DAO<Subscription> {
-    @Override
-    public Subscription get(long id) {
-        return null;
-    }
 
+    @Override
     public Subscription get(Subscription subscription) {
         return null;
     }
@@ -22,6 +19,10 @@ public class SubscriptionDAO implements DAO<Subscription> {
 
     @Override
     public List<Subscription> getAll() {
+        return null;
+    }
+
+    public List<MailAddress> getAllSubscribers(UUID sensorID) {
         return null;
     }
 
