@@ -30,13 +30,4 @@ public class MailManager {
         SensorDAO sensorDAO;
     }
 
-    public void addSubscription() {
-        SubscriberDAO subscriberDAO;
-        SensorDAO sensorDAO;
-    }
-
-    public void deleteSubscription() {
-        SubscriberDAO subscriberDAO;
-        SensorDAO sensorDAO;
-    }
 }

@@ -2,6 +2,7 @@ package notificationsystem.configuration;
 
 import notificationsystem.controller.MailManager;
 import notificationsystem.controller.MailSender;
+import notificationsystem.controller.SubscriptionManager;
 import notificationsystem.model.SensorDAO;
 import notificationsystem.model.SubscriberDAO;
 import notificationsystem.view.MailBuilder;
@@ -14,6 +15,11 @@ public class AppConfig {
     @Bean
     public MailManager getMailManager() {
         return new MailManager();
+    }
+
+    @Bean
+    public SubscriptionManager getSubscriptionManager() {
+        return new SubscriptionManager();
     }
 
     @Bean
