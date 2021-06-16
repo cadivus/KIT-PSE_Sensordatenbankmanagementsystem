@@ -1,6 +1,7 @@
 package notificationsystem.controller;
 
 import notificationsystem.configuration.AppConfig;
+import notificationsystem.model.SensorName;
 import notificationsystem.view.ConfirmCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -10,6 +11,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.Period;
+import java.util.UUID;
 
 @SpringBootApplication
 @RestController
@@ -35,12 +39,12 @@ public class Application {
     }
 
     @PostMapping("/postSubscription")
-    public void postSubscription(String mailAddress, String sensorName) {
+    public void postSubscription(MailAddress mailAddress, UUID sensorID, Period reportInterval) {
         //subManager.addSubscription();
     }
 
     @PostMapping("/postUnsubscribe")
-    public void postUnsubscribe(String mailAddress, String sensorName) {
+    public void postUnsubscribe(MailAddress mailAddress, UUID sensorID) {
         //subManager.deleteSubscription();
     }
 }

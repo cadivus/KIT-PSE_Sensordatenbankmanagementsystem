@@ -4,6 +4,7 @@ import notificationsystem.controller.MailManager;
 import notificationsystem.controller.MailSender;
 import notificationsystem.controller.SubscriptionManager;
 import notificationsystem.model.SensorDAO;
+import notificationsystem.model.SubscriptionDAO;
 import notificationsystem.view.MailBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,5 +37,8 @@ public class AppConfig {
         return new SensorDAO();
     }
 
-
+    @Bean
+    public SubscriptionDAO getSubscriptionDAO() {
+        return new SubscriptionDAO();
+    }
 }
