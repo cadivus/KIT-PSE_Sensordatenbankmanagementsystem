@@ -1,6 +1,5 @@
 package notificationsystem.view;
 
-import notificationsystem.controller.ConfirmCode;
 import notificationsystem.controller.MailAddress;
 import org.json.JSONArray;
 

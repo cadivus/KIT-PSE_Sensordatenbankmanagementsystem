@@ -18,12 +18,12 @@ public class Application {
     }
 
     @GetMapping("/getConfirmCode")
-    public String getConfirmCode(String mailAdress) {
+    public String getConfirmCode(String mailAddress) {
         return (null);
     }
 
     @PostMapping("/postNewSubscriber")
-    public void postNewSubscriber(String mailAdress) {
+    public void postNewSubscriber(String mailAddress) {
 
     }
 }

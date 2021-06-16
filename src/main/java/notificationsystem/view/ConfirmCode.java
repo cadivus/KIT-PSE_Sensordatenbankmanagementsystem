@@ -1,4 +1,4 @@
-package notificationsystem.controller;
+package notificationsystem.view;
 
 public class ConfirmCode {
     private String code;

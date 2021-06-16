@@ -11,7 +11,7 @@ public class MailSender {
 
     private Session session;
 
-    public void login(String smptServer, String smptport, String username, String password) {
+    private void login(String smptServer, String smptport, String username, String password) {
         Properties properties = new Properties();
 
         properties.put("mail.smpt.auth", "true");

@@ -2,6 +2,7 @@ package notificationsystem.controller;
 
 import notificationsystem.model.SensorDAO;
 import notificationsystem.model.SubscriberDAO;
+import notificationsystem.view.ConfirmCode;
 import notificationsystem.view.MailBuilder;
 
 import java.util.UUID;
@@ -22,7 +23,6 @@ public class MailManager {
     }
 
     public ConfirmCode confirmMail(MailAddress mailAddress) {
-        SubscriberDAO subscriberDAO;
         return null;
     }
 
