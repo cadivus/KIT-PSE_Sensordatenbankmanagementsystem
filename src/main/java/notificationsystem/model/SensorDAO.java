@@ -15,4 +15,14 @@ public class SensorDAO implements DAO<Sensor> {
         return null;
     }
 
+    @Override
+    public void save(Sensor sensor) {
+
+    }
+
+    @Override
+    public void delete(Sensor sensor) {
+
+    }
+
 }

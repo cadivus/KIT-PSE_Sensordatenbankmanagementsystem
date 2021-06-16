@@ -35,12 +35,12 @@ public class Application {
     }
 
     @PostMapping("/postSubscription")
-    public void postSubscription(String mailAddress, String sensor) {
+    public void postSubscription(String mailAddress, String sensorName) {
         //subManager.addSubscription();
     }
 
     @PostMapping("/postUnsubscribe")
-    public void postUnsubscribe(String mailAddress, String sensor) {
+    public void postUnsubscribe(String mailAddress, String sensorName) {
         //subManager.deleteSubscription();
     }
 }

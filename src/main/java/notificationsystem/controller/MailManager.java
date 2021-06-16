@@ -1,7 +1,6 @@
 package notificationsystem.controller;
 
 import notificationsystem.model.SensorDAO;
-import notificationsystem.model.SubscriberDAO;
 import notificationsystem.view.ConfirmCode;
 import notificationsystem.view.MailBuilder;
 
@@ -9,8 +8,8 @@ import java.util.UUID;
 
 public class MailManager {
 
-    //private MailBuilder mailBuilder;
-    //private MailSender mailSender;
+    private MailBuilder mailBuilder;
+    private MailSender mailSender;
 
     //public MailManager(MailBuilder mailBuilder, MailSender mailSender) {
       //  this.mailBuilder = mailBuilder;
