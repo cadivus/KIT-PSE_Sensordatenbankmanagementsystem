@@ -9,13 +9,13 @@ import java.util.UUID;
 
 public class MailManager {
 
-    private MailBuilder mailBuilder;
-    private MailSender mailSender;
+    //private MailBuilder mailBuilder;
+    //private MailSender mailSender;
 
-    public MailManager(MailBuilder mailBuilder, MailSender mailSender) {
-        this.mailBuilder = mailBuilder;
-        this.mailSender = mailSender;
-    }
+    //public MailManager(MailBuilder mailBuilder, MailSender mailSender) {
+      //  this.mailBuilder = mailBuilder;
+        //this.mailSender = mailSender;
+    //}
 
     public void alert(UUID sensorID) {
         SensorDAO sensorDAO;
