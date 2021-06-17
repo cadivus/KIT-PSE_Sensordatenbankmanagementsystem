@@ -17,6 +17,9 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The {@code ObservationServiceImp} is an implementation of the {@code ObservationService} interface catered towards us using the TECO database
+ */
 @Service
 @CommonsLog
 public class ObservationServiceImp implements ObservationService {

@@ -13,27 +13,50 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+/**
+ * The {@code SensorController} is the entry point for http requests for {@code Sensor}s.
+ * Methods of this class map to different requests about {@code Sensor}s.
+ */
 @RestController
 @RequestMapping
 @CommonsLog
 @EnableWebMvc
 public class SensorController {
+
+
     SensorServiceImp sensorService;
 
-
+    /**
+     * Instantiates a new Sensor controller.
+     *
+     * @param sensorService the {@code SensorService} which handles the underlying business logic
+     *                           The Autowired Annotation automatically injects a Spring bean
+     */
     @Autowired
     public SensorController(SensorServiceImp sensorService) {
         this.sensorService = sensorService;
     }
 
+    /**
+     * Maps a get request for getting all sensors' metadata.
+     *
+     * @return list of all sensors
+     */
     @GetMapping("")
     public List<Sensor> getAllSensors() {
         return new ArrayList<Sensor>();
     }
 
+    /**
+     * Maps a get request for getting a sensor's metadata by UUID.
+     *
+     * @param id UUID of sensor to get
+     * @return sensor with given UUID, if present
+     */
     @GetMapping("/{id}")
-    public Sensor getSensor(@PathVariable int id) {
+    public Sensor getSensor(@PathVariable UUID id) {
         if (false) throw new SensorNotFoundException();
 
         return new Sensor();

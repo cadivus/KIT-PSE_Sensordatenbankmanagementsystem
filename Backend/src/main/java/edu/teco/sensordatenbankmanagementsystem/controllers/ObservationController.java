@@ -14,6 +14,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.UUID;
 
 
+/**
+ * The {@code ObservationController} is the entry point for http requests for {@code Observation}s.
+ * Methods of this class map to different requests about {@code Observation}s.
+ */
 @RequestMapping
 @EnableWebMvc
 @CommonsLog
@@ -33,11 +37,22 @@ public class ObservationController {
         this.observationService = observationService;
     }
 
+    /**
+     * Maps a post request that creates a new SSE stream
+     *
+     * @return UUID of the created SSE stream
+     */
     @PostMapping("/newSSE")
     public UUID createNewSse() {
         return UUID.randomUUID();
     }
 
+    /**
+     * Maps a get request that gets the SSE stream with the given UUID
+     *
+     * @param id UUID of SSE stream to get
+     * @return SSE stream with given UUID if present
+     */
     @GetMapping("/stream/{id}")
     public SseEmitter streamSseMvc(@PathVariable UUID id) {
         return observationService.getDataStream(id);
