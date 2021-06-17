@@ -4,8 +4,14 @@ import notificationsystem.controller.MailAddress;
 
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.Date;
 
+/**
+ * The Subscription class stores data about a subscription of a single user to a single sensor. To allow for regular
+ * reports to the subscriber, a timestamp of the date and time of the subscription is saved along with the time interval
+ * at which the report mails are to be sent.
+ * The class is mainly used to bundle this information into a single class, massively simplifying dealing with sensor-
+ * subscriptions and reports.
+ */
 public class Subscription {
 
     private MailAddress subscriberAddress;

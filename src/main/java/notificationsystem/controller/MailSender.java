@@ -7,6 +7,11 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.util.Properties;
 
+/**
+ * The MailSender is the final link in the chain of getting an e-mail to a user. It is responsible for sending these
+ * e-mails to the recipients. The e-mails are sent via a normal gmail account. For this end, the class contains methods
+ * for a login procedure and the sending of the finished e-mails.
+ */
 public class MailSender {
 
     private Session session;

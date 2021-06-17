@@ -1,9 +1,13 @@
 package notificationsystem.model;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * The SensorDAO class implements the DAO interface to handle database queries regarding sensors. For that end it
+ * provides get, save, delete and getAll methods designed to hide the actual database queries, offering a single
+ * access point to all sensor related data and information.
+ */
 public class SensorDAO implements DAO<Sensor> {
 
     @Override

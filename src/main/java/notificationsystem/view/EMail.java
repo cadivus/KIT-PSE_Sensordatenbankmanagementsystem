@@ -5,7 +5,12 @@ import org.json.JSONArray;
 
 import java.util.List;
 
-public class EMail {
+/**
+ * The abstract EMail class represents a normal e-mail. All other e-mail types inherit from it. It contains the basic
+ * parts of an e-mail: sender, receiver, subject, message and attachment. The class furthermore provides getters and
+ * setters for these attributes.
+ */
+public abstract class EMail {
     private MailAddress senderMail;
     private List<MailAddress> receiverMails;
     private String subject;

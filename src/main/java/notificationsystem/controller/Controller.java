@@ -8,6 +8,7 @@ import notificationsystem.view.ConfirmationMail;
 import notificationsystem.view.MailBuilder;
 import notificationsystem.view.Report;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,16 @@ import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The Controller is a central component to the E-Mail Notification System managing most tasks as well as providing an
+ * API to outside systems. It is the only class to communicate with the classes from the 'model' and 'view' packages.
+ * The CheckerUtil class can call the Controller to instruct it to send a report about a certain sensor to a subscriber
+ * of that sensor, or to instruct it to send an alert about the malfunction of a certain sensor to one or multiple
+ * subscribers.
+ * The project website may call the Controller to issue a confirmation mail containing a confirmation code to be sent to
+ * a given e-mail address.
+ * Furthermore, the Controller allows the website to add, delete or get information about subscriptions.
+ */
 @RestController
 public class Controller {
 
@@ -31,15 +42,13 @@ public class Controller {
 
     }
 
-    //ggf requestmapping
-    @GetMapping("/getConfirmCode")
-    public String getConfirmCode(MailAddress mailAddress) {
+    @GetMapping("/getConfirmCode/{mailAddress}")
+    public String getConfirmCode(@PathVariable MailAddress mailAddress) {
         ConfirmationMail confirmationMail = mailBuilder.buildConfirmationMail(mailAddress);
         mailSender.send(confirmationMail);
         return confirmationMail.getConfirmCode().getCode();
     }
 
-    //Request body, Response body, Path-variable, @enablewebsecurity
     @PostMapping("/postSubscription")
     public void postSubscription(MailAddress mailAddress, UUID sensorID, Period reportInterval) {
         //subscriptionDAO.save(subscription);
@@ -51,8 +60,8 @@ public class Controller {
         subscriptionDAO.delete(toDelete);
     }
 
-    @GetMapping("/getSubscription")
-    public List<UUID> getSubscriptions(String mailAddress) {
+    @GetMapping("/getSubscriptions/{mailAddress}")
+    public List<UUID> getSubscriptions(@PathVariable String mailAddress) {
         return subscriptionDAO.getAllSensors(mailAddress);
     }
 

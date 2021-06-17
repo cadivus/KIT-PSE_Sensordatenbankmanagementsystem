@@ -2,6 +2,15 @@ package notificationsystem.model;
 
 import java.util.List;
 
+/**
+ * The Sensor class represents the air-quality sensors stationed in Augsburg. Each sensor collects data, has a
+ * failure rate, a location, and is part of one, none or multiple categories. The Sensor class also provides access to
+ * these data points.
+ * In the E-Mail-Notification System, this class is mainly used organize and transport data collected by and about
+ * sensors. This information is then needed for report- and alert-mails.
+ * The Sensor class does not hold information about the subscribers to a sensor, as the subscriptions are handled in
+ * a distinct Subscription class.
+ */
 public class Sensor {
 
     private String data;
