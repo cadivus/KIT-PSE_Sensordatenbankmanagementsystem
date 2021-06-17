@@ -26,6 +26,10 @@ public class SubscriptionDAO implements DAO<Subscription> {
         return null;
     }
 
+    public List<UUID> getAllSensors(String mailAddress) {
+        return null;
+    }
+
     @Override
     public void save(Subscription subscription) {
 

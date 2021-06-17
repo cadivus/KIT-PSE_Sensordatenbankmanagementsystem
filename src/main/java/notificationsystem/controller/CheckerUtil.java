@@ -1,9 +1,10 @@
 package notificationsystem.controller;
 
+//@autowired erstellt auch singleton, @Component
 public class CheckerUtil {
 
     private static CheckerUtil INSTANCE;
-    private MailManager mailManager;
+    private Controller controller;
 
     private CheckerUtil() {}
 
