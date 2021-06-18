@@ -1,7 +1,5 @@
 package notificationsystem.model;
 
-import notificationsystem.controller.MailAddress;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +25,7 @@ public class SubscriptionDAO implements DAO<Subscription> {
      * @return subscription of the user with the specified e-mail address to the sensor with the given ID,
      * if it exists.
      */
-    public Subscription get(MailAddress mailAddress, UUID sensorID) {
+    public Subscription get(String mailAddress, UUID sensorID) {
         return null;
     }
 
@@ -42,7 +40,7 @@ public class SubscriptionDAO implements DAO<Subscription> {
      * @param sensorID ID of the sensor the users are subscribed to.
      * @return List of e-mail addresses of all the users subscribed to the sensor with the given ID.
      */
-    public List<MailAddress> getAllSubscribers(UUID sensorID) {
+    public List<String> getAllSubscribers(UUID sensorID) {
         return null;
     }
 

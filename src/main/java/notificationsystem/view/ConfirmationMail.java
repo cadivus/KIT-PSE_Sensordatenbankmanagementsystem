@@ -1,6 +1,5 @@
 package notificationsystem.view;
 
-import notificationsystem.controller.MailAddress;
 import org.json.JSONArray;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public class ConfirmationMail extends EMail {
 
-    private ConfirmCode confirmCode;
+    private String confirmCode;
 
     /**
      * Constructs a new confirmation e-mail.
@@ -25,7 +24,7 @@ public class ConfirmationMail extends EMail {
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public ConfirmationMail(MailAddress senderMail, List<MailAddress> receiverMails, String subject, String message, JSONArray attachment) {
+    public ConfirmationMail(String senderMail, List<String> receiverMails, String subject, String message, JSONArray attachment) {
         super(senderMail, receiverMails, subject, message, attachment);
         this.confirmCode = generateConfirmCode();
     }
@@ -35,7 +34,7 @@ public class ConfirmationMail extends EMail {
      * the project website to the validate the users identity.
      * @return confirmation code used for log-in.
      */
-    private ConfirmCode generateConfirmCode() {
+    private String generateConfirmCode() {
         return null;
     }
 
@@ -43,7 +42,7 @@ public class ConfirmationMail extends EMail {
      * Gets the confirmation code sent in the e-mail to validate a users e-mail.
      * @return the confirmation code sent in the e-mail.
      */
-    public ConfirmCode getConfirmCode() {
+    public String getConfirmCode() {
         return confirmCode;
     }
 }

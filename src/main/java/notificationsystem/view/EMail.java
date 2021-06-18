@@ -1,6 +1,5 @@
 package notificationsystem.view;
 
-import notificationsystem.controller.MailAddress;
 import org.json.JSONArray;
 
 import java.util.List;
@@ -11,8 +10,8 @@ import java.util.List;
  * setters for these attributes.
  */
 public abstract class EMail {
-    private MailAddress senderMail;
-    private List<MailAddress> receiverMails;
+    private String senderMail;
+    private List<String> receiverMails;
     private String subject;
     private String message;
     private JSONArray attachment;
@@ -25,7 +24,7 @@ public abstract class EMail {
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public EMail(MailAddress senderMail, List<MailAddress> receiverMails, String subject, String message, JSONArray attachment) {
+    public EMail(String senderMail, List<String> receiverMails, String subject, String message, JSONArray attachment) {
         this.senderMail = senderMail;
         this.receiverMails = receiverMails;
         this.subject = subject;
@@ -37,7 +36,7 @@ public abstract class EMail {
      * Gets the sender e-mail address.
      * @return e-mail address of the sender.
      */
-    public MailAddress getSenderMail() {
+    public String getSenderMail() {
         return senderMail;
     }
 
@@ -45,7 +44,7 @@ public abstract class EMail {
      * Sets the sender e-mail address.
      * @param senderMail e-mail address of the sender.
      */
-    public void setSenderMail(MailAddress senderMail) {
+    public void setSenderMail(String senderMail) {
         this.senderMail = senderMail;
     }
 
@@ -53,7 +52,7 @@ public abstract class EMail {
      * Gets a list of all e-mail addresses the mail is sent to.
      * @return list of e-mail addresses the mail is sent to.
      */
-    public List<MailAddress> getReceiverMails() {
+    public List<String> getReceiverMails() {
         return receiverMails;
     }
 
@@ -61,7 +60,7 @@ public abstract class EMail {
      * Sets a list of all e-mail addresses the mail is sent to.
      * @param receiverMails list of e-mail addresses the mail is sent to.
      */
-    public void setReceiverMails(List<MailAddress> receiverMails) {
+    public void setReceiverMails(List<String> receiverMails) {
         this.receiverMails = receiverMails;
     }
 

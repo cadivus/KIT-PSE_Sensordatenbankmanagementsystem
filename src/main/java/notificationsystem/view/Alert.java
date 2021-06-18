@@ -1,6 +1,5 @@
 package notificationsystem.view;
 
-import notificationsystem.controller.MailAddress;
 import org.json.JSONArray;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class Alert extends EMail {
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public Alert(MailAddress senderMail, List<MailAddress> receiverMails, String subject, String message, JSONArray attachment) {
+    public Alert(String senderMail, List<String> receiverMails, String subject, String message, JSONArray attachment) {
         super(senderMail, receiverMails, subject, message, attachment);
     }
 }

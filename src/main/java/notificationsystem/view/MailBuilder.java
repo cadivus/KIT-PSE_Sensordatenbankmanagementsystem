@@ -1,6 +1,5 @@
 package notificationsystem.view;
 
-import notificationsystem.controller.MailAddress;
 import notificationsystem.model.Sensor;
 
 /**
@@ -18,7 +17,7 @@ public class MailBuilder {
      * @return The finished alert e-mail for the subscriber with the given e-mail address about the failure
      * of the given sensor.
      */
-    public Alert buildAlert(MailAddress mailAddress, Sensor sensor) {
+    public Alert buildAlert(String mailAddress, Sensor sensor) {
         return null;
     }
 
@@ -29,7 +28,7 @@ public class MailBuilder {
      * @param sensor the sensor the report is about.
      * @return The finished report e-mail for the subscriber with the given e-mail address about the given sensor.
      */
-    public Report buildReport(MailAddress mailAddress, Sensor sensor) {
+    public Report buildReport(String mailAddress, Sensor sensor) {
         return null;
     }
 
@@ -41,7 +40,7 @@ public class MailBuilder {
      * @param mailAddress e-mail address the mail is sent to.
      * @return The finished confirmation e-mail to the e-mail address the user is trying to log-in with.
      */
-    public ConfirmationMail buildConfirmationMail(MailAddress mailAddress) {
+    public ConfirmationMail buildConfirmationMail(String mailAddress) {
         return null;
     }
 }

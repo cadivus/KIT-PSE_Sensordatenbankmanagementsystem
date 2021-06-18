@@ -54,10 +54,10 @@ public class Controller {
      * @return String containing the confirmation code sent to the user.
      */
     @GetMapping("/getConfirmCode/{mailAddress}")
-    public String getConfirmCode(@PathVariable MailAddress mailAddress) {
+    public String getConfirmCode(@PathVariable String mailAddress) {
         ConfirmationMail confirmationMail = mailBuilder.buildConfirmationMail(mailAddress);
         mailSender.send(confirmationMail);
-        return confirmationMail.getConfirmCode().getCode();
+        return confirmationMail.getConfirmCode();
     }
 
     /**
@@ -70,7 +70,7 @@ public class Controller {
      * @param reportInterval time period between reports.
      */
     @PostMapping("/postSubscription")
-    public void postSubscription(MailAddress mailAddress, UUID sensorID, Period reportInterval) {
+    public void postSubscription(String mailAddress, UUID sensorID, Period reportInterval) {
         //subscriptionDAO.save(subscription);
     }
 
@@ -80,7 +80,7 @@ public class Controller {
      * @param sensorID ID of the sensor the user unsubscribes from.
      */
     @PostMapping("/postUnsubscribe")
-    public void postUnsubscribe(MailAddress mailAddress, UUID sensorID) {
+    public void postUnsubscribe(String mailAddress, UUID sensorID) {
         Subscription toDelete = subscriptionDAO.get(mailAddress, sensorID);
         subscriptionDAO.delete(toDelete);
     }
@@ -104,7 +104,7 @@ public class Controller {
      */
     public void getAlert(UUID sensorID) {
         Sensor sensor = sensorDAO.get(sensorID);
-        List<MailAddress> subscribers = subscriptionDAO.getAllSubscribers(sensorID);
+        List<String> subscribers = subscriptionDAO.getAllSubscribers(sensorID);
         //für jeden Listeneintrag mailBuilder.buildAlert() aufrufen und dann abschicken
     }
 
@@ -117,7 +117,7 @@ public class Controller {
      * @param mailAddress e-mail address of the subscriber the report is sent to.
      * @param sensorID ID of the sensor the report is about.
      */
-    public void getReport(MailAddress mailAddress, UUID sensorID) {
+    public void getReport(String mailAddress, UUID sensorID) {
         Sensor sensor = sensorDAO.get(sensorID);
         Report report = mailBuilder.buildReport(mailAddress, sensor);
         mailSender.send(report);

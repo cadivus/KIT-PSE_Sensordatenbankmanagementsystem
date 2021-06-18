@@ -1,7 +1,5 @@
 package notificationsystem.model;
 
-import notificationsystem.controller.MailAddress;
-
 import java.time.LocalDateTime;
 import java.time.Period;
 
@@ -14,7 +12,7 @@ import java.time.Period;
  */
 public class Subscription {
 
-    private MailAddress subscriberAddress;
+    private String subscriberAddress;
     private Sensor sensor;
     private LocalDateTime subTime;
     private Period reportInterval;
@@ -26,7 +24,7 @@ public class Subscription {
      * @param subTime time at which the user subscribed to the sensor.
      * @param reportInterval time period at which report e-mails are sent.
      */
-    public Subscription(MailAddress subscriberAddress, Sensor sensor, LocalDateTime subTime, Period reportInterval) {
+    public Subscription(String subscriberAddress, Sensor sensor, LocalDateTime subTime, Period reportInterval) {
         this.subscriberAddress = subscriberAddress;
         this.sensor = sensor;
         this.subTime = subTime;
@@ -37,7 +35,7 @@ public class Subscription {
      * Gets the e-mail address of the subscriber.
      * @return e-mail address of the subscriber.
      */
-    public MailAddress getSubscriberAddress() {
+    public String getSubscriberAddress() {
         return subscriberAddress;
     }
 
@@ -45,7 +43,7 @@ public class Subscription {
      * Sets the e-mail address of the subscriber.
      * @param subscriberAddress e-mail address of the subscriber.
      */
-    public void setSubscriberAddress(MailAddress subscriberAddress) {
+    public void setSubscriberAddress(String subscriberAddress) {
         this.subscriberAddress = subscriberAddress;
     }
 

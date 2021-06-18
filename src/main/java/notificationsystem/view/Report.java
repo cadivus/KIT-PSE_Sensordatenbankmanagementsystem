@@ -1,6 +1,5 @@
 package notificationsystem.view;
 
-import notificationsystem.controller.MailAddress;
 import org.json.JSONArray;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class Report extends EMail {
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public Report(MailAddress senderMail, List<MailAddress> receiverMails, String subject, String message, JSONArray attachment) {
+    public Report(String senderMail, List<String> receiverMails, String subject, String message, JSONArray attachment) {
         super(senderMail, receiverMails, subject, message, attachment);
     }
 }
