@@ -2,6 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import org.jooq.JSON;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.UUID;
 
@@ -12,4 +13,10 @@ public interface ObservationService {
     public UUID createNewDataStream(JSON information);
 
     public Observation getObservation(Long id);
+
+    public UUID createReplay(JSON information);
+
+    public SseEmitter getDataStream(UUID id);
+
+    public void destroyDataStream(UUID id);
 }

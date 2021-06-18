@@ -1,5 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
+import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationServiceImp;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import java.util.UUID;
 @Controller
 public class ObservationController {
 
-    ObservationServiceImp observationService;
+    ObservationService observationService;
 
     /**
      * Instantiates a new Observation controller.
@@ -33,7 +34,7 @@ public class ObservationController {
      *                           The Autowired Annotation automatically injects a Spring bean
      */
     @Autowired
-    public ObservationController(ObservationService observationService) {
+    public ObservationController(ObservationServiceImp observationService) {
         this.observationService = observationService;
     }
 
