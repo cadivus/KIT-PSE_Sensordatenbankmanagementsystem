@@ -20,6 +20,13 @@ public class SubscriptionDAO implements DAO<Subscription> {
         return null;
     }
 
+    /**
+     * Gets a subscription from the database based of a specified e-mail and sensor ID.
+     * @param mailAddress e-mail address of the subscriber.
+     * @param sensorID ID of the sensor the user is subscribed to.
+     * @return subscription of the user with the specified e-mail address to the sensor with the given ID,
+     * if it exists.
+     */
     public Subscription get(MailAddress mailAddress, UUID sensorID) {
         return null;
     }
@@ -29,10 +36,22 @@ public class SubscriptionDAO implements DAO<Subscription> {
         return null;
     }
 
+    /**
+     * Gets a list of all e-mail addresses of users subscribed to a sensor. The sensor ID is used to identify
+     * the sensor of which the subscribers are to be fetched.
+     * @param sensorID ID of the sensor the users are subscribed to.
+     * @return List of e-mail addresses of all the users subscribed to the sensor with the given ID.
+     */
     public List<MailAddress> getAllSubscribers(UUID sensorID) {
         return null;
     }
 
+    /**
+     * Gets a list of all sensors the user with the given e-mail address is subscribed to.
+     * @param mailAddress e-mail address of the user.
+     * @return List of sensor IDs of all the sensors the user with the given e-mail address is currently
+     * subscribed to.
+     */
     public List<UUID> getAllSensors(String mailAddress) {
         return null;
     }

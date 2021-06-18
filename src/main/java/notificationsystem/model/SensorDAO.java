@@ -15,6 +15,11 @@ public class SensorDAO implements DAO<Sensor> {
         return null;
     }
 
+    /**
+     * Gets a sensor specified by its unique ID from the database.
+     * @param sensorID ID of the sensor to be fetched.
+     * @return The sensor with the given ID.
+     */
     public Sensor get(UUID sensorID) {
         return null;
     }

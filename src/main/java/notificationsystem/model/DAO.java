@@ -12,9 +12,29 @@ import java.util.Optional;
  */
 public interface DAO<T> {
 
+    /**
+     * Gets an object from the database.
+     * @param t identifier for the object needed.
+     * @return The object fetched.
+     */
     T get(T t);
+
+    /**
+     * Gets a list of all the objects of the given class from the database.
+     * @return List of all the objects of that kind in the database.
+     */
     List<T> getAll();
+
+    /**
+     * Saves a given object in the database.
+     * @param t the object to be saved in the databse.
+     */
     void save(T t);
+
+    /**
+     * Deletes a given object from the database.
+     * @param t the object to be deleted from the database.
+     */
     void delete(T t);
 
 }

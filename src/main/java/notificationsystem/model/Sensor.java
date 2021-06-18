@@ -18,41 +18,80 @@ public class Sensor {
     private String location;
     private List<String> categories;
 
-    public Sensor(String data, String failureRate, String location, List<String> categories, List<String> subscribers) {
+    /**
+     * Constructs a new sensor.
+     * @param data data the sensor collected.
+     * @param failureRate percentage of time the sensor was inactive.
+     * @param location gps-coordinates of the sensor location.
+     * @param categories list of categories describing the sensor and its properties.
+     */
+    public Sensor(String data, String failureRate, String location, List<String> categories) {
         this.data = data;
         this.failureRate = failureRate;
         this.location = location;
         this.categories = categories;
     }
 
+    /**
+     * Gets the data a sensor collected.
+     * @return String containing the collected data.
+     */
     public String getData() {
         return data;
     }
 
+    /**
+     * Gets the failure rate of the sensor.
+     * @return String representing the failure rate of the sensor in percent.
+     */
     public String getFailureRate() {
         return failureRate;
     }
 
+    /**
+     * Gets the location of the sensor.
+     * @return Location of the sensor as a gps-coordinate.
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Gets a list of categories describing the sensor.
+     * @return List of Strings with the category names.
+     */
     public List<String> getCategories() {
         return categories;
     }
 
+    /**
+     * Sets the data collected by the sensor.
+     * @param data data collected by the sensor.
+     */
     public void setData(String data) {
         this.data = data;
     }
 
+    /**
+     * Sets the failure rate of a sensor.
+     * @param failureRate String representing the failure rate of the sensor in percent.
+     */
     public void setFailureRate(String failureRate) {
         this.failureRate = failureRate;
     }
 
+    /**
+     * Sets the location of a sensor.
+     * @param location Location of the sensor as a gps-coordinate.
+     */
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * Sets the categories of the sensor.
+     * @param categories List of Strings with the category names.
+     */
     public void setCategories(List<String> categories) {
         this.categories = categories;
     }
