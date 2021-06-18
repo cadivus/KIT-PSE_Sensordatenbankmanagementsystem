@@ -16,6 +16,14 @@ public class MailSender {
 
     private Session session;
 
+    /**
+     * Log-in procedure needed for authentication before an e-mail can be sent. Also instanciates the session with
+     * the smpt-server.
+     * @param smptServer server through which the e-mail is sent.
+     * @param smptport port used to send the e-mail.
+     * @param username username used for authentication purposes.
+     * @param password password used for authentication purposes.
+     */
     private void login(String smptServer, String smptport, String username, String password) {
         Properties properties = new Properties();
 
@@ -36,6 +44,10 @@ public class MailSender {
 
     }
 
+    /**
+     * Used to send the finished e-mails.
+     * @param mail to be send to its receiver.
+     */
     public void send(EMail mail) {
 
     }
