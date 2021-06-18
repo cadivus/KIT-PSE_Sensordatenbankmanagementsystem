@@ -13,6 +13,15 @@ import java.util.List;
  * as a subject and a message. Lastly the e-mail includes an attachment with the data collected by the sensor.
  */
 public class Report extends EMail {
+
+    /**
+     * Constructs a new report e-mail.
+     * @param senderMail e-mail address of the sender.
+     * @param receiverMails e-mail address the mail is sent to.
+     * @param subject subject of the e-mail.
+     * @param message message body of the e-mail.
+     * @param attachment any data attached to the e-mail.
+     */
     public Report(MailAddress senderMail, List<MailAddress> receiverMails, String subject, String message, JSONArray attachment) {
         super(senderMail, receiverMails, subject, message, attachment);
     }

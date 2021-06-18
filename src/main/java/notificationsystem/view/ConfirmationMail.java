@@ -17,15 +17,32 @@ public class ConfirmationMail extends EMail {
 
     private ConfirmCode confirmCode;
 
+    /**
+     * Constructs a new confirmation e-mail.
+     * @param senderMail e-mail address of the sender.
+     * @param receiverMails e-mail address the mail is sent to.
+     * @param subject subject of the e-mail.
+     * @param message message body of the e-mail.
+     * @param attachment any data attached to the e-mail.
+     */
     public ConfirmationMail(MailAddress senderMail, List<MailAddress> receiverMails, String subject, String message, JSONArray attachment) {
         super(senderMail, receiverMails, subject, message, attachment);
         this.confirmCode = generateConfirmCode();
     }
 
+    /**
+     * The generateConfirmCode method is used to generate a random confirmation code which can be sent to a user and
+     * the project website to the validate the users identity.
+     * @return confirmation code used for log-in.
+     */
     private ConfirmCode generateConfirmCode() {
         return null;
     }
 
+    /**
+     * Gets the confirmation code sent in the e-mail to validate a users e-mail.
+     * @return the confirmation code sent in the e-mail.
+     */
     public ConfirmCode getConfirmCode() {
         return confirmCode;
     }
