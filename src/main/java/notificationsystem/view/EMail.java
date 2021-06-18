@@ -11,7 +11,7 @@ import java.util.List;
  */
 public abstract class EMail {
     private String senderMail;
-    private List<String> receiverMails;
+    private String receiverMail;
     private String subject;
     private String message;
     private JSONArray attachment;
@@ -19,14 +19,14 @@ public abstract class EMail {
     /**
      * Constructs a new e-mail.
      * @param senderMail e-mail address of the sender.
-     * @param receiverMails e-mail address the mail is sent to.
+     * @param receiverMail e-mail address the mail is sent to.
      * @param subject subject of the e-mail.
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public EMail(String senderMail, List<String> receiverMails, String subject, String message, JSONArray attachment) {
+    public EMail(String senderMail, String receiverMail, String subject, String message, JSONArray attachment) {
         this.senderMail = senderMail;
-        this.receiverMails = receiverMails;
+        this.receiverMail = receiverMail;
         this.subject = subject;
         this.message = message;
         this.attachment = attachment;
@@ -49,19 +49,19 @@ public abstract class EMail {
     }
 
     /**
-     * Gets a list of all e-mail addresses the mail is sent to.
-     * @return list of e-mail addresses the mail is sent to.
+     * Gets the e-mail address the mail is sent to.
+     * @return the e-mail address the mail is sent to.
      */
-    public List<String> getReceiverMails() {
-        return receiverMails;
+    public String getReceiverMails() {
+        return receiverMail;
     }
 
     /**
-     * Sets a list of all e-mail addresses the mail is sent to.
-     * @param receiverMails list of e-mail addresses the mail is sent to.
+     * Sets the e-mail addresses the mail is sent to.
+     * @param receiverMail the e-mail address the mail is sent to.
      */
-    public void setReceiverMails(List<String> receiverMails) {
-        this.receiverMails = receiverMails;
+    public void setReceiverMails(String receiverMail) {
+        this.receiverMail = receiverMail;
     }
 
     /**

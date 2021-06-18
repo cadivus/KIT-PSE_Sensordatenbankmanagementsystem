@@ -13,12 +13,12 @@ public class Alert extends EMail {
     /**
      * Constructs a new alert e-mail.
      * @param senderMail e-mail address of the sender.
-     * @param receiverMails e-mail address the mail is sent to.
+     * @param receiverMail e-mail address the mail is sent to.
      * @param subject subject of the e-mail.
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public Alert(String senderMail, List<String> receiverMails, String subject, String message, JSONArray attachment) {
-        super(senderMail, receiverMails, subject, message, attachment);
+    public Alert(String senderMail, String receiverMail, String subject, String message, JSONArray attachment) {
+        super(senderMail, receiverMail, subject, message, attachment);
     }
 }

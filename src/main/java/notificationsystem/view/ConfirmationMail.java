@@ -19,13 +19,13 @@ public class ConfirmationMail extends EMail {
     /**
      * Constructs a new confirmation e-mail.
      * @param senderMail e-mail address of the sender.
-     * @param receiverMails e-mail address the mail is sent to.
+     * @param receiverMail e-mail address the mail is sent to.
      * @param subject subject of the e-mail.
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public ConfirmationMail(String senderMail, List<String> receiverMails, String subject, String message, JSONArray attachment) {
-        super(senderMail, receiverMails, subject, message, attachment);
+    public ConfirmationMail(String senderMail, String receiverMail, String subject, String message, JSONArray attachment) {
+        super(senderMail, receiverMail, subject, message, attachment);
         this.confirmCode = generateConfirmCode();
     }
 
