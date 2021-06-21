@@ -20,9 +20,7 @@ import java.util.UUID;
  * Methods of this class map to different requests about {@code Sensor}s.
  */
 @RestController
-@RequestMapping
 @CommonsLog
-@EnableWebMvc
 public class SensorController {
 
 
