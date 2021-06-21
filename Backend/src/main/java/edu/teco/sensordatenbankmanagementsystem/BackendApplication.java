@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 
+/**
+ * The main class and entry point for this spring boot application.
+ */
 @SpringBootApplication(scanBasePackages={"edu.teco.sensordatenbankmanagementsystem"}, exclude={DataSourceAutoConfiguration.class,
 		WebSecurityConfiguration.class})
 public class BackendApplication {

@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+/**
+ * This data class represents information about a sensor: its associated metadata, and observation data.
+ */
 @Entity
 @Data
 public class Sensor {

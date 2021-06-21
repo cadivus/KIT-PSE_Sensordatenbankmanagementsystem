@@ -3,7 +3,6 @@ package edu.teco.sensordatenbankmanagementsystem.util;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
-import edu.teco.sensordatenbankmanagementsystem.repository.Database;
 import org.jooq.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

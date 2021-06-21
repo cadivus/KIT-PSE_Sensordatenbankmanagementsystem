@@ -10,6 +10,9 @@ import org.jooq.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * The {@code SensorServiceImp} is an implementation of the {@code SensorService} interface catered towards us using the TECO database
+ */
 @Service
 @CommonsLog
 public class SensorServiceImp implements SensorService {
