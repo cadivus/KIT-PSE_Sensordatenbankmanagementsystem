@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @CommonsLog
 public class SensorServiceImp implements SensorService {
-    Sensor sensor;
+
     SensorController sensorController;
     SensorRepository repository;
 
@@ -24,10 +24,6 @@ public class SensorServiceImp implements SensorService {
     public SensorServiceImp(SensorController sensorController, SensorRepository repository){
         this.sensorController = sensorController;
         this.repository = repository;
-    }
-
-    public void createNewMetaData() {
-        sensor = new Sensor();
     }
 
     public Sensor getSensor(long id){

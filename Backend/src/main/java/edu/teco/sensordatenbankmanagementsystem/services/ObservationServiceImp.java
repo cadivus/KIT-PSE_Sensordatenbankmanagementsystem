@@ -35,7 +35,7 @@ public class ObservationServiceImp implements ObservationService {
     }
 
 
-    public UUID createNewDataStream(JSON information) {
+    public UUID registerNewDataStream(JSON information) {
         SseEmitter emitter = new SseEmitter();
         ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
         sseMvcExecutor.execute(() -> {
