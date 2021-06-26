@@ -8,7 +8,7 @@ abstract class Sensor {
     /**
      * Name of the sensor
      */
-    name: SensorName
+    name: SensorName = new SensorName("Sensor")
     
     /**
      * This function gets the sensors value.

@@ -11,7 +11,7 @@ class UserStore {
      * The user currently logged in.
      * It will be write protected for store users.
      */
-    user: User
+    user: User | null = null
     
     /**
      * Requests sending a login code to the specified email address.

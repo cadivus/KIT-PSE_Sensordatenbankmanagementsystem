@@ -7,17 +7,17 @@ class Replay {
     /**
      * This list contains all sensors being part of the replay.
      */
-    sensors: Array<Sensor>
+    sensors: Array<Sensor> = []
     
     /**
      * Speed multiplier
      */
-    speed: number
+    speed: number = 1
     
     /**
      * Indicates whether the replay is running.
      */
-    running: boolean
+    running: boolean = false
 
     /**
      * The ActionListener will be triggered on every change.

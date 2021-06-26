@@ -9,7 +9,7 @@ class SubscriptionStore {
     /**
      * Helds every subscription object
      */
-    private subscriptions: Array<Subscription>
+    private subscriptions: Array<Subscription> = []
     
     /**
      * Gets the subscriptions from the backend.
@@ -27,7 +27,7 @@ class SubscriptionStore {
      * @return List with the subscriptions.
      */
     getSubscriptions = (user: User): Array<Subscription> => {
-        return null
+        return []
     }
 }
 

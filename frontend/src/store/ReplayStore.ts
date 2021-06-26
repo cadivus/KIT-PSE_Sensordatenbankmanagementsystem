@@ -1,4 +1,5 @@
-
+import Replay from '../material/Replay'
+import Sensor from '../material/Sensor'
 
 /**
  * This is the storage for replays.
@@ -21,7 +22,7 @@ class ReplayStore {
      * @param sensors Sensor to be replayed.
      * @return The created object
      */
-    createReplay = (sensors: Array<Sensor>): Replay => {
+    createReplay = (sensors: Array<Sensor>): Replay | null => {
         return null
     }
 }
