@@ -1,6 +1,6 @@
 import Sensor from '../material/Sensor'
 import SensorValue from '../material/SensorValue'
-import SensorName from "../material/SensorName";
+import SensorName from '../material/SensorName'
 
 /**
  * This is the storage for sensors.
