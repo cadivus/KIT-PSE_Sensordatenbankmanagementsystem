@@ -2,14 +2,16 @@ import React from 'react'
 import SensorList from './SensorList'
 
 /**
- *  Displays the startpage.
+ *  Displays the start page.
  *  This class implements a React component.
  */
 const StartpageView = () => {
-    return (
-        <SensorList />
-    )
+  return (
+    <>
+      <div><b>Startpage</b></div>
+      <SensorList />
+    </>
+  )
 }
 
 export default StartpageView
-

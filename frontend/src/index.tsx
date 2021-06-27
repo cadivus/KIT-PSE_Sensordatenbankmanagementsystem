@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
 import Providers from './components/Providers'
-import SensorList from "./components/startpage/SensorList";
+import Router from './routes/Router'
 
 ReactDOM.render(
   <React.StrictMode>
       <Providers>
-        <SensorList />
+        <Router />
       </Providers>
   </React.StrictMode>,
   document.getElementById('root')
