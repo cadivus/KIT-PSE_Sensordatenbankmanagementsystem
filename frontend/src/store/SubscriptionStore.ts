@@ -1,11 +1,17 @@
+import User from '../material/User'
+import Subscription from '../material/Subscription'
+
 /**
  * This is the storage for subscriptions.
  * It holds all the subscription objects, gets data from the backend and synchronizes data.
  */
-import User from '../material/User'
-import Subscription from '../material/Subscription'
-
 class SubscriptionStore {
+    private _user: User | null = null
+
+    set user(user: User | null) {
+        this._user = user
+    }
+
     /**
      * Helds every subscription object
      */
@@ -13,21 +19,23 @@ class SubscriptionStore {
     
     /**
      * Gets the subscriptions from the backend.
-     * 
-     * @param user Owner of the subscriptions.
      */
-    private getSubscriptionsFromBackend(user: User): void {
+    private getSubscriptionsFromBackend(): void {
         
     }
     
     /**
      * Gets all subscriptions owned by user.
-     * 
-     * @param user Owner of the subscriptions.
+     *
      * @return List with the subscriptions.
      */
-    getSubscriptions = (user: User): Array<Subscription> => {
-        return []
+    getSubscriptions = (): Array<Subscription> => {
+        const {_user, getSubscriptionsFromBackend} = this
+        if (!_user) return []
+
+        getSubscriptionsFromBackend()
+        const {subscriptions} = this
+        return subscriptions
     }
 }
 

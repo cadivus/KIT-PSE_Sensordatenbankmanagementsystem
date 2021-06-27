@@ -1,8 +1,10 @@
-import React, {createContext, FC, useEffect, useState} from 'react'
-import {ReplayStoreContext} from "./ReplayStoreProvider";
+import React, {createContext, FC, useState} from 'react'
+import SensorStore from '../store/SensorStore'
 
-export const SensorStoreContext = createContext('SensorStore')
+export const SensorStoreContext = createContext<SensorStore | undefined>(undefined)
 
 export const SensorStoreProvider: FC = ({children}) => {
-    return <SensorStoreContext.Provider value={"SensorStore"}>{children}</SensorStoreContext.Provider>
+    const [sensorStore] = useState(new SensorStore())
+
+    return <SensorStoreContext.Provider value={sensorStore}>{children}</SensorStoreContext.Provider>
 }

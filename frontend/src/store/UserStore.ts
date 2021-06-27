@@ -28,7 +28,7 @@ class UserStore {
      * 
      * @param email Email address of the user
      * @param loginCode Login code of the user
-     * @return The user object on success, null otherise
+     * @return The user object on success, null otherwise
      */
     requestUser = (email: EMail, loginCode: LoginCode): User | null => {
         return null
