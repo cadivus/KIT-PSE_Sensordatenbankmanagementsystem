@@ -20,7 +20,7 @@ class UserStore {
      * @return True on success, false otherwise
      */
     requestStep1 = (email: EMail): boolean => {
-        return false
+        return true
     }
     
     /**
@@ -31,7 +31,18 @@ class UserStore {
      * @return The user object on success, null otherwise
      */
     requestUser = (email: EMail, loginCode: LoginCode): User | null => {
-        return null
+        const logoutUser = () => {
+            this.user = null
+        }
+
+        this.user = new class extends User {
+            logout(): void {
+                logoutUser()
+            }
+        }(email)
+
+        const {user} = this
+        return user
     }
 }
 
