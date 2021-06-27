@@ -1,14 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
 import reportWebVitals from './reportWebVitals'
 import Providers from './components/Providers'
+import SensorList from "./components/startpage/SensorList";
 
 ReactDOM.render(
   <React.StrictMode>
       <Providers>
-        <App />
+        <SensorList />
       </Providers>
   </React.StrictMode>,
   document.getElementById('root')

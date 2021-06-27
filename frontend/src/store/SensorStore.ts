@@ -11,20 +11,27 @@ class SensorStore {
      * Holds every sensor object.
      * It will be write protected for store users.
      */
-    private _sensors: Array<Sensor> = []
+    private _sensors: Array<Sensor> = new Array<Sensor>()
+
+    constructor() {
+        this._sensors = new Array<Sensor>()
+        const {getSensorsFromBackend} = this
+        getSensorsFromBackend()
+    }
 
     get sensors(): Array<Sensor> {
         const {getSensorsFromBackend} = this
         getSensorsFromBackend()
+
         return this._sensors
     }
     
     /**
      * Gets sensors from the backend.
      */
-    private getSensorsFromBackend(): void {
-        const {sensors} = this
-        if (sensors.length > 0) return
+    private getSensorsFromBackend = (): void => {
+        const {_sensors} = this
+        if (_sensors && _sensors.length > 0) return
 
         const mockSensor = (i: number) => {
             this._sensors.push(new class extends Sensor {
