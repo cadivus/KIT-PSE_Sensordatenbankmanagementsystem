@@ -2,13 +2,11 @@
  * This class represents a sensors name.
  */
 class SensorName {
-    /**
-     */
-    readonly name: string
+  readonly name: string
 
-    constructor(name: string) {
-        this.name = name
-    }
+  constructor(name: string) {
+    this.name = name
+  }
 }
 
 export default SensorName
