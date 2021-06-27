@@ -1,11 +1,11 @@
-/**
- * This is the storage for users.
- * It holds all the user objects, gets data from the backend and synchronizes data.
- */
 import User from '../material/User'
 import EMail from '../material/EMail'
 import LoginCode from '../material/LoginCode'
 
+/**
+ * This is the storage for users.
+ * It holds all the user objects, gets data from the backend and synchronizes data.
+ */
 class UserStore {
   /**
   * The user currently logged in.
