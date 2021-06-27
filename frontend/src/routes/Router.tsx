@@ -4,6 +4,7 @@ import SensorInformationView from '../components/sensorInformation/SensorInforma
 import LoginView from '../components/login/LoginView'
 import ReplayRouter from './ReplayRouter'
 import SubscribeRouter from './SubscribeRouter'
+import AppLayout from '../components/layout/AppLayout'
 
 /**
  * This class routes requests from the users web browser.
@@ -11,21 +12,23 @@ import SubscribeRouter from './SubscribeRouter'
 const Router = () => (
   <BrowserRouter>
     <Switch>
-      <Route path="/" exact>
-        <StartpageView />
-      </Route>
-      <Route path="/sensorInformation" exact>
-        <SensorInformationView />
-      </Route>
       <Route path="/login" exact>
         <LoginView />
       </Route>
-      <Route path="/replay">
-        <ReplayRouter />
-      </Route>
-      <Route path="/subscription">
-        <SubscribeRouter />
-      </Route>
+      <AppLayout>
+        <Route path="/" exact>
+          <StartpageView />
+        </Route>
+        <Route path="/sensorInformation" exact>
+          <SensorInformationView />
+        </Route>
+        <Route path="/replay">
+          <ReplayRouter />
+        </Route>
+        <Route path="/subscription">
+          <SubscribeRouter />
+        </Route>
+      </AppLayout>
     </Switch>
   </BrowserRouter>
 )
