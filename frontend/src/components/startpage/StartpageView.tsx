@@ -1,5 +1,6 @@
 import React from 'react'
 import SensorList from './SensorList'
+import Search from "./Search";
 
 /**
  *  Displays the start page.
@@ -9,6 +10,8 @@ const StartpageView = () => {
   return (
     <>
       <div><b>Startpage</b></div>
+      <p/>
+      <Search />
       <SensorList />
     </>
   )
