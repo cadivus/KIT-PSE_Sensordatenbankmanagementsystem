@@ -25,7 +25,7 @@ const Router = () => (
         <Route path="/replay">
           <ReplayRouter />
         </Route>
-        <Route path="/subscription">
+        <Route path="/subscriptions">
           <SubscribeRouter />
         </Route>
       </AppLayout>

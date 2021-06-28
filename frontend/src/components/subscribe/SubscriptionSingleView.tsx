@@ -1,4 +1,4 @@
-// http://localhost:3000/subscription/subscriptionSingleView
+// http://localhost:3000/subscriptions/subscriptionSingleView
 
 import React from 'react'
 

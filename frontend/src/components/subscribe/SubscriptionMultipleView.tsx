@@ -1,4 +1,4 @@
-// http://localhost:3000/subscription/subscriptionMultipleView
+// http://localhost:3000/subscriptions/subscriptionMultipleView
 
 import React from 'react'
 
