@@ -2,6 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -24,5 +25,7 @@ public interface SensorService {
      * @param id The UUID of the Meta Data or the Sensor
      */
     Sensor getSensorMetaData(UUID id);
+
+    List<Sensor> getAllSensors();
 
 }

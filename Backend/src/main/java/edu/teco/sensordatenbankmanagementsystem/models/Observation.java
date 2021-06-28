@@ -5,6 +5,8 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * This data class represents one recorded observation of a sensor.
@@ -18,7 +20,14 @@ public class Observation {
     long id;
 
     String propertyType;
-    double value;
+    public double value;
+    public LocalDate date;
+
+    public Observation(){
+
+    }
+    public Observation(LocalDate date, double value) {
+    }
 
     @Override
     public String toString() {

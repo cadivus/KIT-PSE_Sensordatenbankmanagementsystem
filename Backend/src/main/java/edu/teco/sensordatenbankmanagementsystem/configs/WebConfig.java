@@ -22,13 +22,19 @@ import javax.servlet.MultipartConfigElement;
  * It configures the in and outgoing traffic from the Controllers
  */
 public class WebConfig implements WebMvcConfigurer {
+    private static final String LOCATION = "C:/mytemp/";
+    private static final long MAX_FILE_SIZE = 1024 * 1024 * 25;//25MB
+    private static final long MAX_REQUEST_SIZE = 1024 * 1024 * 30;//30MB
+    private static final int FILE_SIZE_THRESHOLD = 0;
+
     @Override
     /**
      * This restricts Mapping Requests for different URLs, as to not have unwanted traffic, that needs to be handled
      * by the Controller
      */
     public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/**").allowedMethods("GET", "POST");
+        registry.addMapping("/**").allowedMethods("GET");
+        registry.addMapping("/NewSse").allowedMethods("POST");
     }
 
     @Bean
@@ -37,7 +43,8 @@ public class WebConfig implements WebMvcConfigurer {
      * It will only be used for testing purposes and will be removed before deployment
      */
     MultipartConfigElement multipartConfigElement() {
-        return new MultipartConfigElement("");
+        MultipartConfigElement multipartConfigElement = new MultipartConfigElement(LOCATION, MAX_FILE_SIZE, MAX_REQUEST_SIZE, FILE_SIZE_THRESHOLD);
+        return multipartConfigElement;
     }
 
     @Bean
@@ -49,6 +56,8 @@ public class WebConfig implements WebMvcConfigurer {
      */
     public ViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();
+        bean.setPrefix("/WEB-INF/");
+        bean.setSuffix(".jsp");
         bean.setViewClass(JstlView.class);
         return bean;
     }
@@ -60,7 +69,7 @@ public class WebConfig implements WebMvcConfigurer {
      * It handles every incoming HTTPrequest and forwards it to the specific controllers and viewresolvers.
      * It also handles all of the outgoing traffic, so it will be activated again by controllers after they handled the request
      */
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
+    public void configureDefaultServletHandling(final DefaultServletHandlerConfigurer configurer) {
+        configurer.enable("BackendApplication");
     }
 }

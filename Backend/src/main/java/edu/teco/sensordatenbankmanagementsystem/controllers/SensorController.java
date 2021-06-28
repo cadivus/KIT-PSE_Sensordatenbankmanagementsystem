@@ -39,9 +39,9 @@ public class SensorController {
      *
      * @return list of all sensors present in the Database used
      */
-    @GetMapping("")
+    @GetMapping("/getAllSensors")
     public List<Sensor> getAllSensors() {
-        return new ArrayList<Sensor>();
+        return sensorService.getAllSensors();
     }
     /**
      * Maps a get request for getting a sensors metadata by UUID.
@@ -49,11 +49,11 @@ public class SensorController {
      * @param id UUID of sensor to get
      * @return sensor with given UUID, if present
      */
-    @GetMapping("/{id}")
+    @GetMapping("/Sensor/{id}")
     public Sensor getSensor(@PathVariable UUID id) {
         if (false) throw new SensorNotFoundException();
 
-        return new Sensor();
+        return sensorService.getSensor(id);
     }
 
 }

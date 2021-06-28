@@ -10,6 +10,8 @@ import org.jooq.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -48,5 +50,9 @@ public class SensorServiceImp implements SensorService {
         return repository.getById(1L);
     }
 
+    public List<Sensor> getAllSensors() {
+        return new ArrayList<>();
+    //    return repository.findAll();
+    }
 
 }

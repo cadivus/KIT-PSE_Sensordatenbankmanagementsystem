@@ -1,7 +1,7 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
-import org.jooq.JSON;
+import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.UUID;
@@ -17,7 +17,7 @@ public interface ObservationService {
      *                    At least sensor, interval and start date need to be in here
      * @return The UUID of the newly created Datastream
      */
-    UUID createNewDataStream(JSON information);
+    UUID createNewDataStream(Requests information);
 
     /**
      * This returns a single Observation Model from the Repository
@@ -26,12 +26,12 @@ public interface ObservationService {
     Observation getObservation(Long id);
 
     /**
-     * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(JSON)} but with
+     * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(Requests)} but with
      * live data opposed to using already existing data
      * @param information This should contain the Sensor Information for the replay
      * @return The UUID under which the Replay is to be reached
      */
-    UUID createReplay(JSON information);
+    UUID createReplay(Requests information);
 
     /**
      * This will return a previously created Datastream from its specified UUID.
@@ -46,4 +46,6 @@ public interface ObservationService {
      * @param id The UUID of the Datastream
      */
     void destroyDataStream(UUID id);
+
+
 }

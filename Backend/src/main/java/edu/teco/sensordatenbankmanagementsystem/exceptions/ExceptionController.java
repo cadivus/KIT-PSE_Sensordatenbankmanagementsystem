@@ -1,5 +1,7 @@
 package edu.teco.sensordatenbankmanagementsystem.exceptions;
 
+import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,6 +16,7 @@ import java.util.Map;
  * The Exceptioncontroller is the entry point for exception handling.
  */
 @ControllerAdvice
+@CommonsLog(topic = "test")
 public class ExceptionController {
 
     /**
@@ -24,6 +27,12 @@ public class ExceptionController {
      */
     @ExceptionHandler(value = SensorNotFoundException.class)
     public ResponseEntity<Object> handleSensorException(SensorNotFoundException exception) {
+        return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = IllegalStateException.class)
+    public ResponseEntity<Object> handleIllegalStateException(IllegalStateException exception) {
+        log.info("test");
         return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
     }
 
@@ -44,4 +53,6 @@ public class ExceptionController {
         });
         return errors;
     }
+
+
 }
