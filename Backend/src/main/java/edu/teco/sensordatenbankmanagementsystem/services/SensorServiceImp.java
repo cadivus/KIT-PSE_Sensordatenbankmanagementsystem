@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 @CommonsLog
 public class SensorServiceImp implements SensorService {
-    Sensor sensor;
+
     SensorRepository repository;
 
     @Autowired
@@ -33,7 +33,7 @@ public class SensorServiceImp implements SensorService {
      * Here the new Meta Data will include frequency and realiability calculations
      */
     public void createNewMetaData() {
-        sensor = new Sensor();
+
     }
 
     /**

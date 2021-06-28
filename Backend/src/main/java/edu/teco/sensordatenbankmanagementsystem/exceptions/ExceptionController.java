@@ -39,7 +39,7 @@ public class ExceptionController {
     /**
      * Exception handler for {@link MethodArgumentNotValidException}
      *
-     * @param ex MethodArgumentNotValidExceptions ex gf to handle
+     * @param ex {@code MethodArgumentNotValidException} to handle
      * @return mapping of invalid argument field names to error concerning that field
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

@@ -21,6 +21,7 @@ import java.util.UUID;
  * Methods of this class map to different requests about Sensors
  */
 @RestController
+@RequestMapping("/sensor")
 @CommonsLog
 public class SensorController {
     SensorService sensorService;

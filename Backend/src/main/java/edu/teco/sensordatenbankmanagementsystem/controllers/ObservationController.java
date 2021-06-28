@@ -1,7 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
-import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationServiceImp;
 import lombok.extern.apachecommons.CommonsLog;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -24,7 +24,7 @@ import java.util.UUID;
  * The ObservationController is the entry point for http requests for {@link Observation}s.
  * Methods of this class map to different requests about Observations
  */
-@RequestMapping
+@RequestMapping("/observation")
 @EnableWebMvc
 @CommonsLog
 @ResponseBody
@@ -61,5 +61,10 @@ public class ObservationController {
     public SseEmitter streamSseMvc(@PathVariable UUID id) {
         log.info("request for outgoing stream for id: " +id);
         return observationService.getDataStream(id);
+    }
+
+    @GetMapping("/allobservations/{id}")
+    public List<Observation> getObservationsBySensorId(UUID sensorUUID){
+        return null;
     }
 }
