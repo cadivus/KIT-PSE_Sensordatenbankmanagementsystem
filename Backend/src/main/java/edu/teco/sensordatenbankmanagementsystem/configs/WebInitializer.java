@@ -7,6 +7,10 @@ import org.springframework.web.servlet.DispatcherServlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
+/**
+ * The Webinitializer config implements the WebApplicationInitializer Interface
+ * and uses its on Startup method to register our custom configs
+ */
 public class WebInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) {

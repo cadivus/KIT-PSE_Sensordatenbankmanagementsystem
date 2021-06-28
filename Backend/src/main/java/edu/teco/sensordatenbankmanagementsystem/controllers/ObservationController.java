@@ -1,5 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationServiceImp;
 import lombok.extern.apachecommons.CommonsLog;
@@ -17,8 +18,8 @@ import java.util.UUID;
 
 
 /**
- * The {@code ObservationController} is the entry point for http requests for {@code Observation}s.
- * Methods of this class map to different requests about {@code Observation}s.
+ * The ObservationController is the entry point for http requests for {@link Observation}s.
+ * Methods of this class map to different requests about Observations
  */
 @RequestMapping
 @EnableWebMvc
@@ -26,9 +27,7 @@ import java.util.UUID;
 @ResponseBody
 @Controller
 public class ObservationController {
-
     ObservationService observationService;
-
     /**
      * Instantiates a new Observation controller.
      *
@@ -39,7 +38,6 @@ public class ObservationController {
     public ObservationController(ObservationServiceImp observationService) {
         this.observationService = observationService;
     }
-
     /**
      * Maps a post request that creates a new SSE stream
      *
@@ -49,12 +47,11 @@ public class ObservationController {
     public UUID createNewSse() {
         return UUID.randomUUID();
     }
-
     /**
      * Maps a get request that gets the SSE stream with the given UUID
      *
      * @param id UUID of SSE stream to get
-     * @return SSE stream with given UUID if present
+     * @return SSE stream for the given UUID
      */
     @GetMapping("/stream/{id}")
     public SseEmitter streamSseMvc(@PathVariable UUID id) {

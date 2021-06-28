@@ -18,23 +18,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * The {@code ObservationServiceImp} is an implementation of the {@code ObservationService} interface catered towards us using the TECO database
+ * The ObservationServiceImp is an implementation of the {@link ObservationService} interface catered towards using the TECO database
  */
 @Service
 @CommonsLog
 public class ObservationServiceImp implements ObservationService {
 
-    ObservationController observationController;
     ObservationRepository repository;
     Map<UUID, SseEmitter> sseStreams = new HashMap<UUID, SseEmitter>();
 
     @Autowired
-    public ObservationServiceImp(ObservationController observationController, ObservationRepository repository){
-        this.observationController = observationController;
+    public ObservationServiceImp(ObservationRepository repository){
         this.repository = repository;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public UUID createNewDataStream(JSON information) {
         SseEmitter emitter = new SseEmitter();
         ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
@@ -57,19 +58,30 @@ public class ObservationServiceImp implements ObservationService {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public UUID createReplay(JSON information){
         return UUID.randomUUID();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public SseEmitter getDataStream(UUID id) {
         return sseStreams.get(id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void destroyDataStream(UUID id){
         sseStreams.remove(id);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public Observation getObservation(Long id) {
         return repository.findById(id).get();
     }

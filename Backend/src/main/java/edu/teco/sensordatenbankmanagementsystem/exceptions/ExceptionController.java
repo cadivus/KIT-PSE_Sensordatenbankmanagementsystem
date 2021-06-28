@@ -11,16 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The {@code ObservationController} is the entry point for exception handling.
+ * The Exceptioncontroller is the entry point for exception handling.
  */
 @ControllerAdvice
 public class ExceptionController {
 
     /**
-     * Exception handler for {@code SensorNotFoundException}
+     * Exception handler for {@link SensorNotFoundException}
      *
-     * @param exception {@code SensorNotFoundException} to handle
-     * @return http response for this exception
+     * @param exception The SensorNotFoundException to handle
+     * @return The ResponseEntity containing a correctly formatted Errormessage as well as the {@link HttpStatus.NOT_FOUND}
      */
     @ExceptionHandler(value = SensorNotFoundException.class)
     public ResponseEntity<Object> handleSensorException(SensorNotFoundException exception) {
@@ -28,9 +28,9 @@ public class ExceptionController {
     }
 
     /**
-     * Exception handler for {@code MethodArgumentNotValidException}
+     * Exception handler for {@link MethodArgumentNotValidException}
      *
-     * @param ex {@code MethodArgumentNotValidException}'s ex gf to handle
+     * @param ex MethodArgumentNotValidExceptions ex gf to handle
      * @return mapping of invalid argument field names to error concerning that field
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

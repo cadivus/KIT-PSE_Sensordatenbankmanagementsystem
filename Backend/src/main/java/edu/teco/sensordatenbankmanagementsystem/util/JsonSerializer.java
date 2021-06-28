@@ -1,4 +1,4 @@
-package edu.teco.sensordatenbankmanagementsystem.util;
+/*package edu.teco.sensordatenbankmanagementsystem.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,3 +28,4 @@ public class JsonSerializer {
         return om.convertValue(sensor, JSON.class);
     }
 }
+*/

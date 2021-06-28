@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * Provides abstraction to direct database queries towards {@code Sensor} data
+ * Provides abstraction to direct database queries towards {@link Sensor} data
  */
 @Repository
 public interface SensorRepository extends JpaRepository<Sensor, Long> {
