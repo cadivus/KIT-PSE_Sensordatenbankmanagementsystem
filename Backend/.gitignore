@@ -3,6 +3,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+**/out
+**/doxygen**.**
+**/**diagramm**.**
 
 ### STS ###
 .apt_generated

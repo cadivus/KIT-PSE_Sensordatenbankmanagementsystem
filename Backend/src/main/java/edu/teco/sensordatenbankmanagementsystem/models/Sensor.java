@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ public class Sensor {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Observation> observations;
+
 
     public List<Observation> getObservations() {
         return observations;
