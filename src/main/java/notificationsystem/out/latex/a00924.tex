@@ -1,0 +1,50 @@
+\hypertarget{a00924}{}\doxysubsection{Report Class Reference}
+\label{a00924}\index{Report@{Report}}
+
+
+Inheritance diagram for Report\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=125pt]{a00923}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Report\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{a00922}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00924_a18cef7c7854276ad7cfcd8831c688c18}{Report}} (String sender\+Mail, String receiver\+Mail, String subject, String message, JSONArray attachment)
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+\mbox{\hyperlink{a00924}{Report}} e-\/mails are sent to subscribers of a sensor at regular intervals dependant on the time of subscription and user adjustments. The reports contain the data collected by the sensor over the last time period as well as potentially interesting metadata such as failure rate over the last timer period. The \mbox{\hyperlink{a00924}{Report}} class represents such a report e-\/mail. It contains the e-\/mail addresses of sender and receiver, as well as a subject and a message. Lastly the e-\/mail includes an attachment with the data collected by the sensor. 
+
+\doxysubsubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00924_a18cef7c7854276ad7cfcd8831c688c18}\label{a00924_a18cef7c7854276ad7cfcd8831c688c18}} 
+\index{Report@{Report}!Report@{Report}}
+\index{Report@{Report}!Report@{Report}}
+\doxyparagraph{\texorpdfstring{Report()}{Report()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{a00924}{Report}} (\begin{DoxyParamCaption}\item[{String}]{sender\+Mail,  }\item[{String}]{receiver\+Mail,  }\item[{String}]{subject,  }\item[{String}]{message,  }\item[{JSONArray}]{attachment }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructs a new report e-\/mail. 
+\begin{DoxyParams}{Parameters}
+{\em sender\+Mail} & e-\/mail address of the sender. \\
+\hline
+{\em receiver\+Mail} & e-\/mail address the mail is sent to. \\
+\hline
+{\em subject} & subject of the e-\/mail. \\
+\hline
+{\em message} & message body of the e-\/mail. \\
+\hline
+{\em attachment} & any data attached to the e-\/mail. \\
+\hline
+\end{DoxyParams}

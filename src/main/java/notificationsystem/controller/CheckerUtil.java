@@ -1,5 +1,14 @@
 package notificationsystem.controller;
 
+import notificationsystem.model.Subscription;
+import notificationsystem.model.SubscriptionDAO;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * An instance of the CheckerUtil class always runs in the background. Its purpose is to regulary check if alerts
  * or reports have to be sent by the system. The class is designed with the singleton-pattern as only a single
@@ -41,6 +50,20 @@ public class CheckerUtil {
      * Calls the controller to send such a report to a subscriber if necessary.
      */
     public void checkForReports() {
+        SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
+        LinkedList<Subscription> subs = new LinkedList<Subscription>(subscriptionDAO.getAll());
+
+        //Check every half hour or so
+
+        //Check if a report has to be sent
+        for (Subscription subscription : subs) {
+            Period period = Period.between(subscription.getSubTime().plusDays(subscription.getReportInterval()), LocalDate.now());
+            if (!period.isNegative()) {
+                //Send report and update timestamp
+                controller.sendReport(subscription.getSubscriberAddress(), subscription.getSensor());
+                subscription.setSubTime(subscription.getSubTime().plusDays(subscription.getReportInterval()));
+            }
+        }
 
     }
 }

@@ -1,0 +1,98 @@
+\hypertarget{a00876}{}\doxysubsection{Checker\+Util Class Reference}
+\label{a00876}\index{CheckerUtil@{CheckerUtil}}
+
+
+Collaboration diagram for Checker\+Util\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{a00874}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00876_a861443d5b1ae532bb59c156f69d96be1}{check\+For\+Sensor\+Failure}} ()
+\item 
+void \mbox{\hyperlink{a00876_a6d152a452c479f3a19100acea29750b5}{check\+For\+Reports}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{a00876}{Checker\+Util}} \mbox{\hyperlink{a00876_a83448d474e9706eb692d6d96846a2d93}{get\+Instance}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00876_a5aea97a520d7326a9bfbb53cdc8ebd57}{Checker\+Util}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{a00876_a872eb72dc091dfc922f3461989909363}\label{a00876_a872eb72dc091dfc922f3461989909363}} 
+\mbox{\hyperlink{a00880}{Controller}} {\bfseries controller}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{a00876_a0d5141fd6706eb3460f4d350579eba97}\label{a00876_a0d5141fd6706eb3460f4d350579eba97}} 
+static \mbox{\hyperlink{a00876}{Checker\+Util}} {\bfseries INSTANCE}
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+An instance of the \mbox{\hyperlink{a00876}{Checker\+Util}} class always runs in the background. Its purpose is to regulary check if alerts or reports have to be sent by the system. The class is designed with the singleton-\/pattern as only a single instance should, for example, issue reports. 
+
+\doxysubsubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00876_a5aea97a520d7326a9bfbb53cdc8ebd57}\label{a00876_a5aea97a520d7326a9bfbb53cdc8ebd57}} 
+\index{CheckerUtil@{CheckerUtil}!CheckerUtil@{CheckerUtil}}
+\index{CheckerUtil@{CheckerUtil}!CheckerUtil@{CheckerUtil}}
+\doxyparagraph{\texorpdfstring{CheckerUtil()}{CheckerUtil()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{a00876}{Checker\+Util}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Private constructer only used by the get\+Instance method. 
+
+Referenced by Checker\+Util.\+get\+Instance().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{a00876_a5aea97a520d7326a9bfbb53cdc8ebd57_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsubsection{Member Function Documentation}
+\mbox{\Hypertarget{a00876_a6d152a452c479f3a19100acea29750b5}\label{a00876_a6d152a452c479f3a19100acea29750b5}} 
+\index{CheckerUtil@{CheckerUtil}!checkForReports@{checkForReports}}
+\index{checkForReports@{checkForReports}!CheckerUtil@{CheckerUtil}}
+\doxyparagraph{\texorpdfstring{checkForReports()}{checkForReports()}}
+{\footnotesize\ttfamily void check\+For\+Reports (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Keeps track of the reports which have to be periodically sent to subscribers of sensors and the time intervals between these reports. Calls the controller to send such a report to a subscriber if necessary. \mbox{\Hypertarget{a00876_a861443d5b1ae532bb59c156f69d96be1}\label{a00876_a861443d5b1ae532bb59c156f69d96be1}} 
+\index{CheckerUtil@{CheckerUtil}!checkForSensorFailure@{checkForSensorFailure}}
+\index{checkForSensorFailure@{checkForSensorFailure}!CheckerUtil@{CheckerUtil}}
+\doxyparagraph{\texorpdfstring{checkForSensorFailure()}{checkForSensorFailure()}}
+{\footnotesize\ttfamily void check\+For\+Sensor\+Failure (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Periodically checks if a sensor has malfunctioned by communicating with the project API. If one or multiple sensor failures occurred, the method calls the controller to send an alert to the subscribers of these sensors. \mbox{\Hypertarget{a00876_a83448d474e9706eb692d6d96846a2d93}\label{a00876_a83448d474e9706eb692d6d96846a2d93}} 
+\index{CheckerUtil@{CheckerUtil}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!CheckerUtil@{CheckerUtil}}
+\doxyparagraph{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{a00876}{Checker\+Util}} get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Returns the instance of \mbox{\hyperlink{a00876}{Checker\+Util}} if it exists, creates it first if it doesn\textquotesingle{}t. \begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{a00876}{Checker\+Util}} instance. 
+\end{DoxyReturn}
+
+
+References Checker\+Util.\+Checker\+Util().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{a00876_a83448d474e9706eb692d6d96846a2d93_cgraph}
+\end{center}
+\end{figure}

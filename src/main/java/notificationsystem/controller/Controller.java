@@ -4,6 +4,7 @@ import notificationsystem.model.Sensor;
 import notificationsystem.model.SensorDAO;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
+import notificationsystem.view.Alert;
 import notificationsystem.view.ConfirmationMail;
 import notificationsystem.view.MailBuilder;
 import notificationsystem.view.Report;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.Period;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,12 +73,13 @@ public class Controller {
      * @param reportInterval time period between reports.
      */
     @PostMapping("/postSubscription")
-    public void postSubscription(String mailAddress, UUID sensorID, Period reportInterval) {
-        //subscriptionDAO.save(subscription);
+    public void postSubscription(String mailAddress, UUID sensorID, long reportInterval) {
+        Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval);
+        subscriptionDAO.save(subscription);
     }
 
     /**
-     * The postUnsubscribe method allows the project website to delete a subscription from the databse.
+     * The postUnsubscribe method allows the project website to delete a subscription from the database.
      * @param mailAddress e-mail of the user unsubscribing.
      * @param sensorID ID of the sensor the user unsubscribes from.
      */
@@ -102,10 +106,13 @@ public class Controller {
      * The method is only called by the CheckerUtil class.
      * @param sensorID ID of the sensor malfunctioning.
      */
-    public void getAlert(UUID sensorID) {
+    public void sendAlert(UUID sensorID) {
         Sensor sensor = sensorDAO.get(sensorID);
         List<String> subscribers = subscriptionDAO.getAllSubscribers(sensorID);
-        //für jeden Listeneintrag mailBuilder.buildAlert() aufrufen und dann abschicken
+        for (String subscriber : subscribers) {
+            Alert alert = mailBuilder.buildAlert(subscriber, sensor);
+            mailSender.send(alert);
+        }
     }
 
     /**
@@ -117,7 +124,7 @@ public class Controller {
      * @param mailAddress e-mail address of the subscriber the report is sent to.
      * @param sensorID ID of the sensor the report is about.
      */
-    public void getReport(String mailAddress, UUID sensorID) {
+    public void sendReport(String mailAddress, UUID sensorID) {
         Sensor sensor = sensorDAO.get(sensorID);
         Report report = mailBuilder.buildReport(mailAddress, sensor);
         mailSender.send(report);

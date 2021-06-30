@@ -1,7 +1,9 @@
 package notificationsystem.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.UUID;
 
 /**
  * The Subscription class stores data about a subscription of a single user to a single sensor. To allow for regular
@@ -13,9 +15,11 @@ import java.time.Period;
 public class Subscription {
 
     private String subscriberAddress;
-    private Sensor sensor;
-    private LocalDateTime subTime;
-    private Period reportInterval;
+    private UUID sensor;
+    private LocalDate subTime;
+    //private LocalDateTime subTime;
+    //private Period reportInterval;
+    private long reportInterval;
 
     /**
      * Constructs a new subscription.
@@ -24,7 +28,7 @@ public class Subscription {
      * @param subTime time at which the user subscribed to the sensor.
      * @param reportInterval time period at which report e-mails are sent.
      */
-    public Subscription(String subscriberAddress, Sensor sensor, LocalDateTime subTime, Period reportInterval) {
+    public Subscription(String subscriberAddress, UUID sensor, LocalDate subTime, long reportInterval) {
         this.subscriberAddress = subscriberAddress;
         this.sensor = sensor;
         this.subTime = subTime;
@@ -51,7 +55,7 @@ public class Subscription {
      * Gets the sensor the user is subscribed to.
      * @return the sensor the user is subscribed to.
      */
-    public Sensor getSensor() {
+    public UUID getSensor() {
         return sensor;
     }
 
@@ -59,7 +63,7 @@ public class Subscription {
      * Sets the sensor the user is subscribed to.
      * @param sensor the sensor the user is subscribed to.
      */
-    public void setSensor(Sensor sensor) {
+    public void setSensor(UUID sensor) {
         this.sensor = sensor;
     }
 
@@ -67,7 +71,7 @@ public class Subscription {
      * Gets the time at which the user subscribed to the sensor.
      * @return time of the subscription.
      */
-    public LocalDateTime getSubTime() {
+    public LocalDate getSubTime() {
         return subTime;
     }
 
@@ -75,7 +79,7 @@ public class Subscription {
      * Sets the time at which the user subscribed to the sensor.
      * @param subTime time of the subscription.
      */
-    public void setSubTime(LocalDateTime subTime) {
+    public void setSubTime(LocalDate subTime) {
         this.subTime = subTime;
     }
 
@@ -83,7 +87,7 @@ public class Subscription {
      * Gets the time period between reports.
      * @return the time period between two reports.
      */
-    public Period getReportInterval() {
+    public long getReportInterval() {
         return reportInterval;
     }
 
@@ -91,7 +95,7 @@ public class Subscription {
      * Sets the time period between reports.
      * @param reportInterval the time period between two reports.
      */
-    public void setReportInterval(Period reportInterval) {
+    public void setReportInterval(long reportInterval) {
         this.reportInterval = reportInterval;
     }
 }

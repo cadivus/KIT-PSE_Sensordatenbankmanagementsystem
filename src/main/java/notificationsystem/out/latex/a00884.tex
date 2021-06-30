@@ -1,0 +1,72 @@
+\hypertarget{a00884}{}\doxysubsection{Mail\+Sender Class Reference}
+\label{a00884}\index{MailSender@{MailSender}}
+
+
+Collaboration diagram for Mail\+Sender\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=150pt]{a00882}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00884_a63aed8ff32e1222c4dcc49fabfa9fc4c}{send}} (\mbox{\hyperlink{a00916}{EMail}} mail)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00884_a7fd517556948e0148f87bc4e908fce52}{login}} (String username, String password)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{a00884_a7a856e8c650ece02053620b6267a0696}\label{a00884_a7a856e8c650ece02053620b6267a0696}} 
+Session {\bfseries session}
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+The \mbox{\hyperlink{a00884}{Mail\+Sender}} is the final link in the chain of getting an e-\/mail to a user. It is responsible for sending these e-\/mails to the recipients. The e-\/mails are sent via a normal gmail account. For this end, the class contains methods for a login procedure and the sending of the finished e-\/mails. 
+
+\doxysubsubsection{Member Function Documentation}
+\mbox{\Hypertarget{a00884_a7fd517556948e0148f87bc4e908fce52}\label{a00884_a7fd517556948e0148f87bc4e908fce52}} 
+\index{MailSender@{MailSender}!login@{login}}
+\index{login@{login}!MailSender@{MailSender}}
+\doxyparagraph{\texorpdfstring{login()}{login()}}
+{\footnotesize\ttfamily void login (\begin{DoxyParamCaption}\item[{String}]{username,  }\item[{String}]{password }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Log-\/in procedure needed for authentication before an e-\/mail can be sent. Also instanciates the session with the smpt-\/server. 
+\begin{DoxyParams}{Parameters}
+{\em smpt\+Server} & server through which the e-\/mail is sent. \\
+\hline
+{\em smptport} & port used to send the e-\/mail. \\
+\hline
+{\em username} & username used for authentication purposes. \\
+\hline
+{\em password} & password used for authentication purposes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00884_a63aed8ff32e1222c4dcc49fabfa9fc4c}\label{a00884_a63aed8ff32e1222c4dcc49fabfa9fc4c}} 
+\index{MailSender@{MailSender}!send@{send}}
+\index{send@{send}!MailSender@{MailSender}}
+\doxyparagraph{\texorpdfstring{send()}{send()}}
+{\footnotesize\ttfamily void send (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00916}{EMail}}}]{mail }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Used to send the finished e-\/mails. 
+\begin{DoxyParams}{Parameters}
+{\em mail} & to be send to its receiver. \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by Controller.\+get\+Confirm\+Code(), and Controller.\+get\+Report().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{a00884_a63aed8ff32e1222c4dcc49fabfa9fc4c_icgraph}
+\end{center}
+\end{figure}

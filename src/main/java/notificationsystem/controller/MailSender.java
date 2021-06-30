@@ -24,7 +24,7 @@ public class MailSender {
      * @param username username used for authentication purposes.
      * @param password password used for authentication purposes.
      */
-    private void login(String smptServer, String smptport, String username, String password) {
+    private void login(String username, String password) {
         Properties properties = new Properties();
 
         properties.put("mail.smpt.auth", "true");

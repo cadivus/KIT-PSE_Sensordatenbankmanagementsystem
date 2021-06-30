@@ -1,0 +1,57 @@
+\hypertarget{a00896}{}\doxysubsection{Sensor\+DAO Class Reference}
+\label{a00896}\index{SensorDAO@{SensorDAO}}
+
+
+Inheritance diagram for Sensor\+DAO\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{a00895}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Sensor\+DAO\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{a00894}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{a00896_a3085e1fa08d7bc2484081f71f154c0ee}\label{a00896_a3085e1fa08d7bc2484081f71f154c0ee}} 
+\mbox{\hyperlink{a00892}{Sensor}} {\bfseries get} (\mbox{\hyperlink{a00892}{Sensor}} sensor)
+\item 
+\mbox{\hyperlink{a00892}{Sensor}} \mbox{\hyperlink{a00896_a0ba06f7f89f76ba4291044ca20e82a90}{get}} (UUID sensor\+ID)
+\item 
+\mbox{\Hypertarget{a00896_a6b875ccdefcaa95fdf5554b603e65692}\label{a00896_a6b875ccdefcaa95fdf5554b603e65692}} 
+List$<$ \mbox{\hyperlink{a00892}{Sensor}} $>$ {\bfseries get\+All} ()
+\item 
+\mbox{\Hypertarget{a00896_a8d985936a092fbe80b415d5a5876bbd4}\label{a00896_a8d985936a092fbe80b415d5a5876bbd4}} 
+void {\bfseries save} (\mbox{\hyperlink{a00892}{Sensor}} sensor)
+\item 
+\mbox{\Hypertarget{a00896_ac9ddd8ea731b21f25e044ec90d93f72c}\label{a00896_ac9ddd8ea731b21f25e044ec90d93f72c}} 
+void {\bfseries delete} (\mbox{\hyperlink{a00892}{Sensor}} sensor)
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+The \mbox{\hyperlink{a00896}{Sensor\+DAO}} class implements the \mbox{\hyperlink{a00888}{DAO}} interface to handle database queries regarding sensors. For that end it provides get, save, delete and get\+All methods designed to hide the actual database queries, offering a single access point to all sensor related data and information. 
+
+\doxysubsubsection{Member Function Documentation}
+\mbox{\Hypertarget{a00896_a0ba06f7f89f76ba4291044ca20e82a90}\label{a00896_a0ba06f7f89f76ba4291044ca20e82a90}} 
+\index{SensorDAO@{SensorDAO}!get@{get}}
+\index{get@{get}!SensorDAO@{SensorDAO}}
+\doxyparagraph{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{a00892}{Sensor}} get (\begin{DoxyParamCaption}\item[{UUID}]{sensor\+ID }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets a sensor specified by its unique ID from the database. 
+\begin{DoxyParams}{Parameters}
+{\em sensor\+ID} & ID of the sensor to be fetched. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The sensor with the given ID. 
+\end{DoxyReturn}

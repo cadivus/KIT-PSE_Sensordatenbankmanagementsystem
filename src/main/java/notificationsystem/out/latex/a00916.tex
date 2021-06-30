@@ -1,0 +1,191 @@
+\hypertarget{a00916}{}\doxysubsection{EMail Class Reference}
+\label{a00916}\index{EMail@{EMail}}
+
+
+Inheritance diagram for EMail\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{a00915}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for EMail\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{a00914}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00916_a9a53172a088327db27a7b53ee1434ae3}{EMail}} (String sender\+Mail, String receiver\+Mail, String subject, String message, JSONArray attachment)
+\item 
+String \mbox{\hyperlink{a00916_a800643f77d175108e246956397607bfc}{get\+Sender\+Mail}} ()
+\item 
+void \mbox{\hyperlink{a00916_aefb12eaa4f93b03cde9c51707dde06b8}{set\+Sender\+Mail}} (String sender\+Mail)
+\item 
+String \mbox{\hyperlink{a00916_a653bcf42a59f7fe46b21ab69f9a23d80}{get\+Receiver\+Mails}} ()
+\item 
+void \mbox{\hyperlink{a00916_aa6a5fdba5ac7b309c11b525a50e2f1a9}{set\+Receiver\+Mails}} (String receiver\+Mail)
+\item 
+String \mbox{\hyperlink{a00916_a37c754e78ee57cba705ef0660f0a0e26}{get\+Subject}} ()
+\item 
+void \mbox{\hyperlink{a00916_a39f0298f055f0b78ad2ac781d38f326f}{set\+Subject}} (String subject)
+\item 
+String \mbox{\hyperlink{a00916_afafd068b736520af1e24269a284980a9}{get\+Message}} ()
+\item 
+void \mbox{\hyperlink{a00916_acc7b010f914eeee1745a79004eca2481}{set\+Message}} (String message)
+\item 
+JSONArray \mbox{\hyperlink{a00916_a1485bc01b86505f5bb9c4bedd3bb0cad}{get\+Attachment}} ()
+\item 
+void \mbox{\hyperlink{a00916_ad3aa07c501aff3833d2383a6bbb379cb}{set\+Attachment}} (JSONArray attachment)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{a00916_a9a604a61d5c442d009316e5a678ae67e}\label{a00916_a9a604a61d5c442d009316e5a678ae67e}} 
+String {\bfseries sender\+Mail}
+\item 
+\mbox{\Hypertarget{a00916_a37acc658d411ac857b1502a237ef17a6}\label{a00916_a37acc658d411ac857b1502a237ef17a6}} 
+String {\bfseries receiver\+Mail}
+\item 
+\mbox{\Hypertarget{a00916_a6240b01c193c989020b546293ec9282c}\label{a00916_a6240b01c193c989020b546293ec9282c}} 
+String {\bfseries subject}
+\item 
+\mbox{\Hypertarget{a00916_a2836db0f8ae4563c70935b5e514bdc21}\label{a00916_a2836db0f8ae4563c70935b5e514bdc21}} 
+String {\bfseries message}
+\item 
+\mbox{\Hypertarget{a00916_a30d420b701f46919e794cea5e740823d}\label{a00916_a30d420b701f46919e794cea5e740823d}} 
+JSONArray {\bfseries attachment}
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+The abstract \mbox{\hyperlink{a00916}{EMail}} class represents a normal e-\/mail. All other e-\/mail types inherit from it. It contains the basic parts of an e-\/mail\+: sender, receiver, subject, message and attachment. The class furthermore provides getters and setters for these attributes. 
+
+\doxysubsubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00916_a9a53172a088327db27a7b53ee1434ae3}\label{a00916_a9a53172a088327db27a7b53ee1434ae3}} 
+\index{EMail@{EMail}!EMail@{EMail}}
+\index{EMail@{EMail}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{EMail()}{EMail()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{a00916}{EMail}} (\begin{DoxyParamCaption}\item[{String}]{sender\+Mail,  }\item[{String}]{receiver\+Mail,  }\item[{String}]{subject,  }\item[{String}]{message,  }\item[{JSONArray}]{attachment }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructs a new e-\/mail. 
+\begin{DoxyParams}{Parameters}
+{\em sender\+Mail} & e-\/mail address of the sender. \\
+\hline
+{\em receiver\+Mail} & e-\/mail address the mail is sent to. \\
+\hline
+{\em subject} & subject of the e-\/mail. \\
+\hline
+{\em message} & message body of the e-\/mail. \\
+\hline
+{\em attachment} & any data attached to the e-\/mail. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsubsection{Member Function Documentation}
+\mbox{\Hypertarget{a00916_a1485bc01b86505f5bb9c4bedd3bb0cad}\label{a00916_a1485bc01b86505f5bb9c4bedd3bb0cad}} 
+\index{EMail@{EMail}!getAttachment@{getAttachment}}
+\index{getAttachment@{getAttachment}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{getAttachment()}{getAttachment()}}
+{\footnotesize\ttfamily JSONArray get\+Attachment (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets the attachment sent with the e-\/mail. \begin{DoxyReturn}{Returns}
+JSON data attached to the e-\/mail. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00916_afafd068b736520af1e24269a284980a9}\label{a00916_afafd068b736520af1e24269a284980a9}} 
+\index{EMail@{EMail}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily String get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets the message sent in the e-\/mail. \begin{DoxyReturn}{Returns}
+message body of the e-\/mail. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00916_a653bcf42a59f7fe46b21ab69f9a23d80}\label{a00916_a653bcf42a59f7fe46b21ab69f9a23d80}} 
+\index{EMail@{EMail}!getReceiverMails@{getReceiverMails}}
+\index{getReceiverMails@{getReceiverMails}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{getReceiverMails()}{getReceiverMails()}}
+{\footnotesize\ttfamily String get\+Receiver\+Mails (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets the e-\/mail address the mail is sent to. \begin{DoxyReturn}{Returns}
+the e-\/mail address the mail is sent to. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00916_a800643f77d175108e246956397607bfc}\label{a00916_a800643f77d175108e246956397607bfc}} 
+\index{EMail@{EMail}!getSenderMail@{getSenderMail}}
+\index{getSenderMail@{getSenderMail}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{getSenderMail()}{getSenderMail()}}
+{\footnotesize\ttfamily String get\+Sender\+Mail (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets the sender e-\/mail address. \begin{DoxyReturn}{Returns}
+e-\/mail address of the sender. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00916_a37c754e78ee57cba705ef0660f0a0e26}\label{a00916_a37c754e78ee57cba705ef0660f0a0e26}} 
+\index{EMail@{EMail}!getSubject@{getSubject}}
+\index{getSubject@{getSubject}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{getSubject()}{getSubject()}}
+{\footnotesize\ttfamily String get\+Subject (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets the subject body of the e-\/mail. \begin{DoxyReturn}{Returns}
+subject of the e-\/mail. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00916_ad3aa07c501aff3833d2383a6bbb379cb}\label{a00916_ad3aa07c501aff3833d2383a6bbb379cb}} 
+\index{EMail@{EMail}!setAttachment@{setAttachment}}
+\index{setAttachment@{setAttachment}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{setAttachment()}{setAttachment()}}
+{\footnotesize\ttfamily void set\+Attachment (\begin{DoxyParamCaption}\item[{JSONArray}]{attachment }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the attachment sent with the e-\/mail. 
+\begin{DoxyParams}{Parameters}
+{\em attachment} & JSON data attached to the e-\/mail. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00916_acc7b010f914eeee1745a79004eca2481}\label{a00916_acc7b010f914eeee1745a79004eca2481}} 
+\index{EMail@{EMail}!setMessage@{setMessage}}
+\index{setMessage@{setMessage}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{setMessage()}{setMessage()}}
+{\footnotesize\ttfamily void set\+Message (\begin{DoxyParamCaption}\item[{String}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the message sent in the e-\/mail. 
+\begin{DoxyParams}{Parameters}
+{\em message} & message body of the e-\/mail. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00916_aa6a5fdba5ac7b309c11b525a50e2f1a9}\label{a00916_aa6a5fdba5ac7b309c11b525a50e2f1a9}} 
+\index{EMail@{EMail}!setReceiverMails@{setReceiverMails}}
+\index{setReceiverMails@{setReceiverMails}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{setReceiverMails()}{setReceiverMails()}}
+{\footnotesize\ttfamily void set\+Receiver\+Mails (\begin{DoxyParamCaption}\item[{String}]{receiver\+Mail }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the e-\/mail addresses the mail is sent to. 
+\begin{DoxyParams}{Parameters}
+{\em receiver\+Mail} & the e-\/mail address the mail is sent to. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00916_aefb12eaa4f93b03cde9c51707dde06b8}\label{a00916_aefb12eaa4f93b03cde9c51707dde06b8}} 
+\index{EMail@{EMail}!setSenderMail@{setSenderMail}}
+\index{setSenderMail@{setSenderMail}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{setSenderMail()}{setSenderMail()}}
+{\footnotesize\ttfamily void set\+Sender\+Mail (\begin{DoxyParamCaption}\item[{String}]{sender\+Mail }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the sender e-\/mail address. 
+\begin{DoxyParams}{Parameters}
+{\em sender\+Mail} & e-\/mail address of the sender. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00916_a39f0298f055f0b78ad2ac781d38f326f}\label{a00916_a39f0298f055f0b78ad2ac781d38f326f}} 
+\index{EMail@{EMail}!setSubject@{setSubject}}
+\index{setSubject@{setSubject}!EMail@{EMail}}
+\doxyparagraph{\texorpdfstring{setSubject()}{setSubject()}}
+{\footnotesize\ttfamily void set\+Subject (\begin{DoxyParamCaption}\item[{String}]{subject }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the subject body of the e-\/mail. 
+\begin{DoxyParams}{Parameters}
+{\em subject} & subject of the e-\/mail. \\
+\hline
+\end{DoxyParams}
