@@ -1,5 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -19,8 +20,11 @@ public class Observation {
     @GeneratedValue
     long id;
 
+    @JsonIgnore
     String propertyType;
+    @JsonIgnore
     public double value;
+    @JsonIgnore
     public LocalDate date;
 
     public Observation(){
