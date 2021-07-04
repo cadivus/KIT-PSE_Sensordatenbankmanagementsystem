@@ -1,6 +1,7 @@
 // http://localhost:3000/login
 
 import React from 'react'
+import LoginStep1 from './LoginStep1'
 
 /**
  *  Displays the login page.
@@ -8,7 +9,7 @@ import React from 'react'
  */
 const LoginView = () => {
   return (
-    <div>LoginView</div>
+    <LoginStep1 />
   )
 }
 
