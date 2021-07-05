@@ -2,9 +2,11 @@ package notificationsystem.controller;
 
 import notificationsystem.view.EMail;
 
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -19,8 +21,6 @@ public class MailSender {
     /**
      * Log-in procedure needed for authentication before an e-mail can be sent. Also instanciates the session with
      * the smpt-server.
-     * @param smptServer server through which the e-mail is sent.
-     * @param smptport port used to send the e-mail.
      * @param username username used for authentication purposes.
      * @param password password used for authentication purposes.
      */
@@ -36,7 +36,7 @@ public class MailSender {
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return super.getPasswordAuthentication();
+                return new PasswordAuthentication(username, password);
             }
         };
 
@@ -48,7 +48,24 @@ public class MailSender {
      * Used to send the finished e-mails.
      * @param mail to be send to its receiver.
      */
-    public void send(EMail mail) {
+    public void send(EMail mail) throws MessagingException, IllegalStateException, UnsupportedEncodingException {
+        if (session == null) {
+            throw new IllegalStateException("Has to be logged in.");
+        }
 
+        MimeMessage message = new MimeMessage(session);
+        message.addHeader("Content-type", "text/HTML; charset=UTF-8");
+        message.addHeader("format", "flowed");
+        message.addHeader("Content-Transfer-Encoding", "8bit");
+
+        message.setFrom(new InternetAddress(mail.getSenderMail(), mail.getSenderName()));
+        message.setReplyTo(InternetAddress.parse(mail.getSenderMail(), false));
+        message.setSubject(mail.getSubject(), "UTF-8");
+        message.setText(mail.getMessage(), "UTF-8");
+        message.setSentDate(new Date());
+
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getReceiverMails(), false));
+
+        Transport.send(message);
     }
 }

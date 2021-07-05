@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.LinkedList;
@@ -59,7 +61,13 @@ public class Controller {
     @GetMapping("/getConfirmCode/{mailAddress}")
     public String getConfirmCode(@PathVariable String mailAddress) {
         ConfirmationMail confirmationMail = mailBuilder.buildConfirmationMail(mailAddress);
-        mailSender.send(confirmationMail);
+        try {
+            mailSender.send(confirmationMail);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return confirmationMail.getConfirmCode();
     }
 
@@ -111,7 +119,13 @@ public class Controller {
         List<String> subscribers = subscriptionDAO.getAllSubscribers(sensorID);
         for (String subscriber : subscribers) {
             Alert alert = mailBuilder.buildAlert(subscriber, sensor);
-            mailSender.send(alert);
+            try {
+                mailSender.send(alert);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -127,7 +141,13 @@ public class Controller {
     public void sendReport(String mailAddress, UUID sensorID) {
         Sensor sensor = sensorDAO.get(sensorID);
         Report report = mailBuilder.buildReport(mailAddress, sensor);
-        mailSender.send(report);
+        try {
+            mailSender.send(report);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
 }
