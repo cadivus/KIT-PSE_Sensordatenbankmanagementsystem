@@ -32,7 +32,7 @@ public class SensorController {
      *                           The Autowired Annotation automatically injects a Spring bean
      */
     @Autowired
-    public SensorController(SensorServiceImp sensorService) {
+    public SensorController(SensorService sensorService) {
         this.sensorService = sensorService;
     }
     /**

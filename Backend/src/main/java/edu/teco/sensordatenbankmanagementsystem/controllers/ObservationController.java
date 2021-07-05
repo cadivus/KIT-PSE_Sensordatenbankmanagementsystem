@@ -39,7 +39,7 @@ public class ObservationController {
      *                           The Autowired Annotation automatically injects a Spring bean
      */
     @Autowired
-    public ObservationController(ObservationServiceImp observationService) {
+    public ObservationController(ObservationService observationService) {
         this.observationService = observationService;
     }
     /**
