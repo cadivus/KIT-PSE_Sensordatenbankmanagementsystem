@@ -5,6 +5,18 @@ import LoginView from '../components/login/LoginView'
 import ReplayRouter from './ReplayRouter'
 import SubscribeRouter from './SubscribeRouter'
 import AppLayout from '../components/layout/AppLayout'
+import {FC} from "react";
+
+/**
+ * Resets the children by creating a new div.
+ *
+ * @param children Children to reset
+ */
+const Reset: FC = ({children}) => (
+  <div key={`${new Date().getTime()}`}>
+    {children}
+  </div>
+)
 
 /**
  * This class routes requests from the users web browser.
@@ -13,7 +25,9 @@ const Router = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/login" exact>
-        <LoginView />
+        <Reset>
+          <LoginView />
+        </Reset>
       </Route>
       <AppLayout>
         <Route path="/" exact>

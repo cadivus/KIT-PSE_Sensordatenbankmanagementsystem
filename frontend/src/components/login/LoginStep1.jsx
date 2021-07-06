@@ -1,13 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 
 const useStyles = makeStyles((theme) => ({
@@ -34,8 +32,10 @@ const useStyles = makeStyles((theme) => ({
  *  Displays the login page.
  *  This class implements a React component.
  */
-const LoginStep2 = () => {
-  const classes = useStyles();
+const LoginStep1 = ({setMailAdress}) => {
+  const [mailString, setMailString] = useState('')
+
+  const classes = useStyles()
 
   return (
     <Container component="main" maxWidth="xs">
@@ -47,21 +47,18 @@ const LoginStep2 = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={() => setMailAdress(mailString)} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            onInput={e => setMailString(e.target.value)}
           />
           <Button
             type="submit"
@@ -78,4 +75,4 @@ const LoginStep2 = () => {
   )
 }
 
-export default LoginStep2
+export default LoginStep1
