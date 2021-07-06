@@ -13,20 +13,20 @@ const Router = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/login" exact>
-        <LoginView />
+        <LoginView/>
       </Route>
       <AppLayout>
         <Route path="/" exact>
-          <StartpageView />
+          <StartpageView/>
         </Route>
         <Route path="/sensorInformation" exact>
-          <SensorInformationView />
+          <SensorInformationView/>
         </Route>
         <Route path="/replay">
-          <ReplayRouter />
+          <ReplayRouter/>
         </Route>
         <Route path="/subscriptions">
-          <SubscribeRouter />
+          <SubscribeRouter/>
         </Route>
       </AppLayout>
     </Switch>

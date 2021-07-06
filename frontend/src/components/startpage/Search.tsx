@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
@@ -26,17 +26,17 @@ const useStyles = makeStyles((theme) => ({
  *  This class implements a React component.
  */
 const Search = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
-    <Paper component="form" className={classes.root}>
+    <Paper component='form' className={classes.root}>
       <InputBase
         className={classes.input}
-        placeholder="Search"
-        inputProps={{ 'aria-label': 'search' }}
+        placeholder='Search'
+        inputProps={{'aria-label': 'search'}}
       />
-      <IconButton type="submit" className={classes.iconButton} aria-label="search">
-        <SearchIcon />
+      <IconButton type='submit' className={classes.iconButton} aria-label='search'>
+        <SearchIcon/>
       </IconButton>
     </Paper>
   )
