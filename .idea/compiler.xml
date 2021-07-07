@@ -13,4 +13,9 @@
       <module name="KIT-PSE_Sensordatenbankmanagementsystem" target="16" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="KIT-PSE_Sensordatenbankmanagementsystem" options="-parameters" />
+    </option>
+  </component>
 </project>

@@ -18,7 +18,7 @@ public class Alert extends EMail {
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public Alert(String senderMail, String receiverMail, String subject, String message, JSONArray attachment) {
-        super(senderMail, receiverMail, subject, message, attachment);
+    public Alert(String senderMail, String receiverMail, String subject, String message, JSONArray attachment, String sendername) {
+        super(senderMail, receiverMail, subject, message, attachment, sendername);
     }
 }

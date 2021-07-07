@@ -1,5 +1,6 @@
 package notificationsystem.model;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -12,13 +13,49 @@ import java.util.UUID;
  * The class is mainly used to bundle this information into a single class, massively simplifying dealing with sensor-
  * subscriptions and reports.
  */
+@Entity(name = "Subscription")
+@Table(name = "Subscription")
 public class Subscription {
 
+    @Id
+    @SequenceGenerator(
+            name = "subscription_sequence",
+            sequenceName = "subscription_sequence",
+            allocationSize = 1
+
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "subscription_sequence"
+    )
+    @Column(
+            name = "id",
+            updatable = false
+    )
+    private long id;
+
+    @Column(
+            name = "subscriber_address",
+            nullable = false
+    )
     private String subscriberAddress;
+
+    @Column(
+            name = "sensor",
+            nullable = false
+    )
     private UUID sensor;
+
+    @Column(
+            name = "sub_time",
+            nullable = false
+    )
     private LocalDate subTime;
-    //private LocalDateTime subTime;
-    //private Period reportInterval;
+
+    @Column(
+            name = "report_interval",
+            nullable = false
+    )
     private long reportInterval;
 
     /**
@@ -33,6 +70,10 @@ public class Subscription {
         this.sensor = sensor;
         this.subTime = subTime;
         this.reportInterval = reportInterval;
+    }
+
+    public Subscription() {
+
     }
 
     /**

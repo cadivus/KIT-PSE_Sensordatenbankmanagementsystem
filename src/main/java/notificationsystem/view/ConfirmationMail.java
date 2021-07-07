@@ -24,8 +24,8 @@ public class ConfirmationMail extends EMail {
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public ConfirmationMail(String senderMail, String receiverMail, String subject, String message, JSONArray attachment) {
-        super(senderMail, receiverMail, subject, message, attachment);
+    public ConfirmationMail(String senderMail, String receiverMail, String subject, String message, JSONArray attachment, String sendername) {
+        super(senderMail, receiverMail, subject, message, attachment, sendername);
         this.confirmCode = generateConfirmCode();
     }
 
