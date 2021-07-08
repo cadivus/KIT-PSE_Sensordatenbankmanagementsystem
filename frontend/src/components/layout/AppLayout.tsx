@@ -11,7 +11,7 @@ const AppLayout: FC = ({children}) => {
       <AppBar position='static'>
         <Toolbar>
           <IconButton edge='start' color='inherit' aria-label='menu' onClick={() => history.push('/')}>
-            <HomeIcon/>
+            <HomeIcon />
           </IconButton>
           <Button color='inherit' onClick={() => history.push("/subscriptions")}>
             <Typography variant='h6'>

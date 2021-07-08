@@ -36,7 +36,7 @@ const Search = () => {
         inputProps={{'aria-label': 'search'}}
       />
       <IconButton type='submit' className={classes.iconButton} aria-label='search'>
-        <SearchIcon/>
+        <SearchIcon />
       </IconButton>
     </Paper>
   )

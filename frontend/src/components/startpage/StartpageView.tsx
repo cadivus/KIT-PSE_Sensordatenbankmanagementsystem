@@ -23,8 +23,8 @@ const StartpageView = () => {
         <Typography variant='h3' align='center' gutterBottom>
           Startpage
         </Typography>
-        <Search/>
-        <SensorList/>
+        <Search />
+        <SensorList />
       </Container>
     </div>
   )

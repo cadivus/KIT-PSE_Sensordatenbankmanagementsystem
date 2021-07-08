@@ -63,11 +63,11 @@ const SensorList = () => {
           <TableRow>
             <StyledTableCell className={classes.sensorCell}>
               <Typography variant='h5'>
-                <ArrowDropDownIcon/> Sensor
+                <ArrowDropDownIcon /> Sensor
               </Typography>
             </StyledTableCell>
-            <StyledTableCell/>
-            <StyledTableCell/>
+            <StyledTableCell />
+            <StyledTableCell />
           </TableRow>
         </TableHead>
         <TableBody>
