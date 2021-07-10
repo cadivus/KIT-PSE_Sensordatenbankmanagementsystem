@@ -52,7 +52,7 @@ const useStyles = makeStyles({
  *  Displays a list of sensors.
  *  This class implements a React component.
  */
-const SensorList: FC = ({children}) => {
+const SensorList: FC = () => {
   const history = useHistory()
   const classes = useStyles()
   const sensorStore = useSensorStore()
