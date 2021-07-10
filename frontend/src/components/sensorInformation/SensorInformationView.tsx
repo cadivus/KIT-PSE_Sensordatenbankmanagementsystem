@@ -1,34 +1,28 @@
 // http://localhost:3000/sensorInformation
 
 import React from 'react'
-import {Button, Container, Grid, Theme, Typography} from '@material-ui/core'
-import {createStyles, makeStyles} from '@material-ui/core/styles'
+import {Button, Container, Grid, Typography} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import Properties from './Properties'
 import Export from './Export'
+import Data from './Data'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      marginTop: '15px',
-    },
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-    },
-    buttonspacing: {
-      marginTop: '100px',
-    },
-    button: {
-      width: '200px',
-      marginLeft: '200px',
-    },
-  }),
-)
+const useStyles = makeStyles({
+  container: {
+    marginTop: '15px',
+  },
+  root: {
+    flexGrow: 1,
+  },
+  buttonspacing: {
+    marginTop: '100px',
+  },
+  button: {
+    width: '200px',
+    marginLeft: '200px',
+  },
+})
 
 /**
  *  Displays the sensor information page.
@@ -65,6 +59,9 @@ const SensorInformationView = () => {
           </Grid>
           <Grid item xs={12}>
             <Export />
+          </Grid>
+          <Grid item xs={12}>
+            <Data />
           </Grid>
         </Grid>
       </Container>

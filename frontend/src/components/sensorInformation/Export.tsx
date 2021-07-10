@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      width: 200,
+      width: 130,
     },
   }),
 )
@@ -43,12 +43,25 @@ const Export = () => {
             <Container className={classes.paper}>
               <TextField
                 id="date"
-                label="From"
+                label="From date"
                 type="date"
                 defaultValue="2017-05-24"
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
+                }}
+              />
+              <TextField
+                id="time"
+                label="From time"
+                type="time"
+                defaultValue="07:30"
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  step: 300, // 5 min
                 }}
               />
             </Container>
@@ -57,12 +70,25 @@ const Export = () => {
             <Container className={classes.paper}>
               <TextField
                 id="date"
-                label="To"
+                label="To date"
                 type="date"
                 defaultValue="2017-05-24"
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
+                }}
+              />
+              <TextField
+                id="time"
+                label="To time"
+                type="time"
+                defaultValue="07:30"
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  step: 300, // 5 min
                 }}
               />
             </Container>
