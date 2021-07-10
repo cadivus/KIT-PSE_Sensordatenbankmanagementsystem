@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FC} from 'react'
 import {
   Button,
   Paper,
@@ -15,6 +15,7 @@ import {
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Checkbox from '@material-ui/core/Checkbox'
+import {useHistory} from 'react-router-dom'
 import useSensorStore from '../../hooks/UseSensorStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -51,7 +52,8 @@ const useStyles = makeStyles({
  *  Displays a list of sensors.
  *  This class implements a React component.
  */
-const SensorList = () => {
+const SensorList: FC = () => {
+  const history = useHistory()
   const classes = useStyles()
   const sensorStore = useSensorStore()
 
@@ -79,7 +81,7 @@ const SensorList = () => {
                 <Checkbox color="primary" inputProps={{'aria-label': 'secondary checkbox'}} />
               </StyledTableCell>
               <StyledTableCell>
-                <Button variant="outlined" color="primary">
+                <Button variant="outlined" color="primary" onClick={() => history.push('/sensorInformation')}>
                   Info
                 </Button>
               </StyledTableCell>
