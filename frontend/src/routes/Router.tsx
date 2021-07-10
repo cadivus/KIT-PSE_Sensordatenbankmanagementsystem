@@ -1,3 +1,4 @@
+import {FC} from 'react'
 import {Route, Switch, BrowserRouter} from 'react-router-dom'
 import StartpageView from '../components/startpage/StartpageView'
 import SensorInformationView from '../components/sensorInformation/SensorInformationView'
@@ -7,13 +8,22 @@ import SubscribeRouter from './SubscribeRouter'
 import AppLayout from '../components/layout/AppLayout'
 
 /**
+ * Resets the children by creating a new div.
+ *
+ * @param children Children to reset
+ */
+const Reset: FC = ({children}) => <div key={`${new Date().getTime()}`}>{children}</div>
+
+/**
  * This class routes requests from the users web browser.
  */
 const Router = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/login" exact>
-        <LoginView />
+        <Reset>
+          <LoginView />
+        </Reset>
       </Route>
       <AppLayout>
         <Route path="/" exact>
