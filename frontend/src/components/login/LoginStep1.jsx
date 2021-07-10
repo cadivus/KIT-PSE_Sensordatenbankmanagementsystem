@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
  *  Displays the login page.
  *  This class implements a React component.
  */
-const LoginStep1 = ({setMailAdress}) => {
+const LoginStep1 = ({setMailAddress}) => {
   const [mailString, setMailString] = useState('')
 
   const classes = useStyles()
@@ -47,7 +47,7 @@ const LoginStep1 = ({setMailAdress}) => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} onSubmit={() => setMailAdress(mailString)} noValidate>
+        <form className={classes.form} onSubmit={() => setMailAddress(mailString)} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -60,13 +60,7 @@ const LoginStep1 = ({setMailAdress}) => {
             autoFocus
             onInput={e => setMailString(e.target.value)}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             Sign In
           </Button>
         </form>

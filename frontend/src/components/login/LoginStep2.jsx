@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const LoginStep2 = ({setAuthCode}) => {
   const [codeString, setCodeString] = useState('')
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Container component="main" maxWidth="xs">
@@ -60,13 +60,7 @@ const LoginStep2 = ({setAuthCode}) => {
             autoComplete="current-password"
             onInput={e => setCodeString(e.target.value)}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             Sign In
           </Button>
         </form>

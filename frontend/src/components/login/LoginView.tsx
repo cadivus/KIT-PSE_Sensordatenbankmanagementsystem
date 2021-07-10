@@ -1,12 +1,12 @@
 // http://localhost:3000/login
 
 import React, {useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import LoginStep1 from './LoginStep1'
 import LoginStep2 from './LoginStep2'
 import useUserStore from '../../hooks/UseUserStore'
-import EMail from "../../material/EMail";
-import LoginCode from "../../material/LoginCode";
-import {useHistory} from "react-router-dom";
+import EMail from '../../material/EMail'
+import LoginCode from '../../material/LoginCode'
 
 /**
  *  Displays the login page.
@@ -27,21 +27,12 @@ const LoginView = () => {
 
   const requestUser = (code: string) => {
     setCodeString(code)
-    if (userStore?.requestUser(new EMail(mailString), new LoginCode(codeString)))
-    {
-      history.push("/")
+    if (userStore?.requestUser(new EMail(mailString), new LoginCode(codeString))) {
+      history.push('/')
     }
   }
 
-  return (
-    <>
-      {!secondStep ? (
-        <LoginStep1 setMailAdress={setMail} />
-      ) : (
-        <LoginStep2 setAuthCode={requestUser} />
-      )}
-    </>
-  )
+  return <>{!secondStep ? <LoginStep1 setMailAddress={setMail} /> : <LoginStep2 setAuthCode={requestUser} />}</>
 }
 
 export default LoginView
