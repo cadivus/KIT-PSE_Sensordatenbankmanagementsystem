@@ -7,9 +7,7 @@ import React from 'react'
  * This class implements a React component.
  */
 const SubscriptionMultipleView = () => {
-  return (
-    <div>SubscriptionMultipleView</div>
-  )
+  return <div>SubscriptionMultipleView</div>
 }
 
 export default SubscriptionMultipleView

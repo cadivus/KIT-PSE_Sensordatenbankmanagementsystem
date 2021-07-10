@@ -7,9 +7,7 @@ import React from 'react'
  *  This class implements a React component.
  */
 const SensorInformationView = () => {
-  return (
-    <div>SensorInformationView</div>
-  )
+  return <div>SensorInformationView</div>
 }
 
 export default SensorInformationView

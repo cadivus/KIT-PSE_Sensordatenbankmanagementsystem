@@ -5,9 +5,7 @@ import React from 'react'
  *  This class implements a React component.
  */
 const SubscriptionListView = () => {
-  return (
-    <div>SubscriptionListView</div>
-  )
+  return <div>SubscriptionListView</div>
 }
 
 export default SubscriptionListView

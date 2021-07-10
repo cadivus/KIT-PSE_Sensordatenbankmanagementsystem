@@ -8,20 +8,16 @@ const AppLayout: FC = ({children}) => {
 
   return (
     <>
-      <AppBar position='static'>
+      <AppBar position="static">
         <Toolbar>
-          <IconButton edge='start' color='inherit' aria-label='menu' onClick={() => history.push('/')}>
+          <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => history.push('/')}>
             <HomeIcon />
           </IconButton>
-          <Button color='inherit' onClick={() => history.push("/subscriptions")}>
-            <Typography variant='h6'>
-              Subscriptions
-            </Typography>
+          <Button color="inherit" onClick={() => history.push('/subscriptions')}>
+            <Typography variant="h6">Subscriptions</Typography>
           </Button>
-          <Button color='inherit' onClick={() => history.push("/login")}>
-            <Typography variant='h6'>
-              Login
-            </Typography>
+          <Button color="inherit" onClick={() => history.push('/login')}>
+            <Typography variant="h6">Login</Typography>
           </Button>
         </Toolbar>
       </AppBar>
