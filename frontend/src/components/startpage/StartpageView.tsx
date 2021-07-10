@@ -1,8 +1,8 @@
 import React from 'react'
-import SensorList from './SensorList'
-import Search from './Search'
 import {Container, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
+import SensorList from './SensorList'
+import Search from './Search'
 
 /**
  *  Displays the start page.
@@ -11,16 +11,16 @@ import {makeStyles} from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
   container: {
-    marginTop: '15px'
-  }
+    marginTop: '15px',
+  },
 })
 
 const StartpageView = () => {
   const classes = useStyles()
   return (
     <div>
-      <Container maxWidth='lg' className={classes.container}>
-        <Typography variant='h3' align='center' gutterBottom>
+      <Container maxWidth="lg" className={classes.container}>
+        <Typography variant="h3" align="center" gutterBottom>
           Startpage
         </Typography>
         <Search />

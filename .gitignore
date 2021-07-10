@@ -4,6 +4,7 @@
 **/*.pyc
 env
 /package-lock.json
+**/package-lock.json
 **/build
 **/dist
 

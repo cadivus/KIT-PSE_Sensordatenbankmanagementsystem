@@ -13,22 +13,22 @@ class SubscriptionStore {
   }
 
   /**
-  * Helds every subscription object
-  */
+   * Helds every subscription object
+   */
   private subscriptions: Array<Subscription> = []
 
   /**
-  * Gets the subscriptions from the backend.
-  */
+   * Gets the subscriptions from the backend.
+   */
   private getSubscriptionsFromBackend(): void {
-
+    // Nothing yet
   }
 
   /**
-  * Gets all subscriptions owned by user.
-  *
-  * @return List with the subscriptions.
-  */
+   * Gets all subscriptions owned by user.
+   *
+   * @return List with the subscriptions.
+   */
   getSubscriptions = (): Array<Subscription> => {
     const {_user, getSubscriptionsFromBackend} = this
     if (!_user) return []

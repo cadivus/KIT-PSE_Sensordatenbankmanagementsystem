@@ -34,14 +34,16 @@ class SensorStore {
     if (_sensors && _sensors.length > 0) return
 
     const mockSensor = (i: number) => {
-      this._sensors.push(new class extends Sensor {
-        getValue(): SensorValue {
-          return new SensorValue(i * 10)
-        }
-      }(new SensorName(`Sensor${i}`)))
+      this._sensors.push(
+        new (class extends Sensor {
+          getValue(): SensorValue {
+            return new SensorValue(i * 10)
+          }
+        })(new SensorName(`Sensor${i}`)),
+      )
     }
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i += 1) {
       mockSensor(i)
     }
   }

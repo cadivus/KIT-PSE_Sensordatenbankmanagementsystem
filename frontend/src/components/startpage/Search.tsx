@@ -5,12 +5,12 @@ import InputBase from '@material-ui/core/InputBase'
 import IconButton from '@material-ui/core/IconButton'
 import SearchIcon from '@material-ui/icons/Search'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-    marginBottom: '10px'
+    marginBottom: '10px',
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -29,13 +29,9 @@ const Search = () => {
   const classes = useStyles()
 
   return (
-    <Paper component='form' className={classes.root}>
-      <InputBase
-        className={classes.input}
-        placeholder='Search'
-        inputProps={{'aria-label': 'search'}}
-      />
-      <IconButton type='submit' className={classes.iconButton} aria-label='search'>
+    <Paper component="form" className={classes.root}>
+      <InputBase className={classes.input} placeholder="Search" inputProps={{'aria-label': 'search'}} />
+      <IconButton type="submit" className={classes.iconButton} aria-label="search">
         <SearchIcon />
       </IconButton>
     </Paper>

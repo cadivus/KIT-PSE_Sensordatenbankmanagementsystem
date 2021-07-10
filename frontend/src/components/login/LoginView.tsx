@@ -7,9 +7,7 @@ import React from 'react'
  *  This class implements a React component.
  */
 const LoginView = () => {
-  return (
-    <div>LoginView</div>
-  )
+  return <div>LoginView</div>
 }
 
 export default LoginView

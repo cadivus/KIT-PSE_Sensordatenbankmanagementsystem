@@ -1,5 +1,4 @@
 import React from 'react'
-import useSensorStore from '../../hooks/UseSensorStore'
 import {
   Button,
   Paper,
@@ -8,21 +7,22 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow, Theme,
+  TableRow,
+  Theme,
   Typography,
-  withStyles
+  withStyles,
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Checkbox from '@material-ui/core/Checkbox'
-
+import useSensorStore from '../../hooks/UseSensorStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
     head: {
       backgroundColor: theme.palette.common.white,
       color: theme.palette.common.black,
-      fontSize: 17
+      fontSize: 17,
     },
     body: {
       fontSize: 14,
@@ -43,10 +43,9 @@ const useStyles = makeStyles({
     minWidth: 800,
   },
   sensorCell: {
-    width: '83%'
-  }
+    width: '83%',
+  },
 })
-
 
 /**
  *  Displays a list of sensors.
@@ -62,7 +61,7 @@ const SensorList = () => {
         <TableHead>
           <TableRow>
             <StyledTableCell className={classes.sensorCell}>
-              <Typography variant='h5'>
+              <Typography variant="h5">
                 <ArrowDropDownIcon /> Sensor
               </Typography>
             </StyledTableCell>
@@ -71,21 +70,16 @@ const SensorList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sensorStore?.sensors.map((reptile) => (
-            <StyledTableRow hover>
-              <StyledTableCell component='th' scope='row'>
-                <Typography variant='h5'>
-                  {reptile.name.name}
-                </Typography>
+          {sensorStore?.sensors.map(sensor => (
+            <StyledTableRow hover key={sensor.name.name}>
+              <StyledTableCell component="th" scope="row">
+                <Typography variant="h5">{sensor.name.name}</Typography>
               </StyledTableCell>
               <StyledTableCell>
-                <Checkbox
-                  color='primary'
-                  inputProps={{'aria-label': 'secondary checkbox'}}
-                />
+                <Checkbox color="primary" inputProps={{'aria-label': 'secondary checkbox'}} />
               </StyledTableCell>
               <StyledTableCell>
-                <Button variant='outlined' color='primary'>
+                <Button variant="outlined" color="primary">
                   Info
                 </Button>
               </StyledTableCell>
@@ -94,7 +88,6 @@ const SensorList = () => {
         </TableBody>
       </Table>
     </TableContainer>
-
   )
 }
 
