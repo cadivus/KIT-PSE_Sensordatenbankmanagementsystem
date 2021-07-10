@@ -89,7 +89,7 @@ const Properties = () => {
               <Typography variant="h6">Subscribed: </Typography>
             </StyledTableCell>
             <StyledTableCell>
-              <Checkbox color="primary" inputProps={{'aria-label': 'secondary checkbox'}} />
+              <Checkbox color="primary" disabled inputProps={{'aria-label': 'secondary checkbox'}} />
             </StyledTableCell>
           </StyledTableRow>
         </TableBody>
