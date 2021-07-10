@@ -4,17 +4,16 @@ import {makeStyles} from '@material-ui/core/styles'
 import SensorList from './SensorList'
 import Search from './Search'
 
-/**
- *  Displays the start page.
- *  This class implements a React component.
- */
-
 const useStyles = makeStyles({
   container: {
     marginTop: '15px',
   },
 })
 
+/**
+ *  Displays the start page.
+ *  This class implements a React component.
+ */
 const StartpageView = () => {
   const classes = useStyles()
   return (
