@@ -8,9 +8,9 @@ import SensorName from '../material/SensorName'
  */
 class SensorStore {
   /**
-  * Holds every sensor object.
-  * It will be write protected for store users.
-  */
+   * Holds every sensor object.
+   * It will be write protected for store users.
+   */
   private _sensors: Array<Sensor> = new Array<Sensor>()
 
   constructor() {
@@ -27,21 +27,23 @@ class SensorStore {
   }
 
   /**
-  * Gets sensors from the backend.
-  */
+   * Gets sensors from the backend.
+   */
   private getSensorsFromBackend = (): void => {
     const {_sensors} = this
     if (_sensors && _sensors.length > 0) return
 
     const mockSensor = (i: number) => {
-      this._sensors.push(new class extends Sensor {
-        getValue(): SensorValue {
-          return new SensorValue(i * 10)
-        }
-      }(new SensorName(`Sensor${i}`)))
+      this._sensors.push(
+        new (class extends Sensor {
+          getValue(): SensorValue {
+            return new SensorValue(i * 10)
+          }
+        })(new SensorName(`Sensor${i}`)),
+      )
     }
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i += 1) {
       mockSensor(i)
     }
   }

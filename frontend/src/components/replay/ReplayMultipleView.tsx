@@ -7,9 +7,7 @@ import React from 'react'
  *  This class implements a React component.
  */
 const ReplayMultipleView = () => {
-  return (
-    <div>ReplayMultipleView</div>
-  )
+  return <div>ReplayMultipleView</div>
 }
 
 export default ReplayMultipleView

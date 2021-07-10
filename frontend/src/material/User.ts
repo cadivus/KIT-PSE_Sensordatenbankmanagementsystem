@@ -5,8 +5,8 @@ import EMail from './EMail'
  */
 abstract class User {
   /**
-  * Email address of the user.
-  */
+   * Email address of the user.
+   */
   readonly email: EMail
 
   constructor(email: EMail) {
@@ -14,8 +14,8 @@ abstract class User {
   }
 
   /**
-  * This function logs out the user. It's abstract for being implemented by the UserStore.
-  */
+   * This function logs out the user. It's abstract for being implemented by the UserStore.
+   */
   public abstract logout(): void
 }
 

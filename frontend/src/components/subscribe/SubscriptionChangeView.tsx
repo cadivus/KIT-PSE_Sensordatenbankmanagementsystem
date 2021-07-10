@@ -7,9 +7,7 @@ import React from 'react'
  * This class implements a React component.
  */
 const SubscriptionChangeView = () => {
-  return (
-    <div>SubscriptionChangeView</div>
-  )
+  return <div>SubscriptionChangeView</div>
 }
 
 export default SubscriptionChangeView
