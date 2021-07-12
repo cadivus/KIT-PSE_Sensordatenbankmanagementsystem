@@ -3,6 +3,8 @@
 import React from 'react'
 import {
   Button,
+  Container,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -15,9 +17,9 @@ import {
   withStyles,
 } from '@material-ui/core'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import Checkbox from '@material-ui/core/Checkbox'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import useSensorStore from '../../hooks/UseSensorStore'
+import SubscriptionSettings from './SubscriptionSettings'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -41,11 +43,8 @@ const StyledTableRow = withStyles((theme: Theme) =>
 )(TableRow)
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 800,
-  },
-  sensorCell: {
-    width: '83%',
+  container: {
+    marginTop: '2%',
   },
 })
 
@@ -58,38 +57,41 @@ const SubscriptionMultipleView = () => {
   const sensorStore = useSensorStore()
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell className={classes.sensorCell}>
-              <Typography variant="h5">
-                <ArrowDropDownIcon /> Sensor
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell />
-            <StyledTableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {sensorStore?.sensors.map(sensor => (
-            <StyledTableRow hover key={sensor.name.name}>
-              <StyledTableCell component="th" scope="row">
-                <Typography variant="h5">{sensor.name.name}</Typography>
-              </StyledTableCell>
-              <StyledTableCell>
-                <Checkbox color="primary" inputProps={{'aria-label': 'secondary checkbox'}} />
-              </StyledTableCell>
-              <StyledTableCell>
-                <Button variant="outlined" color="primary">
-                  Info
-                </Button>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Container maxWidth="lg" className={classes.container}>
+      <Grid container spacing={3}>
+        <Grid item xs={5}>
+          <Typography variant="h5" gutterBottom>
+            Existing subscriptions will be replaced
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>
+                    <Typography variant="h5">
+                      <ArrowDropDownIcon /> Sensor
+                    </Typography>
+                  </StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sensorStore?.sensors.map(sensor => (
+                  <StyledTableRow hover key={sensor.name.name}>
+                    <StyledTableCell component="th" scope="row">
+                      <Typography variant="h5">{sensor.name.name}</Typography>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        <Grid item xs={7}>
+          <SubscriptionSettings />
+          <Button variant="outlined">Subscribe</Button>
+        </Grid>
+      </Grid>
+    </Container>
   )
 }
 
