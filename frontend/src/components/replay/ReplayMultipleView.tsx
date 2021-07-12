@@ -26,7 +26,7 @@ const ReplayMultipleView = () => {
   return (
     <div>
       <Container maxWidth="lg" className={classes.container}>
-        <Grid container spacing={3}>
+        <Grid container spacing={4}>
           <Grid item xs={6}>
             <Typography variant="h3" gutterBottom>
               2020-12-12 10:10:10
