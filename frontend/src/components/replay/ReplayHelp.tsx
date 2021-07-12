@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Dialog, DialogContent, DialogContentText, DialogTitle, Snackbar} from '@material-ui/core'
+import {Button, Dialog, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'
 
 /**
  *  Displays the text of the helpbox for the replay.
@@ -39,16 +39,6 @@ const ReplayHelp = () => {
           </DialogContentText>
         </DialogContent>
       </Dialog>
-      <Snackbar
-        anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-        open={open}
-        onClose={handleClose}
-        message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-        et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-        Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-        consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-        At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-      />
     </div>
   )
 }
