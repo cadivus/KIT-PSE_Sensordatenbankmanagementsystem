@@ -1,9 +1,10 @@
 // http://localhost:3000/sensorInformation
 
-import React from 'react'
+import React, {FC} from 'react'
 import {Button, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
+import {useHistory} from 'react-router-dom'
 import Properties from './Properties'
 import Export from './Export'
 import Data from './Data'
@@ -28,7 +29,8 @@ const useStyles = makeStyles({
  *  Displays the sensor information page.
  *  This class implements a React component.
  */
-const SensorInformationView = () => {
+const SensorInformationView: FC = () => {
+  const history = useHistory()
   const classes = useStyles()
 
   return (
@@ -51,7 +53,11 @@ const SensorInformationView = () => {
                 </Button>
               </Grid>
               <Grid item xs={12}>
-                <Button variant="outlined" className={classes.button}>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  onClick={() => history.push('/subscriptions/subscriptionSingleView')}
+                >
                   <Typography variant="h5"> Subscribe </Typography>
                 </Button>
               </Grid>
