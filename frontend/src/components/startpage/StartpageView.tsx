@@ -29,7 +29,9 @@ const StartpageView: FC = () => {
             <Search />
           </Grid>
           <Grid item xs={2}>
-            <Button variant="outlined">Subscribe</Button>
+            <Button variant="outlined" onClick={() => history.push('/subscriptions/subscriptionMultipleView')}>
+              Subscribe
+            </Button>
           </Grid>
           <Grid item xs={2}>
             <Button variant="outlined" onClick={() => history.push('/replay/replayMultipleView')}>
