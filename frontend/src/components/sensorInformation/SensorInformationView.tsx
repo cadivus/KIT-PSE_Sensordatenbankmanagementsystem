@@ -48,7 +48,11 @@ const SensorInformationView: FC = () => {
           <Grid item xs={6}>
             <Grid container spacing={3}>
               <Grid item xs={12} className={classes.buttonspacing}>
-                <Button variant="outlined" className={classes.button}>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  onClick={() => history.push('/replay/replaySingleView')}
+                >
                   <Typography variant="h5"> Replay </Typography>
                 </Button>
               </Grid>
