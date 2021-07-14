@@ -18,7 +18,6 @@ class SubscriptionStore {
 
   set user(user: User | null) {
     this._user = user
-    console.log('SubscriptionStore setUser', user)
   }
 
   /**

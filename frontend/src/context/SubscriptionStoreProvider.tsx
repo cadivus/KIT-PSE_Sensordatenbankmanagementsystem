@@ -13,9 +13,15 @@ export const SubscriptionStoreProvider: FC = ({children}) => {
 
   useEffect(() => {
     if (sensorStore && !subscriptionStore) setSubscriptionStore(new SubscriptionStore(sensorStore))
+  }, [setSubscriptionStore, userStore, subscriptionStore, sensorStore])
 
-    if (subscriptionStore && userStore) subscriptionStore.user = userStore.user
-  }, [setSubscriptionStore, userStore, userStore?.user, subscriptionStore, sensorStore])
+  useEffect(() => {
+    if (subscriptionStore && userStore) {
+      userStore.on('login-change', () => {
+        subscriptionStore.user = userStore.user
+      })
+    }
+  }, [userStore, subscriptionStore])
 
   return <SubscriptionStoreContext.Provider value={subscriptionStore}>{children}</SubscriptionStoreContext.Provider>
 }
