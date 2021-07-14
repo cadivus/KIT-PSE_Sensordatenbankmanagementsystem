@@ -99,7 +99,7 @@ const SubscriptionListView: FC = () => {
                   </StyledTableCell>
                   <StyledTableCell>
                     <Checkbox
-                      defaultChecked
+                      checked={subscription.directNotification}
                       disabled
                       color="primary"
                       inputProps={{'aria-label': 'secondary checkbox'}}

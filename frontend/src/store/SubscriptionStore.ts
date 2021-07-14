@@ -34,7 +34,8 @@ class SubscriptionStore {
       subscriptions.length = 0
       for (let i = 1; i <= _sensorStore.sensors.length; i += 1) {
         const sensorList = _sensorStore.sensors.slice(0, i).reverse()
-        subscriptions.push(new Subscription(sensorList, true, new NotificationLevel(i), _user))
+        const directNotification = i % 2 === 1
+        subscriptions.push(new Subscription(sensorList, directNotification, new NotificationLevel(i), _user))
       }
     }
   }
