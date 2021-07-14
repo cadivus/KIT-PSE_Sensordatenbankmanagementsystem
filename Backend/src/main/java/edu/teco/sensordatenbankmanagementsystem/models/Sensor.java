@@ -1,12 +1,17 @@
 package edu.teco.sensordatenbankmanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.jooq.JSONB;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,12 +20,30 @@ import java.util.List;
  */
 @Entity
 @Data
+@Table(name = "`SENSORS`")
 public class Sensor {
 
-    @Id
-    @GeneratedValue
-    long id;
 
+    @Id
+    @Column(name = "\"ID\"")
+    String id;
+
+    @Column(name = "\"NAME\"")
+    String name;
+
+    @Column(name = "\"DESCRIPTION\"")
+    String description;
+
+    @Column(name = "\"ENCODING_TYPE\"")
+    String encoding_type;
+
+    @Column(name = "\"METADATA\"")
+    String metadata;
+
+    @Column(name = "\"PROPERTIES\"")
+    String properties;
+
+    @Transient
     @OneToMany(cascade = CascadeType.ALL)
     private List<Observation> observations;
 
