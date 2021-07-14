@@ -95,7 +95,7 @@ const SubscriptionListView: FC = () => {
                     <Typography variant="h5">{subscription.sensors[0].name.name}</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Typography variant="body1">Every 3 days</Typography>
+                    <Typography variant="body1">Every {subscription.notificationLevel.days} days</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
                     <Checkbox
