@@ -1,0 +1,136 @@
+import React, {FC} from 'react'
+import {
+  Button,
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Theme,
+  Typography,
+  withStyles,
+} from '@material-ui/core'
+import {createStyles, makeStyles} from '@material-ui/core/styles'
+import {useHistory} from 'react-router-dom'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import Checkbox from '@material-ui/core/Checkbox'
+import useSensorStore from '../../hooks/UseSensorStore'
+
+const StyledTableCell = withStyles((theme: Theme) =>
+  createStyles({
+    head: {
+      backgroundColor: theme.palette.common.white,
+      color: theme.palette.common.black,
+      fontSize: 17,
+    },
+    body: {
+      fontSize: 14,
+    },
+  }),
+)(TableCell)
+
+const StyledTableRow = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      backgroundColor: theme.palette.common.white,
+    },
+  }),
+)(TableRow)
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      marginTop: '2%',
+    },
+    root: {
+      '&$disabled': {
+        color: theme.palette.primary.main,
+      },
+    },
+  }),
+)
+
+/**
+ *  Displays a list of subscriptions.
+ *  This class implements a React component.
+ */
+const SubscriptionListView: FC = () => {
+  const history = useHistory()
+  const classes = useStyles()
+  const sensorStore = useSensorStore()
+
+  return (
+    <div className={classes.root}>
+      <Container maxWidth="lg" className={classes.container}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>
+                  <Typography variant="h5">
+                    <ArrowDropDownIcon /> Sensor
+                  </Typography>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Typography variant="h5">
+                    <ArrowDropDownIcon /> Log level
+                  </Typography>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Typography variant="h5">
+                    <ArrowDropDownIcon /> Notify on Error
+                  </Typography>
+                </StyledTableCell>
+                <StyledTableCell />
+                <StyledTableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {sensorStore?.sensors.map(sensor => (
+                <StyledTableRow hover key={sensor.name.name}>
+                  <StyledTableCell component="th" scope="row">
+                    <Typography variant="h5">{sensor.name.name}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Typography variant="body1">Every 3 days</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Checkbox
+                      defaultChecked
+                      disabled
+                      color="primary"
+                      inputProps={{'aria-label': 'secondary checkbox'}}
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => history.push('/subscriptions/subscriptionChangeView')}
+                    >
+                      change
+                    </Button>
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => history.push('/subscriptions/subscriptionSingleView')}
+                    >
+                      unsubscribe
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+    </div>
+  )
+}
+
+export default SubscriptionListView
