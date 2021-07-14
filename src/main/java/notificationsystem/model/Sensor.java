@@ -14,6 +14,7 @@ import java.util.UUID;
  */
 public class Sensor {
 
+    private String name;
     private UUID id;
     private String data;
     private String failureRate;
@@ -27,7 +28,8 @@ public class Sensor {
      * @param location gps-coordinates of the sensor location.
      * @param categories list of categories describing the sensor and its properties.
      */
-    public Sensor(UUID id, String data, String failureRate, String location, List<String> categories) {
+    public Sensor(String name, UUID id, String data, String failureRate, String location, List<String> categories) {
+        this.name = name;
         this.id = id;
         this.data = data;
         this.failureRate = failureRate;
@@ -104,4 +106,11 @@ public class Sensor {
         return id.toString();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public UUID getId() {
+        return id;
+    }
 }

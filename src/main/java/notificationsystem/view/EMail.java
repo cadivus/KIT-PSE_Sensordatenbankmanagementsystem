@@ -19,19 +19,18 @@ public abstract class EMail {
 
     /**
      * Constructs a new e-mail.
-     * @param senderMail e-mail address of the sender.
      * @param receiverMail e-mail address the mail is sent to.
      * @param subject subject of the e-mail.
      * @param message message body of the e-mail.
      * @param attachment any data attached to the e-mail.
      */
-    public EMail(String senderMail, String receiverMail, String subject, String message, JSONArray attachment, String senderName) {
-        this.senderMail = senderMail;
+    public EMail( String receiverMail, String subject, String message, JSONArray attachment) {
+        this.senderMail = "";
         this.receiverMail = receiverMail;
         this.subject = subject;
         this.message = message;
         this.attachment = attachment;
-        this.senderName = senderName;
+        this.senderName = "";
     }
 
     /**
@@ -40,14 +39,6 @@ public abstract class EMail {
      */
     public String getSenderMail() {
         return senderMail;
-    }
-
-    /**
-     * Sets the sender e-mail address.
-     * @param senderMail e-mail address of the sender.
-     */
-    public void setSenderMail(String senderMail) {
-        this.senderMail = senderMail;
     }
 
     /**

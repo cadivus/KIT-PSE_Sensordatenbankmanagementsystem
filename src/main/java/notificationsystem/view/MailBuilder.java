@@ -9,6 +9,10 @@ import notificationsystem.model.Sensor;
  */
 public class MailBuilder {
 
+    private static String SUBJECT_ALERT = "Alert for sensor malfunction";
+    private static String SUBJECT_CONFIRM = "Log-in attempt";
+    private static String MAIL_SIGNING = "This E-Mail was sent automatically by the ... E-Mail Notification System.";
+
     /**
      * The buildAlert method builds an alert e-mail which is sent to subscribers of a sensor when that sensor
      * malfunctions.
@@ -18,7 +22,11 @@ public class MailBuilder {
      * of the given sensor.
      */
     public Alert buildAlert(String mailAddress, Sensor sensor) {
-        return null;
+        String message = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
+                " and the location: " + sensor.getLocation() + " has malfunctioned and is currently not collecting data.";
+
+        Alert alert = new Alert(mailAddress, SUBJECT_ALERT, message, null);
+        return alert;
     }
 
     /**
@@ -29,7 +37,11 @@ public class MailBuilder {
      * @return The finished report e-mail for the subscriber with the given e-mail address about the given sensor.
      */
     public Report buildReport(String mailAddress, Sensor sensor) {
-        return null;
+        String subject = "Report for Sensorthings sensor: " + sensor.getId();
+        String message = "The following is the regular report for the the Sensorthings sensor: " + sensor.getId()
+                + "you are subscribed to.";
+        Report report = new Report(mailAddress, subject, message, null);
+        return report;
     }
 
     /**
@@ -41,6 +53,10 @@ public class MailBuilder {
      * @return The finished confirmation e-mail to the e-mail address the user is trying to log-in with.
      */
     public ConfirmationMail buildConfirmationMail(String mailAddress) {
-        return null;
+        ConfirmationMail confirmationMail = new ConfirmationMail(mailAddress, SUBJECT_CONFIRM, null, null);
+        String message = "A log-in to ... was attempted with this E-Mail. Please enter the code:" + confirmationMail.getConfirmCode()
+                + " to confirm that this is your E-Mail address and complete the log-in.";
+        confirmationMail.setMessage(message);
+        return confirmationMail;
     }
 }
