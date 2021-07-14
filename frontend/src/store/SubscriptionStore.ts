@@ -1,5 +1,6 @@
 import User from '../material/User'
 import Subscription from '../material/Subscription'
+import SensorStore from './SensorStore'
 
 /**
  * This is the storage for subscriptions.
@@ -7,6 +8,12 @@ import Subscription from '../material/Subscription'
  */
 class SubscriptionStore {
   private _user: User | null = null
+
+  private _sensorStore: SensorStore | null = null
+
+  constructor(sensorStore: SensorStore) {
+    this._sensorStore = sensorStore
+  }
 
   set user(user: User | null) {
     this._user = user
