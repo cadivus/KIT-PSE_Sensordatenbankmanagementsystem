@@ -3,6 +3,7 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
+import edu.teco.sensordatenbankmanagementsystem.util.ConversionUtilities;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,8 +85,8 @@ public class ObservationServiceImp implements ObservationService {
     /**
      * {@inheritDoc}
      */
-    public Observation getObservation(Long id) {
-        return repository.findById(id).get();
+    public Observation getObservation(UUID id) {
+        return repository.getById(ConversionUtilities.convertUUIDToLong(id));
     }
 
     public void dataAggregation() {
