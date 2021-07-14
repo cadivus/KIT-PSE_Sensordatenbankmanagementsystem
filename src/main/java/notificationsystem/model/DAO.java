@@ -1,5 +1,10 @@
 package notificationsystem.model;
 
+import com.sun.xml.bind.v2.model.core.ID;
+import org.springframework.data.repository.CrudRepository;
+
+import javax.swing.text.html.Option;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +22,7 @@ public interface DAO<T> {
      * @param t identifier for the object needed.
      * @return The object fetched.
      */
-    T get(T t);
+    Optional<T> get(T t);
 
     /**
      * Gets a list of all the objects of the given class from the database.

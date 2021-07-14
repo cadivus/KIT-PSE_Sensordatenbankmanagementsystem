@@ -1,6 +1,12 @@
 package notificationsystem.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -11,11 +17,15 @@ import java.util.UUID;
  * In the context of the E-Mail Notification System, these are mainly needed for alert and report mails, as well as
  * the direct management of subscriptions for the website.
  */
-public class SubscriptionDAO implements DAO<Subscription> {
+@Service
+public class SubscriptionDAO implements DAO<Subscription>{
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
 
     @Override
-    public Subscription get(Subscription subscription) {
-        return null;
+    public Optional<Subscription> get(Subscription subscription) {
+        return subscriptionRepository.findById(subscription.getId());
     }
 
     /**
@@ -26,12 +36,20 @@ public class SubscriptionDAO implements DAO<Subscription> {
      * if it exists.
      */
     public Subscription get(String mailAddress, UUID sensorID) {
+        List<Subscription> allSubs = subscriptionRepository.findAll();
+        for (Subscription sub : allSubs) {
+            if (sub.getSubscriberAddress() == mailAddress && sub.getSensor().toString().equals(sensorID)) {
+                return sub;
+            }
+        }
         return null;
     }
 
     @Override
     public List<Subscription> getAll() {
-        return null;
+        List<Subscription> subscriptions = new ArrayList<>();
+        subscriptionRepository.findAll().forEach(subscriptions::add);
+        return subscriptions;
     }
 
     /**
@@ -41,7 +59,14 @@ public class SubscriptionDAO implements DAO<Subscription> {
      * @return List of e-mail addresses of all the users subscribed to the sensor with the given ID.
      */
     public List<String> getAllSubscribers(UUID sensorID) {
-        return null;
+        List<String> subscribers = new ArrayList<>();
+        List<Subscription> allSubs = subscriptionRepository.findAll();
+        for (Subscription sub : allSubs) {
+            if (sub.getSensor() ==  sensorID) {
+                subscribers.add(sub.getSubscriberAddress());
+            }
+        }
+        return subscribers;
     }
 
     /**
@@ -51,17 +76,24 @@ public class SubscriptionDAO implements DAO<Subscription> {
      * subscribed to.
      */
     public List<UUID> getAllSensors(String mailAddress) {
-        return null;
+        List<UUID> sensors = new ArrayList<>();
+        List<Subscription> allSubs = subscriptionRepository.findAll();
+        for (Subscription sub : allSubs) {
+            if (sub.getSubscriberAddress() ==  mailAddress) {
+                sensors.add(sub.getSensor());
+            }
+        }
+        return sensors;
     }
 
     @Override
     public void save(Subscription subscription) {
-
+        subscriptionRepository.save(subscription);
     }
 
     @Override
     public void delete(Subscription subscription) {
-
+        subscriptionRepository.delete(subscription);
     }
 
 

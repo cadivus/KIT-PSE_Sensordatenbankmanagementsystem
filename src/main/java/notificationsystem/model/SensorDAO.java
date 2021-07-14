@@ -1,6 +1,7 @@
 package notificationsystem.model;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -11,7 +12,7 @@ import java.util.UUID;
 public class SensorDAO implements DAO<Sensor> {
 
     @Override
-    public Sensor get(Sensor sensor) {
+    public Optional<Sensor> get(Sensor sensor) {
         return null;
     }
 

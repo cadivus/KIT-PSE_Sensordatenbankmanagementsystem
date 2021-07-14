@@ -1,6 +1,7 @@
 package notificationsystem.model;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The Sensor class represents the air-quality sensors stationed in Augsburg. Each sensor collects data, has a
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public class Sensor {
 
+    private UUID id;
     private String data;
     private String failureRate;
     private String location;
@@ -25,7 +27,8 @@ public class Sensor {
      * @param location gps-coordinates of the sensor location.
      * @param categories list of categories describing the sensor and its properties.
      */
-    public Sensor(String data, String failureRate, String location, List<String> categories) {
+    public Sensor(UUID id, String data, String failureRate, String location, List<String> categories) {
+        this.id = id;
         this.data = data;
         this.failureRate = failureRate;
         this.location = location;
@@ -94,6 +97,11 @@ public class Sensor {
      */
     public void setCategories(List<String> categories) {
         this.categories = categories;
+    }
+
+    @Override
+    public String toString() {
+        return id.toString();
     }
 
 }
