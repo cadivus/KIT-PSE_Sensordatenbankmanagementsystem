@@ -1,6 +1,7 @@
 import User from '../material/User'
 import Subscription from '../material/Subscription'
 import SensorStore from './SensorStore'
+import NotificationLevel from '../material/NotificationLevel'
 
 /**
  * This is the storage for subscriptions.
@@ -9,7 +10,7 @@ import SensorStore from './SensorStore'
 class SubscriptionStore {
   private _user: User | null = null
 
-  private _sensorStore: SensorStore | null = null
+  private readonly _sensorStore: SensorStore
 
   constructor(sensorStore: SensorStore) {
     this._sensorStore = sensorStore
@@ -17,6 +18,7 @@ class SubscriptionStore {
 
   set user(user: User | null) {
     this._user = user
+    console.log('SubscriptionStore setUser', user)
   }
 
   /**
@@ -27,8 +29,14 @@ class SubscriptionStore {
   /**
    * Gets the subscriptions from the backend.
    */
-  private getSubscriptionsFromBackend(): void {
-    // Nothing yet
+  private getSubscriptionsFromBackend = (): void => {
+    const {subscriptions, _sensorStore, _user} = this
+    if (_user && (subscriptions.length === 0 || subscriptions[0].owner !== this._user)) {
+      subscriptions.length = 0
+      for (let i = 0; i < _sensorStore.sensors.length; i += 1) {
+        subscriptions.push(new Subscription(_sensorStore.sensors[i], true, new NotificationLevel(i), _user))
+      }
+    }
   }
 
   /**
@@ -37,8 +45,9 @@ class SubscriptionStore {
    * @return List with the subscriptions.
    */
   getSubscriptions = (): Array<Subscription> => {
-    const {_user, getSubscriptionsFromBackend} = this
-    if (!_user) return []
+    const {getSubscriptionsFromBackend} = this
+
+    if (!this._user) return []
 
     getSubscriptionsFromBackend()
     const {subscriptions} = this
