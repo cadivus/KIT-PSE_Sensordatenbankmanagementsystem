@@ -90,9 +90,9 @@ const SubscriptionListView: FC = () => {
             </TableHead>
             <TableBody>
               {subscriptionStore?.getSubscriptions().map(subscription => (
-                <StyledTableRow hover key={subscription.sensor.name.name}>
+                <StyledTableRow hover key={subscription.sensors[0].name.name}>
                   <StyledTableCell component="th" scope="row">
-                    <Typography variant="h5">{subscription.sensor.name.name}</Typography>
+                    <Typography variant="h5">{subscription.sensors[0].name.name}</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
                     <Typography variant="body1">Every 3 days</Typography>

@@ -32,8 +32,9 @@ class SubscriptionStore {
     const {subscriptions, _sensorStore, _user} = this
     if (_user && (subscriptions.length === 0 || subscriptions[0].owner !== this._user)) {
       subscriptions.length = 0
-      for (let i = 0; i < _sensorStore.sensors.length; i += 1) {
-        subscriptions.push(new Subscription(_sensorStore.sensors[i], true, new NotificationLevel(i), _user))
+      for (let i = 1; i <= _sensorStore.sensors.length; i += 1) {
+        const sensorList = _sensorStore.sensors.slice(0, i).reverse()
+        subscriptions.push(new Subscription(sensorList, true, new NotificationLevel(i), _user))
       }
     }
   }

@@ -9,7 +9,7 @@ class Subscription {
   /**
    * Sensor the subscription is for.
    */
-  sensor: Sensor
+  sensors: Array<Sensor>
 
   /**
    * Indicates whether the user gets a direct notification on failures.
@@ -23,8 +23,8 @@ class Subscription {
 
   owner: User
 
-  constructor(sensor: Sensor, directNotification: boolean, notificationLevel: NotificationLevel, owner: User) {
-    this.sensor = sensor
+  constructor(sensors: Array<Sensor>, directNotification: boolean, notificationLevel: NotificationLevel, owner: User) {
+    this.sensors = sensors
     this.directNotification = directNotification
     this.notificationLevel = notificationLevel
     this.owner = owner
