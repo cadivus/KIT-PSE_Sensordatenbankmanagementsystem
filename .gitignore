@@ -1,0 +1,10 @@
+**/.idea
+**/node_modules
+**/*.swp
+**/*.pyc
+env
+/package-lock.json
+**/package-lock.json
+**/build
+**/dist
+
