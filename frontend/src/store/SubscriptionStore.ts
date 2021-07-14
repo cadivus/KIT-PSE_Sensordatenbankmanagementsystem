@@ -2,6 +2,7 @@ import User from '../material/User'
 import Subscription from '../material/Subscription'
 import SensorStore from './SensorStore'
 import NotificationLevel from '../material/NotificationLevel'
+import Id from '../material/Id'
 
 /**
  * This is the storage for subscriptions.
@@ -35,7 +36,8 @@ class SubscriptionStore {
       for (let i = 1; i <= _sensorStore.sensors.length; i += 1) {
         const sensorList = _sensorStore.sensors.slice(0, i).reverse()
         const directNotification = i % 2 === 1
-        subscriptions.push(new Subscription(sensorList, directNotification, new NotificationLevel(i), _user))
+        const id = new Id(`${_user.email.email}-0-${i}`)
+        subscriptions.push(new Subscription(id, sensorList, directNotification, new NotificationLevel(i), _user))
       }
     }
   }

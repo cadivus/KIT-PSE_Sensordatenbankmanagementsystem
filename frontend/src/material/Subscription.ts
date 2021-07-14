@@ -1,11 +1,17 @@
 import Sensor from './Sensor'
 import NotificationLevel from './NotificationLevel'
 import User from './User'
+import Id from './Id'
 
 /**
  * Objects of this class represent a subscription.
  */
 class Subscription {
+  /**
+   * Id of the subscription.
+   */
+  readonly id: Id
+
   /**
    * Sensor the subscription is for.
    */
@@ -23,7 +29,14 @@ class Subscription {
 
   owner: User
 
-  constructor(sensors: Array<Sensor>, directNotification: boolean, notificationLevel: NotificationLevel, owner: User) {
+  constructor(
+    id: Id,
+    sensors: Array<Sensor>,
+    directNotification: boolean,
+    notificationLevel: NotificationLevel,
+    owner: User,
+  ) {
+    this.id = id
     this.sensors = sensors
     this.directNotification = directNotification
     this.notificationLevel = notificationLevel

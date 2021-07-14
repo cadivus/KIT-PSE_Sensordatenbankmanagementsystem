@@ -109,7 +109,9 @@ const SubscriptionListView: FC = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => history.push('/subscriptions/subscriptionChangeView')}
+                      onClick={() =>
+                        history.push(`/subscriptions/subscriptionChangeView/${subscription.id.toString()}`)
+                      }
                     >
                       change
                     </Button>
@@ -118,7 +120,9 @@ const SubscriptionListView: FC = () => {
                     <Button
                       variant="contained"
                       color="secondary"
-                      onClick={() => history.push('/subscriptions/subscriptionSingleView')}
+                      onClick={() =>
+                        history.push(`/subscriptions/subscriptionSingleView/${subscription.id.toString()}`)
+                      }
                     >
                       unsubscribe
                     </Button>
