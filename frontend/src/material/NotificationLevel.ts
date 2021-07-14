@@ -3,8 +3,8 @@
  */
 class NotificationLevel {
   /**
-  * Log level represented as an integer.
-  */
+   * Log level represented as an integer.
+   */
   readonly days: number
 
   constructor(days: number) {
