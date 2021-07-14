@@ -1,1 +1,0 @@
-# KIT-PSE_Sensordatenbankmanagementsystem
