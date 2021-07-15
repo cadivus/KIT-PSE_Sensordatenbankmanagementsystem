@@ -13,8 +13,14 @@ class SubscriptionStore {
 
   private readonly _sensorStore: SensorStore
 
+  /**
+   * Helds every subscription object
+   */
+  private subscriptions: Map<string, Subscription>
+
   constructor(sensorStore: SensorStore) {
     this._sensorStore = sensorStore
+    this.subscriptions = new Map<string, Subscription>()
   }
 
   set user(user: User | null) {
@@ -22,22 +28,18 @@ class SubscriptionStore {
   }
 
   /**
-   * Helds every subscription object
-   */
-  private subscriptions: Array<Subscription> = []
-
-  /**
    * Gets the subscriptions from the backend.
    */
   private getSubscriptionsFromBackend = (): void => {
     const {subscriptions, _sensorStore, _user} = this
-    if (_user && (subscriptions.length === 0 || subscriptions[0].owner !== this._user)) {
-      subscriptions.length = 0
+    if (_user && (subscriptions.size === 0 || subscriptions.values().next().value.owner !== this._user)) {
+      subscriptions.clear()
       for (let i = 1; i <= _sensorStore.sensors.length; i += 1) {
         const sensorList = _sensorStore.sensors.slice(0, i).reverse()
         const directNotification = i % 2 === 1
         const id = new Id(`${_user.email.email}-0-${i}`)
-        subscriptions.push(new Subscription(id, sensorList, directNotification, new NotificationLevel(i), _user))
+        const idStr = id.toString()
+        subscriptions.set(idStr, new Subscription(id, sensorList, directNotification, new NotificationLevel(i), _user))
       }
     }
   }
@@ -54,7 +56,21 @@ class SubscriptionStore {
 
     getSubscriptionsFromBackend()
     const {subscriptions} = this
-    return subscriptions
+    const result = new Array<Subscription>()
+
+    subscriptions.forEach(e => {
+      result.push(e)
+    })
+
+    return result
+  }
+
+  getSubscription = (id: Id): Subscription | undefined => {
+    const {getSubscriptionsFromBackend} = this
+    getSubscriptionsFromBackend()
+    const {subscriptions} = this
+
+    return subscriptions.get(id.toString())
   }
 }
 

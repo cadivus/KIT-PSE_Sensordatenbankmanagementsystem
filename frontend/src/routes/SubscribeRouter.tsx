@@ -15,13 +15,13 @@ const SubscribeRouter = () => {
       <Route path={`${path}/`} exact>
         <SubscriptionListView />
       </Route>
-      <Route path={`${path}/subscriptionChangeView`}>
+      <Route path={`${path}/subscriptionChangeView/:subscriptionId`}>
         <SubscriptionChangeView />
       </Route>
-      <Route path={`${path}/subscriptionMultipleView`}>
+      <Route path={`${path}/subscriptionMultipleView/:subscriptionId`}>
         <SubscriptionMultipleView />
       </Route>
-      <Route path={`${path}/subscriptionSingleView`}>
+      <Route path={`${path}/subscriptionSingleView/:subscriptionId`}>
         <SubscriptionSingleView />
       </Route>
     </Switch>
