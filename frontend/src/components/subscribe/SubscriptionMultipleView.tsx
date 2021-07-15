@@ -1,6 +1,6 @@
 // http://localhost:3000/subscriptions/subscriptionMultipleView
 
-import React from 'react'
+import React, {useState} from 'react'
 import {
   Button,
   Container,
@@ -20,6 +20,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import useSensorStore from '../../hooks/UseSensorStore'
 import SubscriptionSettings from './SubscriptionSettings'
+import NotificationLevel from '../../material/NotificationLevel'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -56,6 +57,9 @@ const SubscriptionMultipleView = () => {
   const classes = useStyles()
   const sensorStore = useSensorStore()
 
+  const [directNotification, setDirectNotification] = useState(true)
+  const [notificationLevel, setNotificationLevel] = useState(new NotificationLevel(666))
+
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Grid container spacing={3}>
@@ -87,7 +91,12 @@ const SubscriptionMultipleView = () => {
           </TableContainer>
         </Grid>
         <Grid item xs={7}>
-          <SubscriptionSettings />
+          <SubscriptionSettings
+            directNotification={directNotification}
+            setDirectNotification={setDirectNotification}
+            notificationLevel={notificationLevel}
+            setNotificationLevel={setNotificationLevel}
+          />
           <Button variant="outlined">Subscribe</Button>
         </Grid>
       </Grid>

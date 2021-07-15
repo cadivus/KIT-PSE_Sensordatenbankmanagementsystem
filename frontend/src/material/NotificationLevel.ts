@@ -7,8 +7,14 @@ class NotificationLevel {
    */
   readonly days: number
 
-  constructor(days: number) {
+  /**
+   * Indicates whether logging is active
+   */
+  readonly active: boolean
+
+  constructor(days: number, active = true) {
     this.days = days
+    this.active = active
   }
 }
 
