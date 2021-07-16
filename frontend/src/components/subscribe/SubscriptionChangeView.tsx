@@ -28,6 +28,12 @@ const SubscriptionChangeView = () => {
   const [directNotification, setDirectNotification] = useState(subscription?.directNotification)
   const [notificationLevel, setNotificationLevel] = useState(subscription?.notificationLevel)
 
+  const updateSubscription = () => {
+    if (!subscription) return
+    if (notificationLevel) subscription.notificationLevel = notificationLevel
+    if (directNotification) subscription.directNotification = directNotification
+  }
+
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Typography variant="h3" gutterBottom>
@@ -39,7 +45,7 @@ const SubscriptionChangeView = () => {
         notificationLevel={notificationLevel}
         setNotificationLevel={setNotificationLevel}
       />
-      <Button variant="outlined">
+      <Button variant="outlined" onClick={() => updateSubscription()}>
         <Typography variant="body1">Change</Typography>
       </Button>
     </Container>
