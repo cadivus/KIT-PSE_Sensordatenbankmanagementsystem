@@ -31,7 +31,7 @@ const SubscriptionChangeView = () => {
   const updateSubscription = () => {
     if (!subscription) return
     if (notificationLevel) subscription.notificationLevel = notificationLevel
-    if (directNotification) subscription.directNotification = directNotification
+    if (typeof directNotification === 'boolean') subscription.directNotification = directNotification
   }
 
   return (

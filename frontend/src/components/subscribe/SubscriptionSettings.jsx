@@ -29,10 +29,9 @@ const SubscriptionSettings = ({directNotification, setDirectNotification, notifi
               <TableCell component="th" scope="row">
                 <Checkbox
                   checked={directNotification}
-                  defaultChecked
                   color="primary"
                   inputProps={{'aria-label': 'secondary checkbox'}}
-                  onInput={e => setDirectNotification(e.target.value)}
+                  onChange={e => setDirectNotification(e.target.checked)}
                 />
               </TableCell>
               <TableCell>
@@ -46,7 +45,7 @@ const SubscriptionSettings = ({directNotification, setDirectNotification, notifi
                   color="primary"
                   inputProps={{'aria-label': 'secondary checkbox'}}
                   // eslint-disable-next-line max-len
-                  onInput={e => setNotificationLevel(new NotificationLevel(notificationLevel.days, e.target.value))}
+                  onChange={e => setNotificationLevel(new NotificationLevel(notificationLevel.days, e.target.checked))}
                 />
               </TableCell>
               <TableCell>
