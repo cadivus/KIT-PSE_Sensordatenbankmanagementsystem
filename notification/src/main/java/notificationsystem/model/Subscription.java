@@ -65,7 +65,7 @@ public class Subscription {
      * @param subTime time at which the user subscribed to the sensor.
      * @param reportInterval time period at which report e-mails are sent.
      */
-    public Subscription(long id, String subscriberAddress, UUID sensor, LocalDate subTime, long reportInterval) {
+    public Subscription(String subscriberAddress, UUID sensor, LocalDate subTime, long reportInterval) {
         this.id = id;
         this.subscriberAddress = subscriberAddress;
         this.sensor = sensor;

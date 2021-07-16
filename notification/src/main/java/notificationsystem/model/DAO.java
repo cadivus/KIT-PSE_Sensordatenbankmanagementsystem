@@ -30,16 +30,4 @@ public interface DAO<T> {
      */
     List<T> getAll();
 
-    /**
-     * Saves a given object in the database.
-     * @param t the object to be saved in the databse.
-     */
-    void save(T t);
-
-    /**
-     * Deletes a given object from the database.
-     * @param t the object to be deleted from the database.
-     */
-    void delete(T t);
-
 }
