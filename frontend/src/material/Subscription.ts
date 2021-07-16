@@ -1,12 +1,18 @@
+import EventEmitter from 'events'
 import Sensor from './Sensor'
 import NotificationLevel from './NotificationLevel'
 import User from './User'
 import Id from './Id'
 
+declare interface Subscription {
+  on(event: 'directNotification-change', listener: (name: string) => void): this
+  on(event: 'notificationLevel-change', listener: (name: string) => void): this
+}
+
 /**
  * Objects of this class represent a subscription.
  */
-class Subscription {
+class Subscription extends EventEmitter {
   /**
    * Id of the subscription.
    */
@@ -20,12 +26,12 @@ class Subscription {
   /**
    * Indicates whether the user gets a direct notification on failures.
    */
-  directNotification: boolean
+  private _directNotification: boolean
 
   /**
    * The notification level for status updates.
    */
-  notificationLevel: NotificationLevel
+  private _notificationLevel: NotificationLevel
 
   owner: User
 
@@ -36,11 +42,32 @@ class Subscription {
     notificationLevel: NotificationLevel,
     owner: User,
   ) {
+    super()
     this.id = id
     this.sensors = sensors
-    this.directNotification = directNotification
-    this.notificationLevel = notificationLevel
+    this._directNotification = directNotification
+    this._notificationLevel = notificationLevel
     this.owner = owner
+  }
+
+  set directNotification(directNotification: boolean) {
+    this._directNotification = directNotification
+    this.emit('directNotification-change')
+  }
+
+  get directNotification(): boolean {
+    const {_directNotification} = this
+    return _directNotification
+  }
+
+  set notificationLevel(notificationLevel: NotificationLevel) {
+    this._notificationLevel = notificationLevel
+    this.emit('notificationLevel-change')
+  }
+
+  get notificationLevel(): NotificationLevel {
+    const {_notificationLevel} = this
+    return _notificationLevel
   }
 
   /**
