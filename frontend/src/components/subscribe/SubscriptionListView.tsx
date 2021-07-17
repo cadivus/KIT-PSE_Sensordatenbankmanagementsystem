@@ -109,9 +109,7 @@ const SubscriptionListView: FC = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() =>
-                        history.push(`/subscriptions/subscriptionChangeView/${subscription.id.toString()}`)
-                      }
+                      onClick={() => history.push(`/subscriptions/subscriptionChange/${subscription.id.toString()}`)}
                     >
                       change
                     </Button>
