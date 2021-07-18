@@ -1,6 +1,7 @@
 import Sensor from '../material/Sensor'
 import SensorValue from '../material/SensorValue'
 import SensorName from '../material/SensorName'
+import Id from '../material/Id'
 
 /**
  * This is the storage for sensors.
@@ -34,12 +35,13 @@ class SensorStore {
     if (_sensors && _sensors.length > 0) return
 
     const mockSensor = (i: number) => {
+      const id = new Id(`${i}-${new Date().getTime() / 1000}`)
       this._sensors.push(
         new (class extends Sensor {
           getValue(): SensorValue {
             return new SensorValue(i * 10)
           }
-        })(new SensorName(`Sensor${i}`)),
+        })(new SensorName(`Sensor${i}`), id),
       )
     }
 
