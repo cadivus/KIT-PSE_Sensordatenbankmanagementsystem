@@ -1,4 +1,4 @@
-// http://localhost:3000/subscriptions/subscriptionMultipleView
+// http://localhost:3000/subscriptions/subscriptionChangeView
 
 import React, {useState} from 'react'
 import {useParams} from 'react-router-dom'
@@ -19,11 +19,10 @@ import {
 } from '@material-ui/core'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
-import useSensorStore from '../../hooks/UseSensorStore'
 import SubscriptionSettings from './SubscriptionSettings'
-import NotificationLevel from '../../material/NotificationLevel'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 import Id from '../../material/Id'
+import Sensor from '../../material/Sensor'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -52,11 +51,38 @@ const useStyles = makeStyles({
   },
 })
 
+const SensorsList = ({sensors}: {sensors: Array<Sensor>}) => {
+  return (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <StyledTableCell>
+              <Typography variant="h5">
+                <ArrowDropDownIcon /> Sensor
+              </Typography>
+            </StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {sensors.map(sensor => (
+            <StyledTableRow hover key={sensor.name.name}>
+              <StyledTableCell component="th" scope="row">
+                <Typography variant="h5">{sensor.name.name}</Typography>
+              </StyledTableCell>
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
+
 /**
  * Displays the webpage of the multiple subscription
  * This class implements a React component.
  */
-const SubscriptionMultipleView = () => {
+const SubscriptionChangeView = () => {
   const classes = useStyles()
   const {subscriptionId} = useParams<{subscriptionId: string}>()
   const subscriptionStore = useSubscriptionStore()
@@ -71,37 +97,20 @@ const SubscriptionMultipleView = () => {
     if (typeof directNotification === 'boolean') subscription.directNotification = directNotification
   }
 
+  const multipleSensors = subscription ? subscription?.sensors.length > 1 : false
+  const sensors = subscription ? subscription?.sensors : new Array<Sensor>()
+
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Grid container spacing={3}>
-        <Grid item xs={5}>
-          <Typography variant="h5" gutterBottom>
-            Existing subscriptions will be replaced
-          </Typography>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>
-                    <Typography variant="h5">
-                      <ArrowDropDownIcon /> Sensor
-                    </Typography>
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {subscription?.sensors.map(sensor => (
-                  <StyledTableRow hover key={sensor.name.name}>
-                    <StyledTableCell component="th" scope="row">
-                      <Typography variant="h5">{sensor.name.name}</Typography>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
-        <Grid item xs={7}>
+        {multipleSensors ? (
+          <Grid item xs={5}>
+            <SensorsList sensors={sensors} />
+          </Grid>
+        ) : (
+          <></>
+        )}
+        <Grid item xs={multipleSensors ? 7 : 12}>
           <SubscriptionSettings
             directNotification={directNotification}
             setDirectNotification={setDirectNotification}
@@ -117,4 +126,4 @@ const SubscriptionMultipleView = () => {
   )
 }
 
-export default SubscriptionMultipleView
+export default SubscriptionChangeView

@@ -5,6 +5,7 @@ import SubscriptionSingleView from '../components/subscribe/SubscriptionSingleVi
 import SubscriptionListView from '../components/subscribe/SubscriptionListView'
 import useSubscriptionStore from '../hooks/UseSubscriptionStore'
 import Id from '../material/Id'
+import SubscriptionEditorView from '../components/subscribe/SubscriptionEditorView'
 
 const PickChangeView = () => {
   const {subscriptionId} = useParams<{subscriptionId: string}>()
@@ -39,7 +40,7 @@ const SubscribeRouter = () => {
         <SubscriptionSingleView />
       </Route>
       <Route path={`${path}/subscriptionChange/:subscriptionId`}>
-        <PickChangeView />
+        <SubscriptionEditorView />
       </Route>
     </Switch>
   )
