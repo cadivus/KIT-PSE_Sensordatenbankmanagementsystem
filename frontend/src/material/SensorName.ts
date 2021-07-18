@@ -8,7 +8,7 @@ class SensorName {
     this.name = name
   }
 
-  toString = (): string => {
+  toString(): string {
     const {name} = this
     return name
   }

@@ -11,7 +11,7 @@ class Id {
     this.id = id
   }
 
-  toString = (): string => {
+  toString(): string {
     const {id} = this
     return id
   }
