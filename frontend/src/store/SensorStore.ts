@@ -57,6 +57,14 @@ class SensorStore {
       mockSensor(i)
     }
   }
+
+  getSensor = (id: Id): Sensor | undefined => {
+    const {getSensorsFromBackend} = this
+    getSensorsFromBackend()
+    const {_sensors} = this
+
+    return _sensors.get(id.toString())
+  }
 }
 
 export default SensorStore
