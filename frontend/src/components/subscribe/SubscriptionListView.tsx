@@ -17,7 +17,7 @@ import {createStyles, makeStyles} from '@material-ui/core/styles'
 import {useHistory} from 'react-router-dom'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Checkbox from '@material-ui/core/Checkbox'
-import useSensorStore from '../../hooks/UseSensorStore'
+import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const SubscriptionListView: FC = () => {
   const history = useHistory()
   const classes = useStyles()
-  const sensorStore = useSensorStore()
+  const subscriptionStore = useSubscriptionStore()
 
   return (
     <div className={classes.root}>
@@ -89,17 +89,17 @@ const SubscriptionListView: FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {sensorStore?.sensors.map(sensor => (
-                <StyledTableRow hover key={sensor.name.name}>
+              {subscriptionStore?.getSubscriptions().map(subscription => (
+                <StyledTableRow hover key={subscription.sensors[0].name.name}>
                   <StyledTableCell component="th" scope="row">
-                    <Typography variant="h5">{sensor.name.name}</Typography>
+                    <Typography variant="h5">{subscription.sensors[0].name.name}</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Typography variant="body1">Every 3 days</Typography>
+                    <Typography variant="body1">Every {subscription.notificationLevel.days} days</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
                     <Checkbox
-                      defaultChecked
+                      checked={subscription.directNotification}
                       disabled
                       color="primary"
                       inputProps={{'aria-label': 'secondary checkbox'}}
@@ -109,7 +109,7 @@ const SubscriptionListView: FC = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => history.push('/subscriptions/subscriptionChangeView')}
+                      onClick={() => history.push(`/subscriptions/subscriptionChange/${subscription.id.toString()}`)}
                     >
                       change
                     </Button>
@@ -118,7 +118,9 @@ const SubscriptionListView: FC = () => {
                     <Button
                       variant="contained"
                       color="secondary"
-                      onClick={() => history.push('/subscriptions/subscriptionSingleView')}
+                      onClick={() =>
+                        history.push(`/subscriptions/subscriptionSingleView/${subscription.id.toString()}`)
+                      }
                     >
                       unsubscribe
                     </Button>

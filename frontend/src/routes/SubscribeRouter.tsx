@@ -1,8 +1,6 @@
 import {Route, Switch, useRouteMatch} from 'react-router-dom'
-import SubscriptionChangeView from '../components/subscribe/SubscriptionChangeView'
-import SubscriptionMultipleView from '../components/subscribe/SubscriptionMultipleView'
-import SubscriptionSingleView from '../components/subscribe/SubscriptionSingleView'
 import SubscriptionListView from '../components/subscribe/SubscriptionListView'
+import SubscriptionEditorView from '../components/subscribe/SubscriptionEditorView'
 
 /**
  * This class routes requests to subscriptions from the users web browser.
@@ -15,15 +13,11 @@ const SubscribeRouter = () => {
       <Route path={`${path}/`} exact>
         <SubscriptionListView />
       </Route>
-      <Route path={`${path}/subscriptionChangeView`} exact>
-        <SubscriptionChangeView />
+      <Route component={SubscriptionEditorView} path={`${path}/subscriptionChange/:subscriptionId`} />
+      <Route path={`${path}/subscriptionChange/:subscriptionId`}>
+        <SubscriptionEditorView />
       </Route>
-      <Route path={`${path}/subscriptionMultipleView`} exact>
-        <SubscriptionMultipleView />
-      </Route>
-      <Route path={`${path}/subscriptionSingleView`} exact>
-        <SubscriptionSingleView />
-      </Route>
+      <Route component={SubscriptionEditorView} path={`${path}/subscriptionCreate`} />
     </Switch>
   )
 }
