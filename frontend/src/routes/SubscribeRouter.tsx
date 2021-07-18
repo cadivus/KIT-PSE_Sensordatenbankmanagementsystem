@@ -1,4 +1,4 @@
-import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom'
+import {Route, Switch, useRouteMatch} from 'react-router-dom'
 import SubscriptionListView from '../components/subscribe/SubscriptionListView'
 import SubscriptionEditorView from '../components/subscribe/SubscriptionEditorView'
 
