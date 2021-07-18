@@ -24,7 +24,8 @@ const StartpageView: FC = () => {
 
   const subscribeClicked = () => {
     history.push({
-      pathname: "/subscriptions/subscriptionChange/sdfsdf",
+      pathname: '/subscriptions/subscriptionCreate',
+      // eslint-disable-next-line object-shorthand
       state: {selectedSensors: selectedSensors},
     })
   }

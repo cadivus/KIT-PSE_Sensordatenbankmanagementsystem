@@ -1,7 +1,7 @@
 // http://localhost:3000/subscriptions/subscriptionChangeView
 
 import React, {useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams, Redirect} from 'react-router-dom'
 import {
   Button,
   Container,
@@ -23,6 +23,7 @@ import SubscriptionSettings from './SubscriptionSettings'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 import Id from '../../material/Id'
 import Sensor from '../../material/Sensor'
+import NotificationLevel from '../../material/NotificationLevel'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -78,32 +79,63 @@ const SensorsList = ({sensors}: {sensors: Array<Sensor>}) => {
   )
 }
 
+const ErrorHandling = () => {
+  return <Redirect to="/" />
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const checkProps = (props: any) => {
+  if (!props) return false
+  if (!props.location) return false
+  if (!props.location.state) return false
+  if (!props.location.state.selectedSensors) return false
+  if (props.location.state.selectedSensors.size === 0) return false
+
+  return true
+}
+
 /**
  * Displays the webpage of the multiple subscription
  * This class implements a React component.
  */
-const SubscriptionEditorView = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const SubscriptionEditorView = (props: any) => {
   const classes = useStyles()
   const {subscriptionId} = useParams<{subscriptionId: string}>()
   const subscriptionStore = useSubscriptionStore()
-
   const subscription = subscriptionStore?.getSubscription(new Id(subscriptionId))
-  const [directNotification, setDirectNotification] = useState(subscription?.directNotification)
 
-  const [notificationLevel, setNotificationLevel] = useState(subscription?.notificationLevel)
+  if (!subscription && !checkProps(props)) {
+    return <ErrorHandling />
+  }
+  const createMode = !subscription
+
+  const [directNotification, setDirectNotification] = createMode
+    ? useState(false)
+    : useState(subscription?.directNotification)
+  const [notificationLevel, setNotificationLevel] = createMode
+    ? useState(new NotificationLevel(5, true))
+    : useState(subscription?.notificationLevel)
+
   const updateSubscription = () => {
     if (!subscription) return
     if (notificationLevel) subscription.notificationLevel = notificationLevel
     if (typeof directNotification === 'boolean') subscription.directNotification = directNotification
   }
 
-  const multipleSensors = subscription ? subscription?.sensors.length > 1 : false
-  const sensors = subscription ? subscription?.sensors : new Array<Sensor>()
+  const sensors = subscription ? subscription.sensors : new Array<Sensor>()
+  if (createMode) {
+    props.location.state.selectedSensors.forEach((e: Sensor) => {
+      sensors.push(e)
+    })
+  }
+
+  const multipleSensors = sensors && sensors.length > 1
 
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Grid container spacing={3}>
-        {multipleSensors ? (
+        {multipleSensors && sensors ? (
           <Grid item xs={5}>
             <SensorsList sensors={sensors} />
           </Grid>
