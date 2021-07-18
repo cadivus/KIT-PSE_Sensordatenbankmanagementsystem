@@ -117,11 +117,15 @@ const SubscriptionEditorView = (props: any) => {
     ? useState(new NotificationLevel(5, true))
     : useState(subscription?.notificationLevel)
 
-  const updateSubscription = () => {
-    if (!subscription) return
-    if (notificationLevel) subscription.notificationLevel = notificationLevel
-    if (typeof directNotification === 'boolean') subscription.directNotification = directNotification
-  }
+  const updateSubscription = createMode
+    ? () => {
+        // For creating a subscription
+      }
+    : () => {
+        if (!subscription) return
+        if (notificationLevel) subscription.notificationLevel = notificationLevel
+        if (typeof directNotification === 'boolean') subscription.directNotification = directNotification
+      }
 
   const sensors = subscription ? subscription.sensors : new Array<Sensor>()
   if (createMode) {
@@ -150,7 +154,7 @@ const SubscriptionEditorView = (props: any) => {
             setNotificationLevel={setNotificationLevel}
           />
           <Button variant="outlined" onClick={() => updateSubscription()}>
-            <Typography variant="body1">Change</Typography>
+            <Typography variant="body1">{createMode ? 'Subscribe' : 'Change'}</Typography>
           </Button>
         </Grid>
       </Grid>
