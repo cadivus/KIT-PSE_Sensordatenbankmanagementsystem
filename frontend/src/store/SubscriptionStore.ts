@@ -3,6 +3,7 @@ import Subscription from '../material/Subscription'
 import SensorStore from './SensorStore'
 import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
+import Sensor from '../material/Sensor'
 
 /**
  * This is the storage for subscriptions.
@@ -71,6 +72,19 @@ class SubscriptionStore {
     const {subscriptions} = this
 
     return subscriptions.get(id.toString())
+  }
+
+  createSubscription = (
+    sensors: Array<Sensor>,
+    directNotification: boolean,
+    notificationLevel: NotificationLevel,
+  ): Subscription | null => {
+    const id = new Id(`id${new Date().getTime() / 1000}`)
+    const {_user, subscriptions} = this
+    if (!_user) return null
+    const result = new Subscription(id, sensors, directNotification, notificationLevel, _user)
+    subscriptions.set(id.toString(), result)
+    return result
   }
 }
 

@@ -1,7 +1,7 @@
 // http://localhost:3000/subscriptions/subscriptionChangeView
 
 import React, {useState} from 'react'
-import {useParams, Redirect} from 'react-router-dom'
+import {useParams, Redirect, useHistory} from 'react-router-dom'
 import {
   Button,
   Container,
@@ -101,6 +101,7 @@ const checkProps = (props: any) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SubscriptionEditorView = (props: any) => {
   const classes = useStyles()
+  const history = useHistory()
   const {subscriptionId} = useParams<{subscriptionId: string}>()
   const subscriptionStore = useSubscriptionStore()
   const subscription = subscriptionStore?.getSubscription(new Id(subscriptionId))
@@ -117,16 +118,6 @@ const SubscriptionEditorView = (props: any) => {
     ? useState(new NotificationLevel(5, true))
     : useState(subscription?.notificationLevel)
 
-  const updateSubscription = createMode
-    ? () => {
-        // For creating a subscription
-      }
-    : () => {
-        if (!subscription) return
-        if (notificationLevel) subscription.notificationLevel = notificationLevel
-        if (typeof directNotification === 'boolean') subscription.directNotification = directNotification
-      }
-
   const sensors = subscription ? subscription.sensors : new Array<Sensor>()
   if (createMode) {
     props.location.state.selectedSensors.forEach((e: Sensor) => {
@@ -135,6 +126,18 @@ const SubscriptionEditorView = (props: any) => {
   }
 
   const multipleSensors = sensors && sensors.length > 1
+
+  const updateSubscription = createMode
+    ? () => {
+        if (!subscriptionStore || !notificationLevel || !(typeof directNotification === 'boolean')) return
+        subscriptionStore.createSubscription(sensors, directNotification, notificationLevel)
+        history.push('/subscriptions')
+      }
+    : () => {
+        if (!subscription) return
+        if (notificationLevel) subscription.notificationLevel = notificationLevel
+        if (typeof directNotification === 'boolean') subscription.directNotification = directNotification
+      }
 
   return (
     <Container maxWidth="lg" className={classes.container}>
