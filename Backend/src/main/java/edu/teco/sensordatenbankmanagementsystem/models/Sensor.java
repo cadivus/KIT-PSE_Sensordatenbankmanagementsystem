@@ -47,7 +47,6 @@ public class Sensor {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Observation> observations;
 
-
     public List<Observation> getObservations() {
         return observations;
     }
