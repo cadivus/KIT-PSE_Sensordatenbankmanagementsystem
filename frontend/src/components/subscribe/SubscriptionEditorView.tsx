@@ -82,15 +82,15 @@ const SensorsList = ({sensors}: {sensors: Array<Sensor>}) => {
  * Displays the webpage of the multiple subscription
  * This class implements a React component.
  */
-const SubscriptionChangeView = () => {
+const SubscriptionEditorView = () => {
   const classes = useStyles()
   const {subscriptionId} = useParams<{subscriptionId: string}>()
   const subscriptionStore = useSubscriptionStore()
+
   const subscription = subscriptionStore?.getSubscription(new Id(subscriptionId))
-
   const [directNotification, setDirectNotification] = useState(subscription?.directNotification)
-  const [notificationLevel, setNotificationLevel] = useState(subscription?.notificationLevel)
 
+  const [notificationLevel, setNotificationLevel] = useState(subscription?.notificationLevel)
   const updateSubscription = () => {
     if (!subscription) return
     if (notificationLevel) subscription.notificationLevel = notificationLevel
@@ -126,4 +126,4 @@ const SubscriptionChangeView = () => {
   )
 }
 
-export default SubscriptionChangeView
+export default SubscriptionEditorView
