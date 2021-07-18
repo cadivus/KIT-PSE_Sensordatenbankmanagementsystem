@@ -99,7 +99,11 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
                   />
                 </StyledTableCell>
                 <StyledTableCell>
-                  <Button variant="outlined" color="primary" onClick={() => history.push('/sensorInformation')}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => history.push(`/sensorInformation/${sensor.id.toString()}`)}
+                  >
                     Info
                   </Button>
                 </StyledTableCell>
