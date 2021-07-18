@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
+import Sensor from '../../material/Sensor'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -44,7 +45,7 @@ const useStyles = makeStyles({
  *  Displays the properties of a selected sensor.
  *  This class implements a React component.
  */
-const Properties = () => {
+const Properties = ({sensor}: {sensor: Sensor}) => {
   const classes = useStyles()
 
   return (
@@ -53,10 +54,10 @@ const Properties = () => {
         <TableBody>
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">Property1: </Typography>
+              <Typography variant="h6">Value: </Typography>
             </StyledTableCell>
             <StyledTableCell>
-              <Typography variant="h6">Aaa </Typography>
+              <Typography variant="h6">{sensor.getValue().toString()}</Typography>
             </StyledTableCell>
           </StyledTableRow>
           <StyledTableRow>
