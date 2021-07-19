@@ -7,6 +7,11 @@ class SensorName {
   constructor(name: string) {
     this.name = name
   }
+
+  toString(): string {
+    const {name} = this
+    return name
+  }
 }
 
 export default SensorName

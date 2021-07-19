@@ -29,7 +29,7 @@ const Router = () => (
         <Route path="/" exact>
           <StartpageView />
         </Route>
-        <Route path="/sensorInformation" exact>
+        <Route path="/sensorInformation/:sensorId" exact>
           <SensorInformationView />
         </Route>
         <Route path="/replay">

@@ -1,5 +1,6 @@
 import SensorValue from './SensorValue'
 import SensorName from './SensorName'
+import Id from './Id'
 
 /**
  * this class represents a sensor.
@@ -8,10 +9,16 @@ abstract class Sensor {
   /**
    * Name of the sensor
    */
-  name: SensorName = new SensorName('Sensor')
+  readonly name: SensorName
 
-  constructor(name: SensorName) {
+  /**
+   * Id of the sensor
+   */
+  readonly id: Id
+
+  constructor(name: SensorName, id: Id) {
     this.name = name
+    this.id = id
   }
 
   /**

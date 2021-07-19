@@ -10,6 +10,11 @@ class SensorValue {
   constructor(value: number) {
     this.value = value
   }
+
+  toString(): string {
+    const {value} = this
+    return `${value}`
+  }
 }
 
 export default SensorValue
