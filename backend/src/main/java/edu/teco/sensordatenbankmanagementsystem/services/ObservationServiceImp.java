@@ -3,20 +3,18 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
-import edu.teco.sensordatenbankmanagementsystem.util.ConversionUtilities;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -30,10 +28,9 @@ public class ObservationServiceImp implements ObservationService {
     Map<UUID, SseEmitter> sseStreams = new HashMap<UUID, SseEmitter>();
 
     @Autowired
-    public ObservationServiceImp(ObservationRepository repository){
+    public ObservationServiceImp(ObservationRepository repository) {
         this.repository = repository;
     }
-
 
     /**
      * {@inheritDoc}
@@ -64,7 +61,7 @@ public class ObservationServiceImp implements ObservationService {
     /**
      * {@inheritDoc}
      */
-    public UUID createReplay(Requests information){
+    public UUID createReplay(Requests information) {
         return UUID.randomUUID();
     }
 
@@ -78,46 +75,88 @@ public class ObservationServiceImp implements ObservationService {
     /**
      * {@inheritDoc}
      */
-    public void destroyDataStream(UUID id){
+    public void destroyDataStream(UUID id) {
         sseStreams.remove(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Observation getObservation(UUID id) {
-        return repository.getById(ConversionUtilities.convertUUIDToLong(id));
+    public Observation getObservation(Long id) {
+        return repository.findById(id).get();
     }
 
-    public void dataAggregation() {
+    /**
+     * interpolates expected numerical observation values on a given set of observation data
+     */
+    public static class Interpolator {
+        private final List<Double> f;
+        private final List<Double> x;
 
-    }
-    private Stream<Observation> fillGaps(Stream<Observation> observations) {
-
-        final Var prev = new Var(); // required to be final, so a wrapper is needed to modify the instance
-
-        Stream<Observation> result = observations
-                .map(curr -> {
-                    final ArrayList<Observation> sub = new ArrayList<>();
-
-                    if(prev.instance != null) {
-                        for (LocalDate date = prev.instance.date.plusDays(1); date.isBefore(curr.date); date = date.plusDays(1)) {
-                            sub.add(new Observation(date, prev.instance.value));
-                        }
+        /**
+         * interpolates by calculating the newton representation of the interpolation polynomial
+         * as we don't have all function values at arbitrary positions, thus can not choose more efficient interpolation points
+         * @param interpolationPoints points to interpolate to, don't overdo the amount
+         */
+        public Interpolator(Collection<Observation> interpolationPoints) {
+            List<Observation> points = new ArrayList<>(interpolationPoints);
+            int N = points.size();
+            this.x = points.stream().map(e -> (double) e.getDate().toEpochDay()).collect(Collectors.toList());
+            this.f = new ArrayList<>(N);
+            List<Double> tmp = points.stream().map(Observation::getValue).collect(Collectors.toList());
+            for (int i = N; i > 0; i--) {
+                if (i < N) {
+                    for(int j = 0; j < i; j++){
+                        tmp.set(j, (tmp.get(j)-tmp.get(j+1)) / (this.x.get(j) - this.x.get(j+N-i)));
                     }
+                }
+                this.f.add(tmp.get(i - 1));
+            }
+        }
 
-                    sub.add(curr);
-                    prev.instance = curr;
-
-                    return sub;
-                })
-                .flatMap( l -> l.stream());
-
-        return result;
+        /**
+         * gets the interpolated value at the given date
+         * @param date to get the value at
+         * @return interpolated value at the given date
+         */
+        public Observation getAt(LocalDate date) {
+            double at = date.toEpochDay();
+            double value = this.f.get(0);
+            double poly = 1;
+            for(int i = 1; i < this.f.size(); i++){
+                poly *= (at - this.x.get(i - 1));
+                value += this.f.get(i) * poly;
+            }
+            return new Observation(value, date);
+        }
     }
 
-    // Helper class
-    class Var {
-        public Observation instance;
-    }
+//    private Stream<Observation> fillGaps(Stream<Observation> observations) {
+//
+//        Var prev = new Var(); //trying out whether something fails without final,  required to be final, so a wrapper is needed to modify the instance
+//
+//        Stream<Observation> result = observations
+//                .map(curr -> {
+//                    final ArrayList<Observation> sub = new ArrayList<>();
+//
+//                    if(prev.instance != null) {
+//                        for (LocalDate date = prev.instance.date.plusDays(1); date.isBefore(curr.date); date = date.plusDays(1)) {
+//                            sub.add(new Observation(date, prev.instance.value));
+//                        }
+//                    }
+//
+//                    sub.add(curr);
+//                    prev.instance = curr;
+//
+//                    return sub;
+//                })
+//                .flatMap( l -> l.stream());
+//
+//        return result;
+//    }
+//
+//    // Helper class
+//    class Var {
+//        public Observation instance;
+//    }
 }
