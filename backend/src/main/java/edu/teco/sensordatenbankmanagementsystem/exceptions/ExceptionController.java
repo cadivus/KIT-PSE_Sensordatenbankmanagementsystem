@@ -1,7 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.exceptions;
 
 import lombok.extern.apachecommons.CommonsLog;
-import lombok.extern.java.Log;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -36,10 +33,10 @@ public class ExceptionController {
      * @param request is the webrequest that resulted in this exception
      * @return A responseentity for the User to see
      */
-    @ExceptionHandler(SensorNotFoundException.class)
+    @ExceptionHandler(ObjectNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleItemNotFoundException(
-            SensorNotFoundException exception,
+            ObjectNotFoundException exception,
             WebRequest request
     ){
         log.error("Failed to find the requested element", exception);
