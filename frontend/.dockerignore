@@ -5,6 +5,6 @@
 **/.Dockerfile*
 **/.node_modules
 **/.npm-debug.log
-.eslintrc.yml
-.eslintignore
+**/.eslintrc.yml
+**/.eslintignore
 README.md
