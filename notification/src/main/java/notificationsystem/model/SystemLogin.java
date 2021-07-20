@@ -1,23 +1,27 @@
 package notificationsystem.model;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "LoginUtility")
+@Table
 public class SystemLogin {
 
     @Id
+    @Column(
+            name = "id",
+            updatable = false
+    )
     private long id;
-    @Convert(converter = Encryptor.class)
+    @Column(
+            name = "username",
+            nullable = false
+    )
     private String username;
     @Convert(converter = Encryptor.class)
+    @Column(
+            name = "password",
+            nullable = false
+    )
     private String password;
 
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
