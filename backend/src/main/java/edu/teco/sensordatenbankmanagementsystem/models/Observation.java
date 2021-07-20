@@ -22,6 +22,7 @@ import java.util.Date;
 @Table(name = "\"OBSERVATIONS\"")
 public class Observation {
 
+
     @JsonIgnore
     @Transient
     String propertyType;
