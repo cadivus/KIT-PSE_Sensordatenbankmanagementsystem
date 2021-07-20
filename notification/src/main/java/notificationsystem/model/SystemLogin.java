@@ -3,7 +3,7 @@ package notificationsystem.model;
 import javax.persistence.*;
 
 @Entity(name = "LoginUtility")
-@Table
+@Table(name = "systemlogin")
 public class SystemLogin {
 
     @Id
