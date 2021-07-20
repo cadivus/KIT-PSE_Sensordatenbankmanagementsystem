@@ -1,12 +1,17 @@
+import EventEmitter from 'events'
 import User from '../material/User'
 import EMail from '../material/EMail'
 import LoginCode from '../material/LoginCode'
+
+declare interface UserStore {
+  on(event: 'login-change', listener: (name: string) => void): this
+}
 
 /**
  * This is the storage for users.
  * It holds all the user objects, gets data from the backend and synchronizes data.
  */
-class UserStore {
+class UserStore extends EventEmitter {
   /**
    * The user currently logged in.
    * It will be write protected for store users.
@@ -33,6 +38,7 @@ class UserStore {
   requestUser = (email: EMail, loginCode: LoginCode): User | null => {
     const logoutUser = () => {
       this.user = null
+      this.emit('login-change')
     }
 
     this.user = new (class extends User {
@@ -42,6 +48,7 @@ class UserStore {
     })(email)
 
     const {user} = this
+    this.emit('login-change')
     return user
   }
 }

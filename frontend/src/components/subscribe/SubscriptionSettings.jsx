@@ -2,6 +2,8 @@ import React from 'react'
 import {Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography} from '@material-ui/core'
 import Checkbox from '@material-ui/core/Checkbox'
 import {makeStyles} from '@material-ui/core/styles'
+// eslint-disable-next-line import/no-unresolved
+import NotificationLevel from '../../material/NotificationLevel'
 
 const useStyles = makeStyles({
   Numberfield: {
@@ -14,7 +16,8 @@ const useStyles = makeStyles({
  * Shows the settings of a single subscribtion (sensor, direct notification, notification level).
  * This class implements a React component.
  */
-const SubscriptionSettings = () => {
+// eslint-disable-next-line max-len
+const SubscriptionSettings = ({directNotification, setDirectNotification, notificationLevel, setNotificationLevel}) => {
   const classes = useStyles()
 
   return (
@@ -24,7 +27,12 @@ const SubscriptionSettings = () => {
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row">
-                <Checkbox defaultChecked color="primary" inputProps={{'aria-label': 'secondary checkbox'}} />
+                <Checkbox
+                  checked={directNotification}
+                  color="primary"
+                  inputProps={{'aria-label': 'secondary checkbox'}}
+                  onChange={e => setDirectNotification(e.target.checked)}
+                />
               </TableCell>
               <TableCell>
                 <Typography variant="body1">Direct notification on failures</Typography>
@@ -32,7 +40,13 @@ const SubscriptionSettings = () => {
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
-                <Checkbox defaultChecked color="primary" inputProps={{'aria-label': 'secondary checkbox'}} />
+                <Checkbox
+                  checked={notificationLevel.active}
+                  color="primary"
+                  inputProps={{'aria-label': 'secondary checkbox'}}
+                  // eslint-disable-next-line max-len
+                  onChange={e => setNotificationLevel(new NotificationLevel(notificationLevel.days, e.target.checked))}
+                />
               </TableCell>
               <TableCell>
                 <Typography variant="body1">
@@ -41,10 +55,13 @@ const SubscriptionSettings = () => {
                     id="standard-number"
                     label="Number"
                     type="number"
+                    value={notificationLevel.days}
                     InputLabelProps={{
                       shrink: true,
                     }}
                     className={classes.Numberfield}
+                    // eslint-disable-next-line max-len
+                    onInput={e => setNotificationLevel(new NotificationLevel(e.target.value, notificationLevel.active))}
                   />
                   days
                 </Typography>

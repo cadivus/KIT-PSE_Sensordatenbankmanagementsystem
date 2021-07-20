@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import edu.teco.sensordatenbankmanagementsystem.util.ConversionUtilities;
+
 /**
  * This is an implementation of the {@link SensorService} interface catered towards us using the TECO database
  */
@@ -40,19 +42,18 @@ public class SensorServiceImp implements SensorService {
      * {@inheritDoc}
      */
     public Sensor getSensor(UUID id){
-        return repository.getById(1L);
+        return repository.getById(ConversionUtilities.convertUUIDToLong(id));
     }
 
     /**
      * {@inheritDoc}
      */
     public Sensor getSensorMetaData(UUID id){
-        return repository.getById(1L);
+        return repository.getById(ConversionUtilities.convertUUIDToLong(id));
     }
 
     public List<Sensor> getAllSensors() {
-        return new ArrayList<>();
-    //    return repository.findAll();
+        return repository.findAll();
     }
 
 }
