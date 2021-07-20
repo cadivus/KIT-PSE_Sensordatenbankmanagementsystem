@@ -85,7 +85,10 @@ public class Observation {
     public Observation(){
 
     }
-    public Observation(LocalDate date, double value) {
+
+    public Observation(double value, LocalDate date) {
+        this.value = value;
+        this.date = date;
     }
 
     @Override
