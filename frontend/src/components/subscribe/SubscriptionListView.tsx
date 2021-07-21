@@ -2,6 +2,9 @@ import React, {FC} from 'react'
 import {
   Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   Paper,
   Table,
   TableBody,
@@ -50,6 +53,10 @@ const useStyles = makeStyles((theme: Theme) =>
         color: theme.palette.primary.main,
       },
     },
+    unsubscribe: {
+      marginLeft: '89.5%',
+      marginTop: '15px',
+    },
   }),
 )
 
@@ -61,6 +68,16 @@ const SubscriptionListView: FC = () => {
   const history = useHistory()
   const classes = useStyles()
   const subscriptionStore = useSubscriptionStore()
+
+  const [open, setOpen] = React.useState(false)
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   return (
     <div className={classes.root}>
@@ -85,7 +102,9 @@ const SubscriptionListView: FC = () => {
                   </Typography>
                 </StyledTableCell>
                 <StyledTableCell />
-                <StyledTableCell />
+                <StyledTableCell>
+                  <Typography variant="h5">Unsubscribe</Typography>
+                </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -115,21 +134,32 @@ const SubscriptionListView: FC = () => {
                     </Button>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() =>
-                        history.push(`/subscriptions/subscriptionSingleView/${subscription.id.toString()}`)
-                      }
-                    >
-                      unsubscribe
-                    </Button>
+                    <Checkbox color="primary" inputProps={{'aria-label': 'secondary checkbox'}} />
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen} className={classes.unsubscribe}>
+          Unsubscribe
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Do you really want to unsubscribe these Datastreams?</DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Disagree
+            </Button>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </div>
   )
