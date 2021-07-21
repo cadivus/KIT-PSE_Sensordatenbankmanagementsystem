@@ -86,12 +86,10 @@ public class SubscriptionDAO implements DAO<Subscription>{
         return sensors;
     }
 
-    @Override
     public void save(Subscription subscription) {
         subscriptionRepository.save(subscription);
     }
 
-    @Override
     public void delete(Subscription subscription) {
         subscriptionRepository.delete(subscription);
     }

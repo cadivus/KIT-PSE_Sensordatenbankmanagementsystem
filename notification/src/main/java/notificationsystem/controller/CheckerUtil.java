@@ -1,13 +1,16 @@
 package notificationsystem.controller;
 
+import notificationsystem.model.Sensor;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
+import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * An instance of the CheckerUtil class always runs in the background. Its purpose is to regulary check if alerts
@@ -18,6 +21,7 @@ public class CheckerUtil {
 
     private static CheckerUtil INSTANCE;
     private Controller controller;
+
 
     /**
      * Private constructer only used by the getInstance method.
@@ -40,6 +44,7 @@ public class CheckerUtil {
      * If one or multiple sensor failures occurred, the method calls the controller to send an alert to the subscribers
      * of these sensors.
      */
+    @Scheduled(fixedRate = 50000)
     public void checkForSensorFailure() {
 
     }
@@ -49,11 +54,10 @@ public class CheckerUtil {
      * between these reports.
      * Calls the controller to send such a report to a subscriber if necessary.
      */
+    @Scheduled(fixedRate = 50000)
     public void checkForReports() {
         SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
         LinkedList<Subscription> subs = new LinkedList<Subscription>(subscriptionDAO.getAll());
-
-        //Check every half hour or so
 
         //Check if a report has to be sent
         for (Subscription subscription : subs) {

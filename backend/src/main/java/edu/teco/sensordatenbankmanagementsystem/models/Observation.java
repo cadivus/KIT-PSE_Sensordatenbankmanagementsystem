@@ -22,6 +22,7 @@ import java.util.Date;
 @Table(name = "\"OBSERVATIONS\"")
 public class Observation {
 
+
     @JsonIgnore
     @Transient
     String propertyType;
@@ -89,6 +90,13 @@ public class Observation {
     public Observation(double value, LocalDate date) {
         this.value = value;
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Observation )) return false;
+        return id != null && id.equals(((Observation) o).getId());
     }
 
     @Override

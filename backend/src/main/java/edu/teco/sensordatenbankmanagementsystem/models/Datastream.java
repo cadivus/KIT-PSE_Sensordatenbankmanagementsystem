@@ -26,7 +26,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "`DATASTREAMS`")
+@Table(name = "\"DATASTREAMS\"")
 public class Datastream {
 
     @Column(name = "\"ID\"")
@@ -39,7 +39,7 @@ public class Datastream {
     String description;
     
     @Column(name = "\"SENSOR_ID\"")
-    String sensorId;
+    String sensor_id;
 
     @Column(name = "\"PHENOMENON_TIME_START\"")
     @JsonFormat(pattern="dd/MM/yyyy@hh:mm:ss")
