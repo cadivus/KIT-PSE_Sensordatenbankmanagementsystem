@@ -103,7 +103,9 @@ const SubscriptionListView: FC = () => {
                 </StyledTableCell>
                 <StyledTableCell />
                 <StyledTableCell>
-                  <Typography variant="h5">Unsubscribe</Typography>
+                  <Typography variant="h5">
+                    <ArrowDropDownIcon /> Unsubscribe
+                  </Typography>
                 </StyledTableCell>
               </TableRow>
             </TableHead>
