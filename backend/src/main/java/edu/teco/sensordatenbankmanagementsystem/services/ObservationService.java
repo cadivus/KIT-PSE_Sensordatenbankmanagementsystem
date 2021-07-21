@@ -2,8 +2,11 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -47,5 +50,6 @@ public interface ObservationService {
      */
     void destroyDataStream(UUID id);
 
-
+    List<Observation> getObservationsBySensorId(String sensorId, int limit, String sort, String filter);
 }
+

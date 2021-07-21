@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

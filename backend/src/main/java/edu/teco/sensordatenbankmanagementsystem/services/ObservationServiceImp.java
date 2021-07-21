@@ -1,10 +1,15 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
+import edu.teco.sensordatenbankmanagementsystem.exceptions.BadSortingTypeStringException;
+import edu.teco.sensordatenbankmanagementsystem.exceptions.NoSuchSortException;
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
+import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -25,11 +30,13 @@ import java.util.stream.Stream;
 public class ObservationServiceImp implements ObservationService {
 
     ObservationRepository repository;
+    DatastreamRepository datastreamRepository;
     Map<UUID, SseEmitter> sseStreams = new HashMap<UUID, SseEmitter>();
 
     @Autowired
-    public ObservationServiceImp(ObservationRepository repository) {
+    public ObservationServiceImp(ObservationRepository repository, DatastreamRepository datastreamRepository) {
         this.repository = repository;
+        this.datastreamRepository = datastreamRepository;
     }
 
     /**
@@ -77,6 +84,42 @@ public class ObservationServiceImp implements ObservationService {
      */
     public void destroyDataStream(UUID id) {
         sseStreams.remove(id);
+    }
+
+    @Override
+    public List<Observation> getObservationsBySensorId(String sensorId, int limit, String sort, String filter) {
+        List<Datastream> datastreams;
+        if(filter == null) {
+            datastreams = this.datastreamRepository.findBySensor_id(sensorId);
+        } else {
+            datastreams = this.datastreamRepository.findBySensor_idAndObs_Id(sensorId, filter);
+        }
+        List<Observation> observations = datastreams.stream()
+                .map(Datastream::getObservations)
+                .flatMap(Collection::stream)
+                .sorted(getComparator(sort))
+                .limit(limit)
+                .collect(Collectors.toList());
+        return observations;
+    }
+
+    private Comparator<Observation> getComparator(String sortingTypeString) {
+        String[] sortingInfo = sortingTypeString.split("-");
+        if(sortingInfo.length != 2) {
+            throw new BadSortingTypeStringException();
+        }
+        Comparator<Observation> r;
+        switch (sortingInfo[0]) {
+            case "date":
+                r = Comparator.comparing(a -> a.date);
+                break;
+            case "value":
+                r = Comparator.comparing(a -> a.value);
+                break;
+            default:
+                throw new NoSuchSortException();
+        }
+        return sortingInfo[1].equals("dsc") ? r.reversed() : r;
     }
 
     /**
