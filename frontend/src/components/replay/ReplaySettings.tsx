@@ -42,6 +42,9 @@ const useStyles = makeStyles({
   textField: {
     width: 130,
   },
+  topMargin: {
+    marginTop: '12.2%',
+  },
 })
 
 /**
@@ -52,7 +55,7 @@ const ReplaySettings = () => {
   const classes = useStyles()
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={classes.topMargin}>
       <Table>
         <TableBody>
           <StyledTableRow>

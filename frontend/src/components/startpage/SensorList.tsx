@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react'
+import React, {useState} from 'react'
 import {
   Button,
   Paper,
@@ -47,6 +47,9 @@ const useStyles = makeStyles({
   sensorCell: {
     width: '83%',
   },
+  container: {
+    marginTop: '10px',
+  },
 })
 
 /**
@@ -59,7 +62,7 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
   const sensorStore = useSensorStore()
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={classes.container}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>

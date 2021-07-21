@@ -50,6 +50,9 @@ const useStyles = makeStyles({
   container: {
     marginTop: '2%',
   },
+  marginTop: {
+    marginTop: '15px',
+  },
 })
 
 const SensorsList = ({sensors}: {sensors: Array<Sensor>}) => {
@@ -156,7 +159,7 @@ const SubscriptionEditorView = (props: any) => {
             notificationLevel={notificationLevel}
             setNotificationLevel={setNotificationLevel}
           />
-          <Button variant="outlined" onClick={() => updateSubscription()}>
+          <Button variant="outlined" onClick={() => updateSubscription()} className={classes.marginTop}>
             <Typography variant="body1">{createMode ? 'Subscribe' : 'Change'}</Typography>
           </Button>
         </Grid>
