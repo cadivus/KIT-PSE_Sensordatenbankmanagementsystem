@@ -18,13 +18,7 @@ public interface SensorService {
      * This returns a single Sensor by its ID
      * @param id The UUID of the Sensor to be returned
      */
-    Sensor getSensor(UUID id);
-
-    /**
-     * This gets the MetaData of a single Sensor using either the Id of the Sensor or of the Metadata
-     * @param id The UUID of the Meta Data or the Sensor
-     */
-    Sensor getSensorMetaData(UUID id);
+    Sensor getSensor(String id);
 
     List<Sensor> getAllSensors();
 

@@ -82,8 +82,8 @@ public class ObservationServiceImp implements ObservationService {
     /**
      * {@inheritDoc}
      */
-    public Observation getObservation(Long id) {
-        return repository.findById(id).get();
+    public Observation getObservation(String id) {
+        return repository.getById(id);
     }
 
     /**

@@ -10,9 +10,9 @@ import java.util.Optional;
  * Provides abstraction to direct database queries towards {@link Observation} data
  */
 @Repository
-public interface ObservationRepository extends JpaRepository<Observation, Long> {
+public interface ObservationRepository extends JpaRepository<Observation, String> {
 
 
-    Optional<Observation> findById(Long id);
+    Optional<Observation> findById(String id);
 
 }

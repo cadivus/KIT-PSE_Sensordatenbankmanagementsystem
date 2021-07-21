@@ -51,7 +51,7 @@ public class SensorController {
      * @return sensor with given UUID, if present
      */
     @GetMapping("/Sensor/{id}")
-    public Sensor getSensor(@PathVariable UUID id) {
+    public Sensor getSensor(@PathVariable String id) {
         if (false) throw new SensorNotFoundException();
 
         return sensorService.getSensor(id);
