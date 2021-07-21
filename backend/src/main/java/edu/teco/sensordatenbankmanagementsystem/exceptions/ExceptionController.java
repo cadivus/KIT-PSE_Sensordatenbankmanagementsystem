@@ -32,7 +32,8 @@ public class ExceptionController {
 
     @ExceptionHandler(value = IllegalStateException.class)
     public ResponseEntity<Object> handleIllegalStateException(IllegalStateException exception) {
-        log.info("test");
+        log.error(exception);
+        exception.printStackTrace();
         return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
     }
 

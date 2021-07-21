@@ -1,11 +1,14 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
-import edu.teco.sensordatenbankmanagementsystem.services.ObservationServiceImp;
+import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
+import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import lombok.extern.apachecommons.CommonsLog;
-import org.jooq.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import org.supercsv.io.CsvBeanWriter;
-import org.supercsv.io.ICsvBeanWriter;
-import org.supercsv.prefs.CsvPreference;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -39,16 +39,20 @@ import java.util.UUID;
 @ResponseBody
 @Controller
 public class ObservationController {
-    ObservationService observationService;
+    public final ObservationService observationService;
+    public final SensorService sensorService;
     /**
      * Instantiates a new Observation controller.
      *
      * @param observationService the observation service which handles the underlying business logic
      *                           The Autowired Annotation automatically injects a Spring bean
+     * @param sensorService
      */
     @Autowired
-    public ObservationController(ObservationService observationService) {
+    public ObservationController(ObservationService observationService,
+        SensorService sensorService) {
         this.observationService = observationService;
+        this.sensorService = sensorService;
     }
     /**
      * Maps a post request that creates a new SSE stream
@@ -73,35 +77,28 @@ public class ObservationController {
     }
 
     @GetMapping("/allobservations/{id}")
-    public List<Observation> getObservationsBySensorId(@PathVariable String sensorUUID){
-        return null;
+    public List<Observation> getObservationsBySensorId(@PathVariable String id){
+        return new ArrayList<Observation>();
     }
 
 
-    @GetMapping("/Export/{id}")
-    public void exportToVSC(@PathVariable String id, HttpServletResponse response) throws IOException {
+    @GetMapping(value = {"/Export/{id}", "/Export/{id}/{start}","/Export/{id}/{start}/{end}"})
+    public void exportToVSC(@PathVariable String id, @PathVariable(required = false) LocalDateTime start,@PathVariable(required = false) LocalDateTime end, HttpServletResponse response) throws IOException {
         response.setContentType("text/csv");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String currentDateTime = dateFormatter.format(new Date());
-
+        if (null == start)
+            start = LocalDateTime.of(1900,1,1,0,0);
+        if (null == end)
+            end = LocalDateTime.now();
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
         response.setHeader(headerKey, headerValue);
 
-        //TODO: This is incorrect
-        List<Observation> list = List.of(observationService.getObservation(id));
+        //TODO: Overload these methods instead of using useless start and end points
+       List<Observation> list = observationService.getObservationByDatastream(sensorService.getDatastream(id, start, end), start, end);
 
-        ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
-        String[] csvHeader = {"User ID", "E-mail", "Full Name", "Roles", "Enabled"};
-        String[] nameMapping = {"id", "email", "fullName", "roles", "enabled"};
-
-        csvWriter.writeHeader(csvHeader);
-
-        for (Observation observation : list) {
-            csvWriter.write(observation, nameMapping);
-        }
-
-        csvWriter.close();
+        WriteCsvToResponse.writeObservation(response.getWriter(), list);
 
     }
 

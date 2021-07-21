@@ -1,18 +1,18 @@
 package edu.teco.sensordatenbankmanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * This data class represents one recorded observation of a sensor.
@@ -20,6 +20,9 @@ import java.util.Date;
 @Entity
 @Data
 @Table(name = "\"OBSERVATIONS\"")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id")
 public class Observation {
 
 
@@ -33,28 +36,30 @@ public class Observation {
     @Transient
     public LocalDate date;
 
-    @ManyToOne
-    @JoinColumn(name = "\"DATASTREAM_ID\"")
-    private Datastream datastream;
+    @Column(name = "\"DATASTREAM_ID\"")
+    private String datastream;
 
     @Column(name = "\"ID\"")
     @Id
     String id;
 
     @Column(name = "\"PHENOMENON_TIME_START\"")
-    LocalDate phenomenonStart;
+    @JsonFormat(pattern="dd/MM/yyyy@hh:mm:ss")
+    LocalDateTime phenomenonStart;
 
     @Column(name = "\"PHENOMENON_TIME_END\"")
-    LocalDate phenomenonEnd;
+    @JsonFormat(pattern="dd/MM/yyyy@hh:mm:ss")
+    LocalDateTime phenomenonEnd;
 
     @Column(name = "\"RESULT_TIME\"")
-    LocalDate resultTime;
+    @JsonFormat(pattern="dd/MM/yyyy@hh:mm:ss")
+    LocalDateTime resultTime;
 
     @Column(name = "\"RESULT_TYPE\"")
-    int type;
+    Integer type;
 
     @Column(name = "\"RESULT_NUMBER\"")
-    float resultNumber;
+    Float resultNumber;
 
     @Column(name = "\"RESULT_STRING\"")
     String resultString;
@@ -69,10 +74,10 @@ public class Observation {
     String resultQuality;
 
     @Column(name = "\"VALID_TIME_START\"")
-    LocalDate validTimeStart;
+    LocalDateTime validTimeStart;
 
     @Column(name = "\"VALID_TIME_END\"")
-    LocalDate validTimeEnd;
+    LocalDateTime validTimeEnd;
 
     @Column(name = "\"PARAMETERS\"")
     String params;

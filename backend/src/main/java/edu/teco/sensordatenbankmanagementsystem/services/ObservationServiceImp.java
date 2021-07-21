@@ -1,12 +1,14 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
+import java.time.LocalDateTime;
+import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -16,13 +18,12 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * The ObservationServiceImp is an implementation of the {@link ObservationService} interface catered towards using the TECO database
  */
 @Service
-@CommonsLog
+@CommonsLog(topic = "Observationservice")
 public class ObservationServiceImp implements ObservationService {
 
     ObservationRepository repository;
@@ -85,9 +86,12 @@ public class ObservationServiceImp implements ObservationService {
 
     /**
      * {@inheritDoc}
+     * @return
      */
-    public Observation getObservation(String id) {
-        return repository.findById(id).get();
+    @Transactional
+    public List<Observation> getObservationByDatastream(Datastream datastream, LocalDateTime start, LocalDateTime end) {
+        List<Observation> result =  repository.findObservationsByDatastreamAndPhenomenonStartAfterAndPhenomenonEndBefore(datastream.getId(), start,end).collect(Collectors.toList());
+        return result;
     }
 
     /**

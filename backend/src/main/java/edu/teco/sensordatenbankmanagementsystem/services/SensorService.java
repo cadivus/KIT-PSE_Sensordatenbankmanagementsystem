@@ -3,6 +3,7 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +28,9 @@ public interface SensorService {
      */
     Sensor getSensorMetaData(String id);
 
-    Datastream getDatastream(String sensor_id);
+    Datastream getDatastream(String senor_id);
+
+    Datastream getDatastream(String sensor_id, LocalDateTime start, LocalDateTime end);
 
     List<Sensor> getAllSensors();
 

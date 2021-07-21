@@ -5,6 +5,7 @@ import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

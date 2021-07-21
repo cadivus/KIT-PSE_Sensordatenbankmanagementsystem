@@ -3,9 +3,15 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
+import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.SensorRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,15 +22,22 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @CommonsLog
+@Transactional
 public class SensorServiceImp implements SensorService {
 
   SensorRepository repository;
   DatastreamRepository datastreamRepository;
+  private final EntityManager entityManager;
+  private final ObservationRepository observationRepository;
 
   @Autowired
-  public SensorServiceImp(SensorRepository repository, DatastreamRepository datastreamRepository) {
+  public SensorServiceImp(SensorRepository repository, DatastreamRepository datastreamRepository,
+      EntityManager entityManager,
+      ObservationRepository observationRepository) {
     this.repository = repository;
     this.datastreamRepository = datastreamRepository;
+    this.entityManager = entityManager;
+    this.observationRepository = observationRepository;
   }
 
   /**
@@ -41,8 +54,17 @@ public class SensorServiceImp implements SensorService {
     return repository.getById(id);
   }
 
-  public Datastream getDatastream(String sensor_id){
-    return datastreamRepository.findDatastreamBySensorId(sensor_id).get();
+  @Transactional
+  public Datastream getDatastream(String sensor_id, LocalDateTime start, LocalDateTime end) {
+
+    //TODO make
+    Stream<Datastream> datastreams = datastreamRepository
+        .findDatastreamsBySensorIdOrderByPhenomenonStartDesc(sensor_id);
+    Datastream result = datastreams.filter(e -> e.getPhenomenonStart() != null && e.getPhenomenonEnd() != null)
+        .filter(e -> e.getPhenomenonStart().isAfter(start) && e.getPhenomenonEnd().isBefore(end))
+        .collect(Collectors.toList()).get(0);
+    log.info(result);
+    return result;
   }
 
   /**
@@ -50,6 +72,11 @@ public class SensorServiceImp implements SensorService {
    */
   public Sensor getSensorMetaData(String id) {
     return repository.getById(id);
+  }
+
+  //TODO
+  public Datastream getDatastream(String senor_id) {
+    return null;
   }
 
   public List<Sensor> getAllSensors() {
