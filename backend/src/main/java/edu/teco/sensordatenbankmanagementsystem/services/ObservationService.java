@@ -23,7 +23,7 @@ public interface ObservationService {
      * This returns a single Observation Model from the Repository
      * @param id The ID of the Observation
      */
-    Observation getObservation(UUID id);
+    Observation getObservation(String id);
 
     /**
      * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(Requests)} but with

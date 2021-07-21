@@ -1,18 +1,17 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.SensorNotFoundException;
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
-import edu.teco.sensordatenbankmanagementsystem.services.SensorServiceImp;
+import javax.persistence.EntityNotFoundException;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,10 +50,20 @@ public class SensorController {
      * @return sensor with given UUID, if present
      */
     @GetMapping("/Sensor/{id}")
-    public Sensor getSensor(@PathVariable UUID id) {
+    public Sensor getSensor(@PathVariable String id) {
         if (false) throw new SensorNotFoundException();
 
-        return sensorService.getSensor(id);
+
+        try {
+            return sensorService.getSensor(id);
+        } catch (EntityNotFoundException ex) {
+            throw new SensorNotFoundException();
+        }
+    }
+
+    @GetMapping("/test/{sensorid}")
+    public Datastream getDatastrean(@PathVariable String sensorid){
+        return sensorService.getDatastream(sensorid);
     }
 
 }

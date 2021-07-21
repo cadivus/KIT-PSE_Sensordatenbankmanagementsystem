@@ -1,5 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 
 import java.util.List;
@@ -18,13 +19,15 @@ public interface SensorService {
      * This returns a single Sensor by its ID
      * @param id The UUID of the Sensor to be returned
      */
-    Sensor getSensor(UUID id);
+    Sensor getSensor(String id);
 
     /**
      * This gets the MetaData of a single Sensor using either the Id of the Sensor or of the Metadata
      * @param id The UUID of the Meta Data or the Sensor
      */
-    Sensor getSensorMetaData(UUID id);
+    Sensor getSensorMetaData(String id);
+
+    Datastream getDatastream(String sensor_id);
 
     List<Sensor> getAllSensors();
 

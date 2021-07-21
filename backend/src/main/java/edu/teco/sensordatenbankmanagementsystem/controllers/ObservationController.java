@@ -73,11 +73,13 @@ public class ObservationController {
     }
 
     @GetMapping("/allobservations/{id}")
-    public List<Observation> getObservationsBySensorId(UUID sensorUUID){
+    public List<Observation> getObservationsBySensorId(@PathVariable String sensorUUID){
         return null;
     }
+
+
     @GetMapping("/Export/{id}")
-    public void exportToVSC(@PathVariable UUID id, HttpServletResponse response) throws IOException {
+    public void exportToVSC(@PathVariable String id, HttpServletResponse response) throws IOException {
         response.setContentType("text/csv");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -87,7 +89,7 @@ public class ObservationController {
         response.setHeader(headerKey, headerValue);
 
         //TODO: This is incorrect
-        List<Observation> list = List.of(observationService.getObservation(new UUID(1L,1L)));
+        List<Observation> list = List.of(observationService.getObservation(id));
 
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
         String[] csvHeader = {"User ID", "E-mail", "Full Name", "Roles", "Enabled"};
