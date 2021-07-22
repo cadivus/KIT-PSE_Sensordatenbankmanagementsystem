@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
-    @Bean
-    public Controller getMailManager() {
+ /*   @Bean
+    public Controller getController() {
         return new Controller();
     }
 
@@ -37,5 +37,5 @@ public class AppConfig {
     @Bean
     public SubscriptionDAO getSubscriptionDAO() {
         return new SubscriptionDAO();
-    }
+    }*/
 }
