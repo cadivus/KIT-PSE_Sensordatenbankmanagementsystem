@@ -1,6 +1,8 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
-import edu.teco.sensordatenbankmanagementsystem.exceptions.SensorNotFoundException;
+import edu.teco.sensordatenbankmanagementsystem.exceptions.ObjectNotFoundException;
+import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
+import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
@@ -52,13 +54,13 @@ public class SensorController {
      */
     @GetMapping("/Sensor/{id}")
     public Sensor getSensor(@PathVariable String id) {
-        if (false) throw new SensorNotFoundException();
+        if (false) throw new ObjectNotFoundException();
 
 
         try {
             return sensorService.getSensor(id);
         } catch (EntityNotFoundException ex) {
-            throw new SensorNotFoundException();
+            throw new ObjectNotFoundException();
         }
     }
 

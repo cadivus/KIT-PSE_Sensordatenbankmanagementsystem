@@ -2,9 +2,17 @@ import React, {FC} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Button, IconButton, AppBar, Toolbar, Typography} from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home'
+import {makeStyles} from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+  footer: {
+    marginTop: '35px',
+  },
+})
 
 const AppLayout: FC = ({children}) => {
   const history = useHistory()
+  const classes = useStyles()
 
   return (
     <>
@@ -22,6 +30,7 @@ const AppLayout: FC = ({children}) => {
         </Toolbar>
       </AppBar>
       {children}
+      <div className={classes.footer} />
     </>
   )
 }
