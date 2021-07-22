@@ -90,22 +90,6 @@ public class ObservationController {
         return observationService.getObservationsBySensorId(sensorId, limit, sort, filter);
     }
 
-    /**
-     * Sorting type string composed of two components: sorting criteria (A), sorting order (B)
-     * Sorting type string has to be provided in the format "A-B"
-     * A: date, value
-     * B: asc, dsc
-     *
-     * @param sortingTypeString string describing the type of sorting
-     * @return sort of that sorting type
-     */
-    private Sort getSorting(String sortingTypeString) {
-        String[] sortingInfo = sortingTypeString.split("-");
-        if(sortingInfo.length != 2) {
-            throw new BadSortingTypeStringException();
-        }
-        Sort r = Sort.by(sortingInfo[0]);
-        return sortingInfo[1].equals("dsc") ? r.descending() : r.ascending();
     @GetMapping("/allobservations/{id}")
     public List<Observation> getObservationsBySensorId(@PathVariable String id){
         return new ArrayList<Observation>();
@@ -137,4 +121,21 @@ public class ObservationController {
 
     }
 
+    /**
+     * Sorting type string composed of two components: sorting criteria (A), sorting order (B)
+     * Sorting type string has to be provided in the format "A-B"
+     * A: date, value
+     * B: asc, dsc
+     *
+     * @param sortingTypeString string describing the type of sorting
+     * @return sort of that sorting type
+     */
+    private Sort getSorting(String sortingTypeString) {
+        String[] sortingInfo = sortingTypeString.split("-");
+        if (sortingInfo.length != 2) {
+            throw new BadSortingTypeStringException();
+        }
+        Sort r = Sort.by(sortingInfo[0]);
+        return sortingInfo[1].equals("dsc") ? r.descending() : r.ascending();
+    }
 }

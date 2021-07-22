@@ -1,20 +1,10 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
-import edu.teco.sensordatenbankmanagementsystem.exceptions.BadSortingTypeStringException;
-import edu.teco.sensordatenbankmanagementsystem.exceptions.NoSuchSortException;
-
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
-import lombok.extern.apachecommons.CommonsLog;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -41,7 +31,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Service
 @CommonsLog(topic = "Observationservice")
 public class ObservationServiceImp implements ObservationService {
-
 
   ObservationRepository repository;
   DatastreamRepository datastreamRepository;
@@ -81,6 +70,11 @@ public class ObservationServiceImp implements ObservationService {
     return id;
   }
 
+  @Override
+  public Observation getObservation(String id) {
+    return null;
+  }
+
   /**
    * {@inheritDoc}
    */
@@ -102,6 +96,12 @@ public class ObservationServiceImp implements ObservationService {
     sseStreams.remove(id);
   }
 
+  @Override
+  public List<Observation> getObservationsBySensorId(String sensorId, int limit, String sort,
+      String filter) {
+    return null;
+  }
+
   /**
    * {@inheritDoc}
    *
@@ -112,18 +112,18 @@ public class ObservationServiceImp implements ObservationService {
   public List<Observation> getObservationByDatastream(Datastream datastream, LocalDateTime start,
       LocalDateTime end) {
     List<Observation> result;
-      if (start == null) {
-          result = repository.findObservationsByDatastream(datastream.getId())
-              .collect(Collectors.toList());
-      } else if (end == null) {
-          result = repository
-              .findObservationsByDatastreamAndPhenomenonStartAfter(datastream.getId(), start)
-              .collect(Collectors.toList());
-      } else {
-          result = repository
-              .findObservationsByDatastreamAndPhenomenonStartAfterAndPhenomenonEndBefore(
-                  datastream.getId(), start, end).collect(Collectors.toList());
-      }
+    if (start == null) {
+      result = repository.findObservationsByDatastream(datastream.getId())
+          .collect(Collectors.toList());
+    } else if (end == null) {
+      result = repository
+          .findObservationsByDatastreamAndPhenomenonStartAfter(datastream.getId(), start)
+          .collect(Collectors.toList());
+    } else {
+      result = repository
+          .findObservationsByDatastreamAndPhenomenonStartAfterAndPhenomenonEndBefore(
+              datastream.getId(), start, end).collect(Collectors.toList());
+    }
     return result;
   }
 
@@ -135,42 +135,6 @@ public class ObservationServiceImp implements ObservationService {
     private final List<Double> f;
     private final List<Double> x;
 
-    @Override
-    public List<Observation> getObservationsBySensorId(String sensorId, int limit, String sort, String filter) {
-        List<Datastream> datastreams;
-        if(filter == null) {
-            datastreams = this.datastreamRepository.findBySensor_id(sensorId);
-        } else {
-            datastreams = this.datastreamRepository.findBySensor_idAndObs_Id(sensorId, filter);
-        }
-        List<Observation> observations = datastreams.stream()
-                .map(Datastream::getObservations)
-                .flatMap(Collection::stream)
-                .sorted(getComparator(sort))
-                .limit(limit)
-                .collect(Collectors.toList());
-        return observations;
-    }
-
-    private Comparator<Observation> getComparator(String sortingTypeString) {
-        String[] sortingInfo = sortingTypeString.split("-");
-        if(sortingInfo.length != 2) {
-            throw new BadSortingTypeStringException();
-        }
-        Comparator<Observation> r;
-        switch (sortingInfo[0]) {
-            case "date":
-                r = Comparator.comparing(a -> a.date);
-                break;
-            case "value":
-                r = Comparator.comparing(a -> a.value);
-                break;
-            default:
-                throw new NoSuchSortException();
-        }
-        return sortingInfo[1].equals("dsc") ? r.reversed() : r;
-    }
-
     /**
      * interpolates by calculating the newton representation of the interpolation polynomial as we
      * don't have all function values at arbitrary positions, thus can not choose more efficient
@@ -178,9 +142,6 @@ public class ObservationServiceImp implements ObservationService {
      *
      * @param interpolationPoints points to interpolate to, don't overdo the amount
      */
-    public Observation getObservation(String id) {
-        return repository.getById(id);
-      
     public Interpolator(Collection<Observation> interpolationPoints) {
       List<Observation> points = new ArrayList<>(interpolationPoints);
       int N = points.size();
@@ -196,7 +157,6 @@ public class ObservationServiceImp implements ObservationService {
         }
         this.f.add(tmp.get(i - 1));
       }
-
     }
 
     /**
