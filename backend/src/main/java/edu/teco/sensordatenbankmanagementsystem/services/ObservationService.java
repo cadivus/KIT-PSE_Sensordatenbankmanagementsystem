@@ -6,6 +6,8 @@ import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import org.springframework.data.domain.PageRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Comparator;
@@ -56,6 +58,6 @@ public interface ObservationService {
      */
     void destroyDataStream(UUID id);
 
-    List<Observation> getObservationsBySensorId(String sensorId, int limit, String sort, String filter);
+    List<Observation> getObservationsBySensorId(String sensorId, int limit, Sort sort, String filter);
 }
 

@@ -45,10 +45,10 @@ public class Datastream {
     LocalDateTime resultTimeEnd;
 
     @Column(name = "\"OBS_PROPERTY_ID\"")
-    String obs_Id;
+    String obsId;
 
     @Column(name = "\"THING_ID\"")
-    String thing_id;
+    String thingId;
 
     @Column(name = "\"UNIT_NAME\"")
     String unit;

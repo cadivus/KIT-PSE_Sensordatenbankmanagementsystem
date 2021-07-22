@@ -37,7 +37,7 @@ public class Observation {
     public LocalDate date;
 
     @Column(name = "\"DATASTREAM_ID\"")
-    private String datastream;
+    private String datastreamId;
 
     @Column(name = "\"ID\"")
     @Id

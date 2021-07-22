@@ -17,6 +17,8 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
@@ -90,8 +92,7 @@ public class SensorServiceImp implements SensorService {
   }
 
   public List<Sensor> getAllSensors() {
-    return new ArrayList<>();
-    //    return repository.findAll();
+    return repository.findAll(PageRequest.of(0,5)).toList();
   }
 
 }

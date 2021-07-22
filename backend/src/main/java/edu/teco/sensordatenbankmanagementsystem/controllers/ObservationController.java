@@ -2,27 +2,21 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.BadSortingTypeStringException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.NoSuchSortException;
-import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Comparator;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -30,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 
 /**
@@ -80,21 +73,23 @@ public class ObservationController {
         return observationService.getDataStream(id);
     }
 
+    /**
+     * Gets a list of observations of a given sensor
+     * @param sensorId sensor of this observation
+     * @param limit maximum amount of return values
+     * @param sort consult {@link #getSorting(String)} for info
+     * @param type id of observed property type
+     * @return list of observations
+     */
     @GetMapping("/observations/{id}")
     public List<Observation> getObservationsBySensorId(
             @PathVariable(name="id") String sensorId,
-            @RequestParam(name="limit", defaultValue = "Integer.MAX_VALUE") int limit,
+            @RequestParam(name="limit", defaultValue = "0xfF") int limit,
             @RequestParam(name="sort", defaultValue="date-dsc") String sort,
-            @RequestParam(name="filter", required = false) String filter
+            @RequestParam(name= "type", required = false) String type
             ) {
-        return observationService.getObservationsBySensorId(sensorId, limit, sort, filter);
+        return observationService.getObservationsBySensorId(sensorId, limit, getSorting(sort), type);
     }
-
-    @GetMapping("/allobservations/{id}")
-    public List<Observation> getObservationsBySensorId(@PathVariable String id){
-        return new ArrayList<Observation>();
-    }
-
 
     /**
      * This is the entry point for Csv exports
@@ -135,7 +130,11 @@ public class ObservationController {
         if (sortingInfo.length != 2) {
             throw new BadSortingTypeStringException();
         }
-        Sort r = Sort.by(sortingInfo[0]);
-        return sortingInfo[1].equals("dsc") ? r.descending() : r.ascending();
+        Sort sort = switch (sortingInfo[0]) {
+            case "date" -> Sort.by("phenomenonStart", "phenomenonEnd");
+            case "value" -> Sort.by("resultNumber");
+            default -> throw new NoSuchSortException();
+        };
+        return sortingInfo[1].equals("dsc") ? sort.descending() : sort.ascending();
     }
 }
