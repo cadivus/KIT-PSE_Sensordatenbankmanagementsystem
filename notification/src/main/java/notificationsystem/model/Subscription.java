@@ -2,8 +2,6 @@ package notificationsystem.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.UUID;
 
 /**

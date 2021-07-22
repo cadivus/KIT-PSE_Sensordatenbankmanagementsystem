@@ -1,6 +1,8 @@
 package notificationsystem.controller;
 
+import notificationsystem.model.SystemLoginRepository;
 import notificationsystem.view.EMail;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -17,14 +19,20 @@ import java.util.Properties;
 public class MailSender {
 
     private Session session;
+    @Autowired
+    private SystemLoginRepository systemLoginRepository;
 
     /**
      * Log-in procedure needed for authentication before an e-mail can be sent. Also instanciates the session with
      * the smpt-server.
-     * @param username username used for authentication purposes.
-     * @param password password used for authentication purposes.
      */
-    private void login(String username, String password) {
+    private void login() {
+
+        //TODO: id
+        long id = 1;
+        String username = systemLoginRepository.findById(id).toString();
+        String password = systemLoginRepository.findById(id).toString();
+
         Properties properties = new Properties();
 
         properties.put("mail.smpt.auth", "true");
