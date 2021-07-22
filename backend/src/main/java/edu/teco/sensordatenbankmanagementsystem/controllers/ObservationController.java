@@ -90,30 +90,22 @@ public class ObservationController {
         return observationService.getObservationsBySensorId(sensorId, limit, sort, filter);
     }
 
-    /**
-     * Sorting type string composed of two components: sorting criteria (A), sorting order (B)
-     * Sorting type string has to be provided in the format "A-B"
-     * A: date, value
-     * B: asc, dsc
-     *
-     * @param sortingTypeString string describing the type of sorting
-     * @return sort of that sorting type
-     */
-    private Sort getSorting(String sortingTypeString) {
-        String[] sortingInfo = sortingTypeString.split("-");
-        if(sortingInfo.length != 2) {
-            throw new BadSortingTypeStringException();
-        }
-        Sort r = Sort.by(sortingInfo[0]);
-        return sortingInfo[1].equals("dsc") ? r.descending() : r.ascending();
     @GetMapping("/allobservations/{id}")
     public List<Observation> getObservationsBySensorId(@PathVariable String id){
         return new ArrayList<Observation>();
     }
 
 
+    /**
+     * This is the entry point for Csv exports
+     * @param id This is the Sensor ID for which the observations should be exported
+     * @param start The (Optional) start date
+     * @param end The (Optional) End date
+     * @param response The HttpServlet in which the result should be written
+     * @throws IOException If there is no way to write to the @param response
+     */
     @GetMapping(value = {"/Export/{id}", "/Export/{id}/{start}","/Export/{id}/{start}/{end}"})
-    public void exportToVSC(@PathVariable String id, @PathVariable(required = false) LocalDateTime start,@PathVariable(required = false) LocalDateTime end, HttpServletResponse response) throws IOException {
+    public void exportToCSV(@PathVariable String id, @PathVariable(required = false) LocalDateTime start,@PathVariable(required = false) LocalDateTime end, HttpServletResponse response) throws IOException {
         response.setContentType("text/csv");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -129,4 +121,21 @@ public class ObservationController {
 
     }
 
+    /**
+     * Sorting type string composed of two components: sorting criteria (A), sorting order (B)
+     * Sorting type string has to be provided in the format "A-B"
+     * A: date, value
+     * B: asc, dsc
+     *
+     * @param sortingTypeString string describing the type of sorting
+     * @return sort of that sorting type
+     */
+    private Sort getSorting(String sortingTypeString) {
+        String[] sortingInfo = sortingTypeString.split("-");
+        if (sortingInfo.length != 2) {
+            throw new BadSortingTypeStringException();
+        }
+        Sort r = Sort.by(sortingInfo[0]);
+        return sortingInfo[1].equals("dsc") ? r.descending() : r.ascending();
+    }
 }
