@@ -87,10 +87,7 @@ public class ObservationController {
         response.setContentType("text/csv");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String currentDateTime = dateFormatter.format(new Date());
-        if (null == start)
-            start = LocalDateTime.of(1900,1,1,0,0);
-        if (null == end)
-            end = LocalDateTime.now();
+
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
         response.setHeader(headerKey, headerValue);

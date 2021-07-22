@@ -57,11 +57,18 @@ public class SensorServiceImp implements SensorService {
   @Transactional
   public Datastream getDatastream(String sensor_id, LocalDateTime start, LocalDateTime end) {
 
-    //TODO make
+    if (start == null)
+      start = LocalDateTime.of(1900,1,1,0,0);
+    if (end == null)
+      end = LocalDateTime.now();
+    //TODO
     Stream<Datastream> datastreams = datastreamRepository
         .findDatastreamsBySensorIdOrderByPhenomenonStartDesc(sensor_id);
+    LocalDateTime finalStart = start;
+    LocalDateTime finalEnd = end;
     Datastream result = datastreams.filter(e -> e.getPhenomenonStart() != null && e.getPhenomenonEnd() != null)
-        .filter(e -> e.getPhenomenonStart().isAfter(start) && e.getPhenomenonEnd().isBefore(end))
+        .filter(e -> e.getPhenomenonStart().isAfter(finalStart) && e.getPhenomenonEnd().isBefore(
+            finalEnd))
         .collect(Collectors.toList()).get(0);
     log.info(result);
     return result;
