@@ -1,5 +1,9 @@
 package edu.teco.sensordatenbankmanagementsystem.models;
 
+import java.util.List;
+import javax.persistence.ElementCollection;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.Generated;
 
@@ -15,6 +19,10 @@ public class Requests {
     @GeneratedValue
     long id;
 
-    String test;
-    String name;
+    String start;
+    String end;
+    String speed;
+
+    @ElementCollection
+    List<String> sensors;
 }
