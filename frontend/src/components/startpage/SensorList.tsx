@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, {useState} from 'react'
 import {
   Button,
   Paper,
@@ -17,6 +17,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Checkbox from '@material-ui/core/Checkbox'
 import {useHistory} from 'react-router-dom'
 import useSensorStore from '../../hooks/UseSensorStore'
+import Sensor from '../../material/Sensor'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -46,19 +47,22 @@ const useStyles = makeStyles({
   sensorCell: {
     width: '83%',
   },
+  container: {
+    marginTop: '10px',
+  },
 })
 
 /**
  *  Displays a list of sensors.
  *  This class implements a React component.
  */
-const SensorList: FC = () => {
+const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
   const history = useHistory()
   const classes = useStyles()
   const sensorStore = useSensorStore()
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={classes.container}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
@@ -72,21 +76,43 @@ const SensorList: FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sensorStore?.sensors.map(sensor => (
-            <StyledTableRow hover key={sensor.name.name}>
-              <StyledTableCell component="th" scope="row">
-                <Typography variant="h5">{sensor.name.name}</Typography>
-              </StyledTableCell>
-              <StyledTableCell>
-                <Checkbox color="primary" inputProps={{'aria-label': 'secondary checkbox'}} />
-              </StyledTableCell>
-              <StyledTableCell>
-                <Button variant="outlined" color="primary" onClick={() => history.push('/sensorInformation')}>
-                  Info
-                </Button>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {sensorStore?.sensors.map(sensor => {
+            const [checked, setChecked] = useState(false)
+
+            const checkChanged = (chk: boolean) => {
+              setChecked(chk)
+              if (chk) {
+                selectedSensors.add(sensor)
+              } else {
+                selectedSensors.delete(sensor)
+              }
+            }
+
+            return (
+              <StyledTableRow hover key={sensor.name.name}>
+                <StyledTableCell component="th" scope="row">
+                  <Typography variant="h5">{sensor.name.name}</Typography>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Checkbox
+                    checked={checked}
+                    onChange={e => checkChanged(e.target.checked)}
+                    color="primary"
+                    inputProps={{'aria-label': 'secondary checkbox'}}
+                  />
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => history.push(`/sensorInformation/${sensor.id.toString()}`)}
+                  >
+                    Info
+                  </Button>
+                </StyledTableCell>
+              </StyledTableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </TableContainer>

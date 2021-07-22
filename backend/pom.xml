@@ -12,7 +12,6 @@
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>backend</name>
-    <description></description>
     <properties>
         <java.version>16</java.version>
     </properties>
@@ -30,6 +29,18 @@
             <artifactId>server-sent-events</artifactId>
             <version>2.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,11 +49,6 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jooq</artifactId>
-            <version>2.2.6.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -89,6 +95,28 @@
             <artifactId>h2</artifactId>
             <version>1.4.191</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.0</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.22</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/de.fraunhofer.iosb.ilt.FROST-Server/FROST-Server.Core -->
+        <dependency>
+            <groupId>de.fraunhofer.iosb.ilt.FROST-Server</groupId>
+            <artifactId>FROST-Server.Core</artifactId>
+            <version>1.14.0</version>
+        </dependency>
+
+
 
     </dependencies>
 

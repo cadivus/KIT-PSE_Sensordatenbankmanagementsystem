@@ -1,8 +1,9 @@
 package notificationsystem.model;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.*;
 
 /**
  * The SensorDAO class implements the DAO interface to handle database queries regarding sensors. For that end it
@@ -10,10 +11,20 @@ import java.util.UUID;
  * access point to all sensor related data and information.
  */
 public class SensorDAO implements DAO<Sensor> {
+    //TODO: Add correct api addresses
+    private static final String GET_SENSOR_API = "http://localhost:8080/sensor/getSensor/{id}";
+    private static final String GET_ALL_SENSORS_API = "GET http://localhost:8080/sensor/getAllSensors";
+    static RestTemplate restTemplate;
+
+    public SensorDAO() {
+        this.restTemplate = new RestTemplate();
+    }
 
     @Override
     public Optional<Sensor> get(Sensor sensor) {
-        return null;
+        Sensor fetchedSensor = restTemplate.getForObject(GET_SENSOR_API, Sensor.class, sensor);
+        Optional<Sensor> result = Optional.of(fetchedSensor);
+        return result;
     }
 
     /**
@@ -22,22 +33,23 @@ public class SensorDAO implements DAO<Sensor> {
      * @return The sensor with the given ID.
      */
     public Sensor get(UUID sensorID) {
-        return null;
+        Map<String, UUID> param = new HashMap<>();
+        param.put("id", sensorID);
+
+        return restTemplate.getForObject(GET_SENSOR_API, Sensor.class, param);
     }
 
     @Override
     public List<Sensor> getAll() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+        HttpEntity<String> entity = new HttpEntity<>("parameters", httpHeaders);
+
+        ResponseEntity<String> result = restTemplate.exchange(GET_ALL_SENSORS_API, HttpMethod.GET, entity, String.class);
+        String allSensors = result.getBody();
+        //TODO: Convert to List of sensors; Change fetch method if necessary
         return null;
-    }
-
-    @Override
-    public void save(Sensor sensor) {
-
-    }
-
-    @Override
-    public void delete(Sensor sensor) {
-
     }
 
 }

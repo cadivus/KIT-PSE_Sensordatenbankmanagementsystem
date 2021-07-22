@@ -1,13 +1,14 @@
-// http://localhost:3000/sensorInformation
-
 import React, {FC} from 'react'
+import {Redirect, useHistory, useParams} from 'react-router-dom'
 import {Button, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import {useHistory} from 'react-router-dom'
 import Properties from './Properties'
 import Export from './Export'
 import Data from './Data'
+import useSensorStore from '../../hooks/UseSensorStore'
+import Id from '../../material/Id'
+import Sensor from '../../material/Sensor'
 
 const useStyles = makeStyles({
   container: {
@@ -25,6 +26,10 @@ const useStyles = makeStyles({
   },
 })
 
+const ErrorHandling = () => {
+  return <Redirect to="/" />
+}
+
 /**
  *  Displays the sensor information page.
  *  This class implements a React component.
@@ -32,6 +37,22 @@ const useStyles = makeStyles({
 const SensorInformationView: FC = () => {
   const history = useHistory()
   const classes = useStyles()
+  const sensorStore = useSensorStore()
+  const {sensorId} = useParams<{sensorId: string}>()
+  const sensor = sensorStore?.getSensor(new Id(sensorId))
+  if (!sensor) {
+    return <ErrorHandling />
+  }
+
+  const onSubscribeClick = () => {
+    const selectedSensors = new Set<Sensor>()
+    selectedSensors.add(sensor)
+    history.push({
+      pathname: '/subscriptions/subscriptionCreate',
+      // eslint-disable-next-line object-shorthand
+      state: {selectedSensors: selectedSensors},
+    })
+  }
 
   return (
     <div>
@@ -39,11 +60,11 @@ const SensorInformationView: FC = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography variant="h3" align="center" gutterBottom>
-              Sensorname <FiberManualRecordIcon color="secondary" fontSize="large" />
+              {sensor.name.toString()} <FiberManualRecordIcon color="secondary" fontSize="large" />
             </Typography>
           </Grid>
           <Grid item xs={6}>
-            <Properties />
+            {sensor ? <Properties sensor={sensor} /> : <></>}
           </Grid>
           <Grid item xs={6}>
             <Grid container spacing={3}>
@@ -57,11 +78,7 @@ const SensorInformationView: FC = () => {
                 </Button>
               </Grid>
               <Grid item xs={12}>
-                <Button
-                  variant="outlined"
-                  className={classes.button}
-                  onClick={() => history.push('/subscriptions/subscriptionSingleView')}
-                >
+                <Button variant="outlined" className={classes.button} onClick={onSubscribeClick}>
                   <Typography variant="h5"> Subscribe </Typography>
                 </Button>
               </Grid>

@@ -1,13 +1,17 @@
-import React, {FC} from 'react'
+import React, {FC, useState} from 'react'
 import {Button, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import {useHistory} from 'react-router-dom'
 import SensorList from './SensorList'
 import Search from './Search'
+import Sensor from '../../material/Sensor'
 
 const useStyles = makeStyles({
   container: {
     marginTop: '15px',
+  },
+  buttons: {
+    paddingTop: '5px',
   },
 })
 
@@ -18,6 +22,17 @@ const useStyles = makeStyles({
 const StartpageView: FC = () => {
   const history = useHistory()
   const classes = useStyles()
+
+  const [selectedSensors] = useState(new Set<Sensor>())
+
+  const subscribeClicked = () => {
+    history.push({
+      pathname: '/subscriptions/subscriptionCreate',
+      // eslint-disable-next-line object-shorthand
+      state: {selectedSensors: selectedSensors},
+    })
+  }
+
   return (
     <div>
       <Container maxWidth="lg" className={classes.container}>
@@ -29,17 +44,21 @@ const StartpageView: FC = () => {
             <Search />
           </Grid>
           <Grid item xs={2}>
-            <Button variant="outlined" onClick={() => history.push('/subscriptions/subscriptionMultipleView')}>
-              Subscribe
-            </Button>
+            <Container className={classes.buttons}>
+              <Button variant="outlined" onClick={() => subscribeClicked()}>
+                Subscribe
+              </Button>
+            </Container>
           </Grid>
           <Grid item xs={2}>
-            <Button variant="outlined" onClick={() => history.push('/replay/replayMultipleView')}>
-              Replay
-            </Button>
+            <Container className={classes.buttons}>
+              <Button variant="outlined" onClick={() => history.push('/replay/replayMultipleView')}>
+                Replay
+              </Button>
+            </Container>
           </Grid>
         </Grid>
-        <SensorList />
+        <SensorList selectedSensors={selectedSensors} />
       </Container>
     </div>
   )
