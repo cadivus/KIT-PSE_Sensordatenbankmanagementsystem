@@ -82,8 +82,16 @@ public class ObservationController {
     }
 
 
+    /**
+     * This is the entry point for Csv exports
+     * @param id This is the Sensor ID for which the observations should be exported
+     * @param start The (Optional) start date
+     * @param end The (Optional) End date
+     * @param response The HttpServlet in which the result should be written
+     * @throws IOException If there is no way to write to the @param response
+     */
     @GetMapping(value = {"/Export/{id}", "/Export/{id}/{start}","/Export/{id}/{start}/{end}"})
-    public void exportToVSC(@PathVariable String id, @PathVariable(required = false) LocalDateTime start,@PathVariable(required = false) LocalDateTime end, HttpServletResponse response) throws IOException {
+    public void exportToCSV(@PathVariable String id, @PathVariable(required = false) LocalDateTime start,@PathVariable(required = false) LocalDateTime end, HttpServletResponse response) throws IOException {
         response.setContentType("text/csv");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String currentDateTime = dateFormatter.format(new Date());
