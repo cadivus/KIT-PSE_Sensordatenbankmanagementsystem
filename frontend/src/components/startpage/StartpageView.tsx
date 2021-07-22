@@ -10,6 +10,9 @@ const useStyles = makeStyles({
   container: {
     marginTop: '15px',
   },
+  buttons: {
+    paddingTop: '5px',
+  },
 })
 
 /**
@@ -41,14 +44,18 @@ const StartpageView: FC = () => {
             <Search />
           </Grid>
           <Grid item xs={2}>
-            <Button variant="outlined" onClick={() => subscribeClicked()}>
-              Subscribe
-            </Button>
+            <Container className={classes.buttons}>
+              <Button variant="outlined" onClick={() => subscribeClicked()}>
+                Subscribe
+              </Button>
+            </Container>
           </Grid>
           <Grid item xs={2}>
-            <Button variant="outlined" onClick={() => history.push('/replay/replayMultipleView')}>
-              Replay
-            </Button>
+            <Container className={classes.buttons}>
+              <Button variant="outlined" onClick={() => history.push('/replay/replayMultipleView')}>
+                Replay
+              </Button>
+            </Container>
           </Grid>
         </Grid>
         <SensorList selectedSensors={selectedSensors} />

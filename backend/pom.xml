@@ -12,7 +12,6 @@
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>backend</name>
-    <description></description>
     <properties>
         <java.version>16</java.version>
     </properties>
@@ -23,7 +22,6 @@
             <artifactId>spring-webflux</artifactId>
             <version>5.3.7</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.examples/server-sent-events -->
         <dependency>
             <groupId>org.glassfish.jersey.examples</groupId>
@@ -42,7 +40,6 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -50,11 +47,6 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jooq</artifactId>
-            <version>2.2.6.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -79,7 +71,6 @@
             <version>1.18.20</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -96,12 +87,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.191</version>
-        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.5.1</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -114,9 +106,11 @@
             <artifactId>FROST-Server.Core</artifactId>
             <version>1.14.0</version>
         </dependency>
-
-
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+            <version>2.4.0</version>
+        </dependency>
     </dependencies>
 
     <build>
