@@ -3,6 +3,9 @@ package edu.teco.sensordatenbankmanagementsystem.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

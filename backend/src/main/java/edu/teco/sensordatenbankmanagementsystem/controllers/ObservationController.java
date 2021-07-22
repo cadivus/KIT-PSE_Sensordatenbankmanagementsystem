@@ -1,5 +1,7 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
+import edu.teco.sensordatenbankmanagementsystem.exceptions.BadSortingTypeStringException;
+import edu.teco.sensordatenbankmanagementsystem.exceptions.NoSuchSortException;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
@@ -10,16 +12,17 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Comparator;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -27,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 
 /**
@@ -76,6 +80,32 @@ public class ObservationController {
         return observationService.getDataStream(id);
     }
 
+    @GetMapping("/observations/{id}")
+    public List<Observation> getObservationsBySensorId(
+            @PathVariable(name="id") String sensorId,
+            @RequestParam(name="limit", defaultValue = "Integer.MAX_VALUE") int limit,
+            @RequestParam(name="sort", defaultValue="date-dsc") String sort,
+            @RequestParam(name="filter", required = false) String filter
+            ) {
+        return observationService.getObservationsBySensorId(sensorId, limit, sort, filter);
+    }
+
+    /**
+     * Sorting type string composed of two components: sorting criteria (A), sorting order (B)
+     * Sorting type string has to be provided in the format "A-B"
+     * A: date, value
+     * B: asc, dsc
+     *
+     * @param sortingTypeString string describing the type of sorting
+     * @return sort of that sorting type
+     */
+    private Sort getSorting(String sortingTypeString) {
+        String[] sortingInfo = sortingTypeString.split("-");
+        if(sortingInfo.length != 2) {
+            throw new BadSortingTypeStringException();
+        }
+        Sort r = Sort.by(sortingInfo[0]);
+        return sortingInfo[1].equals("dsc") ? r.descending() : r.ascending();
     @GetMapping("/allobservations/{id}")
     public List<Observation> getObservationsBySensorId(@PathVariable String id){
         return new ArrayList<Observation>();

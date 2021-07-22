@@ -1,6 +1,9 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
+import edu.teco.sensordatenbankmanagementsystem.repository.SensorRepository;
+
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
+
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;

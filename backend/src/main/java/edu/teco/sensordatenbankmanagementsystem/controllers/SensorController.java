@@ -54,8 +54,6 @@ public class SensorController {
      */
     @GetMapping("/Sensor/{id}")
     public Sensor getSensor(@PathVariable String id) {
-        if (false) throw new ObjectNotFoundException();
-
 
         try {
             return sensorService.getSensor(id);

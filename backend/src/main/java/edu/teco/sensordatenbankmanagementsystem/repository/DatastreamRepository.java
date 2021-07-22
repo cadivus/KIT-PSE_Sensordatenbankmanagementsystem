@@ -1,15 +1,20 @@
 package edu.teco.sensordatenbankmanagementsystem.repository;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
-import edu.teco.sensordatenbankmanagementsystem.models.Observation;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-import javax.xml.crypto.Data;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface DatastreamRepository extends JpaRepository<Datastream, String> {
+
+    List<Datastream> findBySensor_id(String sensor_id);
+
+    List<Datastream> findBySensor_idAndObs_Id(String sensor_id, String obs_id);
+
 
   Optional<Datastream> findById(String id);
 
