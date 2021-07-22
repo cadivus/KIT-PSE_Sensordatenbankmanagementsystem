@@ -1,7 +1,10 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.UUID;
@@ -22,8 +25,9 @@ public interface ObservationService {
     /**
      * This returns a single Observation Model from the Repository
      * @param id The ID of the Observation
+     * @return
      */
-    Observation getObservation(UUID id);
+    List<Observation> getObservationByDatastream(Datastream id, LocalDateTime start, LocalDateTime end);
 
     /**
      * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(Requests)} but with
