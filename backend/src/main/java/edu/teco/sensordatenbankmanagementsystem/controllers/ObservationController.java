@@ -1,28 +1,24 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.BadSortingTypeStringException;
-import edu.teco.sensordatenbankmanagementsystem.exceptions.NoSuchSortException;
-import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
+import edu.teco.sensordatenbankmanagementsystem.models.Thing;
+import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
+import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
 import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Comparator;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -30,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 
 /**
@@ -45,18 +40,25 @@ import java.util.function.Predicate;
 public class ObservationController {
     public final ObservationService observationService;
     public final SensorService sensorService;
+    public final ThingRepository thingRepository;
+    public final ThingService thingService;
     /**
      * Instantiates a new Observation controller.
-     *
      * @param observationService the observation service which handles the underlying business logic
      *                           The Autowired Annotation automatically injects a Spring bean
      * @param sensorService
+     * @param thingRepository
+     * @param thingService
      */
     @Autowired
     public ObservationController(ObservationService observationService,
-        SensorService sensorService) {
+        SensorService sensorService,
+        ThingRepository thingRepository,
+        ThingService thingService) {
         this.observationService = observationService;
         this.sensorService = sensorService;
+        this.thingRepository = thingRepository;
+        this.thingService = thingService;
     }
     /**
      * Maps a post request that creates a new SSE stream
@@ -121,6 +123,11 @@ public class ObservationController {
 
     }
 
+    @GetMapping("/thing/{id}")
+    public Thing getThings(@PathVariable String id){
+        return thingService.getThing(id);
+    }
+
     /**
      * Sorting type string composed of two components: sorting criteria (A), sorting order (B)
      * Sorting type string has to be provided in the format "A-B"
@@ -138,4 +145,6 @@ public class ObservationController {
         Sort r = Sort.by(sortingInfo[0]);
         return sortingInfo[1].equals("dsc") ? r.descending() : r.ascending();
     }
+
+
 }
