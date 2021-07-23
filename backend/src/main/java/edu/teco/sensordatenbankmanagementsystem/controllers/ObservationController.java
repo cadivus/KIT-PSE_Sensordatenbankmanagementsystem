@@ -123,9 +123,15 @@ public class ObservationController {
 
     }
 
-    @GetMapping("/thing/{id}")
+    @GetMapping(value = {"/thing/{id}"})
     public Thing getThings(@PathVariable String id){
         return thingService.getThing(id);
+    }
+    @GetMapping(value = {"/coords/{lon}/{lat}", "/coords"})
+    public List<Thing> getThings(@PathVariable(required = false) String lon, @PathVariable(required = false) String lat) {
+        lon = (lon == null) ? "0" : lon;
+        lat = lat == null ? "0" : lat;
+        return thingService.getListOfClosestSensors(Double.valueOf(lon),Double.valueOf(lat));
     }
 
     /**
