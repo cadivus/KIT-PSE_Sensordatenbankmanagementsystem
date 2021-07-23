@@ -9,6 +9,10 @@ services:
 
   datenbank:
     build: notification/db-docker
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=world
 
   notification:
     depends_on:
@@ -16,6 +20,10 @@ services:
     build: notification
     ports:
       - 8082:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://datenbank:5432/world
+      - SPRING_DATASOURCE_USERNAME=docker
+      - SPRING_DATASOURCE_PASSWORD=docker
 
   frontend:
     depends_on:
