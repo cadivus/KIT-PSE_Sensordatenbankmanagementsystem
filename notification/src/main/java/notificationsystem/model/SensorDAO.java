@@ -13,7 +13,7 @@ import java.util.*;
 public class SensorDAO implements DAO<Sensor> {
     //TODO: Add correct api addresses
     private static final String GET_SENSOR_API = "http://localhost:8080/sensor/getSensor/{id}";
-    private static final String GET_ALL_SENSORS_API = "GET http://localhost:8080/sensor/getAllSensors";
+    private static final String GET_ALL_SENSORS_API = "http://localhost:8080/sensor/getAllSensors";
     static RestTemplate restTemplate;
 
     public SensorDAO() {
