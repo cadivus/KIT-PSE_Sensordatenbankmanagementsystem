@@ -32,7 +32,7 @@ class SubscriptionStore {
    * Gets the subscriptions from the backend.
    */
   private getSubscriptionsFromBackend = (): void => {
-    const {subscriptions, _sensorStore, _user} = this
+    const {subscriptions, _sensorStore, _user, unsubscribe: unsubscribeById} = this
     if (_user && (subscriptions.size === 0 || subscriptions.values().next().value.owner !== this._user)) {
       subscriptions.clear()
       for (let i = 1; i <= _sensorStore.sensors.length; i += 1) {
@@ -40,7 +40,12 @@ class SubscriptionStore {
         const directNotification = i % 2 === 1
         const id = new Id(`${_user.email.email}-0-${i}`)
         const idStr = id.toString()
-        subscriptions.set(idStr, new Subscription(id, sensorList, directNotification, new NotificationLevel(i), _user))
+        const subs = new (class extends Subscription {
+          unsubscribe(): boolean {
+            return unsubscribeById(id)
+          }
+        })(id, sensorList, directNotification, new NotificationLevel(i), _user)
+        subscriptions.set(idStr, subs)
       }
     }
   }
@@ -79,12 +84,25 @@ class SubscriptionStore {
     directNotification: boolean,
     notificationLevel: NotificationLevel,
   ): Subscription | null => {
+    const {unsubscribe: unsubscribeById} = this
+
     const id = new Id(`id${new Date().getTime() / 1000}`)
     const {_user, subscriptions} = this
     if (!_user) return null
-    const result = new Subscription(id, sensors, directNotification, notificationLevel, _user)
+    const result = new (class extends Subscription {
+      unsubscribe(): boolean {
+        return unsubscribeById(id)
+      }
+    })(id, sensors, directNotification, notificationLevel, _user)
     subscriptions.set(id.toString(), result)
     return result
+  }
+
+  private unsubscribe = (id: Id): boolean => {
+    const {subscriptions} = this
+    if (!subscriptions.has(id.toString())) return false
+
+    return subscriptions.delete(id.toString())
   }
 }
 
