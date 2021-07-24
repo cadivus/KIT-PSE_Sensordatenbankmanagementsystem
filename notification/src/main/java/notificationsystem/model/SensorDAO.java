@@ -2,6 +2,7 @@ package notificationsystem.model;
 
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
 
@@ -11,9 +12,10 @@ import java.util.*;
  * access point to all sensor related data and information.
  */
 public class SensorDAO implements DAO<Sensor> {
-    //TODO: Add correct api addresses
-    private static final String GET_SENSOR_API = "http://localhost:8080/sensor/getSensor/{id}";
-    private static final String GET_ALL_SENSORS_API = "GET http://localhost:8080/sensor/getAllSensors";
+    @Value("${sensors.backend.url}")
+    private static String BACKEND_URL;
+    private static final String GET_SENSOR_API = BACKEND_URL + "/sensor/getSensor/{id}";
+    private static final String GET_ALL_SENSORS_API = "GET " + BACKEND_URL + "/sensor/getAllSensors";
     static RestTemplate restTemplate;
 
     public SensorDAO() {
