@@ -2,7 +2,6 @@ package notificationsystem.model;
 
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
 
@@ -12,19 +11,22 @@ import java.util.*;
  * access point to all sensor related data and information.
  */
 public class SensorDAO implements DAO<Sensor> {
-    @Value("${sensors.backend.url}")
-    private static String BACKEND_URL;
-    private static final String GET_SENSOR_API = BACKEND_URL + "/sensor/getSensor/{id}";
-    private static final String GET_ALL_SENSORS_API = "GET " + BACKEND_URL + "/sensor/getAllSensors";
+    private final String backendUrl;
+    private final String getSensorApi;
+    private final String getAllSensorsApi;
     static RestTemplate restTemplate;
 
-    public SensorDAO() {
+    public SensorDAO(String backendUrl) {
+        this.backendUrl = backendUrl;
+        this.getSensorApi = backendUrl + "/sensor/getSensor/{id}";
+        this.getAllSensorsApi = "GET " + backendUrl + "/sensor/getAllSensors";
+
         this.restTemplate = new RestTemplate();
     }
 
     @Override
     public Optional<Sensor> get(Sensor sensor) {
-        Sensor fetchedSensor = restTemplate.getForObject(GET_SENSOR_API, Sensor.class, sensor);
+        Sensor fetchedSensor = restTemplate.getForObject(getSensorApi, Sensor.class, sensor);
         Optional<Sensor> result = Optional.of(fetchedSensor);
         return result;
     }
@@ -38,7 +40,7 @@ public class SensorDAO implements DAO<Sensor> {
         Map<String, UUID> param = new HashMap<>();
         param.put("id", sensorID);
 
-        return restTemplate.getForObject(GET_SENSOR_API, Sensor.class, param);
+        return restTemplate.getForObject(getSensorApi, Sensor.class, param);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class SensorDAO implements DAO<Sensor> {
 
         HttpEntity<String> entity = new HttpEntity<>("parameters", httpHeaders);
 
-        ResponseEntity<String> result = restTemplate.exchange(GET_ALL_SENSORS_API, HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> result = restTemplate.exchange(getAllSensorsApi, HttpMethod.GET, entity, String.class);
         String allSensors = result.getBody();
         //TODO: Convert to List of sensors; Change fetch method if necessary
         return null;

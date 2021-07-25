@@ -104,6 +104,7 @@ public class ObservationServiceImp implements ObservationService {
 
     System.out.println(associatedStreams.stream().map(Datastream::getId).collect(Collectors.toList()));
 
+    //the following line would utilize a native query, but wouldn't be able to integrate the sort in the query
     //return this.observationRepository.findObservationsInDatastreams(associatedStreams, "phenomenonStart", PageRequest.of(0, limit)).collect(Collectors.toList());
     return associatedStreams.stream()
             .flatMap(a-> this.observationRepository.findObservationsByDatastreamId(a.getId(), PageRequest.of(0, limit).withSort(sort)))

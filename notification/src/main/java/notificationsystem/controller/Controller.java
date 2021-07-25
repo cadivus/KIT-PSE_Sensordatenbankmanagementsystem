@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.mail.MessagingException;
+import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -35,6 +37,9 @@ import java.util.UUID;
 @RestController
 public class Controller {
 
+    @Value("${sensors.backend.url}")
+    private String backendUrl;
+
     private MailBuilder mailBuilder;
     private MailSender mailSender;
     private SubscriptionDAO subscriptionDAO;
@@ -47,8 +52,11 @@ public class Controller {
         this.mailBuilder = new MailBuilder();
         this.mailSender = new MailSender();
         this.subscriptionDAO = new SubscriptionDAO();
-        this.sensorDAO = new SensorDAO();
+    }
 
+    @PostConstruct
+    public void postConstruct() {
+        this.sensorDAO = new SensorDAO(backendUrl);
     }
 
     /**

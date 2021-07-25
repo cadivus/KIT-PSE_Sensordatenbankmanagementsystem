@@ -17,6 +17,7 @@ services:
   notification:
     depends_on:
       - datenbank
+      - backend
     build: notification
     ports:
       - 8082:8080
@@ -24,6 +25,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://datenbank:5432/world
       - SPRING_DATASOURCE_USERNAME=docker
       - SPRING_DATASOURCE_PASSWORD=docker
+      - sensors.backend.url=http://backend:8081
 
   frontend:
     depends_on:
@@ -31,4 +33,4 @@ services:
       - notification
     build: frontend
     ports:
-      - 3000:3000
+      - 3001:3000
