@@ -144,7 +144,7 @@ const SubscriptionList: FC = () => {
                   </Button>
                 </StyledTableCell>
                 <StyledTableCell>
-                  <Button variant="contained" color="primary" onClick={() => handleClickOpen(subscription)}>
+                  <Button variant="contained" color="secondary" onClick={() => handleClickOpen(subscription)}>
                     delete
                   </Button>
                 </StyledTableCell>
