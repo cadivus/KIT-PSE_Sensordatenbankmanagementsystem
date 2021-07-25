@@ -70,6 +70,11 @@ public class ObservationServiceImp implements ObservationService {
     return id;
   }
 
+  @Override
+  public Observation getObservation(String id) {
+    return null;
+  }
+
   /**
    * {@inheritDoc}
    */
@@ -91,6 +96,12 @@ public class ObservationServiceImp implements ObservationService {
     sseStreams.remove(id);
   }
 
+  @Override
+  public List<Observation> getObservationsBySensorId(String sensorId, int limit, String sort,
+      String filter) {
+    return null;
+  }
+
   /**
    * {@inheritDoc}
    *
@@ -101,18 +112,18 @@ public class ObservationServiceImp implements ObservationService {
   public List<Observation> getObservationByDatastream(Datastream datastream, LocalDateTime start,
       LocalDateTime end) {
     List<Observation> result;
-      if (start == null) {
-          result = repository.findObservationsByDatastream(datastream.getId())
-              .collect(Collectors.toList());
-      } else if (end == null) {
-          result = repository
-              .findObservationsByDatastreamAndPhenomenonStartAfter(datastream.getId(), start)
-              .collect(Collectors.toList());
-      } else {
-          result = repository
-              .findObservationsByDatastreamAndPhenomenonStartAfterAndPhenomenonEndBefore(
-                  datastream.getId(), start, end).collect(Collectors.toList());
-      }
+    if (start == null) {
+      result = repository.findObservationsByDatastream(datastream.getId())
+          .collect(Collectors.toList());
+    } else if (end == null) {
+      result = repository
+          .findObservationsByDatastreamAndPhenomenonStartAfter(datastream.getId(), start)
+          .collect(Collectors.toList());
+    } else {
+      result = repository
+          .findObservationsByDatastreamAndPhenomenonStartAfterAndPhenomenonEndBefore(
+              datastream.getId(), start, end).collect(Collectors.toList());
+    }
     return result;
   }
 

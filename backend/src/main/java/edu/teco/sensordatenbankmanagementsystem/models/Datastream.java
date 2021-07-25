@@ -1,8 +1,15 @@
 package edu.teco.sensordatenbankmanagementsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDateTime;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @Table(name = "\"DATASTREAMS\"")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Datastream {
 
     @Column(name = "\"ID\"")
@@ -44,11 +52,14 @@ public class Datastream {
     @Column(name = "\"OBS_PROPERTY_ID\"")
     String obs_Id;
 
-    @Column(name = "\"THING_ID\"")
-    String thing_id;
+    @JoinColumn(name = "\"THING_ID\"")
+    @ManyToOne
+    Thing thing;
 
     @Column(name = "\"UNIT_NAME\"")
     String unit;
+
+
 
 }
 
