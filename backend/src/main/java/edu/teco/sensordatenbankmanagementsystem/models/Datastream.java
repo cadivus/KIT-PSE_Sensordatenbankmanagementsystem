@@ -50,7 +50,7 @@ public class Datastream {
     LocalDateTime resultTimeEnd;
 
     @Column(name = "\"OBS_PROPERTY_ID\"")
-    String obs_Id;
+    String obsId;
 
     @JoinColumn(name = "\"THING_ID\"")
     @ManyToOne

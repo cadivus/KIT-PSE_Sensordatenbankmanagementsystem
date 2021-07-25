@@ -102,8 +102,7 @@ public class ObservationServiceImp implements ObservationService {
 
     List<Datastream> associatedStreams = Optional.ofNullable(filter).map(s -> this.datastreamRepository.findDatastreamsBySensorIdAndObsId(sensorId, s)).orElseGet(() -> this.datastreamRepository.findDatastreamsBySensorId(sensorId));
 
-    System.out.println(associatedStreams.stream().map(Datastream::getId).collect(Collectors.toList()));
-
+    //System.out.println(associatedStreams.stream().map(Datastream::getId).collect(Collectors.toList()));
     //the following line would utilize a native query, but wouldn't be able to integrate the sort in the query
     //return this.observationRepository.findObservationsInDatastreams(associatedStreams, "phenomenonStart", PageRequest.of(0, limit)).collect(Collectors.toList());
     return associatedStreams.stream()
