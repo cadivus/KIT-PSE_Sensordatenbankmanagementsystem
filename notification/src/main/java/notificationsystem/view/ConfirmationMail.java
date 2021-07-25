@@ -1,5 +1,6 @@
 package notificationsystem.view;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONArray;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class ConfirmationMail extends EMail {
 
     private String confirmCode;
+    private final static int CODE_LENGTH = 8;
 
     /**
      * Constructs a new confirmation e-mail.
@@ -34,7 +36,7 @@ public class ConfirmationMail extends EMail {
      * @return confirmation code used for log-in.
      */
     private String generateConfirmCode() {
-        return null;
+        return RandomStringUtils.random(CODE_LENGTH, true, true);
     }
 
     /**
