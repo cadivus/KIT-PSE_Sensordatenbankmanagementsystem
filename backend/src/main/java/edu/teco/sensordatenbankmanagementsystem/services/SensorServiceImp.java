@@ -90,8 +90,7 @@ public class SensorServiceImp implements SensorService {
   }
 
   public List<Sensor> getAllSensors() {
-    return new ArrayList<>();
-    //    return repository.findAll();
+    return repository.findAll();
   }
 
 }

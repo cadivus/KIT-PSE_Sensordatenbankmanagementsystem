@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Entity
 @Data
-@Table(name = "`SENSORS`")
+@Table(name = "\"SENSORS\"")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Sensor {
 
