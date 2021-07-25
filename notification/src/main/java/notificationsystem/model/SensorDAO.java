@@ -12,10 +12,12 @@ import java.util.*;
  * access point to all sensor related data and information.
  */
 public class SensorDAO implements DAO<Sensor> {
+
     @Value("${sensors.backend.url}")
     private static String BACKEND_URL;
     private static final String GET_SENSOR_API = BACKEND_URL + "/sensor/getSensor/{id}";
-    private static final String GET_ALL_SENSORS_API = "GET " + BACKEND_URL + "/sensor/getAllSensors";
+    private static final String GET_ALL_SENSORS_API = BACKEND_URL + "/sensor/getAllSensors";
+
     static RestTemplate restTemplate;
 
     public SensorDAO() {
