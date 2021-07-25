@@ -8,19 +8,17 @@ import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -32,15 +30,15 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @CommonsLog(topic = "Observationservice")
 public class ObservationServiceImp implements ObservationService {
 
-  ObservationRepository repository;
+  ObservationRepository observationRepository;
   DatastreamRepository datastreamRepository;
 
   Map<UUID, SseEmitter> sseStreams = new HashMap<UUID, SseEmitter>();
 
   @Autowired
-  public ObservationServiceImp(ObservationRepository repository,
+  public ObservationServiceImp(ObservationRepository observationRepository,
       DatastreamRepository datastreamRepository) {
-    this.repository = repository;
+    this.observationRepository = observationRepository;
     this.datastreamRepository = datastreamRepository;
   }
 
@@ -96,10 +94,21 @@ public class ObservationServiceImp implements ObservationService {
     sseStreams.remove(id);
   }
 
+  @Transactional
   @Override
-  public List<Observation> getObservationsBySensorId(String sensorId, int limit, String sort,
+  public List<Observation> getObservationsBySensorId(String sensorId, int limit, Sort sort,
       String filter) {
-    return null;
+    String orderBySQLString = sort.stream().map(Sort.Order::getProperty).collect(Collectors.joining(","));
+
+    List<Datastream> associatedStreams = Optional.ofNullable(filter).map(s -> this.datastreamRepository.findDatastreamsBySensorIdAndObsId(sensorId, s)).orElseGet(() -> this.datastreamRepository.findDatastreamsBySensorId(sensorId));
+
+    //System.out.println(associatedStreams.stream().map(Datastream::getId).collect(Collectors.toList()));
+    //the following line would utilize a native query, but wouldn't be able to integrate the sort in the query
+    //return this.observationRepository.findObservationsInDatastreams(associatedStreams, "phenomenonStart", PageRequest.of(0, limit)).collect(Collectors.toList());
+    return associatedStreams.stream()
+            .flatMap(a-> this.observationRepository.findObservationsByDatastreamId(a.getId(), PageRequest.of(0, limit).withSort(sort)))
+            .limit(limit)
+            .collect(Collectors.toList());
   }
 
   /**
@@ -113,15 +122,15 @@ public class ObservationServiceImp implements ObservationService {
       LocalDateTime end) {
     List<Observation> result;
     if (start == null) {
-      result = repository.findObservationsByDatastream(datastream.getId())
+      result = observationRepository.findObservationsByDatastreamId(datastream.getId())
           .collect(Collectors.toList());
     } else if (end == null) {
-      result = repository
-          .findObservationsByDatastreamAndPhenomenonStartAfter(datastream.getId(), start)
+      result = observationRepository
+          .findObservationsByDatastreamIdAndPhenomenonStartAfter(datastream.getId(), start)
           .collect(Collectors.toList());
     } else {
-      result = repository
-          .findObservationsByDatastreamAndPhenomenonStartAfterAndPhenomenonEndBefore(
+      result = observationRepository
+          .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(
               datastream.getId(), start, end).collect(Collectors.toList());
     }
     return result;

@@ -39,6 +39,6 @@ public class HouseKeeper {
      * application status
      */
     private void doPeriodically(){
-        log.info("did something periodically");
+        //log.info("did nothing periodically");
     }
 }
