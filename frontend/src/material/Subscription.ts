@@ -12,7 +12,7 @@ declare interface Subscription {
 /**
  * Objects of this class represent a subscription.
  */
-class Subscription extends EventEmitter {
+abstract class Subscription extends EventEmitter {
   /**
    * Id of the subscription.
    */
@@ -79,6 +79,13 @@ class Subscription extends EventEmitter {
   onChange = (actionListener: any): void => {
     // TODO not implemented yet
   }
+
+  /**
+   * This function unsubscibes the subscription.
+   *
+   * @return True on success
+   */
+  public abstract unsubscribe(): boolean
 }
 
 export default Subscription
