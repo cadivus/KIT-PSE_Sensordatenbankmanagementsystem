@@ -18,7 +18,8 @@ public class CachingConfig {
     SimpleCacheManager cacheManager = new SimpleCacheManager();
     cacheManager.setCaches(Arrays.asList(
         new ConcurrentMapCache("Datastreams"),
-        new ConcurrentMapCache("Observations")));
+        new ConcurrentMapCache("Observations"),
+        new ConcurrentMapCache("Sensors")));
     return cacheManager;
   }
 }
