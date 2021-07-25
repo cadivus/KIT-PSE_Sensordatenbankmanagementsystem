@@ -60,39 +60,10 @@ const useStyles = makeStyles((theme: Theme) =>
 const SubscriptionListView: FC = () => {
   const classes = useStyles()
 
-  const [open, setOpen] = React.useState(false)
-
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
-
   return (
     <div className={classes.root}>
       <Container maxWidth="lg" className={classes.container}>
         <SubscriptionList />
-        <Button variant="outlined" color="primary" onClick={handleClickOpen} className={classes.unsubscribe}>
-          Unsubscribe
-        </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Do you really want to unsubscribe these Datastreams?</DialogTitle>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Disagree
-            </Button>
-            <Button onClick={handleClose} color="primary" autoFocus>
-              Agree
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Container>
     </div>
   )
