@@ -25,7 +25,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://datenbank:5432/world
       - SPRING_DATASOURCE_USERNAME=docker
       - SPRING_DATASOURCE_PASSWORD=docker
-      - sensors.backend.url=http://backend:8080
+      - sensors.backend.url=http://backend:8081
 
   frontend:
     depends_on:
