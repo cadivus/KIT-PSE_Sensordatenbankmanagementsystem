@@ -69,7 +69,7 @@ public class SensorController {
         }
     }
 
-    @GetMapping("/test/{sensorid}")
+    @GetMapping("/datastream/{sensorid}")
     public Datastream getDatastrean(@PathVariable String sensorid){
         return sensorService.getDatastream(sensorid);
     }
@@ -94,7 +94,7 @@ public class SensorController {
      * @param lat The latitude of a center point which should be used. It is optional.
      * @return A list of 'Things'
      */
-    @GetMapping(value = {"/coords/{lon}/{lat}/{el}", "/coords", "/coords/{lon}/{lat}"})
+    @GetMapping(value = {"/allThings/{lon}/{lat}/{el}", "/allThings", "/allThings/{lon}/{lat}"})
     public List<Thing> getThings(@PathVariable(required = false) String lon,
         @PathVariable(required = false) String lat, @PathVariable(required = false) String el) {
 
