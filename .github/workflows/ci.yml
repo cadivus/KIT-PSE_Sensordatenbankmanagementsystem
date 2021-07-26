@@ -34,7 +34,7 @@ jobs:
       uses: cicirello/jacoco-badge-generator@v2
       with:
         generate-branches-badge: true
-        on-missing-report: pass
+        on-missing-report: quiet
         jacoco-csv-file: >
           - backend/target/site/jacoco/jacoco.csv
 
@@ -62,14 +62,16 @@ jobs:
   nodejstest:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        prefix: ./frontend
-        cache: 'npm'
-    - run: npm --prefix ./frontend run build ci
-    - run: npm --prefix ./frontend run build --if-present
-    - run: npm --prefix ./frontend test
+      script:
+        - cd frontend
+        - uses: actions/checkout@v2
+        - name: Use Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v2
+          with:
+            node-version: ${{ matrix.node-version }}
+            cache: 'npm'
+        - run: npm --prefix ./frontend run build ci
+        - run: npm --prefix ./frontend run build --if-present
+        - run: npm --prefix ./frontend test
+        - cd ../
 
