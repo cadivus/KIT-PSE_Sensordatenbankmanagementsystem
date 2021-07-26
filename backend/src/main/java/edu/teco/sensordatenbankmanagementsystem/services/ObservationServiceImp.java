@@ -7,12 +7,17 @@ import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.*;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +37,16 @@ public class ObservationServiceImp implements ObservationService {
 
   ObservationRepository observationRepository;
   DatastreamRepository datastreamRepository;
+  SensorService sensorService;
 
   Map<UUID, SseEmitter> sseStreams = new HashMap<UUID, SseEmitter>();
 
   @Autowired
   public ObservationServiceImp(ObservationRepository observationRepository,
-      DatastreamRepository datastreamRepository) {
+      DatastreamRepository datastreamRepository, SensorService sensorService) {
     this.observationRepository = observationRepository;
     this.datastreamRepository = datastreamRepository;
+    this.sensorService = sensorService;
   }
 
   /**
@@ -48,15 +55,41 @@ public class ObservationServiceImp implements ObservationService {
   public UUID createNewDataStream(Requests information) {
     SseEmitter emitter = new SseEmitter(86400000L);
     ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
+    List<Observation> observations = new ArrayList<>();
+    for (String s : information.getSensors()) {
+      List<Datastream> l1 = sensorService.getDatastreams(s);
+      observations = getObservationByDatastream(l1, information.getStart(),
+          information.getEnd());
+    }
+    List<Observation> observations1 = observations;
     sseMvcExecutor.execute(() -> {
+      int i = 0;
       try {
-        for (int i = 0; true; i++) {
+        for (Observation o : observations1) {
+          i++;
           SseEmitter.SseEventBuilder event = SseEmitter.event()
-              .data("SSE MVC - " + LocalTime.now().toString())
-              .id(String.valueOf(i))
+              .data(o.toString())
               .name("sse event - mvc");
           emitter.send(event);
-          Thread.sleep(1000);
+          try {
+            Thread.sleep(ChronoUnit.MILLIS
+                .between(observations1.get(i).getPhenomenonStart(), o.getPhenomenonEnd())
+                / information.getSpeed());
+
+          } catch (IndexOutOfBoundsException ex) {
+            try {
+              if (LocalDateTime.now().isBefore(information.getEnd())) {
+                Thread.sleep(1000);
+              } else {
+                emitter.complete();
+                break;
+              }
+
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+            i--;
+          }
         }
       } catch (Exception ex) {
         emitter.completeWithError(ex);
@@ -96,19 +129,24 @@ public class ObservationServiceImp implements ObservationService {
 
   @Transactional
   @Override
+  @Cacheable("Observations")
   public List<Observation> getObservationsBySensorId(String sensorId, int limit, Sort sort,
       String filter) {
-    String orderBySQLString = sort.stream().map(Sort.Order::getProperty).collect(Collectors.joining(","));
+    String orderBySQLString = sort.stream().map(Sort.Order::getProperty)
+        .collect(Collectors.joining(","));
 
-    List<Datastream> associatedStreams = Optional.ofNullable(filter).map(s -> this.datastreamRepository.findDatastreamsBySensorIdAndObsId(sensorId, s)).orElseGet(() -> this.datastreamRepository.findDatastreamsBySensorId(sensorId));
+    List<Datastream> associatedStreams = Optional.ofNullable(filter)
+        .map(s -> this.datastreamRepository.findDatastreamsBySensorIdAndObsId(sensorId, s))
+        .orElseGet(() -> this.datastreamRepository.findDatastreamsBySensorId(sensorId));
 
     //System.out.println(associatedStreams.stream().map(Datastream::getId).collect(Collectors.toList()));
     //the following line would utilize a native query, but wouldn't be able to integrate the sort in the query
     //return this.observationRepository.findObservationsInDatastreams(associatedStreams, "phenomenonStart", PageRequest.of(0, limit)).collect(Collectors.toList());
     return associatedStreams.stream()
-            .flatMap(a-> this.observationRepository.findObservationsByDatastreamId(a.getId(), PageRequest.of(0, limit).withSort(sort)))
-            .limit(limit)
-            .collect(Collectors.toList());
+        .flatMap(a -> this.observationRepository
+            .findObservationsByDatastreamId(a.getId(), PageRequest.of(0, limit).withSort(sort)))
+        .limit(limit)
+        .collect(Collectors.toList());
   }
 
   /**
@@ -118,20 +156,27 @@ public class ObservationServiceImp implements ObservationService {
    */
   @Transactional
   @Cacheable("Datastreams")
-  public List<Observation> getObservationByDatastream(Datastream datastream, LocalDateTime start,
+  public List<Observation> getObservationByDatastream(List<Datastream> datastreams,
+      LocalDateTime start,
       LocalDateTime end) {
-    List<Observation> result;
+    List<Observation> result = new ArrayList<>();
     if (start == null) {
-      result = observationRepository.findObservationsByDatastreamId(datastream.getId())
-          .collect(Collectors.toList());
+      for (Datastream d : datastreams) {
+        result.addAll(observationRepository.findObservationsByDatastreamId(d.getId())
+            .collect(Collectors.toList()));
+      }
     } else if (end == null) {
-      result = observationRepository
-          .findObservationsByDatastreamIdAndPhenomenonStartAfter(datastream.getId(), start)
-          .collect(Collectors.toList());
+      for (Datastream d : datastreams) {
+        result.addAll(observationRepository
+            .findObservationsByDatastreamIdAndPhenomenonStartAfter(d.getId(), start)
+            .collect(Collectors.toList()));
+      }
     } else {
-      result = observationRepository
-          .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(
-              datastream.getId(), start, end).collect(Collectors.toList());
+      for (Datastream d : datastreams) {
+        result.addAll(observationRepository
+            .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(
+                d.getId(), start, end).collect(Collectors.toList()));
+      }
     }
     return result;
   }

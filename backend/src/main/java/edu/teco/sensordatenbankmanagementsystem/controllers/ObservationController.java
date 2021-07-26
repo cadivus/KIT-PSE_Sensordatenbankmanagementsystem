@@ -4,18 +4,14 @@ import edu.teco.sensordatenbankmanagementsystem.exceptions.BadSortingTypeStringE
 import edu.teco.sensordatenbankmanagementsystem.exceptions.NoSuchSortException;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
-import edu.teco.sensordatenbankmanagementsystem.models.Thing;
-import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
-import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
 import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -121,7 +117,7 @@ public class ObservationController {
 
         //TODO: Overload these methods instead of using useless start and end points
         List<Observation> list = observationService
-                .getObservationByDatastream(sensorService.getDatastream(id, start, end), start, end);
+                .getObservationByDatastream(sensorService.getDatastreams(id, start, end), start, end);
 
         WriteCsvToResponse.writeObservation(response.getWriter(), list);
 

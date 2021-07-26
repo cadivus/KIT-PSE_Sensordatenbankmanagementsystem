@@ -28,9 +28,9 @@ public interface SensorService {
      */
     Sensor getSensorMetaData(String id);
 
-    Datastream getDatastream(String senor_id);
+    List<Datastream> getDatastreams(String senor_id);
 
-    Datastream getDatastream(String sensor_id, LocalDateTime start, LocalDateTime end);
+    List<Datastream> getDatastreams(String sensor_id, LocalDateTime start, LocalDateTime end);
 
     List<Sensor> getAllSensors();
 

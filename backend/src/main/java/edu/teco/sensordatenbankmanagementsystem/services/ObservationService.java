@@ -34,7 +34,7 @@ public interface ObservationService {
      */
     Observation getObservation(String id);
   
-    List<Observation> getObservationByDatastream(Datastream id, LocalDateTime start, LocalDateTime end);
+    List<Observation> getObservationByDatastream(List<Datastream> datastreams, LocalDateTime start, LocalDateTime end);
 
     /**
      * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(Requests)} but with

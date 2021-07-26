@@ -70,8 +70,8 @@ public class SensorController {
     }
 
     @GetMapping("/datastream/{sensorid}")
-    public Datastream getDatastrean(@PathVariable String sensorid){
-        return sensorService.getDatastream(sensorid);
+    public List<Datastream> getDatastreams(@PathVariable String sensorid){
+        return sensorService.getDatastreams(sensorid);
     }
     /**
      * This will get a single Thing, which is a single sensor, from the Database

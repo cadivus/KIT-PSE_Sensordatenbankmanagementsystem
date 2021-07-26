@@ -1,5 +1,7 @@
 package edu.teco.sensordatenbankmanagementsystem.models;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.ManyToOne;
@@ -19,9 +21,9 @@ public class Requests {
     @GeneratedValue
     long id;
 
-    String start;
-    String end;
-    String speed;
+    LocalDateTime start;
+    LocalDateTime end;
+    int speed;
 
     @ElementCollection
     List<String> sensors;
