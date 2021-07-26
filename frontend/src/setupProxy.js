@@ -13,4 +13,15 @@ module.exports = function(app) {
       },
     })
   )
+
+  app.use(
+    '/api/notification',
+    createProxyMiddleware({
+      target: env.API_NOTIFICATION_URL || 'http://localhost:8082',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api/notification': '/',
+      },
+    })
+  )
 }
