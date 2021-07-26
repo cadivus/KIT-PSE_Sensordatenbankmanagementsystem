@@ -27,13 +27,16 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
       run: |
-          mvn -f ./backend/pom.xml --batch-mode --update-snapshots -B test
-          #mvn -f ./notification/pom.xml --batch-mode --update-snapshots -B test
+          mvn -f ./backend/pom.xml -B test
+          #mvn -f ./notification/pom.xml -B test
 
     - name: Generate JaCoCo Badge
       uses: cicirello/jacoco-badge-generator@v2
       with:
         generate-branches-badge: true
+        on-missing-report: pass
+        jacoco-csv-file: >
+          - backend/target/site/jacoco/jacoco.csv
 
     - name: Log coverage percentage
       run: |
@@ -64,8 +67,9 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+        prefix: ./frontend
         cache: 'npm'
-    - run: npm ci
+    - run: npm --prefix ./frontend run build ci
     - run: npm --prefix ./frontend run build --if-present
     - run: npm --prefix ./frontend test
 
