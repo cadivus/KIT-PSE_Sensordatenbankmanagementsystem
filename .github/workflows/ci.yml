@@ -37,7 +37,7 @@ jobs:
         generate-branches-badge: true
         on-missing-report: quiet
         jacoco-csv-file: >
-          -backend/target/site/jacoco/jacoco.csv
+          backend/target/site/jacoco/jacoco.csv
 
     - name: Log coverage percentage
       run: |
