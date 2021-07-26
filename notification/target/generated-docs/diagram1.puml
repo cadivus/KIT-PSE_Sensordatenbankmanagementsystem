@@ -1,0 +1,144 @@
+@startuml
+
+class notificationsystem.Application {
+	{method}  {static} +main ( paramString;1 : [Ljava.lang.String; ) : void
+}
+
+
+class notificationsystem.configuration.AppConfig {
+}
+
+
+class notificationsystem.controller.CheckerUtil {
+	{method} +checkForReports () : void
+	{method} +checkForSensorFailure () : void
+}
+
+
+class notificationsystem.controller.Controller {
+	{field} -backendUrl : String
+	{method} +getConfirmCode ( paramString1 : String ) : String
+	{method} +getSubscriptions ( paramString1 : String ) : java.util.List
+	{method} +postConstruct () : void
+	{method} +postSubscription ( paramString1 : String , paramUUID2 : java.util.UUID , paramlong3 : long ) : void
+	{method} +postUnsubscribe ( paramString1 : String , paramUUID2 : java.util.UUID ) : void
+	{method} +sendAlert ( paramUUID1 : java.util.UUID ) : void
+	{method} +sendReport ( paramString1 : String , paramUUID2 : java.util.UUID ) : void
+}
+
+
+class notificationsystem.controller.MailSender {
+	{field} -session : javax.mail.Session
+	{method} -login ( paramString1 : String , paramString2 : String ) : void
+	{method} +send ( paramEMail1 : notificationsystem.view.EMail ) : void
+}
+
+
+interface notificationsystem.model.DAO {
+	{method}  {abstract} +get ( paramObject1 : Object ) : java.util.Optional
+	{method}  {abstract} +getAll () : java.util.List
+}
+
+
+class notificationsystem.model.Sensor {
+	{field} +categories : java.util.List
+	{field} +data : String
+	{field} +failureRate : String
+	{field} -id : java.util.UUID
+	{field} +location : String
+	{field} -name : String
+	{method} +toString () : String
+}
+
+
+class notificationsystem.model.SensorDAO {
+	{field} -backendUrl : String
+	{field} -getAllSensorsApi : String
+	{field} -getSensorApi : String
+	{field} {static} ~restTemplate : org.springframework.web.client.RestTemplate
+	{method} +get ( paramObject1 : Object ) : java.util.Optional
+	{method} +get ( paramUUID1 : java.util.UUID ) : notificationsystem.model.Sensor
+	{method} +get ( paramSensor1 : notificationsystem.model.Sensor ) : java.util.Optional
+	{method} +getAll () : java.util.List
+}
+
+
+class notificationsystem.model.Subscription {
+	{field} -id : long
+	{field} +reportInterval : long
+	{field} +sensor : java.util.UUID
+	{field} +subTime : java.time.LocalDate
+	{field} +subscriberAddress : String
+}
+
+
+class notificationsystem.model.SubscriptionDAO {
+	{method} +delete ( paramSubscription1 : notificationsystem.model.Subscription ) : void
+	{method} +get ( paramObject1 : Object ) : java.util.Optional
+	{method} +get ( paramSubscription1 : notificationsystem.model.Subscription ) : java.util.Optional
+	{method} +get ( paramString1 : String , paramUUID2 : java.util.UUID ) : notificationsystem.model.Subscription
+	{method} +getAll () : java.util.List
+	{method} +getAllSensors ( paramString1 : String ) : java.util.List
+	{method} +getAllSubscribers ( paramUUID1 : java.util.UUID ) : java.util.List
+	{method} +save ( paramSubscription1 : notificationsystem.model.Subscription ) : void
+}
+
+
+interface notificationsystem.model.SubscriptionRepository {
+}
+
+
+class notificationsystem.view.Alert {
+}
+
+
+class notificationsystem.view.ConfirmationMail {
+	{field} {static} -CODE_LENGTH : int
+	{field} -confirmCode : String
+	{method} -generateConfirmCode () : String
+}
+
+
+abstract class notificationsystem.view.EMail {
+	{field} +attachment : org.json.JSONArray
+	{field} +message : String
+	{field} +receiverMail : String
+	{field} -senderMail : String
+	{field} +senderName : String
+	{field} +subject : String
+	{method} +getReceiverMails () : String
+	{method} +setReceiverMails ( paramString1 : String ) : void
+}
+
+
+class notificationsystem.view.MailBuilder {
+	{field} {static} -MAIL_SIGNING : String
+	{field} {static} -SUBJECT_ALERT : String
+	{field} {static} -SUBJECT_CONFIRM : String
+	{method} +buildAlert ( paramString1 : String , paramSensor2 : notificationsystem.model.Sensor ) : notificationsystem.view.Alert
+	{method} +buildConfirmationMail ( paramString1 : String ) : notificationsystem.view.ConfirmationMail
+	{method} +buildReport ( paramString1 : String , paramSensor2 : notificationsystem.model.Sensor ) : notificationsystem.view.Report
+}
+
+
+class notificationsystem.view.Report {
+}
+
+
+
+
+notificationsystem.controller.CheckerUtil -->  notificationsystem.controller.CheckerUtil : INSTANCE
+notificationsystem.controller.CheckerUtil -->  notificationsystem.controller.Controller : controller
+notificationsystem.controller.Controller -->  notificationsystem.controller.MailSender : mailSender
+notificationsystem.controller.Controller -->  notificationsystem.model.SensorDAO : sensorDAO
+notificationsystem.controller.Controller -->  notificationsystem.model.SubscriptionDAO : subscriptionDAO
+notificationsystem.controller.Controller -->  notificationsystem.view.MailBuilder : mailBuilder
+notificationsystem.model.SensorDAO ..|>  notificationsystem.model.DAO
+notificationsystem.model.SubscriptionDAO -->  notificationsystem.model.SubscriptionRepository : subscriptionRepository
+notificationsystem.model.SubscriptionDAO ..|>  notificationsystem.model.DAO
+notificationsystem.view.Alert --|>  notificationsystem.view.EMail
+notificationsystem.view.ConfirmationMail --|>  notificationsystem.view.EMail
+notificationsystem.view.Report --|>  notificationsystem.view.EMail
+
+
+@enduml
