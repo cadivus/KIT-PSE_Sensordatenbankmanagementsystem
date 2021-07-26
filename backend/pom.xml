@@ -155,7 +155,7 @@
                     </execution>
                     <execution>
                         <id>generate-code-coverage-report</id>
-                        <phase>test, verify</phase>
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
