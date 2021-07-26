@@ -26,7 +26,8 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     - name: Run the Maven verify phase
-      run: mvn -f ./backend/pom.xml --batch-mode --update-snapshots verify, mvn -f ./notification/pom.xml --batch-mode --update-snapshots verify
+    - run: mvn -f ./backend/pom.xml --batch-mode --update-snapshots verify
+    - run: mvn -f ./notification/pom.xml --batch-mode --update-snapshots verify
       
   nodejstest:
     runs-on: ubuntu-latest
@@ -46,13 +47,28 @@ jobs:
     name: CodeCov
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
         with:
-          go-version: ^1.15
-        id: go
+          go-version: '^1.14.0'
+
+      - name: Setup GO environment  
+        run: | 
+            go mod download
+            go get -u golang.org/x/lint/golint
+            go get -t .
+    
+      - name: Lint
+        run: |
+          golint -set_exit_status ./...
+          
+      - name: Vet
+        run: |
+          go vet ./...
+          
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
+        
       - name: Publish cod cov badge
         run: |
           set -x
