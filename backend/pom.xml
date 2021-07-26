@@ -147,7 +147,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
                 <executions>
                     <execution>
                         <goals>
@@ -156,7 +155,7 @@
                     </execution>
                     <execution>
                         <id>generate-code-coverage-report</id>
-                        <phase>test</phase>
+                        <phase>test, verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>

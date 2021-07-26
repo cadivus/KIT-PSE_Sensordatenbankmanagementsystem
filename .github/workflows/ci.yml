@@ -27,8 +27,8 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
       run: |
-          mvn -f ./backend/pom.xml -B test
-          #mvn -f ./notification/pom.xml -B test
+          mvn -f ./backend/pom.xml test
+          #mvn -f ./notification/pom.xml test
 
     - name: Generate JaCoCo Badge
       uses: cicirello/jacoco-badge-generator@v2
@@ -67,7 +67,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
     - run: npm ci
       working-directory: ./frontend
     - run: npm run build --if-present
