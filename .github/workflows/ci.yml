@@ -11,8 +11,7 @@ on:
 
 jobs:
   javatest:
-    formatting:
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - if: github.event_name != 'pull_request'
         uses: actions/checkout@v2
