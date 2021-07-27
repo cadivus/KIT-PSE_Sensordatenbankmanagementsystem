@@ -29,7 +29,6 @@ public interface ObservationRepository extends JpaRepository<Observation, String
   Stream<Observation> findObservationsByDatastreamIdAndPhenomenonStartAfter(
       String dataStream, @Param("PhenomenonStart") LocalDateTime phenomenonStart);
 
-  Stream<Observation> findObservationsByDatastreamId(String dataStream);
   Stream<Observation> findObservationsByDatastreamId(String dataStream, Pageable pageable);
 
   @Query(value="select * from \"OBSERVATIONS\" where \"DATASTREAM_ID\" in :datastreams order by :sort", nativeQuery = true)

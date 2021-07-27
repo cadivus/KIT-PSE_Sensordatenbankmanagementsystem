@@ -122,7 +122,7 @@ public class ObservationServiceImp implements ObservationService {
       LocalDateTime end) {
     List<Observation> result;
     if (start == null) {
-      result = observationRepository.findObservationsByDatastreamId(datastream.getId())
+      result = observationRepository.findObservationsByDatastreamId(datastream.getId(), null)
           .collect(Collectors.toList());
     } else if (end == null) {
       result = observationRepository
