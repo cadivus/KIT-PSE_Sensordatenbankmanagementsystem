@@ -1,31 +1,23 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import edu.teco.sensordatenbankmanagementsystem.models.Location;
+import edu.teco.sensordatenbankmanagementsystem.models.Observation;
+import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
-
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-import javax.transaction.Transactional;
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.transaction.Transactional;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ThingService {
@@ -65,18 +57,33 @@ public class ThingService {
 
     /**
      * Gets active rate of things, calculated as amount of data transmissions / days
-     * @param thingIds of things to get active rate of
+     * @param thingsIds of things to get active rate of
      * @param frameStart start of time frame to calculate active rate from
      * @param frameEnd end of time frame to calculate active rate from
      * @return active rate of the given things in order
      */
-    public List<Double> getActiveRateOfThings(List<String> thingIds, LocalDateTime frameStart, LocalDateTime frameEnd) {
+    public List<Double> getActiveRateOfThings(List<String> thingsIds, LocalDateTime frameStart, LocalDateTime frameEnd) {
         double days = Duration.between(frameStart, frameEnd).toDays();
-        return thingIds.stream()
+        return thingsIds.stream()
                 .map(id -> observationService.getObservationsByThingId(id, Integer.MAX_VALUE, Sort.unsorted(),
                         (List<String>) null,
                         frameStart,
                         frameEnd).size() / days)
+                .collect(Collectors.toList());
+    }
+
+    public List<ObservationStats> getObservationStatsOfThings(List<String> thingsIds, List<String> obsIds,
+                                                              LocalDateTime frameStart, LocalDateTime frameEnd) {
+        return thingsIds.stream()
+                .map(thongId->{
+                    ObservationStats r = new ObservationStats();
+                    for(String obsId : obsIds){
+                        r.addObservedProperty(obsId, observationService.getObservationsByThingId(thongId,
+                                Integer.MAX_VALUE, Sort.unsorted(), null, frameStart, frameEnd).stream()
+                                .map(Observation::getValue).collect(Collectors.toList()));
+                    }
+                    return r;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -148,5 +155,13 @@ public class ThingService {
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
         return Math.sqrt(distance);
+    }
+
+    /**
+     * Gets all tings, skr
+     * @return all things in the entire universe
+     */
+    public List<Thing> getAllThings() {
+        return thingRepository.findAll();
     }
 }

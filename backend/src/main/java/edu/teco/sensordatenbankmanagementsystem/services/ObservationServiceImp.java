@@ -6,6 +6,7 @@ import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -102,19 +103,27 @@ public class ObservationServiceImp implements ObservationService {
           Sort sort,
           List<String> filter,
           LocalDateTime frameStart, LocalDateTime frameEnd) {
+    if(frameStart == null){
+      frameStart = LocalDate.of(0, 1, 1).atStartOfDay();
+    }
+    if(frameEnd == null){
+      frameEnd = LocalDateTime.now();
+    }
+
+    //this alternative would utilize a native query, but wouldn't be able to integrate the sort in the query
     //String orderBySQLString = sort.stream().map(Sort.Order::getProperty).collect(Collectors.joining(","));
+    //return this.observationRepository.findObservationsInDatastreams(associatedStreams, "phenomenonStart", PageRequest.of(0, limit)).collect(Collectors.toList());
 
     List<Datastream> associatedStreams = Optional
             .ofNullable(filter).map(s -> this.datastreamRepository.findDatastreamsByThingIdAndObsIdIn(thingId, s))
             .orElseGet(() -> this.datastreamRepository.findDatastreamsByThingId(thingId));
 
-    //System.out.println(associatedStreams.stream().map(Datastream::getId).collect(Collectors.toList()));
-    //the following line would utilize a native query, but wouldn't be able to integrate the sort in the query
-    //return this.observationRepository.findObservationsInDatastreams(associatedStreams, "phenomenonStart", PageRequest.of(0, limit)).collect(Collectors.toList());
+    LocalDateTime finalFrameStart = frameStart;
+    LocalDateTime finalFrameEnd = frameEnd;
     return associatedStreams.stream()
             .flatMap(a-> this.observationRepository
                     .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(a.getId(),
-                            frameStart, frameEnd, PageRequest.of(0, limit).withSort(sort)))
+                            finalFrameStart, finalFrameEnd, PageRequest.of(0, limit).withSort(sort)))
             .limit(limit)
             .collect(Collectors.toList());
   }

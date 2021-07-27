@@ -52,9 +52,12 @@ public class Datastream {
     @Column(name = "\"OBS_PROPERTY_ID\"")
     String obsId;
 
-    @JoinColumn(name = "\"THING_ID\"")
-    @ManyToOne
-    Thing thingId;
+    @Column(name = "\"THING_ID\"")
+    String thingId;
+
+//    @JoinColumn(name = "\"THING_ID\"")
+//    @ManyToOne
+//    Thing thingId;
 
     @Column(name = "\"UNIT_NAME\"")
     String unit;

@@ -11,6 +11,7 @@ import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -38,7 +39,7 @@ public class ObservationController {
     public final ObservationService observationService;
     public final SensorService sensorService;
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     /**
      * Instantiates a new Observation controller.
@@ -93,7 +94,7 @@ public class ObservationController {
             @RequestParam(name = "limit", defaultValue = "0xfF") int limit,
             @RequestParam(name = "sort", defaultValue = "date-dsc") String sort,
             @RequestParam(name = "obsIds", required = false) List<String> obsIds,
-            @RequestParam(name = "frameStart", defaultValue = "0000-01-01") String frameStart,
+            @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
             @RequestParam(name = "frameEnd", required = false) String frameEnd
     ) {
         return observationService.getObservationsByThingId(
@@ -101,10 +102,11 @@ public class ObservationController {
                 limit,
                 getSorting(sort),
                 obsIds,
-                LocalDateTime.parse(frameStart, DATE_FORMAT),
+                LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
                 Optional.ofNullable(frameEnd)
-                        .map(s->LocalDateTime.parse(frameEnd, DATE_FORMAT))
-                        .orElseGet(LocalDateTime::now)
+                        .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
+                        .orElseGet(LocalDate::now)
+                        .atStartOfDay()
         );
     }
 

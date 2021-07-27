@@ -1,6 +1,7 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ObjectNotFoundException;
+import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +27,7 @@ import java.util.Optional;
 @CommonsLog
 public class SensorController {
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public final ThingService thingService;
     public final SensorService sensorService;
@@ -55,6 +55,12 @@ public class SensorController {
     public List<Sensor> getAllSensors() {
         return sensorService.getAllSensors();
     }
+
+    @GetMapping("getAllThings")
+    public List<Thing> getAllThings(){
+        return thingService.getAllThings();
+    }
+
     /**
      * Maps a get request for getting a sensors metadata by UUID.
      *
@@ -93,23 +99,41 @@ public class SensorController {
      * @return
      */
     @GetMapping("active_rate")
-    List<Double> getActiveRateOfThings(
+    public List<Double> getActiveRateOfThings(
             @RequestParam(name="ids")List<String> ids,
-            @RequestParam(name = "frameStart", defaultValue = "0000-01-01") String frameStart,
+            @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
             @RequestParam(name = "frameEnd", required = false) String frameEnd
     ){
         return thingService.getActiveRateOfThings(
                 ids,
-                LocalDateTime.parse(frameStart, DATE_FORMAT),
+                LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
                 Optional.ofNullable(frameEnd)
-                        .map(s-> LocalDateTime.parse(frameEnd, DATE_FORMAT))
-                        .orElseGet(LocalDateTime::now)
+                        .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
+                        .orElseGet(LocalDate::now)
+                        .atStartOfDay()
         );
     }
 
-    @GetMapping("/datastream/{sensorid}")
-    public Datastream getDatastrean(@PathVariable String sensorid){
-        return sensorService.getDatastream(sensorid);
+    @GetMapping("stats")
+    public List<ObservationStats> getObservationStatsOfThings(
+            @RequestParam(name="ids")List<String> ids,
+            @RequestParam(name="obsIds")List<String> obsIds,
+            @RequestParam(name = "frameStart", defaultValue = "0000-01-01") String frameStart,
+            @RequestParam(name = "frameEnd", required = false) String frameEnd
+    ){
+        return thingService.getObservationStatsOfThings(
+                ids,
+                obsIds,
+                LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
+                Optional.ofNullable(frameEnd)
+                        .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
+                        .orElseGet(LocalDate::now)
+                        .atStartOfDay());
+    }
+
+    @GetMapping("/datastream/{sensorId}")
+    public Datastream getDatastrean(@PathVariable String sensorId){
+        return sensorService.getDatastream(sensorId);
     }
     /**
      * This will get a single Thing, which is a single sensor, from the Database

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
@@ -87,12 +88,13 @@ public class SensorServiceImp implements SensorService {
   }
 
   //TODO
-  public Datastream getDatastream(String senor_id) {
+  @Override
+  public Datastream getDatastream(String sensor_id) {
     return null;
   }
 
   public List<Sensor> getAllSensors() {
-    return repository.findAll(PageRequest.of(0,5)).toList();
+    return repository.findAll();
   }
 
 }
