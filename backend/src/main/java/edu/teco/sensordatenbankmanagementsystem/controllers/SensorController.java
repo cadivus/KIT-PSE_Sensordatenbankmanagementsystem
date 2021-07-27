@@ -12,7 +12,11 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The SensorController is the entry point for http requests for {@link Sensor}s.
@@ -22,6 +26,9 @@ import java.util.List;
 @RequestMapping("/sensor")
 @CommonsLog
 public class SensorController {
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+
     public final ThingService thingService;
     public final SensorService sensorService;
     /**
@@ -76,6 +83,28 @@ public class SensorController {
             @RequestParam(name="days", defaultValue = "10")int days
             ) {
         return thingService.getWhetherThingsActive(ids, days);
+    }
+
+    /**
+     * Gets active rate of things, calculated as amount of data transmissions / days
+     * @param ids list of things_ids to check
+     * @param frameStart start of time frame to calculate active rate
+     * @param frameEnd end of time frame to calculate active rate
+     * @return
+     */
+    @GetMapping("active_rate")
+    List<Double> getActiveRateOfThings(
+            @RequestParam(name="ids")List<String> ids,
+            @RequestParam(name = "frameStart", defaultValue = "0000-01-01") String frameStart,
+            @RequestParam(name = "frameEnd", required = false) String frameEnd
+    ){
+        return thingService.getActiveRateOfThings(
+                ids,
+                LocalDateTime.parse(frameStart, DATE_FORMAT),
+                Optional.ofNullable(frameEnd)
+                        .map(s-> LocalDateTime.parse(frameEnd, DATE_FORMAT))
+                        .orElseGet(LocalDateTime::now)
+        );
     }
 
     @GetMapping("/datastream/{sensorid}")

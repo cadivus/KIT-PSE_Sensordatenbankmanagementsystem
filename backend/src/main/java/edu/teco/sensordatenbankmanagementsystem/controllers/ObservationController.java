@@ -102,7 +102,10 @@ public class ObservationController {
                 getSorting(sort),
                 obsIds,
                 LocalDateTime.parse(frameStart, DATE_FORMAT),
-                LocalDateTime.now());
+                Optional.ofNullable(frameEnd)
+                        .map(s->LocalDateTime.parse(frameEnd, DATE_FORMAT))
+                        .orElseGet(LocalDateTime::now)
+        );
     }
 
     /**
