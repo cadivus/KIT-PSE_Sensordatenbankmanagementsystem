@@ -3,12 +3,17 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import edu.teco.sensordatenbankmanagementsystem.models.Location;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
+import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,23 +21,33 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-
-//TODO This might possibly not be needed
 @Service
 public class ThingService {
 
   private final ThingRepository thingRepository;
+  private final DatastreamRepository datastreamRepository;
 
   @Autowired
   public ThingService(
-      ThingRepository thingRepository) {
+      ThingRepository thingRepository,
+      DatastreamRepository datastreamRepository) {
     this.thingRepository = thingRepository;
+    this.datastreamRepository = datastreamRepository;
   }
 
   @Transactional
   public Thing getThing(String id) {
     return thingRepository.findById(id).get();
+  }
+
+  public List<Boolean> getWhetherThingsActive(List<String> ids, int days) {
+    LocalDateTime lowerBound = LocalDateTime.now().minusDays(days);
+    return ids.stream()
+            .map(id->datastreamRepository.findDatastreamsByThingId(id).stream()
+                    .anyMatch(datastream -> datastream.getPhenomenonEnd().isAfter(lowerBound)))
+            .collect(Collectors.toList());
   }
 
   /**

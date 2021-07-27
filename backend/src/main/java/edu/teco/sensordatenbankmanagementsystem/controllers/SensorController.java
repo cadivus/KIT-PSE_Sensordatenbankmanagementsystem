@@ -10,10 +10,7 @@ import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
 import javax.persistence.EntityNotFoundException;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +22,6 @@ import java.util.List;
 @RequestMapping("/sensor")
 @CommonsLog
 public class SensorController {
-    public final ThingRepository thingRepository;
     public final ThingService thingService;
     public final SensorService sensorService;
     /**
@@ -40,7 +36,6 @@ public class SensorController {
         ThingRepository thingRepository,
         ThingService thingService,
         SensorService sensorService) {
-        this.thingRepository = thingRepository;
         this.thingService = thingService;
         this.sensorService = sensorService;
     }
@@ -59,7 +54,7 @@ public class SensorController {
      * @param id UUID of sensor to get
      * @return sensor with given UUID, if present
      */
-    @GetMapping("/Sensor/{id}")
+    @GetMapping("/sensor/{id}")
     public Sensor getSensor(@PathVariable String id) {
 
         try {
@@ -67,6 +62,20 @@ public class SensorController {
         } catch (EntityNotFoundException ex) {
             throw new ObjectNotFoundException();
         }
+    }
+
+    /**
+     * Gets whether things are active based on their most recent data transmission
+     * @param ids list of thing_ids to check
+     * @param days amount of days to count activity as recent
+     * @return list of booleans in the same order
+     */
+    @GetMapping("active")
+    public List<Boolean> getWhetherThingsActive(
+            @RequestParam(name="ids")List<String> ids,
+            @RequestParam(name="days", defaultValue = "10")int days
+            ) {
+        return thingService.getWhetherThingsActive(ids, days);
     }
 
     @GetMapping("/datastream/{sensorid}")

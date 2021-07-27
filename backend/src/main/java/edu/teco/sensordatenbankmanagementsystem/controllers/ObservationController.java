@@ -4,27 +4,21 @@ import edu.teco.sensordatenbankmanagementsystem.exceptions.BadSortingTypeStringE
 import edu.teco.sensordatenbankmanagementsystem.exceptions.NoSuchSortException;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
-import edu.teco.sensordatenbankmanagementsystem.models.Thing;
-import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
-import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
 import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -43,6 +37,8 @@ public class ObservationController {
 
     public final ObservationService observationService;
     public final SensorService sensorService;
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-mm-dd");
 
     /**
      * Instantiates a new Observation controller.
@@ -81,14 +77,32 @@ public class ObservationController {
         return observationService.getDataStream(id);
     }
 
+    /**
+     * Gets all observations of the given thing
+     * @param thingId of the thing to get the observations of
+     * @param limit maximum amount to get
+     * @param sort sort by what (see {@link #getSorting(String)for} for more
+     * @param obsIds whether or not to limit fetched data to a certain observed type
+     * @param frameStart start of time frame to fetch from
+     * @param frameEnd end of time frame to fetch from
+     * @return list of observations according to the above criteria
+     */
     @GetMapping("/observations/{id}")
     public List<Observation> getObservationsBySensorId(
-            @PathVariable(name = "id") String sensorId,
+            @PathVariable(name = "id") String thingId,
             @RequestParam(name = "limit", defaultValue = "0xfF") int limit,
             @RequestParam(name = "sort", defaultValue = "date-dsc") String sort,
-            @RequestParam(name = "type", required = false) String type
+            @RequestParam(name = "obsIds", required = false) List<String> obsIds,
+            @RequestParam(name = "frameStart", defaultValue = "0000-01-01") String frameStart,
+            @RequestParam(name = "frameEnd", required = false) String frameEnd
     ) {
-        return observationService.getObservationsBySensorId(sensorId, limit, getSorting(sort), type);
+        return observationService.getObservationsByThingId(
+                thingId,
+                limit,
+                getSorting(sort),
+                obsIds,
+                LocalDateTime.parse(frameStart, DATE_FORMAT),
+                LocalDateTime.now());
     }
 
     /**
@@ -115,7 +129,7 @@ public class ObservationController {
 
         //TODO: Overload these methods instead of using useless start and end points
         List<Observation> list = observationService
-                .getObservationByDatastream(sensorService.getDatastream(id, start, end), start, end);
+                .getObservationsByDatastream(sensorService.getDatastream(id, start, end), start, end);
 
         WriteCsvToResponse.writeObservation(response.getWriter(), list);
 
@@ -142,6 +156,5 @@ public class ObservationController {
         };
         return sortingInfo[1].equals("dsc") ? sort.descending() : sort.ascending();
     }
-
 
 }
