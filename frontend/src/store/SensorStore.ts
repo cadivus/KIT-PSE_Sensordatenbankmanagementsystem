@@ -14,7 +14,7 @@ class SensorStore {
    */
   private _sensors: Map<string, Sensor>
 
-  private _lastUpdate = 0;
+  private _lastUpdate = 0
 
   constructor() {
     this._sensors = new Map<string, Sensor>()
