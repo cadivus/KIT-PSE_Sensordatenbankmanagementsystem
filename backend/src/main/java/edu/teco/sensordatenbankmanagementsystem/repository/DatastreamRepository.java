@@ -19,5 +19,5 @@ public interface DatastreamRepository extends JpaRepository<Datastream, String> 
 
   Optional<Datastream> findById(String id);
 
-    Stream<Datastream> findDatastreamsBySensorIdOrderByPhenomenonStartDesc(String SensorId);
+    Stream<Datastream> findDatastreamsBySensorIdInOrderByPhenomenonStartDesc(List<String> SensorId);
 }

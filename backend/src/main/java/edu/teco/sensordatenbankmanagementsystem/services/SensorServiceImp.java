@@ -9,6 +9,7 @@ import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -56,20 +57,23 @@ public class SensorServiceImp implements SensorService {
   }
 
   @Transactional
-  public Stream<Datastream> getDatastreams(String sensor_id, LocalDateTime start, LocalDateTime end) {
+  public Stream<Datastream> getDatastreams(List<String> sensorIds, LocalDateTime start, LocalDateTime end) {
 
     if (start == null)
       start = LocalDateTime.of(1900,1,1,0,0);
     if (end == null)
       end = LocalDateTime.now();
-    //TODO
-    Stream<Datastream> datastreams = datastreamRepository
-        .findDatastreamsBySensorIdOrderByPhenomenonStartDesc(sensor_id);
     LocalDateTime finalStart = start;
     LocalDateTime finalEnd = end;
-    return datastreams.filter(e -> e.getPhenomenonStart() != null && e.getPhenomenonEnd() != null)
-        .filter(e -> e.getPhenomenonStart().isAfter(finalStart) && e.getPhenomenonEnd().isBefore(
-            finalEnd));
+
+
+      return datastreamRepository
+          .findDatastreamsBySensorIdInOrderByPhenomenonStartDesc(sensorIds).filter(e -> e.getPhenomenonStart() != null && e.getPhenomenonEnd() != null)
+          .filter(e -> (e.getPhenomenonStart().isBefore(finalStart) && e.getPhenomenonEnd().isAfter(finalStart))|| (e.getPhenomenonEnd().isAfter(
+              finalEnd) && e.getPhenomenonStart().isBefore(finalEnd)) || (e.getPhenomenonStart().isAfter(finalStart) && e.getPhenomenonEnd().isBefore(finalEnd)));
+
+
+
   }
 
   /**

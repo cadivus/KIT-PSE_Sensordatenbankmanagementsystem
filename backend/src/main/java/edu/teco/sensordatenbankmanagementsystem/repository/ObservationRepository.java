@@ -23,7 +23,7 @@ public interface ObservationRepository extends JpaRepository<Observation, String
 
   Optional<Observation> findById(String id);
 
-  Stream<Observation> findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(
+  Stream<Observation> findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
       String dataStream, @Param("PhenomenonStart") LocalDateTime phenomenonStart,
       @Param("PhenomenonEnd") LocalDateTime phenomenonEnd);
 

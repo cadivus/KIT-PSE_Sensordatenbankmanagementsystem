@@ -30,7 +30,7 @@ public interface SensorService {
 
     List<Datastream> getDatastreams(String senor_id);
 
-    Stream<Datastream> getDatastreams(String sensor_id, LocalDateTime start, LocalDateTime end);
+    Stream<Datastream> getDatastreams(List<String> sensor_id, LocalDateTime start, LocalDateTime end);
 
     List<Sensor> getAllSensors();
 
