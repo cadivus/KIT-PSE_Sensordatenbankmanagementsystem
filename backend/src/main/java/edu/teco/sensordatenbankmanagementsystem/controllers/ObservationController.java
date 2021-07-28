@@ -15,8 +15,12 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -39,7 +43,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequestMapping("/observation")
 @EnableWebMvc
 @CommonsLog
-@ResponseBody
 @Controller
 public class ObservationController {
 
@@ -65,10 +68,11 @@ public class ObservationController {
      *
      * @return UUID of the created SSE stream
      */
-    @PostMapping("/newSSE")
-    public UUID createNewSse(@RequestBody Requests data) {
+    @ResponseBody
+    @PostMapping(value = "/newSSE", consumes = "application/json", produces="text/plain")
+    public String createNewSse(@RequestBody Requests data) {
         log.info("received Datastream request");
-        return observationService.createNewDataStream(data);
+        return observationService.createNewDataStream(data).toString();
     }
 
     /**
@@ -77,10 +81,12 @@ public class ObservationController {
      * @param id UUID of SSE stream to get
      * @return SSE stream for the given UUID
      */
+    @Produces(MediaType.SERVER_SENT_EVENTS)
     @GetMapping("/stream/{id}")
-    public SseEmitter streamSseMvc(@PathVariable UUID id) {
+    public SseEmitter streamSseMvc(@PathVariable String id) {
         log.info("request for outgoing stream for id: " + id);
-        return observationService.getDataStream(id);
+        UUID uuid = UUID.fromString(id);
+        return observationService.getDataStream(uuid);
     }
 
     @GetMapping("/observations/{id}")
@@ -116,7 +122,7 @@ public class ObservationController {
         response.setHeader(headerKey, headerValue);
 
         //TODO: Overload these methods instead of using useless start and end points
-        List<Observation> list = observationService
+        Stream<Observation> list = observationService
                 .getObservationByDatastream(sensorService.getDatastreams(id, start, end), start, end);
 
         WriteCsvToResponse.writeObservation(response.getWriter(), list);

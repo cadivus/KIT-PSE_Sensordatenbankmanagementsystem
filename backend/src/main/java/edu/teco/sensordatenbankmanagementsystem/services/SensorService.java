@@ -5,7 +5,7 @@ import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * The SensorService provides more complex methods for functionality concerning the querying of {@link Sensor} data based on the repositories.
@@ -30,7 +30,7 @@ public interface SensorService {
 
     List<Datastream> getDatastreams(String senor_id);
 
-    List<Datastream> getDatastreams(String sensor_id, LocalDateTime start, LocalDateTime end);
+    Stream<Datastream> getDatastreams(String sensor_id, LocalDateTime start, LocalDateTime end);
 
     List<Sensor> getAllSensors();
 

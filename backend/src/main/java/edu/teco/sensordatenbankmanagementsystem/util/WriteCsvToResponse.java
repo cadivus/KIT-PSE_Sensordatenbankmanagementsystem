@@ -8,12 +8,13 @@ import com.opencsv.exceptions.CsvException;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.extern.apachecommons.CommonsLog;
 
 @CommonsLog
 public class WriteCsvToResponse {
 
-  public static void writeObservation(PrintWriter writer, List<Observation> cities) {
+  public static void writeObservation(PrintWriter writer, Stream<Observation> cities) {
 
     try {
 

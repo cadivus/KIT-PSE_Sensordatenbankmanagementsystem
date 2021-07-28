@@ -3,6 +3,7 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
+import java.util.stream.Stream;
 import org.springframework.data.domain.PageRequest;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,7 +35,7 @@ public interface ObservationService {
      */
     Observation getObservation(String id);
   
-    List<Observation> getObservationByDatastream(List<Datastream> datastreams, LocalDateTime start, LocalDateTime end);
+    Stream<Observation> getObservationByDatastream(Stream<Datastream> datastreams, LocalDateTime start, LocalDateTime end);
 
     /**
      * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(Requests)} but with

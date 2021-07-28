@@ -1,7 +1,9 @@
 package edu.teco.sensordatenbankmanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.ManyToOne;
@@ -21,7 +23,9 @@ public class Requests {
     @GeneratedValue
     long id;
 
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
     LocalDateTime start;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
     LocalDateTime end;
     int speed;
 

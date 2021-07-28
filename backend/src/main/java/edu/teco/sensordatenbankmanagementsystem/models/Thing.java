@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -32,7 +33,7 @@ public class Thing {
   @Column(name = "\"PROPERTIES\"")
   String properties;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "\"THINGS_LOCATIONS\"",
       joinColumns = @JoinColumn(name = "\"THING_ID\"", referencedColumnName = "\"ID\""),
@@ -40,7 +41,7 @@ public class Thing {
   List<Location> locations;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "thing")
+  @OneToMany(mappedBy = "thing", fetch = FetchType.EAGER)
   List<Datastream> datastream;
 
 }

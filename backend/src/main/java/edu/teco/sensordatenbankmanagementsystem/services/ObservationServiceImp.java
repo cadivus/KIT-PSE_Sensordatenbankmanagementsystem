@@ -5,26 +5,31 @@ import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
+import org.apache.commons.collections4.BidiMap;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
@@ -33,13 +38,17 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
  */
 @Service
 @CommonsLog(topic = "Observationservice")
+@Transactional
 public class ObservationServiceImp implements ObservationService {
 
   ObservationRepository observationRepository;
   DatastreamRepository datastreamRepository;
   SensorService sensorService;
 
-  Map<UUID, SseEmitter> sseStreams = new HashMap<UUID, SseEmitter>();
+  @PersistenceContext
+  private EntityManager em;
+
+  BidiMap<UUID, SseEmitter> sseStreams = new DualHashBidiMap<>();
 
   @Autowired
   public ObservationServiceImp(ObservationRepository observationRepository,
@@ -52,51 +61,65 @@ public class ObservationServiceImp implements ObservationService {
   /**
    * {@inheritDoc}
    */
+  @Transactional()
   public UUID createNewDataStream(Requests information) {
     SseEmitter emitter = new SseEmitter(86400000L);
-    ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
-    List<Observation> observations = new ArrayList<>();
-    for (String s : information.getSensors()) {
-      List<Datastream> l1 = sensorService.getDatastreams(s);
-      observations = getObservationByDatastream(l1, information.getStart(),
-          information.getEnd());
-    }
-    List<Observation> observations1 = observations;
+    ExecutorService sseMvcExecutor = Executors.newCachedThreadPool();
+
+    UUID id = UUID.randomUUID();
+    sseStreams.put(id, emitter);
+    List<Datastream> datastreams = sensorService
+        .getDatastreams(information.getSensors().get(0), information.getStart(),
+            information.getEnd()).collect(Collectors.toList());
     sseMvcExecutor.execute(() -> {
-      int i = 0;
       try {
-        for (Observation o : observations1) {
-          i++;
-          SseEmitter.SseEventBuilder event = SseEmitter.event()
-              .data(o.toString())
-              .name("sse event - mvc");
-          emitter.send(event);
-          try {
-            Thread.sleep(ChronoUnit.MILLIS
-                .between(observations1.get(i).getPhenomenonStart(), o.getPhenomenonEnd())
-                / information.getSpeed());
+        while (true) {
+          for (Datastream d : datastreams) {
+            try (Stream<Observation> observations = observationRepository
+                .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(
+                    d.getId(), information.getStart(),
+                    information.getEnd())) {
+              observations.reduce((current, next) -> {
+                    SseEmitter.SseEventBuilder event = SseEmitter.event()
+                        .data(current.toString())
+                        .name("sse event - mvc");
+                    try {
+                      emitter.send(event);
 
-          } catch (IndexOutOfBoundsException ex) {
-            try {
-              if (LocalDateTime.now().isBefore(information.getEnd())) {
-                Thread.sleep(1000);
-              } else {
-                emitter.complete();
-                break;
-              }
+                    } catch (IOException ex) {
+                      emitter.completeWithError(ex);
+                      sseStreams.removeValue(emitter);
+                    }
+                    try {
+                      Thread.sleep(ChronoUnit.MILLIS
+                          .between(current.getPhenomenonEnd(),
+                              next.getPhenomenonStart())
+                          / information.getSpeed());
 
-            } catch (InterruptedException e) {
-              e.printStackTrace();
+                      if (LocalDateTime.now().isBefore(information.getEnd())) {
+                        Thread.sleep(1000);
+                      } else {
+                        emitter.complete();
+                        sseStreams.removeValue(emitter);
+                      }
+
+                    } catch (InterruptedException ex) {
+                      emitter.completeWithError(ex);
+                    }
+                    em.detach(current);
+                    return null;
+                  }
+              );
             }
-            i--;
           }
         }
       } catch (Exception ex) {
+        ex.printStackTrace();
         emitter.completeWithError(ex);
       }
+
     });
-    UUID id = UUID.randomUUID();
-    sseStreams.put(id, emitter);
+
     log.info("finished datastream creation for id: " + id);
     return id;
   }
@@ -156,30 +179,30 @@ public class ObservationServiceImp implements ObservationService {
    */
   @Transactional
   @Cacheable("Datastreams")
-  public List<Observation> getObservationByDatastream(List<Datastream> datastreams,
+  public Stream<Observation> getObservationByDatastream(Stream<Datastream> datastreams,
       LocalDateTime start,
       LocalDateTime end) {
-    List<Observation> result = new ArrayList<>();
-    if (start == null) {
-      for (Datastream d : datastreams) {
-        result.addAll(observationRepository.findObservationsByDatastreamId(d.getId())
-            .collect(Collectors.toList()));
-      }
-    } else if (end == null) {
-      for (Datastream d : datastreams) {
-        result.addAll(observationRepository
-            .findObservationsByDatastreamIdAndPhenomenonStartAfter(d.getId(), start)
-            .collect(Collectors.toList()));
-      }
-    } else {
-      for (Datastream d : datastreams) {
-        result.addAll(observationRepository
-            .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(
-                d.getId(), start, end).collect(Collectors.toList()));
-      }
+    if (datastreams == null) {
+      return null;
     }
-    return result;
+
+    return datastreams.flatMap(d -> {
+      if (start == null) {
+        return observationRepository.findObservationsByDatastreamId(d.getId());
+      } else if (end == null) {
+        return observationRepository
+            .findObservationsByDatastreamIdAndPhenomenonStartAfter(d.getId(), start);
+      } else {
+        return observationRepository
+            .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(
+                d.getId(), start, end);
+      }
+
+
+    });
+
   }
+
 
   /**
    * interpolates expected numerical observation values on a given set of observation data
