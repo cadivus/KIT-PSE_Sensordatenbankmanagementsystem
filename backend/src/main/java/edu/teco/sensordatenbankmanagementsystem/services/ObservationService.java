@@ -31,6 +31,7 @@ public interface ObservationService {
      * @param id The ID of the Observation
      * @return
      */
+    @Deprecated
     Observation getObservation(String id);
 
     /**

@@ -62,6 +62,9 @@ public class ObservationServiceImp implements ObservationService {
    */
   @Transactional()
   public UUID createNewDataStream(Requests information) {
+    if (information.getSpeed() == 0) {
+      information.setSpeed(1);
+    }
     if(information == null || information.getStart() == null || information.getEnd() == null || information.getSensors() == null || information.getSensors().isEmpty()){
       throw new IllegalArgumentException("Neither information, nor start, nor end, nor sensors can be empty");
     }
@@ -94,7 +97,8 @@ public class ObservationServiceImp implements ObservationService {
    * {@inheritDoc}
    */
   public UUID createReplay(Requests information) {
-    return UUID.randomUUID();
+    information.setSpeed(1);
+    return createNewDataStream((information));
   }
 
   /**
