@@ -62,6 +62,11 @@ public class ObservationServiceImp implements ObservationService {
    */
   @Transactional()
   public UUID createNewDataStream(Requests information) {
+    if(information == null || information.getStart() == null || information.getEnd() == null || information.getSensors() == null || information.getSensors().isEmpty()){
+      throw new IllegalArgumentException("Neither information, nor start, nor end, nor sensors can be empty");
+    }
+    if (information.getStart().equals(information.getEnd()))
+      throw new IllegalArgumentException("Start and end can not be the same time");
     Long life = (long) (ChronoUnit.MILLIS.between(information.getStart(), information.getEnd())/information.getSpeed() * 1.05);
     SseEmitter emitter = new SseEmitter(life);
     ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
