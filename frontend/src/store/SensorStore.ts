@@ -14,6 +14,8 @@ class SensorStore {
    */
   private _sensors: Map<string, Sensor>
 
+  private _lastUpdate = 0;
+
   constructor() {
     this._sensors = new Map<string, Sensor>()
     const {getSensorsFromBackend} = this
@@ -56,6 +58,8 @@ class SensorStore {
     for (let i = 0; i < 20; i += 1) {
       mockSensor(i)
     }
+
+    this._lastUpdate = Date.now()
   }
 
   getSensor = (id: Id): Sensor | undefined => {
@@ -64,6 +68,11 @@ class SensorStore {
     const {_sensors} = this
 
     return _sensors.get(id.toString())
+  }
+
+  get lastUpdate(): number {
+    const {_lastUpdate} = this
+    return _lastUpdate
   }
 }
 
