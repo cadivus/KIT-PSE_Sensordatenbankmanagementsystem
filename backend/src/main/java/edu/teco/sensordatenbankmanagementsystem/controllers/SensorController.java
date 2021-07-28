@@ -118,7 +118,7 @@ public class SensorController {
     public List<ObservationStats> getObservationStatsOfThings(
             @RequestParam(name="ids")List<String> ids,
             @RequestParam(name="obsIds")List<String> obsIds,
-            @RequestParam(name = "frameStart", defaultValue = "0000-01-01") String frameStart,
+            @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
             @RequestParam(name = "frameEnd", required = false) String frameEnd
     ){
         return thingService.getObservationStatsOfThings(

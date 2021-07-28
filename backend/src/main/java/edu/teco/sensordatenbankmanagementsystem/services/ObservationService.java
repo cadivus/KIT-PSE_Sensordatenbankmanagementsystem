@@ -2,6 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
+import edu.teco.sensordatenbankmanagementsystem.models.ObservedProperty;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 
 import java.time.LocalDate;
@@ -59,6 +60,8 @@ public interface ObservationService {
     void destroyDataStream(UUID id);
 
     List<Observation> getObservationsByThingId(String thingId, int limit, Sort sort, List<String> filter, LocalDateTime frameStart, LocalDateTime frameEnd);
+
+    List<ObservedProperty> getAllObservedProperties();
 
     /**
      * interpolates expected numerical observation values on a given set of observation data

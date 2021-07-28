@@ -34,6 +34,6 @@ public interface ObservationRepository extends JpaRepository<Observation, String
   @Query(value="select * from \"OBSERVATIONS\" where \"DATASTREAM_ID\" in :datastreams order by :sort", nativeQuery = true)
   Stream<Observation> findObservationsInDatastreams(List<Datastream> datastreams, String sort, Pageable pageable);
 
-  Observation countAllByDatastreamId(String id);
+  long countAllByDatastreamId(String id);
 
 }

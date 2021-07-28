@@ -2,6 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
+import edu.teco.sensordatenbankmanagementsystem.models.ObservedProperty;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
@@ -14,6 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+
+import edu.teco.sensordatenbankmanagementsystem.repository.ObservedPropertyRepository;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -33,14 +36,19 @@ public class ObservationServiceImp implements ObservationService {
 
   ObservationRepository observationRepository;
   DatastreamRepository datastreamRepository;
+  ObservedPropertyRepository observedPropertyRepository;
 
   Map<UUID, SseEmitter> sseStreams = new HashMap<UUID, SseEmitter>();
 
   @Autowired
-  public ObservationServiceImp(ObservationRepository observationRepository,
-      DatastreamRepository datastreamRepository) {
+  public ObservationServiceImp(
+          ObservationRepository observationRepository,
+          DatastreamRepository datastreamRepository,
+          ObservedPropertyRepository observedPropertyRepository
+  ) {
     this.observationRepository = observationRepository;
     this.datastreamRepository = datastreamRepository;
+    this.observedPropertyRepository = observedPropertyRepository;
   }
 
   /**
@@ -118,6 +126,17 @@ public class ObservationServiceImp implements ObservationService {
             .ofNullable(filter).map(s -> this.datastreamRepository.findDatastreamsByThingIdAndObsIdIn(thingId, s))
             .orElseGet(() -> this.datastreamRepository.findDatastreamsByThingId(thingId));
 
+//    System.out.printf("%s %s %s %s %s %s\n", thingId, limit, sort, filter, frameStart, frameEnd);
+//    System.out.println(associatedStreams.size());
+//    for(Datastream d : associatedStreams){
+//      System.out.printf("ids: %s %s\n", d.getThingId(), d.getObsId());
+//      System.out.printf(
+//              "%s items in %s\n",
+//              observationRepository.countAllByDatastreamId(d.getId()),
+//              d.getId()
+//      );
+//    }
+
     LocalDateTime finalFrameStart = frameStart;
     LocalDateTime finalFrameEnd = frameEnd;
     return associatedStreams.stream()
@@ -126,6 +145,11 @@ public class ObservationServiceImp implements ObservationService {
                             finalFrameStart, finalFrameEnd, PageRequest.of(0, limit).withSort(sort)))
             .limit(limit)
             .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<ObservedProperty> getAllObservedProperties() {
+    return observedPropertyRepository.findAll();
   }
 
   /**

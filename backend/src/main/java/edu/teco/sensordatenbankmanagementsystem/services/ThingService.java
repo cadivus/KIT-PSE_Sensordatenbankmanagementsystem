@@ -79,8 +79,8 @@ public class ThingService {
                     ObservationStats r = new ObservationStats();
                     for(String obsId : obsIds){
                         r.addObservedProperty(obsId, observationService.getObservationsByThingId(thongId,
-                                Integer.MAX_VALUE, Sort.unsorted(), null, frameStart, frameEnd).stream()
-                                .map(Observation::getValue).collect(Collectors.toList()));
+                                Integer.MAX_VALUE, Sort.unsorted(), List.of(obsId), frameStart, frameEnd).stream()
+                                .map(Observation::getResultNumber).collect(Collectors.toList()));
                     }
                     return r;
                 })

@@ -59,7 +59,7 @@ public class Observation {
     Integer type;
 
     @Column(name = "\"RESULT_NUMBER\"")
-    Float resultNumber;
+    Double resultNumber;
 
     @Column(name = "\"RESULT_STRING\"")
     String resultString;

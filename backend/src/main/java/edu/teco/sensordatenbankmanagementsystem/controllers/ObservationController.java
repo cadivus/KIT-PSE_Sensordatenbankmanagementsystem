@@ -3,6 +3,7 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.BadSortingTypeStringException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.NoSuchSortException;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
+import edu.teco.sensordatenbankmanagementsystem.models.ObservedProperty;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
@@ -76,6 +77,11 @@ public class ObservationController {
     public SseEmitter streamSseMvc(@PathVariable UUID id) {
         log.info("request for outgoing stream for id: " + id);
         return observationService.getDataStream(id);
+    }
+
+    @GetMapping("/getAllObs")
+    public List<ObservedProperty> getAllObservedProperties(){
+        return observationService.getAllObservedProperties();
     }
 
     /**
