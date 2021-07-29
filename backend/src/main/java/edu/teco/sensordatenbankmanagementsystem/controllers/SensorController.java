@@ -1,5 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
+import edu.teco.sensordatenbankmanagementsystem.exceptions.ImageCantBeGeneratedException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ObjectNotFoundException;
 import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
@@ -8,15 +9,30 @@ import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
+
+import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static edu.teco.sensordatenbankmanagementsystem.util.GlobalConstants.DATE_FORMAT;
 
 /**
  * The SensorController is the entry point for http requests for {@link Sensor}s.
@@ -26,8 +42,6 @@ import java.util.Optional;
 @RequestMapping("/sensor")
 @CommonsLog
 public class SensorController {
-
-    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public final ThingService thingService;
     public final SensorService sensorService;
@@ -59,6 +73,57 @@ public class SensorController {
     @GetMapping("getAllThings")
     public List<Thing> getAllThings(){
         return thingService.getAllThings();
+    }
+
+    /**
+     * Generates and returns an image of a graph interpolating the data in the specified time frame
+     *
+     * @param id of thing
+     * @param obsId of observed property
+     * @param frameStart start of time frame
+     * @param frameEnd end of time frame
+     * @param maxInterPoints maximum number of interpolation points to use (don't go too crazy)
+     * @param imageSize size of the image to return
+     * @param granularity visual granularity of the rendered graph
+     * @return image of graph
+     */
+    @GetMapping(value = "graph")
+    public ResponseEntity<byte[]> getGraphOfThing(
+            @RequestParam(name="id")String id,
+            @RequestParam(name="obsId")String obsId,
+            @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
+            @RequestParam(name = "frameEnd", required = false) String frameEnd,
+            @RequestParam(name = "maxInterpolationPoints", defaultValue = "100") int maxInterPoints,
+            @RequestParam(name = "imageSize", defaultValue = "400x225") String imageSize,
+            @RequestParam(name = "renderGranularity", defaultValue = "3") int granularity
+    ){
+        String[]iwh = imageSize.split("x");
+        Dimension idim = new Dimension(Integer.parseInt(iwh[0]), Integer.parseInt(iwh[1]));
+        RenderedImage graphImage = sensorService.getGraphImageOfThing(
+                id,
+                obsId,
+                LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
+                Optional.ofNullable(frameEnd)
+                        .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
+                        .orElseGet(LocalDate::now)
+                        .atStartOfDay(),
+                maxInterPoints,
+                idim,
+                granularity
+        );
+        ByteArrayOutputStream graphStream = new ByteArrayOutputStream();
+        try{
+            //there appears to be (at least locally) a problem where ImageIO only finds a writer for "png"-format
+            //otherwise "jpg" would be preferred here
+            ImageIO.write(graphImage, "png", graphStream);
+        } catch(IOException io) {
+            throw new ImageCantBeGeneratedException();
+        }
+        byte[] graphImageAsArray = graphStream.toByteArray();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(graphImageAsArray, headers, HttpStatus.CREATED);
     }
 
     /**

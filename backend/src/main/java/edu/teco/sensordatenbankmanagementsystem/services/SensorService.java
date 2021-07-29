@@ -3,6 +3,8 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 
+import java.awt.*;
+import java.awt.image.RenderedImage;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -34,4 +36,6 @@ public interface SensorService {
 
     List<Sensor> getAllSensors();
 
+    RenderedImage getGraphImageOfThing(String id, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
+                                       int maxInterPoints, Dimension imageDimension, int granularity);
 }

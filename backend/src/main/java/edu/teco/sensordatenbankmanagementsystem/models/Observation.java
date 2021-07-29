@@ -92,11 +92,6 @@ public class Observation {
 
     }
 
-    public Observation(double value, LocalDate date) {
-        this.value = value;
-        this.date = date;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

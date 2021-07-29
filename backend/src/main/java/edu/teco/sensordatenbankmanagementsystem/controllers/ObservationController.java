@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import static edu.teco.sensordatenbankmanagementsystem.util.GlobalConstants.DATE_FORMAT;
+
 
 /**
  * The ObservationController is the entry point for http requests for {@link Observation}s. Methods
@@ -39,8 +41,6 @@ public class ObservationController {
 
     public final ObservationService observationService;
     public final SensorService sensorService;
-
-    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     /**
      * Instantiates a new Observation controller.
