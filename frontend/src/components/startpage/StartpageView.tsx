@@ -2,6 +2,8 @@ import React, {FC, useState} from 'react'
 import {Button, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import {useHistory} from 'react-router-dom'
+import {FormattedMessage} from 'react-intl'
+import translate from './../../i18n/translate'
 import SensorList from './SensorList'
 import Search from './Search'
 import Sensor from '../../material/Sensor'
@@ -37,7 +39,7 @@ const StartpageView: FC = () => {
     <div>
       <Container maxWidth="lg" className={classes.container}>
         <Typography variant="h3" align="center" gutterBottom>
-          Startpage
+          {translate('startpage.startpage')}
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={8}>
