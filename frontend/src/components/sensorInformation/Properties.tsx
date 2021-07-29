@@ -13,6 +13,7 @@ import {
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
 import Sensor from '../../material/Sensor'
+import {FormattedMessage} from "react-intl";
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -54,7 +55,9 @@ const Properties = ({sensor}: {sensor: Sensor}) => {
         <TableBody>
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">Value: </Typography>
+              <Typography variant="h6">
+                <FormattedMessage id="infopage.value" />
+              </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Typography variant="h6">{sensor.getValue().toString()}</Typography>
@@ -87,7 +90,9 @@ const Properties = ({sensor}: {sensor: Sensor}) => {
           <StyledTableRow />
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">Subscribed: </Typography>
+              <Typography variant="h6">
+                <FormattedMessage id="infopage.subscribed" />
+              </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Checkbox color="primary" disabled inputProps={{'aria-label': 'secondary checkbox'}} />

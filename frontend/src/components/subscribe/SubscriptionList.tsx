@@ -11,15 +11,15 @@ import {
   Typography,
   withStyles,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogTitle,
 } from '@material-ui/core'
-import {createStyles, makeStyles} from '@material-ui/core/styles'
+import {createStyles} from '@material-ui/core/styles'
 import {useHistory} from 'react-router-dom'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Checkbox from '@material-ui/core/Checkbox'
+import {FormattedMessage} from 'react-intl'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 import Subscription from '../../material/Subscription'
 
@@ -44,29 +44,11 @@ const StyledTableRow = withStyles((theme: Theme) =>
   }),
 )(TableRow)
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      marginTop: '2%',
-    },
-    root: {
-      '&$disabled': {
-        color: theme.palette.primary.main,
-      },
-    },
-    unsubscribe: {
-      marginLeft: '89.5%',
-      marginTop: '15px',
-    },
-  }),
-)
-
 /**
  *  Displays a list of subscriptions.
  *  This class implements a React component.
  */
 const SubscriptionList: FC = () => {
-  const classes = useStyles()
   const history = useHistory()
   const subscriptionStore = useSubscriptionStore()
 
@@ -96,23 +78,27 @@ const SubscriptionList: FC = () => {
             <TableRow>
               <StyledTableCell>
                 <Typography variant="h5">
-                  <ArrowDropDownIcon /> Sensor
+                  <ArrowDropDownIcon />
+                  <FormattedMessage id="subscriptionpage.sensor" />
                 </Typography>
               </StyledTableCell>
               <StyledTableCell>
                 <Typography variant="h5">
-                  <ArrowDropDownIcon /> Log level
+                  <ArrowDropDownIcon />
+                  <FormattedMessage id="subscriptionpage.logLevel" />
                 </Typography>
               </StyledTableCell>
               <StyledTableCell>
                 <Typography variant="h5">
-                  <ArrowDropDownIcon /> Notify on Error
+                  <ArrowDropDownIcon />
+                  <FormattedMessage id="subscriptionpage.notificationError" />
                 </Typography>
               </StyledTableCell>
               <StyledTableCell />
               <StyledTableCell>
                 <Typography variant="h5">
-                  <ArrowDropDownIcon /> Unsubscribe
+                  <ArrowDropDownIcon />
+                  <FormattedMessage id="subscriptionpage.unsubscribe" />
                 </Typography>
               </StyledTableCell>
             </TableRow>
@@ -124,7 +110,11 @@ const SubscriptionList: FC = () => {
                   <Typography variant="h5">{subscription.sensors[0].name.name}</Typography>
                 </StyledTableCell>
                 <StyledTableCell>
-                  <Typography variant="body1">Every {subscription.notificationLevel.days} days</Typography>
+                  <Typography variant="body1">
+                    <FormattedMessage id="subscriptionpage.logMessage1" />
+                    {subscription.notificationLevel.days}
+                    <FormattedMessage id="subscriptionpage.logMessage2" />
+                  </Typography>
                 </StyledTableCell>
                 <StyledTableCell>
                   <Checkbox
@@ -140,12 +130,12 @@ const SubscriptionList: FC = () => {
                     color="primary"
                     onClick={() => history.push(`/subscriptions/subscriptionChange/${subscription.id.toString()}`)}
                   >
-                    change
+                    <FormattedMessage id="subscriptionpage.changeButton" />
                   </Button>
                 </StyledTableCell>
                 <StyledTableCell>
                   <Button variant="contained" color="secondary" onClick={() => handleClickOpen(subscription)}>
-                    delete
+                    <FormattedMessage id="subscriptionpage.deleteButton" />
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
@@ -159,13 +149,15 @@ const SubscriptionList: FC = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Do you really want to unsubscribe this subscription?</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <FormattedMessage id="subscriptionpage.unsubscribeMessage" />
+        </DialogTitle>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Disagree
+            <FormattedMessage id="subscriptionpage.disagreeButton" />
           </Button>
           <Button onClick={handleDelete} autoFocus>
-            Agree
+            <FormattedMessage id="subscriptionpage.agreeButton" />
           </Button>
         </DialogActions>
       </Dialog>

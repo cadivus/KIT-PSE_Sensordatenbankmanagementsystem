@@ -9,6 +9,7 @@ import Data from './Data'
 import useSensorStore from '../../hooks/UseSensorStore'
 import Id from '../../material/Id'
 import Sensor from '../../material/Sensor'
+import {FormattedMessage} from "react-intl";
 
 const useStyles = makeStyles({
   container: {
@@ -74,12 +75,16 @@ const SensorInformationView: FC = () => {
                   className={classes.button}
                   onClick={() => history.push('/replay/replaySingleView')}
                 >
-                  <Typography variant="h5"> Replay </Typography>
+                  <Typography variant="h5">
+                    <FormattedMessage id="infopage.replay" />
+                  </Typography>
                 </Button>
               </Grid>
               <Grid item xs={12}>
                 <Button variant="outlined" className={classes.button} onClick={onSubscribeClick}>
-                  <Typography variant="h5"> Subscribe </Typography>
+                  <Typography variant="h5">
+                    <FormattedMessage id="infopage.subscribe" />
+                  </Typography>
                 </Button>
               </Grid>
             </Grid>

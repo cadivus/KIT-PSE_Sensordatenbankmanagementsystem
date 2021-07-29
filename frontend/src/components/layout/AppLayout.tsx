@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {Button, IconButton, AppBar, Toolbar, Typography} from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home'
 import {makeStyles} from '@material-ui/core/styles'
+import {FormattedMessage} from "react-intl";
 
 const useStyles = makeStyles({
   footer: {
@@ -22,10 +23,14 @@ const AppLayout: FC = ({children}) => {
             <HomeIcon />
           </IconButton>
           <Button color="inherit" onClick={() => history.push('/subscriptions')}>
-            <Typography variant="h6">Subscriptions</Typography>
+            <Typography variant="h6">
+              <FormattedMessage id="appbar.subscription" />
+            </Typography>
           </Button>
           <Button color="inherit" onClick={() => history.push('/login')}>
-            <Typography variant="h6">Login</Typography>
+            <Typography variant="h6">
+              <FormattedMessage id="appbar.login" />
+            </Typography>
           </Button>
         </Toolbar>
       </AppBar>
