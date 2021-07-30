@@ -51,6 +51,13 @@ abstract class Sensor {
    * @return The current value of the sensor.
    */
   public abstract getValue(): SensorValue
+
+  /**
+   * This function indicates whether the sensor is active.
+   *
+   * @return true, when the sensor is active. false otherwise
+   */
+  public abstract isActive(): boolean
 }
 
 export default Sensor

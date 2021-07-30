@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
 import {Button, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
@@ -54,13 +54,31 @@ const SensorInformationView: FC = () => {
     })
   }
 
+  const [activeState, setActiveState] = useState(sensor.isActive())
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const active = sensor.isActive()
+      if (activeState !== active) setActiveState(active)
+    }, 2000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  })
+
   return (
     <div>
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography variant="h3" align="center" gutterBottom>
-              {sensor.name.toString()} <FiberManualRecordIcon color="secondary" fontSize="large" />
+              {sensor.name.toString()}
+              {activeState ? (
+                <FiberManualRecordIcon color="primary" fontSize="large" />
+              ) : (
+                <FiberManualRecordIcon color="secondary" fontSize="large" />
+              )}
             </Typography>
           </Grid>
           <Grid item xs={6}>

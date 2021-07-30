@@ -54,6 +54,10 @@ class SensorStore {
           getValue(): SensorValue {
             return new SensorValue(i * 10)
           }
+
+          isActive(): boolean {
+            return true
+          }
         })(new SensorName(`Sensor${i}`), id),
       )
     }
@@ -113,6 +117,10 @@ class SensorStore {
     const result = new (class extends Sensor {
       getValue(): SensorValue {
         return new SensorValue(100)
+      }
+
+      isActive(): boolean {
+        return true
       }
     })(name, id)
 
