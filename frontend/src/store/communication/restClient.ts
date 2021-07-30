@@ -1,18 +1,15 @@
 import fetch from 'node-fetch'
 
-export async function getJson(path): any {
-  const pathh=`${window.location.protocol}//${window.location.host}/api/backend`
-
-  const response = await fetch(pathh)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getJson(path: string): Promise<any> {
+  const response = await fetch(path)
   const data = await response.json()
 
   return data
 }
 
-export async function getText(path): any {
-  const pathh=`${window.location.protocol}//${window.location.host}/api/backend`
-
-  const response = await fetch(pathh)
+export async function getText(path: string): Promise<string> {
+  const response = await fetch(path)
   const data = await response.text()
 
   return data
