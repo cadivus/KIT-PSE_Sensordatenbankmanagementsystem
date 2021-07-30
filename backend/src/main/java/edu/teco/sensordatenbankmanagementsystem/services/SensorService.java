@@ -2,12 +2,12 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
+import edu.teco.sensordatenbankmanagementsystem.util.interpolation.Interpolator;
 
 import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * The SensorService provides more complex methods for functionality concerning the querying of {@link Sensor} data based on the repositories.
@@ -37,5 +37,7 @@ public interface SensorService {
     List<Sensor> getAllSensors();
 
     RenderedImage getGraphImageOfThing(String id, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
-                                       int maxInterPoints, Dimension imageDimension, int granularity);
+                                        int maxInterPoints, Dimension imageDimension, int granularity,
+                                        Interpolator<Double, Double> interpolator);
+
 }

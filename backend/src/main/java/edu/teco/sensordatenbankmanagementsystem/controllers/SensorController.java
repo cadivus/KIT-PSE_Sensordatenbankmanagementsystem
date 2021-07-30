@@ -2,6 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ImageCantBeGeneratedException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ObjectNotFoundException;
+import edu.teco.sensordatenbankmanagementsystem.exceptions.UnknownInterpolationMethodException;
 import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
@@ -12,6 +13,9 @@ import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
 
 import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
+
+import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
+import edu.teco.sensordatenbankmanagementsystem.util.interpolation.NewtonInterpolator;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,14 +25,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,7 +95,8 @@ public class SensorController {
             @RequestParam(name = "frameEnd", required = false) String frameEnd,
             @RequestParam(name = "maxInterpolationPoints", defaultValue = "100") int maxInterPoints,
             @RequestParam(name = "imageSize", defaultValue = "400x225") String imageSize,
-            @RequestParam(name = "renderGranularity", defaultValue = "3") int granularity
+            @RequestParam(name = "renderGranularity", defaultValue = "1") int granularity,
+            @RequestParam(name = "interpolationMethod", defaultValue = "lagrange") String interpolationMethod
     ){
         String[]iwh = imageSize.split("x");
         Dimension idim = new Dimension(Integer.parseInt(iwh[0]), Integer.parseInt(iwh[1]));
@@ -109,7 +110,12 @@ public class SensorController {
                         .atStartOfDay(),
                 maxInterPoints,
                 idim,
-                granularity
+                granularity,
+                switch (interpolationMethod){
+                    case "lagrange" -> LagrangeInterpolator.getInstance();
+                    case "newton" -> NewtonInterpolator.getInstance();
+                    default -> throw new UnknownInterpolationMethodException(interpolationMethod);
+                }
         );
         ByteArrayOutputStream graphStream = new ByteArrayOutputStream();
         try{
@@ -158,10 +164,10 @@ public class SensorController {
 
     /**
      * Gets active rate of things, calculated as amount of data transmissions / days
-     * @param ids list of things_ids to check
+     * @param ids list of thing_ids to check
      * @param frameStart start of time frame to calculate active rate
      * @param frameEnd end of time frame to calculate active rate
-     * @return
+     * @return list of active rates in the same order
      */
     @GetMapping("active_rate")
     public List<Double> getActiveRateOfThings(
@@ -179,6 +185,15 @@ public class SensorController {
         );
     }
 
+    /**
+     * Calculates statistics about the given things and returns them in order
+     *
+     * @param ids list of thing_ids to get stats from
+     * @param obsIds list of observed properties to get stats from
+     * @param frameStart start of time frame
+     * @param frameEnd end of time frame
+     * @return list of stats in order
+     */
     @GetMapping("stats")
     public List<ObservationStats> getObservationStatsOfThings(
             @RequestParam(name="ids")List<String> ids,

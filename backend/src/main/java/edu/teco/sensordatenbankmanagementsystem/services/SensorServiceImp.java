@@ -1,7 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.CantInterpolateWithNoSamplesException;
-import edu.teco.sensordatenbankmanagementsystem.exceptions.IllegalInterpolationParameterException;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.repository.SensorRepository;
 
@@ -9,7 +8,6 @@ import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
-import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,8 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.transaction.Transactional;
 
-import edu.teco.sensordatenbankmanagementsystem.util.Interpolator;
-import edu.teco.sensordatenbankmanagementsystem.util.Meth;
+import edu.teco.sensordatenbankmanagementsystem.util.interpolation.Interpolator;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -106,7 +103,8 @@ public class SensorServiceImp implements SensorService {
 
   @Override
   public RenderedImage getGraphImageOfThing(String id, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
-                                            int maxInterPoints, Dimension imageDimension, int granularity) {
+                                            int maxInterPoints, Dimension imageDimension, int granularity,
+                                            Interpolator<Double, Double> interpolator) {
     if(maxInterPoints == 0) {
       throw new CantInterpolateWithNoSamplesException();
     }
@@ -127,10 +125,10 @@ public class SensorServiceImp implements SensorService {
     double intervalEnd = frameEnd.atZone(ZONE_ID).toEpochSecond();
 
     //attempt at normalizing massive x values generating by epoch seconds for smaller interpolation error
-//    double normalizingShift = (intervalEnd + intervalStart) / 2;
-//    double normalizingScale = (intervalEnd - intervalStart) / 2;
-    double normalizingShift = 0;
-    double normalizingScale = 1;
+    double normalizingShift = (intervalEnd + intervalStart) / 2;
+    double normalizingScale = (intervalEnd - intervalStart) / 2;
+//    double normalizingShift = 0;
+//    double normalizingScale = 1;
     Function<Double, Double> normalizer = a -> (a - normalizingShift) / normalizingScale;
     intervalStart = normalizer.apply(intervalStart);
     intervalEnd = normalizer.apply(intervalEnd);
@@ -160,27 +158,30 @@ public class SensorServiceImp implements SensorService {
 //    max += mmdiff;
 
     sample.sort(Comparator.comparing(xExtractor));
-    Interpolator<Observation> interpolator = new Interpolator<>(sample, xExtractor, fExtractor);
+    Function<Double, Double> interpolFunc = interpolator.interpolate(sample, xExtractor, fExtractor);
 
     int alertus = 0;
     double lastX = 0;
     for(Observation g : sample){
-      double x = xExtractor.apply(g), y = interpolator.f(x), knotdiff = y - g.getResultNumber();
+      double x = xExtractor.apply(g), y = interpolFunc.apply(x), knotdiff = y - g.getResultNumber();
       System.out.printf("x: %s, y: %s, diff: %s, distance to last knot: %s\n", x, y, knotdiff, x - lastX);
+      x = (x+lastX) / 2; y = interpolFunc.apply(x);
+      System.out.printf("| x: %s, y: %s\n", x, y);
       if(knotdiff != 0) {
         alertus += 1;
       }
       lastX = x;
     }
-    System.out.printf("%s knots out of %s done goofed!\n", alertus, interPoints);
-
-    final double borderScale = .1;
-
-    System.out.printf("interpolator: %s\n", interpolator);
+//    System.out.printf("%s knots out of %s done goofed!\n", alertus, interPoints);
+//
+//    System.out.printf("interpolator: %s\n", interpolFunc);
+//    System.out.printf("function: %s\n", ((LagrangeInterpolator.LagrangePolynomial)interpolFunc).toMathString());
 //    System.out.println(sample.stream().map(Observation::getResultNumber).collect(Collectors.toList()));
 //    System.out.println(sample.stream().map(o->(double)o.getResultTime().atZone(ZONE_ID).toEpochSecond()).collect(Collectors.toList()));
     //System.out.printf("lowx: %s, highx: %s\n", intervalStart, intervalEnd);
 //    System.out.printf("min: %s, max: %s, interPoints: %s\n", min, max, interPoints);
+
+    final double borderScale = .1;
 
     //sample.sort(Comparator.comparing(fExtractor));
     Graphics2D g = (Graphics2D)r.getGraphics();
@@ -190,7 +191,7 @@ public class SensorServiceImp implements SensorService {
             round(borderScale * imageDimension.width), 0,
             round((1 - borderScale) * imageDimension.width), round((1 - borderScale) * imageDimension.height),
             intervalStart, intervalEnd, min, max,
-            sample, interpolator,
+            sample, interpolFunc,
             granularity,
             xExtractor, fExtractor
     );
@@ -202,7 +203,7 @@ public class SensorServiceImp implements SensorService {
           Graphics2D g,
           int x, int y, int w, int h,
           double xIntStart, double xIntEnd, double yIntStart, double yIntEnd,
-          List<T> sample, Interpolator<?> interpolator, int granularity,
+          List<T> sample, Function<Double, Double> interpolFunc, int granularity,
           Function<T, Double> xExtractor, Function<T, Double> yExtractor
   ){
     int imageScale = Math.max(w, h);
@@ -220,7 +221,7 @@ public class SensorServiceImp implements SensorService {
 
 //    System.out.printf("x: %s, y: %s, w: %s, h: %s\n",x,y,w,h);
 //    System.out.printf("xIS: %s, xIE: %s, yIS: %s, yIE: %s\n",xIntStart,xIntEnd,yIntStart,yIntEnd);
-//    System.out.printf("xIL: %s, yIL: %s, wPxPerOne: %s, yPxPerOne: %s\n",xIntLen,yIntLen,wPxPerOne,hPxPerOne);
+//    System.out.printf("xIL: %s, yIL: %s, wPxPerOne: %s, hPxPerOne: %s\n",xIntLen,yIntLen,wPxPerOne,hPxPerOne);
 //    System.out.printf("circle rad: %s, line thicc: %s\n", emphasisCircleRad, lineThiccScale * imageScale);
 
     for(int i = 0; i <= sample.size(); i ++) {
@@ -229,12 +230,15 @@ public class SensorServiceImp implements SensorService {
 
       //draws lines to approximate the function every #granularity pixels
       int nextXPx = lowXPx;
-      int prevYPx = y + h - round(hPxPerOne * (interpolator.f(xIntStart + (lowXPx - x) / wPxPerOne) - yIntStart));
+      int prevYPx = y + h - round(hPxPerOne * (interpolFunc.apply(xIntStart + (lowXPx - x) / wPxPerOne) - yIntStart));
       while(nextXPx != highXPx){
         nextXPx += granularity;
         if(nextXPx > highXPx) nextXPx = highXPx;
-        //System.out.printf("%s ", interpolator.f(xIntStart + (nextXPx - x) / wPxPerOne));
-        int nextYPx = y + h - round(hPxPerOne * (interpolator.f(xIntStart + (nextXPx - x) / wPxPerOne) - yIntStart));
+        int nextYPx =
+                y + h - round(hPxPerOne * (interpolFunc.apply(xIntStart + (nextXPx - x) / wPxPerOne) - yIntStart));
+        double xx = xIntStart + (nextXPx - x) / wPxPerOne;
+//        System.out.printf("x: %s, f(x): %s, f(x)->px: %s\n", xx,
+//                interpolFunc.apply(xx), nextYPx);
         g.drawLine(nextXPx - granularity, prevYPx, nextXPx, nextYPx);
         prevYPx = nextYPx;
       }
@@ -244,7 +248,7 @@ public class SensorServiceImp implements SensorService {
     for(T t : sample) {
       int xPx = x + round(wPxPerOne * (xExtractor.apply(t) - xIntStart));
       int yPx = y + h - round(hPxPerOne * (yExtractor.apply(t) - yIntStart));
-      g.drawOval(xPx, yPx, emphasisCircleRad, emphasisCircleRad);
+      g.drawOval(xPx - emphasisCircleRad / 2, yPx - emphasisCircleRad / 2, emphasisCircleRad, emphasisCircleRad);
     }
   }
 
