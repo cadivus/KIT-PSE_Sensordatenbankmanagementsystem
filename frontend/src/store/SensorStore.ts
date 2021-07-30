@@ -98,6 +98,7 @@ class SensorStore {
         if (element.properties !== null && element.properties !== 'null') {
           applyProperties(existingSensor, element.properties)
         }
+        existingSensor.description = element.description ? element.description : ''
       })
 
       this._lastUpdate = Date.now()

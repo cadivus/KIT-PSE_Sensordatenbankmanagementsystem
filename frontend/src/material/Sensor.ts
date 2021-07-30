@@ -19,6 +19,8 @@ abstract class Sensor {
 
   private _properties: Map<string, SensorProperty>
 
+  description = ''
+
   constructor(name: SensorName, id: Id) {
     this._properties = new Map<string, SensorProperty>()
     this.name = name
