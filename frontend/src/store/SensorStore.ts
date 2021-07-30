@@ -4,6 +4,7 @@ import SensorName from '../material/SensorName'
 import Id from '../material/Id'
 import {ALL_THINGS} from './communication/backendUrlCreator'
 import {getJson} from './communication/restClient'
+import SensorProperty from '../material/SensorProperty'
 
 /**
  * This is the storage for sensors.
@@ -75,26 +76,36 @@ class SensorStore {
       return
     }
 
-    const {_sensors, createSensor} = this
-    let i = 10
-
+    const {_sensors, createSensor, applyProperties} = this
     getJson(ALL_THINGS).then(sensorJSON => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       sensorJSON.forEach((element: any) => {
-        i += 1
         const id = new Id(element.id)
         const name = new SensorName(element.name)
 
-        const existingSensor = _sensors.get(id.toString())
+        let existingSensor = _sensors.get(id.toString())
         if (!existingSensor) {
-          _sensors.set(id.toString(), createSensor(id, name))
+          existingSensor = createSensor(id, name)
+          _sensors.set(id.toString(), existingSensor)
         } else {
           const sensor = _sensors.get(id.toString())
           existingSensor.name = name
         }
+        if (element.properties !== null && element.properties !== 'null') {
+          applyProperties(existingSensor, element.properties)
+        }
       })
 
       this._lastUpdate = Date.now()
+    })
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private applyProperties = (sensor: Sensor, jsonProperties: string) => {
+    JSON.parse(jsonProperties, (key, value) => {
+      if (key === '') return
+      const property = new SensorProperty(key, `${value}`)
+      sensor.setProperty(property)
     })
   }
 
