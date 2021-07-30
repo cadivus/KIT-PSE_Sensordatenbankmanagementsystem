@@ -75,7 +75,7 @@ class SensorStore {
       return
     }
 
-    const {_sensors} = this
+    const {_sensors, createSensor} = this
     let i = 10
 
     getJson(ALL_THINGS).then(sensorJSON => {
@@ -84,18 +84,28 @@ class SensorStore {
         i += 1
         const id = new Id(element.id)
         const name = new SensorName(element.name)
-        _sensors.set(
-          id.toString(),
-          new (class extends Sensor {
-            getValue(): SensorValue {
-              return new SensorValue(i * 10)
-            }
-          })(name, id),
-        )
+
+        const existingSensor = _sensors.get(id.toString())
+        if (!existingSensor) {
+          _sensors.set(id.toString(), createSensor(id, name))
+        } else {
+          const sensor = _sensors.get(id.toString())
+          existingSensor.name = name
+        }
       })
 
       this._lastUpdate = Date.now()
     })
+  }
+
+  private createSensor = (id: Id, name: SensorName): Sensor => {
+    const result = new (class extends Sensor {
+      getValue(): SensorValue {
+        return new SensorValue(100)
+      }
+    })(name, id)
+
+    return result
   }
 
   getSensor = (id: Id): Sensor | undefined => {

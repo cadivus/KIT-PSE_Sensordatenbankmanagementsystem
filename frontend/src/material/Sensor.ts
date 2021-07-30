@@ -9,7 +9,7 @@ abstract class Sensor {
   /**
    * Name of the sensor
    */
-  readonly name: SensorName
+  name: SensorName
 
   /**
    * Id of the sensor
