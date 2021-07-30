@@ -75,11 +75,17 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
     }
   }, [sensorStore, lastUpdate, sensorList])
 
-  setInterval(() => {
-    if (sensorStore) {
-      if (lastUpdate !== sensorStore.lastUpdate) setLastUpdate(sensorStore.lastUpdate)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (sensorStore) {
+        if (lastUpdate !== sensorStore.lastUpdate) setLastUpdate(sensorStore.lastUpdate)
+      }
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
     }
-  }, 1000)
+  })
 
   return (
     <TableContainer component={Paper} className={classes.container}>
