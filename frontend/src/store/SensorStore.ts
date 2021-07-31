@@ -2,7 +2,7 @@ import Sensor from '../material/Sensor'
 import SensorValue from '../material/SensorValue'
 import SensorName from '../material/SensorName'
 import Id from '../material/Id'
-import {ALL_THINGS} from './communication/backendUrlCreator'
+import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
 import {getJson} from './communication/restClient'
 import SensorProperty from '../material/SensorProperty'
 
@@ -116,14 +116,22 @@ class SensorStore {
 
   private createSensor = (id: Id, name: SensorName): Sensor => {
     const result = new (class extends Sensor {
+      private activeState = false
+
       getValue(): SensorValue {
         return new SensorValue(100)
       }
 
       isActive(): boolean {
-        return true
+        getJson(getActiveStateUrl(id)).then(sensorJSON => {
+          this.activeState = sensorJSON[0]
+        })
+        const {activeState} = this
+        return activeState
       }
     })(name, id)
+
+    result.isActive()
 
     return result
   }
