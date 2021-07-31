@@ -8,7 +8,7 @@ import Export from './Export'
 import Data from './Data'
 import useSensorStore from '../../hooks/UseSensorStore'
 import Id from '../../material/Id'
-import Sensor from '../../material/Sensor'
+import Sensor, {SensorState} from '../../material/Sensor'
 
 const useStyles = makeStyles({
   container: {
@@ -74,10 +74,12 @@ const SensorInformationView: FC = () => {
           <Grid item xs={12}>
             <Typography variant="h3" align="center" gutterBottom>
               {sensor.name.toString()}
-              {activeState ? (
+              {activeState === SensorState.Online ? (
                 <FiberManualRecordIcon color="primary" fontSize="large" />
-              ) : (
+              ) : activeState === SensorState.Offline ? (
                 <FiberManualRecordIcon color="secondary" fontSize="large" />
+              ) : (
+                /* Unknown state */ <FiberManualRecordIcon color="secondary" fontSize="large" />
               )}
             </Typography>
           </Grid>

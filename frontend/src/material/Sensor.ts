@@ -3,6 +3,12 @@ import SensorName from './SensorName'
 import Id from './Id'
 import SensorProperty from './SensorProperty'
 
+export enum SensorState {
+  Unknown,
+  Offline,
+  Online,
+}
+
 /**
  * this class represents a sensor.
  */
@@ -59,7 +65,7 @@ abstract class Sensor {
    *
    * @return true, when the sensor is active. false otherwise
    */
-  public abstract isActive(): boolean
+  public abstract isActive(): SensorState
 }
 
 export default Sensor

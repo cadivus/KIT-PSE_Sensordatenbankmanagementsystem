@@ -1,4 +1,4 @@
-import Sensor from '../material/Sensor'
+import Sensor, {SensorState} from '../material/Sensor'
 import SensorValue from '../material/SensorValue'
 import SensorName from '../material/SensorName'
 import Id from '../material/Id'
@@ -55,8 +55,8 @@ class SensorStore {
             return new SensorValue(i * 10)
           }
 
-          isActive(): boolean {
-            return true
+          isActive(): SensorState {
+            return SensorState.Unknown
           }
         })(new SensorName(`Sensor${i}`), id),
       )
@@ -116,16 +116,23 @@ class SensorStore {
 
   private createSensor = (id: Id, name: SensorName): Sensor => {
     const result = new (class extends Sensor {
-      private activeState = false
+      private activeState = SensorState.Unknown
 
       getValue(): SensorValue {
         return new SensorValue(100)
       }
 
-      isActive(): boolean {
-        getJson(getActiveStateUrl(id)).then(sensorJSON => {
-          this.activeState = sensorJSON[0]
-        })
+      isActive(): SensorState {
+        try {
+          getJson(getActiveStateUrl(id)).then(sensorJSON => {
+            const jsonState = sensorJSON[0]
+            this.activeState =
+              jsonState === true ? SensorState.Online : jsonState === false ? SensorState.Offline : SensorState.Unknown
+          })
+        } catch (e) {
+          this.activeState = SensorState.Unknown
+        }
+
         const {activeState} = this
         return activeState
       }
