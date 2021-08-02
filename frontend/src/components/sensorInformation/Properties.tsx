@@ -62,37 +62,22 @@ const Properties = ({sensor}: {sensor: Sensor}) => {
           </StyledTableRow>
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">Property2: </Typography>
+              <Typography variant="h6">Description: </Typography>
             </StyledTableCell>
             <StyledTableCell>
-              <Typography variant="h6">Bbb </Typography>
+              <Typography variant="h6">{sensor.description}</Typography>
             </StyledTableCell>
           </StyledTableRow>
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">Property3: </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <Typography variant="h6">Ccc </Typography>
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">Property4: </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <Typography variant="h6">Ddd </Typography>
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow />
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">Subscribed: </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <Checkbox color="primary" disabled inputProps={{'aria-label': 'secondary checkbox'}} />
-            </StyledTableCell>
-          </StyledTableRow>
+          {sensor.properties.map(property => (
+            <StyledTableRow key={`${sensor.id.toString()}.${property.key}`}>
+              <StyledTableCell component="th" scope="row">
+                <Typography variant="h6">{property.key}: </Typography>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Typography variant="h6">{property.value}</Typography>
+              </StyledTableCell>
+            </StyledTableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
