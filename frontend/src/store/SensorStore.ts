@@ -5,6 +5,7 @@ import Id from '../material/Id'
 import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
 import {getJson} from './communication/restClient'
 import SensorProperty from '../material/SensorProperty'
+import Location from '../material/Location'
 
 /**
  * This is the storage for sensors.
@@ -48,6 +49,7 @@ class SensorStore {
 
     const mockSensor = (i: number) => {
       const id = new Id(`${i}-${new Date().getTime() / 1000}`)
+      const location = new Location(10 * i, 1000 * i)
       this._sensors.set(
         id.toString(),
         new (class extends Sensor {
@@ -58,7 +60,7 @@ class SensorStore {
           isActive(): SensorState {
             return SensorState.Unknown
           }
-        })(new SensorName(`Sensor${i}`), id),
+        })(new SensorName(`Sensor${i}`), id, location),
       )
     }
 
@@ -89,10 +91,10 @@ class SensorStore {
 
         let existingSensor = _sensors.get(id.toString())
         if (!existingSensor) {
-          existingSensor = createSensor(id, name)
+          const location = new Location(10, 20)
+          existingSensor = createSensor(id, name, location)
           _sensors.set(id.toString(), existingSensor)
         } else {
-          const sensor = _sensors.get(id.toString())
           existingSensor.name = name
         }
         if (element.properties !== null && element.properties !== 'null') {
@@ -114,7 +116,7 @@ class SensorStore {
     })
   }
 
-  private createSensor = (id: Id, name: SensorName): Sensor => {
+  private createSensor = (id: Id, name: SensorName, location: Location): Sensor => {
     const result = new (class extends Sensor {
       private activeState = SensorState.Unknown
 
@@ -136,7 +138,7 @@ class SensorStore {
         const {activeState} = this
         return activeState
       }
-    })(name, id)
+    })(name, id, location)
 
     result.isActive()
 

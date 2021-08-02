@@ -2,6 +2,7 @@ import SensorValue from './SensorValue'
 import SensorName from './SensorName'
 import Id from './Id'
 import SensorProperty from './SensorProperty'
+import Location from './Location'
 
 export enum SensorState {
   Unknown,
@@ -27,10 +28,13 @@ abstract class Sensor {
 
   description = ''
 
-  constructor(name: SensorName, id: Id) {
+  readonly location: Location
+
+  constructor(name: SensorName, id: Id, location: Location) {
     this._properties = new Map<string, SensorProperty>()
     this.name = name
     this.id = id
+    this.location = location
   }
 
   get properties(): Array<SensorProperty> {
