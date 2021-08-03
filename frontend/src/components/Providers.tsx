@@ -3,10 +3,10 @@ import {UserStoreProvider} from '../context/UserStoreProvider'
 import {SensorStoreProvider} from '../context/SensorStoreProvider'
 import {ReplayStoreProvider} from '../context/ReplayStoreProvider'
 import {SubscriptionStoreProvider} from '../context/SubscriptionStoreProvider'
-import Provider from '../i18n/Provider'
+import LanguageProvider from '../context/LanguageProvider'
 
 const Providers: FC = ({children}) => (
-  <Provider>
+  <LanguageProvider>
     <UserStoreProvider>
       <SensorStoreProvider>
         <ReplayStoreProvider>
@@ -14,7 +14,7 @@ const Providers: FC = ({children}) => (
         </ReplayStoreProvider>
       </SensorStoreProvider>
     </UserStoreProvider>
-  </Provider>
+  </LanguageProvider>
 )
 
 export default Providers

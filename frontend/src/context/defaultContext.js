@@ -1,4 +1,7 @@
-import {LOCALES} from '../i18n/constants'
+const LOCALES = {
+  ENGLISH: 'en-us',
+  GERMAN: 'de-de',
+}
 
 const getFromStorage = name => {
   if (!window || !window.localStorage) {

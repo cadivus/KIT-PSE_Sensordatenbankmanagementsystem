@@ -1,7 +1,5 @@
-import {LOCALES} from '../constants'
-
 export default {
-  [LOCALES.ENGLISH]: {
+  ['de-de']: {
     // Appbar
     'appbar.subscription': 'SUBSCRIPTIONS',
     'appbar.login': 'LOGIN',
