@@ -13,6 +13,8 @@ import {
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
 import Sensor from '../../material/Sensor'
+import Location from '../../material/Location'
+import LocationWithAddress from '../../material/LocationWithAddress'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -41,6 +43,33 @@ const useStyles = makeStyles({
   },
 })
 
+const LocationRow = ({location}: {location: Location}) => {
+  if (location instanceof LocationWithAddress) {
+    return (
+      <StyledTableRow>
+        <StyledTableCell component="th" scope="row">
+          <Typography variant="h6">Location: </Typography>
+        </StyledTableCell>
+        <StyledTableCell>
+          <Typography variant="h6">{location.addressToString()}</Typography>
+          <br />
+          <Typography variant="h6">{location.coordinatesToString()}</Typography>
+        </StyledTableCell>
+      </StyledTableRow>
+    )
+  }
+  return (
+    <StyledTableRow>
+      <StyledTableCell component="th" scope="row">
+        <Typography variant="h6">Location: </Typography>
+      </StyledTableCell>
+      <StyledTableCell>
+        <Typography variant="h6">{location.toString()}</Typography>
+      </StyledTableCell>
+    </StyledTableRow>
+  )
+}
+
 /**
  *  Displays the properties of a selected sensor.
  *  This class implements a React component.
@@ -68,6 +97,7 @@ const Properties = ({sensor}: {sensor: Sensor}) => {
               <Typography variant="h6">{sensor.description}</Typography>
             </StyledTableCell>
           </StyledTableRow>
+          <LocationRow location={sensor.location} />
           {sensor.properties.map(property => (
             <StyledTableRow key={`${sensor.id.toString()}.${property.key}`}>
               <StyledTableCell component="th" scope="row">

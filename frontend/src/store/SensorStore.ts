@@ -5,6 +5,8 @@ import Id from '../material/Id'
 import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
 import {getJson} from './communication/restClient'
 import SensorProperty from '../material/SensorProperty'
+import Location from '../material/Location'
+import LocationWithAddress from '../material/LocationWithAddress'
 
 /**
  * This is the storage for sensors.
@@ -48,6 +50,7 @@ class SensorStore {
 
     const mockSensor = (i: number) => {
       const id = new Id(`${i}-${new Date().getTime() / 1000}`)
+      const location = new Location(10 * i, 1000 * i)
       this._sensors.set(
         id.toString(),
         new (class extends Sensor {
@@ -58,7 +61,7 @@ class SensorStore {
           isActive(): SensorState {
             return SensorState.Unknown
           }
-        })(new SensorName(`Sensor${i}`), id),
+        })(new SensorName(`Sensor${i}`), id, location),
       )
     }
 
@@ -80,7 +83,7 @@ class SensorStore {
       return
     }
 
-    const {_sensors, createSensor, applyProperties} = this
+    const {_sensors, createSensor, applyProperties, parseLocation} = this
     getJson(ALL_THINGS).then(sensorJSON => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       sensorJSON.forEach((element: any) => {
@@ -89,10 +92,15 @@ class SensorStore {
 
         let existingSensor = _sensors.get(id.toString())
         if (!existingSensor) {
-          existingSensor = createSensor(id, name)
+          let location = new Location(0, 0)
+          if (element.locations && element.locations[0]) {
+            const {name: address} = element.locations[0]
+            const jsonString = element.locations[0].location
+            location = parseLocation(jsonString, address)
+          }
+          existingSensor = createSensor(id, name, location)
           _sensors.set(id.toString(), existingSensor)
         } else {
-          const sensor = _sensors.get(id.toString())
           existingSensor.name = name
         }
         if (element.properties !== null && element.properties !== 'null') {
@@ -114,7 +122,19 @@ class SensorStore {
     })
   }
 
-  private createSensor = (id: Id, name: SensorName): Sensor => {
+  private parseLocation = (jsonString: string, name: string): Location => {
+    const parsedJson = JSON.parse(jsonString)
+    const {coordinates} = parsedJson
+    const x = coordinates[0]
+    const y = coordinates[1]
+
+    if (name && name !== '') {
+      return new LocationWithAddress(x, y, name)
+    }
+    return new Location(x, y)
+  }
+
+  private createSensor = (id: Id, name: SensorName, location: Location): Sensor => {
     const result = new (class extends Sensor {
       private activeState = SensorState.Unknown
 
@@ -136,7 +156,7 @@ class SensorStore {
         const {activeState} = this
         return activeState
       }
-    })(name, id)
+    })(name, id, location)
 
     result.isActive()
 
