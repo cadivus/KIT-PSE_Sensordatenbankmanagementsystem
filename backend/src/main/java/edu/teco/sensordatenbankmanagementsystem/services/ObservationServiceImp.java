@@ -34,11 +34,11 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @CommonsLog(topic = "Observationservice")
 public class ObservationServiceImp implements ObservationService {
 
-  ObservationRepository observationRepository;
-  DatastreamRepository datastreamRepository;
-  ObservedPropertyRepository observedPropertyRepository;
+  final ObservationRepository observationRepository;
+  final DatastreamRepository datastreamRepository;
+  final ObservedPropertyRepository observedPropertyRepository;
 
-  Map<UUID, SseEmitter> sseStreams = new HashMap<UUID, SseEmitter>();
+  final Map<UUID, SseEmitter> sseStreams = new HashMap<UUID, SseEmitter>();
 
   @Autowired
   public ObservationServiceImp(

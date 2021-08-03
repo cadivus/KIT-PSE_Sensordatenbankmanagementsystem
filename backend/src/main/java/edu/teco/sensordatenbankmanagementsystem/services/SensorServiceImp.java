@@ -247,7 +247,7 @@ public class SensorServiceImp implements SensorService {
         if(nextXPx > highXPx) nextXPx = highXPx;
         int nextYPx =
                 y + h - round(hPxPerOne * (interpolFunc.apply(xIntStart + (nextXPx - x) / wPxPerOne) - yIntStart));
-        double xx = xIntStart + (nextXPx - x) / wPxPerOne;
+//        double xx = xIntStart + (nextXPx - x) / wPxPerOne;
 //        System.out.printf("x: %s, f(x): %s, f(x)->px: %s\n", xx,
 //                interpolFunc.apply(xx), nextYPx);
         g.drawLine(nextXPx - granularity, prevYPx, nextXPx, nextYPx);

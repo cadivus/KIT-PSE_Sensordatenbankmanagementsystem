@@ -8,7 +8,7 @@ import java.util.stream.DoubleStream;
 
 public class ObservationStats {
 
-    public Map<String, Stats> obsIdToStats = new HashMap<>();
+    public final Map<String, Stats> obsIdToStats = new HashMap<>();
 
     public void addObservedProperty(String name, List<Double> values) {
         Stats tp = new Stats();

@@ -69,7 +69,7 @@ public class LagrangeInterpolator implements Interpolator<Double, Double> {
                 }
                 r.append(1/this.lagrangeCoefficients.get(i)).append("+");
             }
-            r.setLength(r.length() - 1);;
+            r.setLength(r.length() - 1);
             return r.toString();
         }
 
@@ -88,7 +88,7 @@ public class LagrangeInterpolator implements Interpolator<Double, Double> {
      */
     private static class PairwiseDiffMatrix implements BiFunction<Integer, Integer, Double> {
 
-        private List<Double> xDiffs;
+        private final List<Double> xDiffs;
 
         public PairwiseDiffMatrix(List<Double> echsen) {
             this.xDiffs = new ArrayList<>(echsen.size() * (echsen.size() + 1) / 2);

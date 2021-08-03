@@ -55,10 +55,6 @@ public class Datastream {
     @Column(name = "\"THING_ID\"")
     String thingId;
 
-//    @JoinColumn(name = "\"THING_ID\"")
-//    @ManyToOne
-//    Thing thingId;
-
     @Column(name = "\"UNIT_NAME\"")
     String unit;
 
