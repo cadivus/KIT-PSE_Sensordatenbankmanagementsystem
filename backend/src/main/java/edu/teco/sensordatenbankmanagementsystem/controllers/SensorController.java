@@ -155,7 +155,7 @@ public class SensorController {
      * @return list of booleans in the same order
      */
     @GetMapping("active")
-    public List<Boolean> getWhetherThingsActive(
+    public List<Integer> getWhetherThingsActive(
             @RequestParam(name="ids")List<String> ids,
             @RequestParam(name="days", defaultValue = "10")int days
             ) {

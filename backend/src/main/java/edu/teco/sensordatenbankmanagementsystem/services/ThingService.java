@@ -47,11 +47,16 @@ public class ThingService {
      * @param days to classify recent activity by
      * @return active status of the given things in order
      */
-    public List<Boolean> getWhetherThingsActive(List<String> thingIds, int days) {
+    public List<Integer> getWhetherThingsActive(List<String> thingIds, int days) {
         LocalDateTime lowerBound = LocalDateTime.now().minusDays(days);
         return thingIds.stream()
-                .map(id -> datastreamRepository.findDatastreamsByThingId(id).stream()
-                        .anyMatch(datastream -> datastream.getPhenomenonEnd().isAfter(lowerBound)))
+                .map(id -> thingRepository.existsById(id) ? datastreamRepository.findDatastreamsByThingId(id).stream()
+                        .anyMatch(
+                                datastream -> Optional.ofNullable(datastream.getPhenomenonEnd())
+                                .map(a->a.isAfter(lowerBound)).orElseGet(()->false)
+                        ) ? 1 : 0
+                        : -1
+                )
                 .collect(Collectors.toList());
     }
 
