@@ -79,7 +79,7 @@ public class SubscriptionDAO implements DAO<Subscription>{
         List<UUID> sensors = new ArrayList<>();
         List<Subscription> allSubs = subscriptionRepository.findAll();
         for (Subscription sub : allSubs) {
-            if (sub.getSubscriberAddress() ==  mailAddress) {
+            if (sub.getSubscriberAddress().equals(mailAddress)) {
                 sensors.add(sub.getSensor());
             }
         }
