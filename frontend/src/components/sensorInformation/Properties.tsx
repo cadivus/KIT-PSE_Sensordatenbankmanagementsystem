@@ -68,6 +68,14 @@ const Properties = ({sensor}: {sensor: Sensor}) => {
               <Typography variant="h6">{sensor.description}</Typography>
             </StyledTableCell>
           </StyledTableRow>
+          <StyledTableRow>
+            <StyledTableCell component="th" scope="row">
+              <Typography variant="h6">Location: </Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography variant="h6">{sensor.location.toString()}</Typography>
+            </StyledTableCell>
+          </StyledTableRow>
           {sensor.properties.map(property => (
             <StyledTableRow key={`${sensor.id.toString()}.${property.key}`}>
               <StyledTableCell component="th" scope="row">

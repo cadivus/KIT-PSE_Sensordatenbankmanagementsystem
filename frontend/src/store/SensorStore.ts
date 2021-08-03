@@ -6,6 +6,7 @@ import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
 import {getJson} from './communication/restClient'
 import SensorProperty from '../material/SensorProperty'
 import Location from '../material/Location'
+import LocationWithAddress from '../material/LocationWithAddress'
 
 /**
  * This is the storage for sensors.
@@ -82,7 +83,7 @@ class SensorStore {
       return
     }
 
-    const {_sensors, createSensor, applyProperties} = this
+    const {_sensors, createSensor, applyProperties, parseLocation} = this
     getJson(ALL_THINGS).then(sensorJSON => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       sensorJSON.forEach((element: any) => {
@@ -91,7 +92,12 @@ class SensorStore {
 
         let existingSensor = _sensors.get(id.toString())
         if (!existingSensor) {
-          const location = new Location(10, 20)
+          let location = new Location(0, 0)
+          if (element.locations && element.locations[0]) {
+            const {name: address} = element.locations[0]
+            const jsonString = element.locations[0].location
+            location = parseLocation(jsonString, address)
+          }
           existingSensor = createSensor(id, name, location)
           _sensors.set(id.toString(), existingSensor)
         } else {
@@ -114,6 +120,18 @@ class SensorStore {
       const property = new SensorProperty(key, `${value}`)
       sensor.setProperty(property)
     })
+  }
+
+  private parseLocation = (jsonString: string, name: string): Location => {
+    const parsedJson = JSON.parse(jsonString)
+    const {coordinates} = parsedJson
+    const x = coordinates[0]
+    const y = coordinates[1]
+
+    if (name && name !== '') {
+      return new LocationWithAddress(x, y, name)
+    }
+    return new Location(x, y)
   }
 
   private createSensor = (id: Id, name: SensorName, location: Location): Sensor => {

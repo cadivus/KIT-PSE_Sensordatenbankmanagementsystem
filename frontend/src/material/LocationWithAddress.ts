@@ -12,6 +12,11 @@ class LocationWithAddress extends Location {
     const {address} = this
     return address
   }
+
+  toString = (): string => {
+    const {x, y, address} = this
+    return `${address}: ${x}  ${y}`
+  }
 }
 
 export default LocationWithAddress
