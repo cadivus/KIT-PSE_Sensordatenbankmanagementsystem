@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -24,10 +26,10 @@ import javax.transaction.Transactional;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.Interpolator;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import static edu.teco.sensordatenbankmanagementsystem.util.GlobalConstants.ZONE_ID;
 import static edu.teco.sensordatenbankmanagementsystem.util.Meth.round;
 
 /**
@@ -38,6 +40,15 @@ import static edu.teco.sensordatenbankmanagementsystem.util.Meth.round;
 @CommonsLog
 @Transactional
 public class SensorServiceImp implements SensorService {
+
+  private ZoneId ZONE_ID ;
+  @Value("${globals.zone_id}")
+  private void setDATE_FORMAT(String zoneId){
+    ZONE_ID = switch (zoneId){
+      case"default" -> ZoneId.systemDefault();
+      default -> ZoneId.of(zoneId);
+    };
+  }
 
   private final SensorRepository repository;
   private final ObservationService observationService;

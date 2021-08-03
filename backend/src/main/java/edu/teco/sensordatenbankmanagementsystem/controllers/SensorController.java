@@ -18,6 +18,7 @@ import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInter
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.NewtonInterpolator;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,10 +30,9 @@ import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-
-import static edu.teco.sensordatenbankmanagementsystem.util.GlobalConstants.DATE_FORMAT;
 
 /**
  * The SensorController is the entry point for http requests for {@link Sensor}s.
@@ -43,18 +43,22 @@ import static edu.teco.sensordatenbankmanagementsystem.util.GlobalConstants.DATE
 @CommonsLog
 public class SensorController {
 
+    private DateTimeFormatter DATE_FORMAT;
+    @Value("${globals.date_format}")
+    private void setDATE_FORMAT(String pattern, String b){
+        DATE_FORMAT = DateTimeFormatter.ofPattern(pattern);
+    }
+
     public final ThingService thingService;
     public final SensorService sensorService;
     /**
      * Instantiates a new Sensor controller.
      *
-     * @param thingRepository
      * @param thingService
      * @param sensorService the {@link SensorService} which handles the underlying business logic
      */
     @Autowired
     public SensorController(
-        ThingRepository thingRepository,
         ThingService thingService,
         SensorService sensorService) {
         this.thingService = thingService;

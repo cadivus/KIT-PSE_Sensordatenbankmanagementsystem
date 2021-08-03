@@ -7,16 +7,14 @@ import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static edu.teco.sensordatenbankmanagementsystem.util.GlobalConstants.ZONE_ID;
 
 /**
  * The ObservationService provides more complex methods for functionality concerning the querying of {@link Observation} data based on the repositories.

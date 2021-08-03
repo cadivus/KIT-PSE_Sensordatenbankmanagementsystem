@@ -20,13 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import static edu.teco.sensordatenbankmanagementsystem.util.GlobalConstants.DATE_FORMAT;
-
 
 /**
  * The ObservationController is the entry point for http requests for {@link Observation}s. Methods
@@ -38,6 +36,13 @@ import static edu.teco.sensordatenbankmanagementsystem.util.GlobalConstants.DATE
 @ResponseBody
 @RestController
 public class ObservationController {
+
+    private DateTimeFormatter DATE_FORMAT;
+    @Value("${globals.date_format}")
+    private void setDATE_FORMAT(String pattern, String b){
+        DATE_FORMAT = DateTimeFormatter.ofPattern(pattern);
+    }
+
 
     public final ObservationService observationService;
     public final SensorService sensorService;
