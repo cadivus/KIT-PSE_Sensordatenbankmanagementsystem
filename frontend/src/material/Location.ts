@@ -15,7 +15,7 @@ class Location {
 
   coordinatesToString = (): string => {
     const {x, y} = this
-    return `${x}  ${y}`
+    return `${x} | ${y}`
   }
 }
 

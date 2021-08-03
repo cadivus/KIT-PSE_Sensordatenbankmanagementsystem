@@ -15,7 +15,7 @@ class LocationWithAddress extends Location {
 
   toString = (): string => {
     const {x, y, address} = this
-    return `${address}: ${x}  ${y}`
+    return `${address}: ${x} | ${y}`
   }
 }
 
