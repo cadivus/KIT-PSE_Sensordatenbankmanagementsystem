@@ -123,8 +123,8 @@ public class ObservationServiceImp implements ObservationService {
     //return this.observationRepository.findObservationsInDatastreams(associatedStreams, "phenomenonStart", PageRequest.of(0, limit)).collect(Collectors.toList());
 
     List<Datastream> associatedStreams = Optional
-            .ofNullable(filter).map(s -> this.datastreamRepository.findDatastreamsByThingIdAndObsIdIn(thingId, s))
-            .orElseGet(() -> this.datastreamRepository.findDatastreamsByThingId(thingId));
+            .ofNullable(filter).map(s -> this.datastreamRepository.findDatastreamsByThing_IdAndObsIdIn(thingId, s))
+            .orElseGet(() -> this.datastreamRepository.findDatastreamsByThing_Id(thingId));
 
 //    System.out.printf("%s %s %s %s %s %s\n", thingId, limit, sort, filter, frameStart, frameEnd);
 //    System.out.println(associatedStreams.size());

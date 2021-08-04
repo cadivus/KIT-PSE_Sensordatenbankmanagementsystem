@@ -40,7 +40,7 @@ public class Thing {
   List<Location> locations;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "thingId")
-  List<Datastream> datastream;
+  @OneToMany(mappedBy = "thing")
+  List<Datastream> datastreams;
 
 }

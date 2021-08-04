@@ -50,7 +50,8 @@ public class ThingService {
     public List<Integer> getWhetherThingsActive(List<String> thingIds, int days) {
         LocalDateTime lowerBound = LocalDateTime.now().minusDays(days);
         return thingIds.stream()
-                .map(id -> thingRepository.existsById(id) ? datastreamRepository.findDatastreamsByThingId(id).stream()
+                .map(id -> thingRepository.existsById(id) ?
+                        datastreamRepository.findDatastreamsByThing_Id(id).stream()
                         .anyMatch(
                                 datastream -> Optional.ofNullable(datastream.getPhenomenonEnd())
                                 .map(a->a.isAfter(lowerBound)).orElseGet(()->false)
