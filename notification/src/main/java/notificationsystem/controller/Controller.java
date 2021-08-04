@@ -41,17 +41,17 @@ public class Controller {
 
     private MailBuilder mailBuilder;
     private MailSender mailSender;
-    @Autowired
-    private SubscriptionDAO subscriptionDAO;
+    private final SubscriptionDAO subscriptionDAO;
     private SensorDAO sensorDAO;
 
     /**
      * Constructs a new Controller instance. Instantiates the MailBuilder, MailSender, SubscriptionDAO and SensorDAO.
      */
-    public Controller() {
+    @Autowired
+    public Controller(SubscriptionDAO subscriptionDAO) {
         this.mailBuilder = new MailBuilder();
         this.mailSender = new MailSender();
-        //this.subscriptionDAO = new SubscriptionDAO();
+        this.subscriptionDAO = subscriptionDAO;
     }
 
     @PostConstruct
