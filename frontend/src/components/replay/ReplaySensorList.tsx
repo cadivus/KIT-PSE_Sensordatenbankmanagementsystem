@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
+import {FormattedMessage} from 'react-intl'
 import useSensorStore from '../../hooks/UseSensorStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -57,12 +58,14 @@ const ReplaySensorList = () => {
           <TableRow>
             <StyledTableCell className={classes.sensorCell}>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Sensor
+                <ArrowDropDownIcon />
+                <FormattedMessage id="replaypage.sensor" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Value
+                <ArrowDropDownIcon />
+                <FormattedMessage id="replaypage.value" />
               </Typography>
             </StyledTableCell>
           </TableRow>

@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
+import {FormattedMessage} from 'react-intl'
 import SubscriptionSettings from './SubscriptionSettings'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 import Id from '../../material/Id'
@@ -63,7 +64,8 @@ const SensorsList = ({sensors}: {sensors: Array<Sensor>}) => {
           <TableRow>
             <StyledTableCell>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Sensor
+                <ArrowDropDownIcon />
+                <FormattedMessage id="subscriptionpage.sensor" />
               </Typography>
             </StyledTableCell>
           </TableRow>

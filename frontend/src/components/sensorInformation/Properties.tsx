@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
+import {FormattedMessage} from 'react-intl'
 import Sensor from '../../material/Sensor'
 import Location from '../../material/Location'
 import LocationWithAddress from '../../material/LocationWithAddress'
@@ -83,7 +84,9 @@ const Properties = ({sensor}: {sensor: Sensor}) => {
         <TableBody>
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">Value: </Typography>
+              <Typography variant="h6">
+                <FormattedMessage id="infopage.value" />
+              </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Typography variant="h6">{sensor.getValue().toString()}</Typography>

@@ -7,6 +7,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import {FormattedMessage} from 'react-intl'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -45,7 +46,7 @@ const LoginStep1 = ({setMailAddress}) => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          <FormattedMessage id="loginpage.signIn" />
         </Typography>
         <form className={classes.form} onSubmit={() => setMailAddress(mailString)} noValidate>
           <TextField
@@ -54,14 +55,14 @@ const LoginStep1 = ({setMailAddress}) => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={<FormattedMessage id="loginpage.emailaddress" />}
             name="email"
             autoComplete="email"
             autoFocus
             onInput={e => setMailString(e.target.value)}
           />
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-            Sign In
+            <FormattedMessage id="loginpage.signInButton" />
           </Button>
         </form>
       </div>
