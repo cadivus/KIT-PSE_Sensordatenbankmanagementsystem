@@ -1,10 +1,13 @@
 package notificationsystem.controller;
 
+import lombok.extern.apachecommons.CommonsLog;
 import notificationsystem.model.Sensor;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -17,26 +20,17 @@ import java.util.*;
  * or reports have to be sent by the system. The class is designed with the singleton-pattern as only a single
  * instance should, for example, issue reports.
  */
+@CommonsLog
+@Component
 public class CheckerUtil {
 
-    private static CheckerUtil INSTANCE;
-    private Controller controller;
+    private final Controller controller;
+    private final SubscriptionDAO subscriptionDAO;
 
-
-    /**
-     * Private constructer only used by the getInstance method.
-     */
-    private CheckerUtil() {}
-
-    /**
-     * Returns the instance of CheckerUtil if it exists, creates it first if it doesn't.
-     * @return CheckerUtil instance.
-     */
-    public static CheckerUtil getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new CheckerUtil();
-        }
-        return INSTANCE;
+    @Autowired
+    public CheckerUtil(Controller controller, SubscriptionDAO subscriptionDAO) {
+        this.controller = controller;
+        this.subscriptionDAO = subscriptionDAO;
     }
 
     /**
@@ -44,7 +38,7 @@ public class CheckerUtil {
      * If one or multiple sensor failures occurred, the method calls the controller to send an alert to the subscribers
      * of these sensors.
      */
-    @Scheduled(fixedRate = 50000)
+    @Scheduled(fixedRate = 500000)
     public void checkForSensorFailure() {
 
     }
@@ -54,9 +48,9 @@ public class CheckerUtil {
      * between these reports.
      * Calls the controller to send such a report to a subscriber if necessary.
      */
-    @Scheduled(fixedRate = 50000)
+    @Scheduled(fixedRate = 500000)
     public void checkForReports() {
-        SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
+        log.info("Starting update process");
         LinkedList<Subscription> subs = new LinkedList<Subscription>(subscriptionDAO.getAll());
 
         //Check if a report has to be sent
