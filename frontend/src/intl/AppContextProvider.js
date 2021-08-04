@@ -1,8 +1,8 @@
 import React, {useReducer, createContext} from 'react'
 import defaultContext from './defaultContext'
-import {saveToStorage} from '../../utils/localStorage'
-import {STORAGE_KEY} from '../../constants/locale'
+import {saveToStorage} from './localStorage'
 
+const STORAGE_KEY = 'locale'
 const AppContext = createContext()
 
 const reducer = (state, action) => {

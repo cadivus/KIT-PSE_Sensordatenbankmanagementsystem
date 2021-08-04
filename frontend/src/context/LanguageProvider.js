@@ -3,24 +3,24 @@ import PropTypes from 'prop-types'
 import {IntlProvider} from 'react-intl'
 import flatten from 'flat'
 
-import {LOCALES} from './constants'
-import messages from './messages'
+import {LOCALES} from '../intl/constants'
+import messages from '../intl/messages/messages'
 
-const Provider = ({children, locale = LOCALES.ENGLISH}) => (
+const LanguageProvider = ({children, locale = LOCALES.ENGLISH}) => (
   <IntlProvider textComponent={Fragment} locale={locale} messages={flatten(messages[locale])}>
     {children}
   </IntlProvider>
 )
 
-Provider.displayName = 'I18nProvider'
+LanguageProvider.displayName = 'I18nProvider'
 
-Provider.propTypes = {
+LanguageProvider.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
   locale: PropTypes.oneOf(Object.values(LOCALES)),
 }
 
-Provider.defaultProps = {
+LanguageProvider.defaultProps = {
   locale: LOCALES.GERMAN,
 }
 
-export default Provider
+export default LanguageProvider

@@ -4,8 +4,8 @@ import {Button, IconButton, AppBar, Toolbar, Typography} from '@material-ui/core
 import HomeIcon from '@material-ui/icons/Home'
 import {makeStyles} from '@material-ui/core/styles'
 import {FormattedMessage} from 'react-intl'
-import {AppContext} from '../../intl/components/Context'
-import {LOCALES} from '../../intl/components/i18n'
+import {AppContext} from '../../intl/AppContextProvider'
+import {LOCALES} from '../../intl/constants'
 
 const useStyles = makeStyles({
   footer: {

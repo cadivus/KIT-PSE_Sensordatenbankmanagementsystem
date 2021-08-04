@@ -3,8 +3,8 @@ import {UserStoreProvider} from '../context/UserStoreProvider'
 import {SensorStoreProvider} from '../context/SensorStoreProvider'
 import {ReplayStoreProvider} from '../context/ReplayStoreProvider'
 import {SubscriptionStoreProvider} from '../context/SubscriptionStoreProvider'
-import {AppContextProvider} from '../intl/components/Context'
-import Provider from '../intl/components/Provider/LanguageProviderWrapper'
+import {AppContextProvider} from '../intl/AppContextProvider'
+import Provider from '../context/LanguageProviderWrapper'
 
 const Providers: FC = ({children}) => (
   <AppContextProvider>
