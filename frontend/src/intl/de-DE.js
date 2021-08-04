@@ -1,32 +1,32 @@
 export default {
   ['de-de']: {
     // Appbar
-    'appbar.subscription': 'SUBSCRIPTIONS',
+    'appbar.subscription': 'Abonnements',
     'appbar.login': 'LOGIN',
     // Startpage
-    'startpage.startpage': 'Startpage',
-    'startpage.subscribe': 'Subscribe',
-    'startpage.replay': 'Replay',
+    'startpage.startpage': 'Startseite',
+    'startpage.subscribe': 'Abonieren',
+    'startpage.replay': 'Wiedergabe ',
     // Infopage
-    'infopage.value': 'Value:',
-    'infopage.subscribe': 'Subscribe',
-    'infopage.subscribed': 'Subscribed:',
-    'infopage.replay': 'Replay',
-    'infopage.export': 'Export',
-    'infopage.fromDate': 'From date',
-    'infopage.toDate': 'To date',
-    'infopage.fromTime': 'From time',
-    'infopage.toTime': 'To time',
-    'infopage.time': 'Time',
-    'infopage.data': 'Data',
+    'infopage.value': 'Werte:',
+    'infopage.subscribe': 'Abonieren',
+    'infopage.subscribed': 'Aboniert:',
+    'infopage.replay': 'Wiedergabe',
+    'infopage.export': 'Exportieren',
+    'infopage.fromDate': 'Start Datum',
+    'infopage.toDate': 'End Datum',
+    'infopage.fromTime': 'Start Zeit',
+    'infopage.toTime': 'End Zeit',
+    'infopage.time': 'Zeit',
+    'infopage.data': 'Daten',
     // Replaypage
     'replaypage.start': 'Start:',
     'replaypage.stop': 'Stop:',
-    'replaypage.speed': 'Speed:',
-    'replaypage.play': 'Play',
-    'replaypage.request': 'Request',
-    'replaypage.help': 'Help?',
-    'replaypage.helpTextHedding': 'Need Help?',
+    'replaypage.speed': 'Geschwindigkeit:',
+    'replaypage.play': 'Abspielen',
+    'replaypage.request': 'Anfrage',
+    'replaypage.help': 'Hilfe?',
+    'replaypage.helpTextHedding': 'Brauchst du Hilfe?',
     'replaypage.helpText':
       'Lorem ipsum dolor sit amet, ' +
       'consetetur sadipscing elitr, sed diam nonumy eirmod tempor ' +
@@ -39,7 +39,7 @@ export default {
       'accusam et justo duo dolores et ea rebum. Stet clita kasd ' +
       'gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
     'replaypage.sensor': 'Sensor',
-    'replaypage.value': 'Value',
+    'replaypage.value': 'Werte',
     // Subsciptionpage
     'subscriptionpage.notificationMessage': 'Direct notification on failures',
     'subscriptionpage.protocolMessage1': 'Protocol every',
@@ -56,9 +56,9 @@ export default {
     'subscriptionpage.logMessage2': ' days',
     'subscriptionpage.unsubscribeMessage': 'Do you really want to unsubscribe this subscription?',
     // Login
-    'loginpage.signIn': 'Sign in',
-    'loginpage.signInButton': 'SIGN IN',
-    'loginpage.emailaddress': 'Email Address',
-    'loginpage.password': 'Password',
+    'loginpage.signIn': 'Einloggen',
+    'loginpage.signInButton': 'Einloggen',
+    'loginpage.emailaddress': 'Email Addresse',
+    'loginpage.password': 'Passwort',
   },
 }

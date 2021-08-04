@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {IntlProvider} from 'react-intl'
 import flatten from 'flat'
 
-import messages from '../intl'
+import messages from '../intl/messages'
 
 const LOCALES = {
   ENGLISH: 'en-us',
@@ -24,7 +24,7 @@ LanguageProvider.propTypes = {
 }
 
 LanguageProvider.defaultProps = {
-  locale: LOCALES.ENGLISH,
+  locale: LOCALES.GERMAN,
 }
 
 export default LanguageProvider
