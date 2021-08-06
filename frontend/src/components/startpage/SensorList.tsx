@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   Button,
   Paper,
@@ -61,6 +61,32 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
   const classes = useStyles()
   const sensorStore = useSensorStore()
 
+  const [sensorList, setSensorList] = useState(new Array<Sensor>())
+  const [lastUpdate, setLastUpdate] = useState(0)
+
+  const [selectedSensorsState, setSelectedSensorsState] = useState(new Set<Sensor>())
+
+  useEffect(() => {
+    if (sensorStore) {
+      const newList = JSON.stringify(sensorList) !== JSON.stringify(sensorStore.sensors)
+
+      if (newList) setSensorList(sensorStore.sensors)
+      if (lastUpdate !== sensorStore.lastUpdate) setLastUpdate(sensorStore.lastUpdate)
+    }
+  }, [sensorStore, lastUpdate, sensorList])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (sensorStore) {
+        if (lastUpdate !== sensorStore.lastUpdate) setLastUpdate(sensorStore.lastUpdate)
+      }
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  })
+
   return (
     <TableContainer component={Paper} className={classes.container}>
       <Table className={classes.table}>
@@ -77,14 +103,13 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
         </TableHead>
         <TableBody>
           {sensorStore?.sensors.map(sensor => {
-            const [checked, setChecked] = useState(false)
-
             const checkChanged = (chk: boolean) => {
-              setChecked(chk)
-              if (chk) {
+              if (chk && !selectedSensorsState.has(sensor)) {
                 selectedSensors.add(sensor)
-              } else {
+                setSelectedSensorsState(new Set<Sensor>(selectedSensors))
+              } else if (selectedSensorsState.has(sensor)) {
                 selectedSensors.delete(sensor)
+                setSelectedSensorsState(new Set<Sensor>(selectedSensors))
               }
             }
 
@@ -95,7 +120,7 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
                 </StyledTableCell>
                 <StyledTableCell>
                   <Checkbox
-                    checked={checked}
+                    checked={selectedSensorsState.has(sensor)}
                     onChange={e => checkChanged(e.target.checked)}
                     color="primary"
                     inputProps={{'aria-label': 'secondary checkbox'}}

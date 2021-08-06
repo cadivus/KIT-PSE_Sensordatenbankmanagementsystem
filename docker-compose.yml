@@ -34,3 +34,6 @@ services:
     build: frontend
     ports:
       - 3001:3000
+    environment:
+      - API_BACKEND_URL=http://backend:8081
+      - API_NOTIFICATION_URL=http://notification:8080
