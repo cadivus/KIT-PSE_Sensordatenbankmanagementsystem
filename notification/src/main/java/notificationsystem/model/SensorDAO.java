@@ -5,6 +5,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -16,12 +17,14 @@ import java.util.*;
 public class SensorDAO implements DAO<Sensor> {
     private final String getSensorApi;
     private final String getAllSensorsApi;
+    private final String getActiveRateApi;
     private final RestTemplate restTemplate;
 
     @Autowired
     public SensorDAO(String backendUrl, RestTemplate restTemplate) {
         this.getSensorApi = backendUrl + "/sensor/getSensor/";
         this.getAllSensorsApi = backendUrl + "/sensor/getAllSensors";
+        this.getActiveRateApi = backendUrl + "/sensor/active_rate";
 
         this.restTemplate = restTemplate;
     }
@@ -45,6 +48,11 @@ public class SensorDAO implements DAO<Sensor> {
     public List<Sensor> getAll() {
         Sensor[] sensors = restTemplate.getForObject(getAllSensorsApi, Sensor[].class);
         return Arrays.asList(sensors);
+    }
+
+    public double getActiveRate(String sensorId, LocalDate timeframe) {
+        Double[] result = restTemplate.getForObject(getActiveRateApi, Double[].class, sensorId, timeframe);
+        return result[0];
     }
 
 }

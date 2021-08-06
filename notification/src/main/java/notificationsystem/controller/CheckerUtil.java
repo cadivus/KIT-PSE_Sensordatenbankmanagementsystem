@@ -28,6 +28,7 @@ public class CheckerUtil {
     private final SensorDAO sensorDAO;
     private final RestTemplate restTemplate;
     private Map<String, Integer> sensorActiveDict;
+    private final static int INACTIVE_DAYS_THRESHOLD = 3;
 
     @Autowired
     public CheckerUtil(Controller controller, SubscriptionDAO subscriptionDAO, SensorDAO sensorDAO, RestTemplate restTemplate) {
@@ -56,7 +57,7 @@ public class CheckerUtil {
 
         //Get information about sensor activity and store it with the correlating sensor id
         //TODO: Richtige URL
-        Integer[] response = restTemplate.getForObject("/active", Integer[].class, sensorIds);
+        Integer[] response = restTemplate.getForObject("/active", Integer[].class, sensorIds, INACTIVE_DAYS_THRESHOLD);
         List<Integer> sensorStatus = Arrays.asList(response);
         Map<String, Integer> sensorCurrentlyActiveDict = new HashMap<String, Integer>();
 

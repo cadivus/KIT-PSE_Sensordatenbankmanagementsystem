@@ -11,6 +11,7 @@ import notificationsystem.view.Report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
 import javax.annotation.PostConstruct;
@@ -39,20 +40,22 @@ public class Controller {
     private final MailSender mailSender;
     private final SubscriptionDAO subscriptionDAO;
     private SensorDAO sensorDAO;
+    private final RestTemplate restTemplate;
 
     /**
      * Constructs a new Controller instance. Instantiates the MailBuilder, MailSender, SubscriptionDAO and SensorDAO.
      */
     @Autowired
-    public Controller(SubscriptionDAO subscriptionDAO) {
+    public Controller(SubscriptionDAO subscriptionDAO, RestTemplate restTemplate) {
         this.mailBuilder = new MailBuilder();
         this.mailSender = new MailSender();
         this.subscriptionDAO = subscriptionDAO;
+        this.restTemplate = restTemplate;
     }
 
     @PostConstruct
     public void postConstruct() {
-        this.sensorDAO = new SensorDAO(backendUrl);
+        this.sensorDAO = new SensorDAO(backendUrl, restTemplate);
     }
 
     /**
@@ -140,7 +143,11 @@ public class Controller {
      */
     public void sendReport(String mailAddress, String sensorID) {
         Sensor sensor = sensorDAO.get(sensorID);
-        Report report = mailBuilder.buildReport(mailAddress, sensor);
+        Subscription subscription = subscriptionDAO.get(mailAddress, sensorID);
+        long reportInterval = subscription.getReportInterval();
+        LocalDate timeframeStart = LocalDate.now().minusDays(reportInterval);
+        double activeRate = sensorDAO.getActiveRate(sensorID, timeframeStart);
+        Report report = mailBuilder.buildReport(mailAddress, sensor, activeRate);
         try {
             mailSender.send(report);
         } catch (MessagingException | UnsupportedEncodingException e) {
