@@ -3,6 +3,7 @@ import {Redirect, useHistory, useParams} from 'react-router-dom'
 import {Button, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
+import {FormattedMessage} from 'react-intl'
 import {green} from '@material-ui/core/colors'
 import Properties from './Properties'
 import Export from './Export'
@@ -95,12 +96,16 @@ const SensorInformationView: FC = () => {
                   className={classes.button}
                   onClick={() => history.push('/replay/replaySingleView')}
                 >
-                  <Typography variant="h5"> Replay </Typography>
+                  <Typography variant="h5">
+                    <FormattedMessage id="infopage.replay" />
+                  </Typography>
                 </Button>
               </Grid>
               <Grid item xs={12}>
                 <Button variant="outlined" className={classes.button} onClick={onSubscribeClick}>
-                  <Typography variant="h5"> Subscribe </Typography>
+                  <Typography variant="h5">
+                    <FormattedMessage id="infopage.subscribe" />
+                  </Typography>
                 </Button>
               </Grid>
             </Grid>

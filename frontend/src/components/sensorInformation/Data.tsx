@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import {FormattedMessage} from 'react-intl'
 import useSensorStore from '../../hooks/UseSensorStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -60,12 +61,14 @@ const Data = () => {
           <TableRow>
             <StyledTableCell className={classes.sensorCell}>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Time
+                <ArrowDropDownIcon />
+                <FormattedMessage id="infopage.time" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Data
+                <ArrowDropDownIcon />
+                <FormattedMessage id="infopage.data" />
               </Typography>
             </StyledTableCell>
           </TableRow>

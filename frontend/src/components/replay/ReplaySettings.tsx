@@ -13,6 +13,7 @@ import {
   withStyles,
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
+import {FormattedMessage} from 'react-intl'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -60,7 +61,9 @@ const ReplaySettings = () => {
         <TableBody>
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="body1">Start:</Typography>
+              <Typography variant="body1">
+                <FormattedMessage id="replaypage.start" />
+              </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <TextField
@@ -90,7 +93,9 @@ const ReplaySettings = () => {
           </StyledTableRow>
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="body1">Stop:</Typography>
+              <Typography variant="body1">
+                <FormattedMessage id="replaypage.stop" />
+              </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <TextField
@@ -120,7 +125,9 @@ const ReplaySettings = () => {
           </StyledTableRow>
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="body1">Speed:</Typography>
+              <Typography variant="body1">
+                <FormattedMessage id="replaypage.speed" />
+              </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Slider defaultValue={0} />
