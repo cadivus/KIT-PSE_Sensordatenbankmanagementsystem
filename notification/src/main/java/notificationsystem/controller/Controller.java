@@ -1,13 +1,11 @@
 package notificationsystem.controller;
 
-import notificationsystem.model.Sensor;
-import notificationsystem.model.SensorDAO;
-import notificationsystem.model.Subscription;
-import notificationsystem.model.SubscriptionDAO;
+import notificationsystem.model.*;
 import notificationsystem.view.Alert;
 import notificationsystem.view.ConfirmationMail;
 import notificationsystem.view.MailBuilder;
 import notificationsystem.view.Report;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,13 +42,18 @@ public class Controller {
     private MailSender mailSender;
     private SubscriptionDAO subscriptionDAO;
     private SensorDAO sensorDAO;
+    private SystemLoginDAO systemLoginDAO;
+    private final static long SYSTEMLOGIN_ID = 1;
 
     /**
      * Constructs a new Controller instance. Instantiates the MailBuilder, MailSender, SubscriptionDAO and SensorDAO.
      */
-    public Controller() {
+    @Autowired
+    public Controller(SystemLoginDAO systemLoginDAO) {
+        this.systemLoginDAO =  systemLoginDAO;
         this.mailBuilder = new MailBuilder();
-        this.mailSender = new MailSender();
+        SystemLogin login = systemLoginDAO.getLogin(SYSTEMLOGIN_ID).get();
+        this.mailSender = new MailSender(login.getUsername(), login.getPassword());
         this.subscriptionDAO = new SubscriptionDAO();
     }
 

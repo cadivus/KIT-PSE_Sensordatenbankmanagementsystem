@@ -14,7 +14,5 @@ public class Application {
         SpringApplication.run(Application.class, args);
 
         CheckerUtil checkerUtil = CheckerUtil.getInstance();
-        Controller controller = new Controller();
-
     }
 }
