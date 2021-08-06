@@ -12,6 +12,8 @@ const reducer = (state, action) => {
     case 'setLocale':
       saveToStorage(STORAGE_KEY, action.locale)
       return {...state, locale: action.locale}
+    default:
+      return defaultContext
   }
 }
 
