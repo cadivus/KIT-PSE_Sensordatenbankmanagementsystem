@@ -1,3 +1,8 @@
+import debug from 'debug'
+
+const log = debug('intl:localStorage')
+const logError = log.extend('ERROR*', '::')
+
 export const saveToStorage = (name, data) => {
   if (!window || !window.localStorage) {
     return
@@ -14,7 +19,7 @@ export const getFromStorage = name => {
   try {
     return JSON.parse(window.localStorage.getItem(name))
   } catch (e) {
-    console.error(e)
+    logError(e)
 
     return null
   }
