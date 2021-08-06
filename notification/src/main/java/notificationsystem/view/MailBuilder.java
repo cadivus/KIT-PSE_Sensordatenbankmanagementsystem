@@ -11,7 +11,8 @@ public class MailBuilder {
 
     private static String SUBJECT_ALERT = "Alert for sensor malfunction";
     private static String SUBJECT_CONFIRM = "Log-in attempt";
-    private static String MAIL_SIGNING = "This E-Mail was sent automatically by the ... E-Mail Notification System.";
+    private static String MAIL_SIGNING = "This E-Mail was sent automatically by the E-Mail Notification System" +
+            " of the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' Project.";
 
     /**
      * The buildAlert method builds an alert e-mail which is sent to subscribers of a sensor when that sensor
@@ -22,12 +23,12 @@ public class MailBuilder {
      * of the given sensor.
      */
     public Alert buildAlert(String mailAddress, Sensor sensor) {
-        /*String message = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
-                " and the location: " + sensor.getLocation() + " has malfunctioned and is currently not collecting data.";
+        //TODO: Add location
+        String body = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
+                " has malfunctioned and is currently not collecting data.";
+        String message = body + "/n" + MAIL_SIGNING;
 
-        Alert alert = new Alert(mailAddress, SUBJECT_ALERT, message, null);
-        return alert;*/
-        return null;
+        return new Alert(mailAddress, SUBJECT_ALERT, message, null);
     }
 
     /**

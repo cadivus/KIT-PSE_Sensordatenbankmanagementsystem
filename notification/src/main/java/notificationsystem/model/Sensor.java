@@ -45,5 +45,23 @@ public class Sensor {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getEncoding_type() {
+        return encoding_type;
+    }
+
+    public String getMetadata() {
+        return metadata;
+    }
+
+    public String getProperties() {
+        return properties;
+    }
 }

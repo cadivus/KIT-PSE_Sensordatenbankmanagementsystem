@@ -14,14 +14,12 @@ import java.util.*;
  */
 @Service
 public class SensorDAO implements DAO<Sensor> {
-    private final String backendUrl;
     private final String getSensorApi;
     private final String getAllSensorsApi;
     private final RestTemplate restTemplate;
 
     @Autowired
     public SensorDAO(String backendUrl, RestTemplate restTemplate) {
-        this.backendUrl = backendUrl;
         this.getSensorApi = backendUrl + "/sensor/getSensor/";
         this.getAllSensorsApi = backendUrl + "/sensor/getAllSensors";
 
