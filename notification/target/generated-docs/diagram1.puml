@@ -10,6 +10,7 @@ class notificationsystem.configuration.AppConfig {
 
 
 class notificationsystem.controller.CheckerUtil {
+	{field} {static} -log : org.apache.commons.logging.Log
 	{method} +checkForReports () : void
 	{method} +checkForSensorFailure () : void
 }
@@ -127,8 +128,8 @@ class notificationsystem.view.Report {
 
 
 
-notificationsystem.controller.CheckerUtil -->  notificationsystem.controller.CheckerUtil : INSTANCE
 notificationsystem.controller.CheckerUtil -->  notificationsystem.controller.Controller : controller
+notificationsystem.controller.CheckerUtil -->  notificationsystem.model.SubscriptionDAO : subscriptionDAO
 notificationsystem.controller.Controller -->  notificationsystem.controller.MailSender : mailSender
 notificationsystem.controller.Controller -->  notificationsystem.model.SensorDAO : sensorDAO
 notificationsystem.controller.Controller -->  notificationsystem.model.SubscriptionDAO : subscriptionDAO
