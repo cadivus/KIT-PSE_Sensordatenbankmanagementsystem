@@ -1,9 +1,6 @@
 package notificationsystem.controller;
 
-import notificationsystem.model.Sensor;
-import notificationsystem.model.SensorDAO;
-import notificationsystem.model.Subscription;
-import notificationsystem.model.SubscriptionDAO;
+import notificationsystem.model.*;
 import notificationsystem.view.Alert;
 import notificationsystem.view.ConfirmationMail;
 import notificationsystem.view.MailBuilder;
@@ -43,14 +40,18 @@ public class Controller {
     private MailSender mailSender;
     private final SubscriptionDAO subscriptionDAO;
     private SensorDAO sensorDAO;
+    private SystemLoginDAO systemLoginDAO;
+    private final static long SYSTEMLOGIN_ID = 1;
 
     /**
      * Constructs a new Controller instance. Instantiates the MailBuilder, MailSender, SubscriptionDAO and SensorDAO.
      */
     @Autowired
-    public Controller(SubscriptionDAO subscriptionDAO) {
+    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO) {
+        this.systemLoginDAO =  systemLoginDAO;
         this.mailBuilder = new MailBuilder();
-        this.mailSender = new MailSender();
+        SystemLogin login = systemLoginDAO.getLogin(SYSTEMLOGIN_ID).get();
+        this.mailSender = new MailSender(login.getUsername(), login.getPassword());
         this.subscriptionDAO = subscriptionDAO;
     }
 

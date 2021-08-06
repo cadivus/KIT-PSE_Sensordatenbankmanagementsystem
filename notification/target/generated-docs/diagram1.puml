@@ -9,6 +9,12 @@ class notificationsystem.configuration.AppConfig {
 }
 
 
+class notificationsystem.configuration.SecurityConfig {
+	{method} +configure ( paramAuthenticationManagerBuilder1 : org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder ) : void
+	{method} +getPasswordEncoder () : org.springframework.security.crypto.password.PasswordEncoder
+}
+
+
 class notificationsystem.controller.CheckerUtil {
 	{field} {static} -log : org.apache.commons.logging.Log
 	{method} +checkForReports () : void
@@ -17,6 +23,7 @@ class notificationsystem.controller.CheckerUtil {
 
 
 class notificationsystem.controller.Controller {
+	{field} {static} -SYSTEMLOGIN_ID : long
 	{field} -backendUrl : String
 	{method} +getConfirmCode ( paramString1 : String ) : String
 	{method} +getSubscriptions ( paramString1 : String ) : java.util.List
@@ -89,6 +96,22 @@ interface notificationsystem.model.SubscriptionRepository {
 }
 
 
+class notificationsystem.model.SystemLogin {
+	{field} -id : long
+	{field} -password : String
+	{field} -username : String
+}
+
+
+class notificationsystem.model.SystemLoginDAO {
+	{method} +getLogin ( paramLong1 : Long ) : java.util.Optional
+}
+
+
+interface notificationsystem.model.SystemLoginRepository {
+}
+
+
 class notificationsystem.view.Alert {
 }
 
@@ -133,10 +156,12 @@ notificationsystem.controller.CheckerUtil -->  notificationsystem.model.Subscrip
 notificationsystem.controller.Controller -->  notificationsystem.controller.MailSender : mailSender
 notificationsystem.controller.Controller -->  notificationsystem.model.SensorDAO : sensorDAO
 notificationsystem.controller.Controller -->  notificationsystem.model.SubscriptionDAO : subscriptionDAO
+notificationsystem.controller.Controller -->  notificationsystem.model.SystemLoginDAO : systemLoginDAO
 notificationsystem.controller.Controller -->  notificationsystem.view.MailBuilder : mailBuilder
 notificationsystem.model.SensorDAO ..|>  notificationsystem.model.DAO
 notificationsystem.model.SubscriptionDAO -->  notificationsystem.model.SubscriptionRepository : subscriptionRepository
 notificationsystem.model.SubscriptionDAO ..|>  notificationsystem.model.DAO
+notificationsystem.model.SystemLoginDAO -->  notificationsystem.model.SystemLoginRepository : systemLoginRepository
 notificationsystem.view.Alert --|>  notificationsystem.view.EMail
 notificationsystem.view.ConfirmationMail --|>  notificationsystem.view.EMail
 notificationsystem.view.Report --|>  notificationsystem.view.EMail
