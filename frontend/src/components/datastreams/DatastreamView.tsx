@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react'
-import {Button, Container, Grid, Typography} from '@material-ui/core'
+import {Container, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import DatastreamList from './DatastreamList'
 import Sensor from '../../material/Sensor'
@@ -14,8 +14,7 @@ const useStyles = makeStyles({
 })
 
 /**
- *  Displays the start page.
- *  This class implements a React component.
+ *  Displays a list of datastreams.
  */
 const DatastreamView: FC = () => {
   const classes = useStyles()
