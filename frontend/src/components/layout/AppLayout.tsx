@@ -18,12 +18,15 @@ const AppLayout: FC = ({children}) => {
   const classes = useStyles()
   const {state, dispatch} = useContext(AppContext)
 
-  const setLanguage = useCallback(locale => {
-    dispatch({
-      type: 'setLocale',
-      locale,
-    })
-  }, [])
+  const setLanguage = useCallback(
+    locale => {
+      dispatch({
+        type: 'setLocale',
+        locale,
+      })
+    },
+    [dispatch],
+  )
 
   const language = state.locale === LOCALES.ENGLISH ? 'Deutsch' : 'English'
 
