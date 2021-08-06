@@ -15,7 +15,6 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import Checkbox from '@material-ui/core/Checkbox'
 import {useHistory} from 'react-router-dom'
 import useSensorStore from '../../hooks/UseSensorStore'
 import Sensor from '../../material/Sensor'
@@ -66,15 +65,13 @@ const useStyles = makeStyles((theme: Theme) =>
  *  Displays a list of sensors.
  *  This class implements a React component.
  */
-const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
+const DatastreamList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
   const history = useHistory()
   const classes = useStyles()
   const sensorStore = useSensorStore()
 
   const [sensorList, setSensorList] = useState(new Array<Sensor>())
   const [lastUpdate, setLastUpdate] = useState(0)
-
-  const [selectedSensorsState, setSelectedSensorsState] = useState(new Set<Sensor>())
 
   useEffect(() => {
     if (sensorStore) {
@@ -104,7 +101,7 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
           <TableRow>
             <StyledTableCell className={classes.sensorCell}>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Sensor
+                <ArrowDropDownIcon /> Datastreams
               </Typography>
             </StyledTableCell>
             <StyledTableCell />
@@ -122,27 +119,10 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
             </TableRow>
           )}
           {sensorStore?.sensors.map(sensor => {
-            const checkChanged = (chk: boolean) => {
-              if (chk && !selectedSensorsState.has(sensor)) {
-                selectedSensors.add(sensor)
-                setSelectedSensorsState(new Set<Sensor>(selectedSensors))
-              } else if (selectedSensorsState.has(sensor)) {
-                selectedSensors.delete(sensor)
-                setSelectedSensorsState(new Set<Sensor>(selectedSensors))
-              }
-            }
             return (
               <StyledTableRow hover key={sensor.name.name}>
                 <StyledTableCell component="th" scope="row">
                   <Typography variant="h5">{sensor.name.name}</Typography>
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Checkbox
-                    checked={selectedSensorsState.has(sensor)}
-                    onChange={e => checkChanged(e.target.checked)}
-                    color="primary"
-                    inputProps={{'aria-label': 'secondary checkbox'}}
-                  />
                 </StyledTableCell>
                 <StyledTableCell>
                   <Button
@@ -150,7 +130,7 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
                     color="primary"
                     onClick={() => history.push(`/sensorInformation/${sensor.id.toString()}`)}
                   >
-                    Datastream
+                    Info
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
@@ -162,4 +142,4 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
   )
 }
 
-export default SensorList
+export default DatastreamList
