@@ -1,10 +1,12 @@
 notificationsystem/view/Report.class
 notificationsystem/view/Alert.class
 notificationsystem/view/EMail.class
+notificationsystem/configuration/SecurityConfig.class
 notificationsystem/configuration/AppConfig.class
 notificationsystem/view/MailBuilder.class
 notificationsystem/model/Subscription.class
 notificationsystem/controller/MailSender$1.class
+notificationsystem/model/SystemLoginDAO.class
 notificationsystem/model/SubscriptionDAO.class
 notificationsystem/view/ConfirmationMail.class
 notificationsystem/Application.class
@@ -12,6 +14,8 @@ notificationsystem/model/SubscriptionRepository.class
 notificationsystem/controller/MailSender.class
 notificationsystem/model/DAO.class
 notificationsystem/controller/Controller.class
+notificationsystem/model/SystemLoginRepository.class
 notificationsystem/model/Sensor.class
+notificationsystem/model/SystemLogin.class
 notificationsystem/model/SensorDAO.class
 notificationsystem/controller/CheckerUtil.class
