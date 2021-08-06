@@ -4,6 +4,7 @@ import {Button, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import {FormattedMessage} from 'react-intl'
+import {green} from '@material-ui/core/colors'
 import Properties from './Properties'
 import Export from './Export'
 import Data from './Data'
@@ -76,9 +77,9 @@ const SensorInformationView: FC = () => {
             <Typography variant="h3" align="center" gutterBottom>
               {sensor.name.toString()}
               {activeState === SensorState.Online ? (
-                <FiberManualRecordIcon color="primary" fontSize="large" />
+                <FiberManualRecordIcon style={{color: green[500]}} fontSize="large" />
               ) : activeState === SensorState.Offline ? (
-                <FiberManualRecordIcon color="secondary" fontSize="large" />
+                <FiberManualRecordIcon color="disabled" fontSize="large" />
               ) : (
                 /* Unknown state */ <FiberManualRecordIcon color="secondary" fontSize="large" />
               )}

@@ -52,9 +52,30 @@ const LocationRow = ({location}: {location: Location}) => {
           <Typography variant="h6">Location: </Typography>
         </StyledTableCell>
         <StyledTableCell>
-          <Typography variant="h6">{location.addressToString()}</Typography>
-          <br />
-          <Typography variant="h6">{location.coordinatesToString()}</Typography>
+          <StyledTableRow>
+            <StyledTableCell>
+              <Typography variant="h6">Street:</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography variant="h6">{location.addressToString().split(', ')[0]}</Typography>
+            </StyledTableCell>
+          </StyledTableRow>
+          <StyledTableRow>
+            <StyledTableCell>
+              <Typography variant="h6">City:</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography variant="h6">{location.addressToString().split(', ')[1]}</Typography>
+            </StyledTableCell>
+          </StyledTableRow>
+          <StyledTableRow>
+            <StyledTableCell>
+              <Typography variant="h6">Coordinates:</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography variant="h6">{location.coordinatesToString()}</Typography>
+            </StyledTableCell>
+          </StyledTableRow>
         </StyledTableCell>
       </StyledTableRow>
     )

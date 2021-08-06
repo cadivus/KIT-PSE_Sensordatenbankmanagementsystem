@@ -41,6 +41,6 @@ public class Thing {
 
   @JsonIgnore
   @OneToMany(mappedBy = "thing")
-  List<Datastream> datastream;
+  List<Datastream> datastreams;
 
 }

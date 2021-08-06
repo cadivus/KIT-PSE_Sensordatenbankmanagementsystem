@@ -18,6 +18,10 @@ public class MailSender {
 
     private Session session;
 
+    public MailSender(String username, String password) {
+        login(username, password);
+    }
+
     /**
      * Log-in procedure needed for authentication before an e-mail can be sent. Also instanciates the session with
      * the smpt-server.

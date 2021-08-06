@@ -1,17 +1,13 @@
 package notificationsystem.controller;
 
-import notificationsystem.model.Sensor;
-import notificationsystem.model.SensorDAO;
-import notificationsystem.model.Subscription;
-import notificationsystem.model.SubscriptionDAO;
+import notificationsystem.model.*;
 import notificationsystem.view.Alert;
 import notificationsystem.view.ConfirmationMail;
 import notificationsystem.view.MailBuilder;
 import notificationsystem.view.Report;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.mail.MessagingException;
@@ -42,16 +38,21 @@ public class Controller {
 
     private MailBuilder mailBuilder;
     private MailSender mailSender;
-    private SubscriptionDAO subscriptionDAO;
+    private final SubscriptionDAO subscriptionDAO;
     private SensorDAO sensorDAO;
+    private SystemLoginDAO systemLoginDAO;
+    private final static long SYSTEMLOGIN_ID = 1;
 
     /**
      * Constructs a new Controller instance. Instantiates the MailBuilder, MailSender, SubscriptionDAO and SensorDAO.
      */
-    public Controller() {
+    @Autowired
+    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO) {
+        this.systemLoginDAO =  systemLoginDAO;
         this.mailBuilder = new MailBuilder();
-        this.mailSender = new MailSender();
-        this.subscriptionDAO = new SubscriptionDAO();
+        SystemLogin login = systemLoginDAO.getLogin(SYSTEMLOGIN_ID).get();
+        this.mailSender = new MailSender(login.getUsername(), login.getPassword());
+        this.subscriptionDAO = subscriptionDAO;
     }
 
     @PostConstruct
@@ -88,8 +89,8 @@ public class Controller {
      * @param sensorID ID of the sensor the user subscribes to.
      * @param reportInterval time period between reports.
      */
-    @PostMapping("/postSubscription")
-    public void postSubscription(String mailAddress, UUID sensorID, long reportInterval) {
+    @PostMapping(value = "/postSubscription", consumes = "application/json")
+    public void postSubscription(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") UUID sensorID, @RequestParam("reportInterval") long reportInterval) {
         Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval);
         subscriptionDAO.save(subscription);
     }
@@ -99,8 +100,8 @@ public class Controller {
      * @param mailAddress e-mail of the user unsubscribing.
      * @param sensorID ID of the sensor the user unsubscribes from.
      */
-    @PostMapping("/postUnsubscribe")
-    public void postUnsubscribe(String mailAddress, UUID sensorID) {
+    @PostMapping(value = "/postUnsubscribe", consumes = "application/json")
+    public void postUnsubscribe(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") UUID sensorID) {
         Subscription toDelete = subscriptionDAO.get(mailAddress, sensorID);
         subscriptionDAO.delete(toDelete);
     }

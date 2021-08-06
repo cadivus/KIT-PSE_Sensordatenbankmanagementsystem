@@ -1,21 +1,38 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
+import edu.teco.sensordatenbankmanagementsystem.exceptions.ImageCantBeGeneratedException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ObjectNotFoundException;
+import edu.teco.sensordatenbankmanagementsystem.exceptions.UnknownInterpolationMethodException;
+import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
+
+import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
+
+import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
+import edu.teco.sensordatenbankmanagementsystem.util.interpolation.NewtonInterpolator;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The SensorController is the entry point for http requests for {@link Sensor}s.
@@ -25,22 +42,25 @@ import java.util.List;
 @RequestMapping("/sensor")
 @CommonsLog
 public class SensorController {
-    public final ThingRepository thingRepository;
+
+    private DateTimeFormatter DATE_FORMAT;
+    @Value("${globals.date_format}")
+    private void setDATE_FORMAT(String pattern, String b){
+        DATE_FORMAT = DateTimeFormatter.ofPattern(pattern);
+    }
+
     public final ThingService thingService;
     public final SensorService sensorService;
     /**
      * Instantiates a new Sensor controller.
      *
-     * @param thingRepository
      * @param thingService
      * @param sensorService the {@link SensorService} which handles the underlying business logic
      */
     @Autowired
     public SensorController(
-        ThingRepository thingRepository,
         ThingService thingService,
         SensorService sensorService) {
-        this.thingRepository = thingRepository;
         this.thingService = thingService;
         this.sensorService = sensorService;
     }
@@ -53,13 +73,76 @@ public class SensorController {
     public List<Sensor> getAllSensors() {
         return sensorService.getAllSensors();
     }
+
+    @GetMapping("getAllThings")
+    public List<Thing> getAllThings(){
+        return thingService.getAllThings();
+    }
+
+    /**
+     * Generates and returns an image of a graph interpolating the data in the specified time frame
+     *
+     * @param id of thing
+     * @param obsId of observed property
+     * @param frameStart start of time frame
+     * @param frameEnd end of time frame
+     * @param maxInterPoints maximum number of interpolation points to use (don't go too crazy)
+     * @param imageSize size of the image to return
+     * @param granularity visual granularity of the rendered graph
+     * @return image of graph
+     */
+    @GetMapping(value = "graph")
+    public ResponseEntity<byte[]> getGraphOfThing(
+            @RequestParam(name="id")String id,
+            @RequestParam(name="obsId")String obsId,
+            @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
+            @RequestParam(name = "frameEnd", required = false) String frameEnd,
+            @RequestParam(name = "maxInterpolationPoints", defaultValue = "100") int maxInterPoints,
+            @RequestParam(name = "imageSize", defaultValue = "400x225") String imageSize,
+            @RequestParam(name = "renderGranularity", defaultValue = "1") int granularity,
+            @RequestParam(name = "interpolationMethod", defaultValue = "lagrange") String interpolationMethod
+    ){
+        String[]iwh = imageSize.split("x");
+        Dimension idim = new Dimension(Integer.parseInt(iwh[0]), Integer.parseInt(iwh[1]));
+        RenderedImage graphImage = sensorService.getGraphImageOfThing(
+                id,
+                obsId,
+                LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
+                Optional.ofNullable(frameEnd)
+                        .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
+                        .orElseGet(LocalDate::now)
+                        .atStartOfDay(),
+                maxInterPoints,
+                idim,
+                granularity,
+                switch (interpolationMethod){
+                    case "lagrange" -> LagrangeInterpolator.getInstance();
+                    case "newton" -> NewtonInterpolator.getInstance();
+                    default -> throw new UnknownInterpolationMethodException(interpolationMethod);
+                }
+        );
+        ByteArrayOutputStream graphStream = new ByteArrayOutputStream();
+        try{
+            //there appears to be (at least locally) a problem where ImageIO only finds a writer for "png"-format
+            //otherwise "jpg" would be preferred here
+            ImageIO.write(graphImage, "png", graphStream);
+        } catch(IOException io) {
+            throw new ImageCantBeGeneratedException();
+        }
+        byte[] graphImageAsArray = graphStream.toByteArray();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(graphImageAsArray, headers, HttpStatus.CREATED);
+    }
+
     /**
      * Maps a get request for getting a sensors metadata by UUID.
      *
      * @param id UUID of sensor to get
      * @return sensor with given UUID, if present
      */
-    @GetMapping("/Sensor/{id}")
+    @GetMapping("/sensor/{id}")
     public Sensor getSensor(@PathVariable String id) {
 
         try {
@@ -69,9 +152,72 @@ public class SensorController {
         }
     }
 
-    @GetMapping("/datastream/{sensorid}")
-    public Datastream getDatastrean(@PathVariable String sensorid){
-        return sensorService.getDatastream(sensorid);
+    /**
+     * Gets whether things are active based on their most recent data transmission
+     * @param ids list of thing_ids to check
+     * @param days amount of days to count activity as recent
+     * @return list of booleans in the same order
+     */
+    @GetMapping("active")
+    public List<Integer> getWhetherThingsActive(
+            @RequestParam(name="ids")List<String> ids,
+            @RequestParam(name="days", defaultValue = "10")int days
+            ) {
+        return thingService.getWhetherThingsActive(ids, days);
+    }
+
+    /**
+     * Gets active rate of things, calculated as amount of data transmissions / days
+     * @param ids list of thing_ids to check
+     * @param frameStart start of time frame to calculate active rate
+     * @param frameEnd end of time frame to calculate active rate
+     * @return list of active rates in the same order
+     */
+    @GetMapping("active_rate")
+    public List<Double> getActiveRateOfThings(
+            @RequestParam(name="ids")List<String> ids,
+            @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
+            @RequestParam(name = "frameEnd", required = false) String frameEnd
+    ){
+        return thingService.getActiveRateOfThings(
+                ids,
+                LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
+                Optional.ofNullable(frameEnd)
+                        .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
+                        .orElseGet(LocalDate::now)
+                        .atStartOfDay()
+        );
+    }
+
+    /**
+     * Calculates statistics about the given things and returns them in order
+     *
+     * @param ids list of thing_ids to get stats from
+     * @param obsIds list of observed properties to get stats from
+     * @param frameStart start of time frame
+     * @param frameEnd end of time frame
+     * @return list of stats in order
+     */
+    @GetMapping("stats")
+    public List<ObservationStats> getObservationStatsOfThings(
+            @RequestParam(name="ids")List<String> ids,
+            @RequestParam(name="obsIds")List<String> obsIds,
+            @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
+            @RequestParam(name = "frameEnd", required = false) String frameEnd
+    ){
+        return thingService.getObservationStatsOfThings(
+                ids,
+                obsIds,
+                LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
+                Optional.ofNullable(frameEnd)
+                        .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
+                        .orElseGet(LocalDate::now)
+                        .atStartOfDay());
+    }
+
+    @GetMapping("/datastream/{sensorId}")
+    public Datastream getDatastrean(@PathVariable String sensorId){
+        return sensorService.getDatastream(sensorId);
     }
     /**
      * This will get a single Thing, which is a single sensor, from the Database

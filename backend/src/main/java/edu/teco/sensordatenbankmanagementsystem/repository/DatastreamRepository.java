@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface DatastreamRepository extends JpaRepository<Datastream, String> {
 
-    List<Datastream> findDatastreamsBySensorId(String SensorId);
+    List<Datastream> findDatastreamsByThing_Id(String thingId);
 
-    List<Datastream> findDatastreamsBySensorIdAndObsId(String SensorId, String obs_id);
+    List<Datastream> findDatastreamsByThing_IdAndObsIdIn(String thingId, List<String> obsIds);
 
   Optional<Datastream> findById(String id);
 
