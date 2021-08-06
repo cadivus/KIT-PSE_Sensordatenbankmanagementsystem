@@ -9,7 +9,6 @@ import notificationsystem.view.ConfirmationMail;
 import notificationsystem.view.MailBuilder;
 import notificationsystem.view.Report;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -17,10 +16,7 @@ import javax.mail.MessagingException;
 import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
-import java.time.Period;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * The Controller is a central component to the E-Mail Notification System managing most tasks as well as providing an
@@ -39,8 +35,8 @@ public class Controller {
     @Value("${sensors.backend.url}")
     private String backendUrl;
 
-    private MailBuilder mailBuilder;
-    private MailSender mailSender;
+    private final MailBuilder mailBuilder;
+    private final MailSender mailSender;
     private final SubscriptionDAO subscriptionDAO;
     private SensorDAO sensorDAO;
 
@@ -71,9 +67,7 @@ public class Controller {
         ConfirmationMail confirmationMail = mailBuilder.buildConfirmationMail(mailAddress);
         try {
             mailSender.send(confirmationMail);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return confirmationMail.getConfirmCode();
@@ -89,7 +83,7 @@ public class Controller {
      * @param reportInterval time period between reports.
      */
     @PostMapping(value = "/postSubscription", consumes = "application/json")
-    public void postSubscription(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") UUID sensorID, @RequestParam("reportInterval") long reportInterval) {
+    public void postSubscription(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") String sensorID, @RequestParam("reportInterval") long reportInterval) {
         Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval);
         subscriptionDAO.save(subscription);
     }
@@ -100,7 +94,7 @@ public class Controller {
      * @param sensorID ID of the sensor the user unsubscribes from.
      */
     @PostMapping(value = "/postUnsubscribe", consumes = "application/json")
-    public void postUnsubscribe(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") UUID sensorID) {
+    public void postUnsubscribe(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") String sensorID) {
         Subscription toDelete = subscriptionDAO.get(mailAddress, sensorID);
         subscriptionDAO.delete(toDelete);
     }
@@ -111,7 +105,7 @@ public class Controller {
      * @return List of the sensors the user is subscribed to. The list contains the UUIDs of those sensors.
      */
     @GetMapping("/getSubscriptions/{mailAddress}")
-    public List<UUID> getSubscriptions(@PathVariable String mailAddress) {
+    public List<String> getSubscriptions(@PathVariable String mailAddress) {
         return subscriptionDAO.getAllSensors(mailAddress);
     }
 
@@ -122,16 +116,14 @@ public class Controller {
      * The method is only called by the CheckerUtil class.
      * @param sensorID ID of the sensor malfunctioning.
      */
-    public void sendAlert(UUID sensorID) {
+    public void sendAlert(String sensorID) {
         Sensor sensor = sensorDAO.get(sensorID);
         List<String> subscribers = subscriptionDAO.getAllSubscribers(sensorID);
         for (String subscriber : subscribers) {
             Alert alert = mailBuilder.buildAlert(subscriber, sensor);
             try {
                 mailSender.send(alert);
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (MessagingException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
@@ -146,14 +138,12 @@ public class Controller {
      * @param mailAddress e-mail address of the subscriber the report is sent to.
      * @param sensorID ID of the sensor the report is about.
      */
-    public void sendReport(String mailAddress, UUID sensorID) {
+    public void sendReport(String mailAddress, String sensorID) {
         Sensor sensor = sensorDAO.get(sensorID);
         Report report = mailBuilder.buildReport(mailAddress, sensor);
         try {
             mailSender.send(report);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }

@@ -22,11 +22,12 @@ public class MailBuilder {
      * of the given sensor.
      */
     public Alert buildAlert(String mailAddress, Sensor sensor) {
-        String message = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
+        /*String message = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
                 " and the location: " + sensor.getLocation() + " has malfunctioned and is currently not collecting data.";
 
         Alert alert = new Alert(mailAddress, SUBJECT_ALERT, message, null);
-        return alert;
+        return alert;*/
+        return null;
     }
 
     /**
@@ -37,11 +38,12 @@ public class MailBuilder {
      * @return The finished report e-mail for the subscriber with the given e-mail address about the given sensor.
      */
     public Report buildReport(String mailAddress, Sensor sensor) {
-        String subject = "Report for Sensorthings sensor: " + sensor.getId();
+        /*String subject = "Report for Sensorthings sensor: " + sensor.getId();
         String message = "The following is the regular report for the the Sensorthings sensor: " + sensor.getId()
                 + "you are subscribed to.";
         Report report = new Report(mailAddress, subject, message, null);
-        return report;
+        return report;*/
+        return null;
     }
 
     /**

@@ -2,16 +2,15 @@ package notificationsystem.controller;
 
 import lombok.extern.apachecommons.CommonsLog;
 import notificationsystem.model.Sensor;
+import notificationsystem.model.SensorDAO;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.*;
 
@@ -26,11 +25,17 @@ public class CheckerUtil {
 
     private final Controller controller;
     private final SubscriptionDAO subscriptionDAO;
+    private final SensorDAO sensorDAO;
+    private final RestTemplate restTemplate;
+    private Map<String, Integer> sensorActiveDict;
 
     @Autowired
-    public CheckerUtil(Controller controller, SubscriptionDAO subscriptionDAO) {
+    public CheckerUtil(Controller controller, SubscriptionDAO subscriptionDAO, SensorDAO sensorDAO, RestTemplate restTemplate) {
         this.controller = controller;
         this.subscriptionDAO = subscriptionDAO;
+        this.sensorDAO = sensorDAO;
+        this.restTemplate = restTemplate;
+        this.sensorActiveDict = new HashMap<String, Integer>();
     }
 
     /**
@@ -40,7 +45,39 @@ public class CheckerUtil {
      */
     @Scheduled(fixedRate = 500000)
     public void checkForSensorFailure() {
+        //Prepare sensor ids
+        log.info("Checking for sensor-failure");
+        List<Sensor> sensors = sensorDAO.getAll();
+        LinkedList<String> sensorIds = new LinkedList<>();
 
+        for(Sensor sensor : sensors) {
+            sensorIds.add(sensor.getId());
+        }
+
+        //Get information about sensor activity and store it with the correlating sensor id
+        //TODO: Richtige URL
+        Integer[] response = restTemplate.getForObject("/active", Integer[].class, sensorIds);
+        List<Integer> sensorStatus = Arrays.asList(response);
+        Map<String, Integer> sensorCurrentlyActiveDict = new HashMap<String, Integer>();
+
+        if(sensorActiveDict.isEmpty()) {
+        for(int i = 0; i < sensorIds.size(); i++) {
+            sensorActiveDict.put(sensorIds.get(i), sensorStatus.get(i));
+            }
+        }
+        for(int i = 0; i < sensorIds.size(); i++) {
+            sensorCurrentlyActiveDict.put(sensorIds.get(i), sensorStatus.get(i));
+        }
+
+        //Check which sensors which were active are currently inactive
+        for(String id : sensorIds) {
+            if (sensorActiveDict.get(id).equals(1) && sensorCurrentlyActiveDict.get(id).equals(0)) {
+                controller.sendAlert(id);
+            }
+        }
+
+        //Update dictionary
+        sensorActiveDict = sensorCurrentlyActiveDict;
     }
 
     /**
@@ -58,7 +95,7 @@ public class CheckerUtil {
             Period period = Period.between(subscription.getSubTime().plusDays(subscription.getReportInterval()), LocalDate.now());
             if (!period.isNegative()) {
                 //Send report and update timestamp
-                controller.sendReport(subscription.getSubscriberAddress(), subscription.getSensor());
+                controller.sendReport(subscription.getSubscriberAddress(), subscription.getSensorId());
                 subscription.setSubTime(subscription.getSubTime().plusDays(subscription.getReportInterval()));
             }
         }
