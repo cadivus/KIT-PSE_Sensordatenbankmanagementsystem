@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {
   Button,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -40,17 +41,26 @@ const StyledTableRow = withStyles((theme: Theme) =>
   }),
 )(TableRow)
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 800,
-  },
-  sensorCell: {
-    width: '83%',
-  },
-  container: {
-    marginTop: '10px',
-  },
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      '& > * + *': {
+        marginLeft: theme.spacing(2),
+      },
+      marginLeft: '60%',
+    },
+    table: {
+      minWidth: 800,
+    },
+    sensorCell: {
+      width: '83%',
+    },
+    container: {
+      marginTop: '10px',
+    },
+  }),
+)
 
 /**
  *  Displays a list of sensors.
@@ -102,6 +112,15 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
           </TableRow>
         </TableHead>
         <TableBody>
+          {sensorList.length < 1 && (
+            <TableRow>
+              <TableCell align="center">
+                <CircularProgress className={classes.root} />
+              </TableCell>
+              <TableCell />
+              <TableCell />
+            </TableRow>
+          )}
           {sensorStore?.sensors.map(sensor => {
             const checkChanged = (chk: boolean) => {
               if (chk && !selectedSensorsState.has(sensor)) {
@@ -112,7 +131,6 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
                 setSelectedSensorsState(new Set<Sensor>(selectedSensors))
               }
             }
-
             return (
               <StyledTableRow hover key={sensor.name.name}>
                 <StyledTableCell component="th" scope="row">
