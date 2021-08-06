@@ -20,8 +20,13 @@ import java.util.UUID;
 @Service
 public class SubscriptionDAO implements DAO<Subscription>{
 
+    private final SubscriptionRepository subscriptionRepository;
+
     @Autowired
-    private SubscriptionRepository subscriptionRepository;
+    public SubscriptionDAO(SubscriptionRepository subscriptionRepository) {
+        this.subscriptionRepository = subscriptionRepository;
+    }
+
 
     @Override
     public Optional<Subscription> get(Subscription subscription) {
@@ -38,7 +43,7 @@ public class SubscriptionDAO implements DAO<Subscription>{
     public Subscription get(String mailAddress, UUID sensorID) {
         List<Subscription> allSubs = subscriptionRepository.findAll();
         for (Subscription sub : allSubs) {
-            if (sub.getSubscriberAddress() == mailAddress && sub.getSensor().toString().equals(sensorID)) {
+            if (sub.getSubscriberAddress().equals(mailAddress) && sub.getSensor().toString().equals(sensorID)) {
                 return sub;
             }
         }
@@ -79,7 +84,7 @@ public class SubscriptionDAO implements DAO<Subscription>{
         List<UUID> sensors = new ArrayList<>();
         List<Subscription> allSubs = subscriptionRepository.findAll();
         for (Subscription sub : allSubs) {
-            if (sub.getSubscriberAddress() ==  mailAddress) {
+            if (sub.getSubscriberAddress().equals(mailAddress)) {
                 sensors.add(sub.getSensor());
             }
         }
