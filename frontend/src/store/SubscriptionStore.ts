@@ -1,9 +1,9 @@
 import User from '../material/User'
 import Subscription from '../material/Subscription'
-import SensorStore from './SensorStore'
+import ThingStore from './ThingStore'
 import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
-import Sensor from '../material/Sensor'
+import Thing from '../material/Thing'
 
 /**
  * This is the storage for subscriptions.
@@ -12,15 +12,15 @@ import Sensor from '../material/Sensor'
 class SubscriptionStore {
   private _user: User | null = null
 
-  private readonly _sensorStore: SensorStore
+  private readonly _thingStore: ThingStore
 
   /**
    * Helds every subscription object
    */
   private subscriptions: Map<string, Subscription>
 
-  constructor(sensorStore: SensorStore) {
-    this._sensorStore = sensorStore
+  constructor(thingStore: ThingStore) {
+    this._thingStore = thingStore
     this.subscriptions = new Map<string, Subscription>()
   }
 
@@ -32,11 +32,11 @@ class SubscriptionStore {
    * Gets the subscriptions from the backend.
    */
   private getSubscriptionsFromBackend = (): void => {
-    const {subscriptions, _sensorStore, _user, unsubscribe: unsubscribeById} = this
+    const {subscriptions, _thingStore, _user, unsubscribe: unsubscribeById} = this
     if (_user && (subscriptions.size === 0 || subscriptions.values().next().value.owner !== this._user)) {
       subscriptions.clear()
-      for (let i = 1; i <= _sensorStore.sensors.length; i += 1) {
-        const sensorList = _sensorStore.sensors.slice(0, i).reverse()
+      for (let i = 1; i <= _thingStore.things.length; i += 1) {
+        const thingList = _thingStore.things.slice(0, i).reverse()
         const directNotification = i % 2 === 1
         const id = new Id(`${_user.email.email}-0-${i}`)
         const idStr = id.toString()
@@ -44,7 +44,7 @@ class SubscriptionStore {
           unsubscribe(): boolean {
             return unsubscribeById(id)
           }
-        })(id, sensorList, directNotification, new NotificationLevel(i), _user)
+        })(id, thingList, directNotification, new NotificationLevel(i), _user)
         subscriptions.set(idStr, subs)
       }
     }
@@ -80,7 +80,7 @@ class SubscriptionStore {
   }
 
   createSubscription = (
-    sensors: Array<Sensor>,
+    things: Array<Thing>,
     directNotification: boolean,
     notificationLevel: NotificationLevel,
   ): Subscription | null => {
@@ -93,7 +93,7 @@ class SubscriptionStore {
       unsubscribe(): boolean {
         return unsubscribeById(id)
       }
-    })(id, sensors, directNotification, notificationLevel, _user)
+    })(id, things, directNotification, notificationLevel, _user)
     subscriptions.set(id.toString(), result)
     return result
   }

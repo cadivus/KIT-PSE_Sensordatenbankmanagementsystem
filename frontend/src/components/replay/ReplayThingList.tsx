@@ -14,7 +14,7 @@ import {
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import {FormattedMessage} from 'react-intl'
-import useSensorStore from '../../hooks/UseSensorStore'
+import useThingStore from '../../hooks/UseThingStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -38,28 +38,28 @@ const StyledTableRow = withStyles((theme: Theme) =>
 )(TableRow)
 
 const useStyles = makeStyles({
-  sensorCell: {
+  thingCell: {
     width: '70%',
   },
 })
 
 /**
- *  Displays the sensors of a replay.
+ *  Displays the things of a replay.
  *  This class implements a React component.
  */
-const ReplaySensorList = () => {
+const ReplayThingList = () => {
   const classes = useStyles()
-  const sensorStore = useSensorStore()
+  const thingStore = useThingStore()
 
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <StyledTableCell className={classes.sensorCell}>
+            <StyledTableCell className={classes.thingCell}>
               <Typography variant="h5">
                 <ArrowDropDownIcon />
-                <FormattedMessage id="replaypage.sensor" />
+                <FormattedMessage id="replaypage.thing" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
@@ -71,10 +71,10 @@ const ReplaySensorList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sensorStore?.sensors.map(sensor => (
-            <StyledTableRow hover key={sensor.name.name}>
+          {thingStore?.things.map(thing => (
+            <StyledTableRow hover key={thing.name.name}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="body1">{sensor.name.name}</Typography>
+                <Typography variant="body1">{thing.name.name}</Typography>
               </StyledTableCell>
               <StyledTableCell>
                 <Typography variant="body1">XXXX</Typography>
@@ -87,4 +87,4 @@ const ReplaySensorList = () => {
   )
 }
 
-export default ReplaySensorList
+export default ReplayThingList

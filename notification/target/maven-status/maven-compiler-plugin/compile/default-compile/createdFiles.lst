@@ -15,7 +15,7 @@ notificationsystem/controller/MailSender.class
 notificationsystem/model/DAO.class
 notificationsystem/controller/Controller.class
 notificationsystem/model/SystemLoginRepository.class
-notificationsystem/model/Sensor.class
+notificationsystem/model/Thing.class
 notificationsystem/model/SystemLogin.class
 notificationsystem/model/SensorDAO.class
 notificationsystem/controller/CheckerUtil.class

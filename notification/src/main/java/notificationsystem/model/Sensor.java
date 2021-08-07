@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * The Sensor class represents the air-quality sensors stationed in Augsburg. Each sensor collects data, has a
- * failure rate, a location, and is part of one, none or multiple categories. The Sensor class also provides access to
+ * The Thing class represents the air-quality sensors stationed in Augsburg. Each sensor collects data, has a
+ * failure rate, a location, and is part of one, none or multiple categories. The Thing class also provides access to
  * these data points.
  * In the E-Mail-Notification System, this class is mainly used organize and transport data collected by and about
  * sensors. This information is then needed for report- and alert-mails.
- * The Sensor class does not hold information about the subscribers to a sensor, as the subscriptions are handled in
+ * The Thing class does not hold information about the subscribers to a sensor, as the subscriptions are handled in
  * a distinct Subscription class.
  */
-public class Sensor {
+public class Thing {
 
     private String name;
     private UUID id;
@@ -28,7 +28,7 @@ public class Sensor {
      * @param location gps-coordinates of the sensor location.
      * @param categories list of categories describing the sensor and its properties.
      */
-    public Sensor(String name, UUID id, String data, String failureRate, String location, List<String> categories) {
+    public Thing(String name, UUID id, String data, String failureRate, String location, List<String> categories) {
         this.name = name;
         this.id = id;
         this.data = data;

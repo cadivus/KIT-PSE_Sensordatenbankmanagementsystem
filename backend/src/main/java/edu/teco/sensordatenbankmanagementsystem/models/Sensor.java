@@ -24,7 +24,7 @@ import java.util.List;
 @Data
 @Table(name = "\"SENSORS\"")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Sensor {
+public class Thing {
 
 
     @Id

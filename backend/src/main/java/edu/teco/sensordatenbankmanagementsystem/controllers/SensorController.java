@@ -4,7 +4,7 @@ import edu.teco.sensordatenbankmanagementsystem.exceptions.ImageCantBeGeneratedE
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ObjectNotFoundException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.UnknownInterpolationMethodException;
 import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
-import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
+import edu.teco.sensordatenbankmanagementsystem.models.Thing;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The SensorController is the entry point for http requests for {@link Sensor}s.
+ * The SensorController is the entry point for http requests for {@link Thing}s.
  * Methods of this class map to different requests about Sensors
  */
 @RestController
@@ -52,7 +52,7 @@ public class SensorController {
     public final ThingService thingService;
     public final SensorService sensorService;
     /**
-     * Instantiates a new Sensor controller.
+     * Instantiates a new Thing controller.
      *
      * @param thingService
      * @param sensorService the {@link SensorService} which handles the underlying business logic
@@ -70,7 +70,7 @@ public class SensorController {
      * @return list of all sensors present in the Database used
      */
     @GetMapping("/getAllSensors")
-    public List<Sensor> getAllSensors() {
+    public List<Thing> getAllSensors() {
         return sensorService.getAllSensors();
     }
 
@@ -143,7 +143,7 @@ public class SensorController {
      * @return sensor with given UUID, if present
      */
     @GetMapping("/sensor/{id}")
-    public Sensor getSensor(@PathVariable String id) {
+    public Thing getSensor(@PathVariable String id) {
 
         try {
             return sensorService.getSensor(id);
@@ -224,7 +224,7 @@ public class SensorController {
      *
      * @param id the ID of the sensor. It tends to look like this: 'saqn:s:xxxxxxx' which x being a
      *           digit or a number
-     * @return The Sensor model that contains the information
+     * @return The Thing model that contains the information
      */
     @GetMapping(value = {"/thing/{id}"})
     public Thing getThings(@PathVariable String id) {

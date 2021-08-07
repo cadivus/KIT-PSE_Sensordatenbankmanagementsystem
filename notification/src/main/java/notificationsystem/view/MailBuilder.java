@@ -1,6 +1,6 @@
 package notificationsystem.view;
 
-import notificationsystem.model.Sensor;
+import notificationsystem.model.Thing;
 
 /**
  * The MailBuilder class is responsible to build the different types of e-mails needed, alert, report and confirmation
@@ -21,7 +21,7 @@ public class MailBuilder {
      * @return The finished alert e-mail for the subscriber with the given e-mail address about the failure
      * of the given sensor.
      */
-    public Alert buildAlert(String mailAddress, Sensor sensor) {
+    public Alert buildAlert(String mailAddress, Thing sensor) {
         String message = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
                 " and the location: " + sensor.getLocation() + " has malfunctioned and is currently not collecting data.";
 
@@ -36,7 +36,7 @@ public class MailBuilder {
      * @param sensor the sensor the report is about.
      * @return The finished report e-mail for the subscriber with the given e-mail address about the given sensor.
      */
-    public Report buildReport(String mailAddress, Sensor sensor) {
+    public Report buildReport(String mailAddress, Thing sensor) {
         String subject = "Report for Sensorthings sensor: " + sensor.getId();
         String message = "The following is the regular report for the the Sensorthings sensor: " + sensor.getId()
                 + "you are subscribed to.";

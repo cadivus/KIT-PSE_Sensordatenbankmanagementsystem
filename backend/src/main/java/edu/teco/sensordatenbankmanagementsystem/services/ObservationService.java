@@ -45,7 +45,7 @@ public interface ObservationService {
      * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(Requests)} but with
      * live data opposed to using already existing data
      *
-     * @param information This should contain the Sensor Information for the replay
+     * @param information This should contain the Thing Information for the replay
      * @return The UUID under which the Replay is to be reached
      */
     UUID createReplay(Requests information);

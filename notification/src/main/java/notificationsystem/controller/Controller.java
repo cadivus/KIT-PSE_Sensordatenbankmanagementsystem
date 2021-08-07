@@ -124,7 +124,7 @@ public class Controller {
      * @param sensorID ID of the sensor malfunctioning.
      */
     public void sendAlert(UUID sensorID) {
-        Sensor sensor = sensorDAO.get(sensorID);
+        Thing sensor = sensorDAO.get(sensorID);
         List<String> subscribers = subscriptionDAO.getAllSubscribers(sensorID);
         for (String subscriber : subscribers) {
             Alert alert = mailBuilder.buildAlert(subscriber, sensor);
@@ -148,7 +148,7 @@ public class Controller {
      * @param sensorID ID of the sensor the report is about.
      */
     public void sendReport(String mailAddress, UUID sensorID) {
-        Sensor sensor = sensorDAO.get(sensorID);
+        Thing sensor = sensorDAO.get(sensorID);
         Report report = mailBuilder.buildReport(mailAddress, sensor);
         try {
             mailSender.send(report);

@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 /**
- *  Displays the search of the sensors.
+ *  Displays the search of the things.
  *  This class implements a React component.
  */
 const Search = () => {

@@ -124,7 +124,7 @@ public class ObservationController {
     /**
      * This is the entry point for Csv exports
      *
-     * @param id       This is the Sensor ID for which the observations should be exported
+     * @param id       This is the Thing ID for which the observations should be exported
      * @param start    The (Optional) start date
      * @param end      The (Optional) End date
      * @param response The HttpServlet in which the result should be written

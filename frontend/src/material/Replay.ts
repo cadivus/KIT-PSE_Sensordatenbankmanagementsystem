@@ -1,13 +1,13 @@
-import Sensor from './Sensor'
+import Thing from './Thing'
 
 /**
 * This class represents a replay.
 */
 class Replay {
   /**
-  * This list contains all sensors being part of the replay.
+  * This list contains all things being part of the replay.
   */
-  sensors: Array<Sensor> = []
+  things: Array<Thing> = []
 
   /**
   * Speed multiplier
@@ -43,21 +43,21 @@ class Replay {
   }
 
   /**
-  * Adds a sensor to the replay.
+  * Adds a thing to the replay.
   *
-  * @param sensor Sensor to add
+  * @param thing Thing to add
   */
-  addSensor = (sensor: Sensor): void => {
+  addThing = (thing: Thing): void => {
 
   }
 
   /**
-  * Removes a sensor from the replay.
+  * Removes a thing from the replay.
   *
-  * @param sensor Sensor to remove
+  * @param thing Thing to remove
   * @return True on success, false on failure.
   */
-  removeSensor = (sensor: Sensor): boolean => {
+  removeThing = (thing: Thing): boolean => {
     return false
   }
 }

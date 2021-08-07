@@ -2,7 +2,7 @@ import React, {FC, useState} from 'react'
 import {Container, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import DatastreamList from './DatastreamList'
-import Sensor from '../../material/Sensor'
+import Thing from '../../material/Thing'
 
 const useStyles = makeStyles({
   container: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 const DatastreamView: FC = () => {
   const classes = useStyles()
 
-  const [selectedSensors] = useState(new Set<Sensor>())
+  const [selectedThings] = useState(new Set<Thing>())
 
   return (
     <div>
@@ -27,7 +27,7 @@ const DatastreamView: FC = () => {
         <Typography variant="h3" align="center" gutterBottom>
           Datastreams zum Thing: Thingname
         </Typography>
-        <DatastreamList selectedSensors={selectedSensors} />
+        <DatastreamList selectedThings={selectedThings} />
       </Container>
     </div>
   )

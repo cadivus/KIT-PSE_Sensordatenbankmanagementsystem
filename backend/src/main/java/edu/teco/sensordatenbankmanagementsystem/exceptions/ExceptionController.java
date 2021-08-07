@@ -28,7 +28,7 @@ public class ExceptionController {
 
     /**
      * This is an exception handler for an Object not found exception. Might divide further into
-     * Observation and Sensor
+     * Observation and Thing
      *
      * @param exception the thrown exception to handle
      * @param request   is the webrequest that resulted in this exception

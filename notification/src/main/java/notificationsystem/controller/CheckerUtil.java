@@ -1,7 +1,7 @@
 package notificationsystem.controller;
 
 import lombok.extern.apachecommons.CommonsLog;
-import notificationsystem.model.Sensor;
+import notificationsystem.model.Thing;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
 import org.springframework.beans.factory.annotation.Autowired;

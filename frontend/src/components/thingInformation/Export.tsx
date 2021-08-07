@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 /**
- *  Displays the export options for sensor data.
+ *  Displays the export options for thing data.
  *  This class implements a React component.
  */
 const Export = () => {

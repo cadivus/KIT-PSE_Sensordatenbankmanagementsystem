@@ -6,7 +6,7 @@ import edu.teco.sensordatenbankmanagementsystem.repository.SensorRepository;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 
-import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
+import edu.teco.sensordatenbankmanagementsystem.models.Thing;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 
 import java.awt.*;
@@ -71,7 +71,7 @@ public class SensorServiceImp implements SensorService {
   /**
    * {@inheritDoc}
    */
-  public Sensor getSensor(String id) {
+  public Thing getSensor(String id) {
     return repository.getById(id);
   }
 
@@ -98,7 +98,7 @@ public class SensorServiceImp implements SensorService {
   /**
    * {@inheritDoc}
    */
-  public Sensor getSensorMetaData(String id) {
+  public Thing getSensorMetaData(String id) {
     return repository.getById(id);
   }
 
@@ -108,7 +108,7 @@ public class SensorServiceImp implements SensorService {
     return null;
   }
 
-  public List<Sensor> getAllSensors() {
+  public List<Thing> getAllSensors() {
     return repository.findAll();
   }
 

@@ -48,7 +48,7 @@ interface notificationsystem.model.DAO {
 }
 
 
-class notificationsystem.model.Sensor {
+class notificationsystem.model.Thing {
 	{field} +categories : java.util.List
 	{field} +data : String
 	{field} +failureRate : String
@@ -65,8 +65,8 @@ class notificationsystem.model.SensorDAO {
 	{field} -getSensorApi : String
 	{field} {static} ~restTemplate : org.springframework.web.client.RestTemplate
 	{method} +get ( paramObject1 : Object ) : java.util.Optional
-	{method} +get ( paramUUID1 : java.util.UUID ) : notificationsystem.model.Sensor
-	{method} +get ( paramSensor1 : notificationsystem.model.Sensor ) : java.util.Optional
+	{method} +get ( paramUUID1 : java.util.UUID ) : notificationsystem.model.Thing
+	{method} +get ( paramSensor1 : notificationsystem.model.Thing ) : java.util.Optional
 	{method} +getAll () : java.util.List
 }
 
@@ -139,9 +139,9 @@ class notificationsystem.view.MailBuilder {
 	{field} {static} -MAIL_SIGNING : String
 	{field} {static} -SUBJECT_ALERT : String
 	{field} {static} -SUBJECT_CONFIRM : String
-	{method} +buildAlert ( paramString1 : String , paramSensor2 : notificationsystem.model.Sensor ) : notificationsystem.view.Alert
+	{method} +buildAlert ( paramString1 : String , paramSensor2 : notificationsystem.model.Thing ) : notificationsystem.view.Alert
 	{method} +buildConfirmationMail ( paramString1 : String ) : notificationsystem.view.ConfirmationMail
-	{method} +buildReport ( paramString1 : String , paramSensor2 : notificationsystem.model.Sensor ) : notificationsystem.view.Report
+	{method} +buildReport ( paramString1 : String , paramSensor2 : notificationsystem.model.Thing ) : notificationsystem.view.Report
 }
 
 

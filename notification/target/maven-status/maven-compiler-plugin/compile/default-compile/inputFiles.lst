@@ -12,7 +12,7 @@
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/main/java/notificationsystem/model/SystemLogin.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/main/java/notificationsystem/view/ConfirmationMail.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/main/java/notificationsystem/view/Report.java
-/home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/main/java/notificationsystem/model/Sensor.java
+/home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/main/java/notificationsystem/model/Thing.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/main/java/notificationsystem/view/MailBuilder.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/main/java/notificationsystem/model/SystemLoginDAO.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/main/java/notificationsystem/model/SensorDAO.java

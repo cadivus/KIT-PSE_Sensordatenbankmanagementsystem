@@ -10,7 +10,7 @@ import java.util.*;
  * provides get, save, delete and getAll methods designed to hide the actual database queries, offering a single
  * access point to all sensor related data and information.
  */
-public class SensorDAO implements DAO<Sensor> {
+public class SensorDAO implements DAO<Thing> {
     private final String backendUrl;
     private final String getSensorApi;
     private final String getAllSensorsApi;
@@ -25,9 +25,9 @@ public class SensorDAO implements DAO<Sensor> {
     }
 
     @Override
-    public Optional<Sensor> get(Sensor sensor) {
-        Sensor fetchedSensor = restTemplate.getForObject(getSensorApi, Sensor.class, sensor);
-        Optional<Sensor> result = Optional.of(fetchedSensor);
+    public Optional<Thing> get(Thing sensor) {
+        Thing fetchedSensor = restTemplate.getForObject(getSensorApi, Thing.class, sensor);
+        Optional<Thing> result = Optional.of(fetchedSensor);
         return result;
     }
 
@@ -36,15 +36,15 @@ public class SensorDAO implements DAO<Sensor> {
      * @param sensorID ID of the sensor to be fetched.
      * @return The sensor with the given ID.
      */
-    public Sensor get(UUID sensorID) {
+    public Thing get(UUID sensorID) {
         Map<String, UUID> param = new HashMap<>();
         param.put("id", sensorID);
 
-        return restTemplate.getForObject(getSensorApi, Sensor.class, param);
+        return restTemplate.getForObject(getSensorApi, Thing.class, param);
     }
 
     @Override
-    public List<Sensor> getAll() {
+    public List<Thing> getAll() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
