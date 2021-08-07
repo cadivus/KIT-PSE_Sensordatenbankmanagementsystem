@@ -21,8 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.inMemoryAuthentication()
                 .withUser("frontend")
-                .password("frontend")
-                .roles("USER");
+                .password("{noop}frontend")
+                .roles("ADMIN");
 
     }
 
