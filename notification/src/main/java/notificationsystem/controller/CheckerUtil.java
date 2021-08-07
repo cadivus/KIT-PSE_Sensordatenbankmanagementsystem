@@ -36,7 +36,7 @@ public class CheckerUtil {
         this.subscriptionDAO = subscriptionDAO;
         this.sensorDAO = sensorDAO;
         this.restTemplate = restTemplate;
-        this.sensorActiveDict = new HashMap<String, Integer>();
+        this.sensorActiveDict = new HashMap<>();
     }
 
     /**
@@ -59,7 +59,7 @@ public class CheckerUtil {
         //TODO: Richtige URL
         Integer[] response = restTemplate.getForObject("/active", Integer[].class, sensorIds, INACTIVE_DAYS_THRESHOLD);
         List<Integer> sensorStatus = Arrays.asList(response);
-        Map<String, Integer> sensorCurrentlyActiveDict = new HashMap<String, Integer>();
+        Map<String, Integer> sensorCurrentlyActiveDict = new HashMap<>();
 
         if(sensorActiveDict.isEmpty()) {
         for(int i = 0; i < sensorIds.size(); i++) {
@@ -89,7 +89,7 @@ public class CheckerUtil {
     @Scheduled(fixedRate = 500000)
     public void checkForReports() {
         log.info("Starting update process");
-        LinkedList<Subscription> subs = new LinkedList<Subscription>(subscriptionDAO.getAll());
+        LinkedList<Subscription> subs = new LinkedList<>(subscriptionDAO.getAll());
 
         //Check if a report has to be sent
         for (Subscription subscription : subs) {

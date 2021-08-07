@@ -2,8 +2,6 @@ package notificationsystem.view;
 
 import org.json.JSONArray;
 
-import java.util.List;
-
 /**
  * Report e-mails are sent to subscribers of a sensor at regular intervals dependant on the time of subscription and
  * user adjustments. The reports contain the data collected by the sensor over the last time period as well as

@@ -2,8 +2,6 @@ package notificationsystem.view;
 
 import org.json.JSONArray;
 
-import java.util.List;
-
 /**
  * Alert e-mails are used to notify subscribers of sensors of a malfunction of that sensor.
  * The Alert class contains the e-mail addresses of the sender and the receiver, as well as a subject and a message.

@@ -9,9 +9,9 @@ import notificationsystem.model.Sensor;
  */
 public class MailBuilder {
 
-    private static String SUBJECT_ALERT = "Alert for sensor malfunction";
-    private static String SUBJECT_CONFIRM = "Log-in attempt";
-    private static String MAIL_SIGNING = "This E-Mail was sent automatically by the E-Mail Notification System" +
+    private final static String SUBJECT_ALERT = "Alert for sensor malfunction";
+    private final static String SUBJECT_CONFIRM = "Log-in attempt";
+    private final static String MAIL_SIGNING = "This E-Mail was sent automatically by the E-Mail Notification System" +
             " of the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' Project.";
 
     /**

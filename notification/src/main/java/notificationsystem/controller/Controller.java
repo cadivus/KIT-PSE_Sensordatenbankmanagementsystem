@@ -142,11 +142,21 @@ public class Controller {
      * @param sensorID ID of the sensor the report is about.
      */
     public void sendReport(String mailAddress, String sensorID) {
+
         Sensor sensor = sensorDAO.get(sensorID);
         Subscription subscription = subscriptionDAO.get(mailAddress, sensorID);
+
+        //Get active rate
         long reportInterval = subscription.getReportInterval();
         LocalDate timeframeStart = LocalDate.now().minusDays(reportInterval);
         double activeRate = sensorDAO.getActiveRate(sensorID, timeframeStart);
+
+        //Get and organize metadata
+
+
+        //Get and organize collected data
+
+        //Build and send mail
         Report report = mailBuilder.buildReport(mailAddress, sensor, activeRate);
         try {
             mailSender.send(report);

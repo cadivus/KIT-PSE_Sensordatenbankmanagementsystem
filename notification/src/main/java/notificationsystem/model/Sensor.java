@@ -1,9 +1,5 @@
 package notificationsystem.model;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
-
 /**
  * The Sensor class represents the air-quality sensors stationed in Augsburg. Each sensor collects data, has a
  * failure rate, a location, and is part of one, none or multiple categories. The Sensor class also provides access to

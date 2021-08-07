@@ -2,9 +2,6 @@ package notificationsystem.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.UUID;
 
 /**
  * The Subscription class stores data about a subscription of a single user to a single sensor. To allow for regular
