@@ -23,7 +23,7 @@ import {FormattedMessage} from 'react-intl'
 import SubscriptionSettings from './SubscriptionSettings'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 import Id from '../../material/Id'
-import Sensor from '../../material/Sensor'
+import Thing from '../../material/Thing'
 import NotificationLevel from '../../material/NotificationLevel'
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -56,7 +56,7 @@ const useStyles = makeStyles({
   },
 })
 
-const SensorsList = ({sensors}: {sensors: Array<Sensor>}) => {
+const ThingsList = ({things}: {things: Array<Thing>}) => {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -65,16 +65,16 @@ const SensorsList = ({sensors}: {sensors: Array<Sensor>}) => {
             <StyledTableCell>
               <Typography variant="h5">
                 <ArrowDropDownIcon />
-                <FormattedMessage id="subscriptionpage.sensor" />
+                <FormattedMessage id="subscriptionpage.thing" />
               </Typography>
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sensors.map(sensor => (
-            <StyledTableRow hover key={sensor.name.name}>
+          {things.map(thing => (
+            <StyledTableRow hover key={thing.name.name}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="h5">{sensor.name.name}</Typography>
+                <Typography variant="h5">{thing.name.name}</Typography>
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -93,8 +93,8 @@ const checkProps = (props: any) => {
   if (!props) return false
   if (!props.location) return false
   if (!props.location.state) return false
-  if (!props.location.state.selectedSensors) return false
-  if (props.location.state.selectedSensors.size === 0) return false
+  if (!props.location.state.selectedThings) return false
+  if (props.location.state.selectedThings.size === 0) return false
 
   return true
 }
@@ -123,19 +123,19 @@ const SubscriptionEditorView = (props: any) => {
     ? useState(new NotificationLevel(5, true))
     : useState(subscription?.notificationLevel)
 
-  const sensors = subscription ? subscription.sensors : new Array<Sensor>()
+  const things = subscription ? subscription.things : new Array<Thing>()
   if (createMode) {
-    props.location.state.selectedSensors.forEach((e: Sensor) => {
-      sensors.push(e)
+    props.location.state.selectedThings.forEach((e: Thing) => {
+      things.push(e)
     })
   }
 
-  const multipleSensors = sensors && sensors.length > 1
+  const multipleThings = things && things.length > 1
 
   const updateSubscription = createMode
     ? () => {
         if (!subscriptionStore || !notificationLevel || !(typeof directNotification === 'boolean')) return
-        subscriptionStore.createSubscription(sensors, directNotification, notificationLevel)
+        subscriptionStore.createSubscription(things, directNotification, notificationLevel)
         history.push('/subscriptions')
       }
     : () => {
@@ -147,14 +147,14 @@ const SubscriptionEditorView = (props: any) => {
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Grid container spacing={3}>
-        {multipleSensors && sensors ? (
+        {multipleThings && things ? (
           <Grid item xs={5}>
-            <SensorsList sensors={sensors} />
+            <ThingsList things={things} />
           </Grid>
         ) : (
           <></>
         )}
-        <Grid item xs={multipleSensors ? 7 : 12}>
+        <Grid item xs={multipleThings ? 7 : 12}>
           <SubscriptionSettings
             directNotification={directNotification}
             setDirectNotification={setDirectNotification}

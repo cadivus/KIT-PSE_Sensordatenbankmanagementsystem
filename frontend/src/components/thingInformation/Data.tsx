@@ -14,7 +14,7 @@ import {
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {FormattedMessage} from 'react-intl'
-import useSensorStore from '../../hooks/UseSensorStore'
+import useThingStore from '../../hooks/UseThingStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -41,25 +41,25 @@ const useStyles = makeStyles({
   table: {
     minWidth: 800,
   },
-  sensorCell: {
+  thingCell: {
     width: '70%',
   },
 })
 
 /**
- *  Displays the data of a selected sensor.
+ *  Displays the data of a selected thing.
  *  This class implements a React component.
  */
 const Data = () => {
   const classes = useStyles()
-  const sensorStore = useSensorStore()
+  const thingStore = useThingStore()
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell className={classes.sensorCell}>
+            <StyledTableCell className={classes.thingCell}>
               <Typography variant="h5">
                 <ArrowDropDownIcon />
                 <FormattedMessage id="infopage.time" />
@@ -74,8 +74,8 @@ const Data = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sensorStore?.sensors.map(sensor => (
-            <StyledTableRow hover key={sensor.name.name}>
+          {thingStore?.things.map(thing => (
+            <StyledTableRow hover key={thing.name.name}>
               <StyledTableCell component="th" scope="row">
                 <Typography variant="h5">YYYY-MM-TT hh:mm:ss</Typography>
               </StyledTableCell>

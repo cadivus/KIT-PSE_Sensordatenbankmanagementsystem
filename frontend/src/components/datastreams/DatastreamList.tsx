@@ -16,8 +16,8 @@ import {
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {useHistory} from 'react-router-dom'
-import useSensorStore from '../../hooks/UseSensorStore'
-import Sensor from '../../material/Sensor'
+import useThingStore from '../../hooks/UseThingStore'
+import Thing from '../../material/Thing'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
     table: {
       minWidth: 800,
     },
-    sensorCell: {
+    thingCell: {
       width: '83%',
     },
     container: {
@@ -62,30 +62,30 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 /**
- *  Displays a list of sensors.
+ *  Displays a list of things.
  *  This class implements a React component.
  */
-const DatastreamList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
+const DatastreamList = ({selectedThings}: {selectedThings: Set<Thing>}) => {
   const history = useHistory()
   const classes = useStyles()
-  const sensorStore = useSensorStore()
+  const thingStore = useThingStore()
 
-  const [sensorList, setSensorList] = useState(new Array<Sensor>())
+  const [thingList, setThingList] = useState(new Array<Thing>())
   const [lastUpdate, setLastUpdate] = useState(0)
 
   useEffect(() => {
-    if (sensorStore) {
-      const newList = JSON.stringify(sensorList) !== JSON.stringify(sensorStore.sensors)
+    if (thingStore) {
+      const newList = JSON.stringify(thingList) !== JSON.stringify(thingStore.things)
 
-      if (newList) setSensorList(sensorStore.sensors)
-      if (lastUpdate !== sensorStore.lastUpdate) setLastUpdate(sensorStore.lastUpdate)
+      if (newList) setThingList(thingStore.things)
+      if (lastUpdate !== thingStore.lastUpdate) setLastUpdate(thingStore.lastUpdate)
     }
-  }, [sensorStore, lastUpdate, sensorList])
+  }, [thingStore, lastUpdate, thingList])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (sensorStore) {
-        if (lastUpdate !== sensorStore.lastUpdate) setLastUpdate(sensorStore.lastUpdate)
+      if (thingStore) {
+        if (lastUpdate !== thingStore.lastUpdate) setLastUpdate(thingStore.lastUpdate)
       }
     }, 1000)
 
@@ -99,7 +99,7 @@ const DatastreamList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell className={classes.sensorCell}>
+            <StyledTableCell className={classes.thingCell}>
               <Typography variant="h5">
                 <ArrowDropDownIcon /> Datastreams
               </Typography>
@@ -109,7 +109,7 @@ const DatastreamList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sensorList.length < 1 && (
+          {thingList.length < 1 && (
             <TableRow>
               <TableCell align="center">
                 <CircularProgress className={classes.root} />
@@ -118,17 +118,17 @@ const DatastreamList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
               <TableCell />
             </TableRow>
           )}
-          {sensorStore?.sensors.map(sensor => {
+          {thingStore?.things.map(thing => {
             return (
-              <StyledTableRow hover key={sensor.name.name}>
+              <StyledTableRow hover key={thing.name.name}>
                 <StyledTableCell component="th" scope="row">
-                  <Typography variant="h5">{sensor.name.name}</Typography>
+                  <Typography variant="h5">{thing.name.name}</Typography>
                 </StyledTableCell>
                 <StyledTableCell>
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={() => history.push(`/sensorInformation/${sensor.id.toString()}`)}
+                    onClick={() => history.push(`/thingInformation/${thing.id.toString()}`)}
                   >
                     Info
                   </Button>

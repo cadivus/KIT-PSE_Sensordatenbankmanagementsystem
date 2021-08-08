@@ -1,9 +1,9 @@
 /**
- * This is a representation for sensor values.
+ * This is a representation for thing values.
  */
-class SensorValue {
+class ThingValue {
   /**
-   * Sensor values stored as an Integer.
+   * Thing values stored as an Integer.
    */
   readonly value: number
 
@@ -17,4 +17,4 @@ class SensorValue {
   }
 }
 
-export default SensorValue
+export default ThingValue

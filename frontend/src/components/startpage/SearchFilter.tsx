@@ -1,7 +1,7 @@
 import React from 'react'
 
 /**
- *  Represents and implements a filter for sensor lists.
+ *  Represents and implements a filter for thing lists.
  *  This class implements a React component.
  */
 const SearchFilter = () => {

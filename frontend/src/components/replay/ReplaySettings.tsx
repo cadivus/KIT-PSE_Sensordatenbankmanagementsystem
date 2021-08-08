@@ -37,7 +37,7 @@ const StyledTableRow = withStyles((theme: Theme) =>
 )(TableRow)
 
 const useStyles = makeStyles({
-  sensorCell: {
+  thingCell: {
     width: '83%',
   },
   textField: {

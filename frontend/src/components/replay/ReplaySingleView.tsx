@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 })
 
 /**
- *  Displays the webpage for a replay with a single sensor.
+ *  Displays the webpage for a replay with a single thing.
  *  This class implements a React component.
  */
 const ReplaySingleView = () => {
@@ -29,7 +29,7 @@ const ReplaySingleView = () => {
         <Grid container spacing={3}>
           <Grid item xs={6}>
             <Typography variant="h3" gutterBottom>
-              Sensorname
+              Thingname
             </Typography>
           </Grid>
           <Grid item xs={6}>

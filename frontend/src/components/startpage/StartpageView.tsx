@@ -3,9 +3,9 @@ import {Button, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import {useHistory} from 'react-router-dom'
 import {FormattedMessage} from 'react-intl'
-import SensorList from './SensorList'
+import ThingList from './ThingList'
 import Search from './Search'
-import Sensor from '../../material/Sensor'
+import Thing from '../../material/Thing'
 
 const useStyles = makeStyles({
   container: {
@@ -24,13 +24,13 @@ const StartpageView: FC = () => {
   const history = useHistory()
   const classes = useStyles()
 
-  const [selectedSensors] = useState(new Set<Sensor>())
+  const [selectedThings] = useState(new Set<Thing>())
 
   const subscribeClicked = () => {
     history.push({
       pathname: '/subscriptions/subscriptionCreate',
       // eslint-disable-next-line object-shorthand
-      state: {selectedSensors: selectedSensors},
+      state: {selectedThings: selectedThings},
     })
   }
 
@@ -59,7 +59,7 @@ const StartpageView: FC = () => {
             </Container>
           </Grid>
         </Grid>
-        <SensorList selectedSensors={selectedSensors} />
+        <ThingList selectedThings={selectedThings} />
       </Container>
     </div>
   )
