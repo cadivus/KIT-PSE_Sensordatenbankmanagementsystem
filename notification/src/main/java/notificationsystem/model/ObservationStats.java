@@ -37,4 +37,8 @@ public class ObservationStats {
     public double getMin() {
         return min;
     }
+
+    public String getObsName() {
+        return obsName;
+    }
 }
