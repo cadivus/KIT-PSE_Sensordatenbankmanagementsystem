@@ -5,6 +5,7 @@ import notificationsystem.model.Sensor;
 import notificationsystem.model.SensorDAO;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -87,7 +88,7 @@ public class CheckerUtil {
      * Calls the controller to send such a report to a subscriber if necessary.
      */
     @Scheduled(fixedRate = 500000)
-    public void checkForReports() {
+    public void checkForReports() throws JSONException {
         log.info("Starting update process");
         LinkedList<Subscription> subs = new LinkedList<>(subscriptionDAO.getAll());
 

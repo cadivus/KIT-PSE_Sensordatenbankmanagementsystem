@@ -1,5 +1,6 @@
 package notificationsystem.view;
 
+import notificationsystem.model.ObservationStats;
 import notificationsystem.model.Sensor;
 
 /**
@@ -39,11 +40,23 @@ public class MailBuilder {
      * @return The finished report e-mail for the subscriber with the given e-mail address about the given sensor.
      */
     public Report buildReport(String mailAddress, Sensor sensor) {
-        String subject = "Report for Sensorthings sensor: " + sensor.getName() + "/n";
+        String subject = "Report for Sensorthings sensor: " + sensor.getName() + ". /n";
         String opener = "The following is the regular report for the the Sensorthings sensor: " + sensor.getId()
                 + "you are subscribed to. /n";
-        String body = "Since the last Report, the sensor was active "+ sensor.getActiveRate() + " times a day on average. /n";
-        String message = opener + "/n" + body + "/n" + MAIL_SIGNING;
+        String active = "Since the last Report, the sensor was active "+ sensor.getActiveRate() + " times a day on average. /n";
+
+        StringBuilder allStatsText = new StringBuilder();
+        for (int i = 0; i < sensor.getStats().size(); i++) {
+            ObservationStats stat = sensor.getStats().get(i);
+            String statText = "/n The sensor collected data about " + stat.getObsName() + ": /n" +
+                    "The average value of the collected data was " + stat.getAvg() + ". /n" +
+                    "The median of the collected data was " + stat.getMed() +
+                    "and the data has a standard deviation of " + stat.getStdv() + ". /n" +
+                    "The minimum recorded data point was " + stat.getMin() + ". /n";
+            allStatsText.append(statText);
+        }
+
+        String message = opener + "/n" + active + "/n" + allStatsText + "/n" + MAIL_SIGNING;
         return new Report(mailAddress, subject, message, null);
     }
 
@@ -57,8 +70,9 @@ public class MailBuilder {
      */
     public ConfirmationMail buildConfirmationMail(String mailAddress) {
         ConfirmationMail confirmationMail = new ConfirmationMail(mailAddress, SUBJECT_CONFIRM, null, null);
-        String message = "A log-in to ... was attempted with this E-Mail. Please enter the code:" + confirmationMail.getConfirmCode()
+        String body = "A log-in to ... was attempted with this E-Mail. Please enter the code:" + confirmationMail.getConfirmCode()
                 + " to confirm that this is your E-Mail address and complete the log-in.";
+        String message = body + "/n" + MAIL_SIGNING;
         confirmationMail.setMessage(message);
         return confirmationMail;
     }
