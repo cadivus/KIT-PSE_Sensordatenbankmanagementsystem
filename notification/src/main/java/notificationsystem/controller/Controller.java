@@ -8,6 +8,7 @@ import notificationsystem.view.Alert;
 import notificationsystem.view.ConfirmationMail;
 import notificationsystem.view.MailBuilder;
 import notificationsystem.view.Report;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -141,23 +142,18 @@ public class Controller {
      * @param mailAddress e-mail address of the subscriber the report is sent to.
      * @param sensorID ID of the sensor the report is about.
      */
-    public void sendReport(String mailAddress, String sensorID) {
+    public void sendReport(String mailAddress, String sensorID) throws JSONException {
 
         Sensor sensor = sensorDAO.get(sensorID);
         Subscription subscription = subscriptionDAO.get(mailAddress, sensorID);
 
-        //Get active rate
         long reportInterval = subscription.getReportInterval();
         LocalDate timeframeStart = LocalDate.now().minusDays(reportInterval);
-        double activeRate = sensorDAO.getActiveRate(sensorID, timeframeStart);
+        sensorDAO.setStats(sensor, timeframeStart);
 
-        //Get and organize metadata
-
-
-        //Get and organize collected data
 
         //Build and send mail
-        Report report = mailBuilder.buildReport(mailAddress, sensor, activeRate);
+        Report report = mailBuilder.buildReport(mailAddress, sensor);
         try {
             mailSender.send(report);
         } catch (MessagingException | UnsupportedEncodingException e) {

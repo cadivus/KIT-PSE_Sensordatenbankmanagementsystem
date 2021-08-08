@@ -38,11 +38,11 @@ public class MailBuilder {
      * @param sensor the sensor the report is about.
      * @return The finished report e-mail for the subscriber with the given e-mail address about the given sensor.
      */
-    public Report buildReport(String mailAddress, Sensor sensor, double activeRate) {
-        String subject = "Report for Sensorthings sensor: " + sensor.getName();
+    public Report buildReport(String mailAddress, Sensor sensor) {
+        String subject = "Report for Sensorthings sensor: " + sensor.getName() + "/n";
         String opener = "The following is the regular report for the the Sensorthings sensor: " + sensor.getId()
-                + "you are subscribed to.";
-        String body = " The sensor was active "+ activeRate * 100 + " percent of the time since the last report.";
+                + "you are subscribed to. /n";
+        String body = "Since the last Report, the sensor was active "+ sensor.getActiveRate() + " times a day on average. /n";
         String message = opener + "/n" + body + "/n" + MAIL_SIGNING;
         return new Report(mailAddress, subject, message, null);
     }

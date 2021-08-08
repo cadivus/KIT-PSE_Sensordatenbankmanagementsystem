@@ -1,5 +1,10 @@
 package notificationsystem.model;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.LinkedList;
+
 /**
  * The Sensor class represents the air-quality sensors stationed in Augsburg. Each sensor collects data, has a
  * failure rate, a location, and is part of one, none or multiple categories. The Sensor class also provides access to
@@ -12,30 +17,20 @@ package notificationsystem.model;
 public class Sensor {
 
     String id;
-
     String name;
-
     String description;
-
-    String encoding_type;
-
-    String metadata;
-
     String properties;
+    String location;
+    double activeRate;
+    LinkedList<ObservationStats> stats;
 
-   /* @Transient
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Observation> observations;
-
-    public List<Observation> getObservations() {
-        return observations;
-    }*/
-
-
-    /*@Override
-    public String toString() {
-        return id;
-    }*/
+    public Sensor(String id, String name, String description, String properties, JSONArray location) throws JSONException {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.properties = properties;
+        this.location = location.getJSONObject(0).getString("id");
+    }
 
     public String getId() {
         return id;
@@ -49,15 +44,47 @@ public class Sensor {
         return description;
     }
 
-    public String getEncoding_type() {
-        return encoding_type;
-    }
-
-    public String getMetadata() {
-        return metadata;
-    }
-
     public String getProperties() {
         return properties;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public double getActiveRate() {
+        return activeRate;
+    }
+
+    public LinkedList<ObservationStats> getStats() {
+        return stats;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setProperties(String properties) {
+        this.properties = properties;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setActiveRate(double activeRate) {
+        this.activeRate = activeRate;
+    }
+
+    public void setStats(LinkedList<ObservationStats> stats) {
+        this.stats = stats;
     }
 }
