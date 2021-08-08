@@ -6,7 +6,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import ReplaySettings from './ReplaySettings'
 import ReplayRequest from './ReplayRequest'
 import ReplayHelp from './ReplayHelp'
-import ReplaySensorList from './ReplaySensorList'
+import ReplayThingList from './ReplayThingList'
 
 const useStyles = makeStyles({
   container: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   },
 })
 /**
- *  Displays the webpage of the replay with multiple sensors.
+ *  Displays the webpage of the replay with multiple things.
  *  This class implements a React component.
  */
 const ReplayMultipleView = () => {
@@ -31,7 +31,7 @@ const ReplayMultipleView = () => {
             <Typography variant="h3" gutterBottom>
               2020-12-12 10:10:10
             </Typography>
-            <ReplaySensorList />
+            <ReplayThingList />
           </Grid>
           <Grid item xs={6}>
             <ReplaySettings />

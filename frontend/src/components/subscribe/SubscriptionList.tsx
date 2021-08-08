@@ -98,7 +98,7 @@ const SubscriptionList: FC = () => {
               <StyledTableCell>
                 <Typography variant="h5">
                   <ArrowDropDownIcon />
-                  <FormattedMessage id="subscriptionpage.sensor" />
+                  <FormattedMessage id="subscriptionpage.thing" />
                 </Typography>
               </StyledTableCell>
               <StyledTableCell>
@@ -124,9 +124,9 @@ const SubscriptionList: FC = () => {
           </TableHead>
           <TableBody>
             {subscriptionStore?.getSubscriptions().map(subscription => (
-              <StyledTableRow hover key={subscription.sensors[0].name.name}>
+              <StyledTableRow hover key={subscription.things[0].name.name}>
                 <StyledTableCell component="th" scope="row">
-                  <Typography variant="h5">{subscription.sensors[0].name.name}</Typography>
+                  <Typography variant="h5">{subscription.things[0].name.name}</Typography>
                 </StyledTableCell>
                 <StyledTableCell>
                   <Typography variant="body1">

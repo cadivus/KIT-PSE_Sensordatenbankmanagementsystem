@@ -1,7 +1,7 @@
 import {FC} from 'react'
 import {Route, Switch, BrowserRouter} from 'react-router-dom'
 import StartpageView from '../components/startpage/StartpageView'
-import SensorInformationView from '../components/sensorInformation/SensorInformationView'
+import ThingInformationView from '../components/thingInformation/ThingInformationView'
 import LoginView from '../components/login/LoginView'
 import ReplayRouter from './ReplayRouter'
 import SubscribeRouter from './SubscribeRouter'
@@ -29,8 +29,8 @@ const Router = () => (
         <Route path="/" exact>
           <StartpageView />
         </Route>
-        <Route path="/sensorInformation/:sensorId" exact>
-          <SensorInformationView />
+        <Route path="/thingInformation/:thingId" exact>
+          <ThingInformationView />
         </Route>
         <Route path="/replay">
           <ReplayRouter />
