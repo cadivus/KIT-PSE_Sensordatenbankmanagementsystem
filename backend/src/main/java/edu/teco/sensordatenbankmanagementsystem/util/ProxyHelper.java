@@ -56,7 +56,7 @@ public class ProxyHelper {
   public void sseHelper(List<Datastream> datastreams, Requests information,
       SseEmitter emitter) {
     try {
-      while (LocalDateTime.now().isBefore(information.getEnd())) {
+      while (information.getStart().isBefore(information.getEnd())) {
         for (Datastream d : datastreams) {
           /*
           if (d.getPhenomenonEnd().isBefore(information.getStart()) && d.getPhenomenonStart().isBefore(information.getStart())){
