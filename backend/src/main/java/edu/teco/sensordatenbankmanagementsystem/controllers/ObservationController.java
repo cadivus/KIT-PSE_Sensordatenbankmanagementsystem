@@ -8,7 +8,6 @@ import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,8 +15,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,11 +70,15 @@ public class ObservationController {
      *
      * @return UUID of the created SSE stream
      */
-    @PostMapping("/newSSE")
-    public UUID createNewSse(@RequestBody Requests data) {
-        log.info("received Datastream request");
-        return observationService.createNewDataStream(data);
+  @ResponseBody
+  @PostMapping(value = "/newSSE", consumes = "application/json", produces = "text/plain")
+  public String createNewSse(@RequestBody Requests data) {
+    if (data.getSpeed() == 0) {
+      data.setSpeed(1);
     }
+    log.info("received Datastream request");
+    return observationService.createNewDataStream(data).toString();
+  }
 
     /**
      * Maps a get request that gets the SSE stream with the given UUID
@@ -78,11 +86,13 @@ public class ObservationController {
      * @param id UUID of SSE stream to get
      * @return SSE stream for the given UUID
      */
-    @GetMapping("/stream/{id}")
-    public SseEmitter streamSseMvc(@PathVariable UUID id) {
-        log.info("request for outgoing stream for id: " + id);
-        return observationService.getDataStream(id);
-    }
+  @Produces(MediaType.SERVER_SENT_EVENTS)
+  @GetMapping("/stream/{id}")
+  public SseEmitter streamSseMvc(@PathVariable String id) {
+    log.info("request for outgoing stream for id: " + id);
+    UUID uuid = UUID.fromString(id);
+    return observationService.getDataStream(uuid);
+  }
 
     @GetMapping("/getAllObs")
     public List<ObservedProperty> getAllObservedProperties(){

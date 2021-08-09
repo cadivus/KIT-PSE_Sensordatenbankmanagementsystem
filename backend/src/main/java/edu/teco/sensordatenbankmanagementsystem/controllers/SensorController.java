@@ -18,6 +18,11 @@ import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInter
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.NewtonInterpolator;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -240,9 +245,9 @@ public class SensorController {
      * @param lat The latitude of a center point which should be used. It is optional.
      * @return A list of 'Things'
      */
-    @GetMapping(value = {"/allThings/{lon}/{lat}/{el}", "/allThings", "/allThings/{lon}/{lat}"})
-    public List<Thing> getThings(@PathVariable(required = false) String lon,
-        @PathVariable(required = false) String lat, @PathVariable(required = false) String el) {
+    @GetMapping(value = {"/allThings"})
+    public List<Thing> getThings(@RequestParam(value = "lon",required = false) String lon,
+        @RequestParam(value = "lat",required = false) String lat, @RequestParam(value = "el",required = false) String el) {
 
         //These are the coordinates of the city center of Augsburg, as this program focuses on Augsburg
         lon = (lon == null) ? "10.8978 " : lon;

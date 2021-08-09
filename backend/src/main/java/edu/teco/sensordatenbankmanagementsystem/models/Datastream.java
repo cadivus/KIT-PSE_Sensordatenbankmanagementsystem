@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDateTime;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.Data;
@@ -53,7 +54,7 @@ public class Datastream {
     String obsId;
 
     @JoinColumn(name = "\"THING_ID\"")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     Thing thing;
 
     @Column(name = "\"UNIT_NAME\"")
