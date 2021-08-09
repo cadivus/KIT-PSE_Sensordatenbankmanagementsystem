@@ -2,9 +2,32 @@ import EventEmitter from 'events'
 import User from '../material/User'
 import EMail from '../material/EMail'
 import LoginCode from '../material/LoginCode'
+import {getJson} from './communication/restClient'
+import {NOTIFICATION_PATH} from './communication/notificationUrlCreator'
 
 declare interface UserStore {
   on(event: 'login-change', listener: (name: string) => void): this
+}
+
+class useableUser extends User {
+  public logout(): void {
+    throw new Error('Method not implemented.')
+  }
+
+  loginCode: LoginCode | undefined
+
+  set setLoginCode(value: (loginCode: LoginCode) => void) {
+    this.setLoginCode = value
+  }
+
+  get setLoginCode(): (loginCode: LoginCode) => void {
+    return this.setLoginCode
+  }
+
+  // eslint-disable-next-line no-useless-constructor
+  constructor(email: EMail) {
+    super(email)
+  }
 }
 
 /**
@@ -25,6 +48,14 @@ class UserStore extends EventEmitter {
    * @return True on success, false otherwise
    */
   requestStep1 = (email: EMail): boolean => {
+    const path = `${NOTIFICATION_PATH}/getConfirmationCode/{${email}}`
+    getJson(path).then(loginCodeJSON => {
+      console.log(loginCodeJSON)
+      const code = loginCodeJSON
+      // eslint-disable-next-line new-cap
+      const currentUser = new useableUser(email)
+      currentUser.setLoginCode(code)
+    })
     return true
   }
 
