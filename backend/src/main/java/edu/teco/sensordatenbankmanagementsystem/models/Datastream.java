@@ -35,6 +35,7 @@ public class Datastream {
     @Column(name = "\"SENSOR_ID\"")
     String sensorId;
 
+    @JsonFormat(pattern="dd/MM/yyyy@hh:mm:ss")
     @Column(name = "\"PHENOMENON_TIME_START\"")
     LocalDateTime phenomenonStart;
 
