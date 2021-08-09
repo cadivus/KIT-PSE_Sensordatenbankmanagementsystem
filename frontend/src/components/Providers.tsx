@@ -4,6 +4,7 @@ import {ThingStoreProvider} from '../context/ThingStoreProvider'
 import {ReplayStoreProvider} from '../context/ReplayStoreProvider'
 import {SubscriptionStoreProvider} from '../context/SubscriptionStoreProvider'
 import {AppContextProvider} from '../intl/AppContextProvider'
+import {DatastreamStoreProvider} from '../context/DatastreamStoreProvider'
 import Provider from '../context/LanguageProviderWrapper'
 
 const Providers: FC = ({children}) => (
@@ -11,9 +12,11 @@ const Providers: FC = ({children}) => (
     <Provider>
       <UserStoreProvider>
         <ThingStoreProvider>
-          <ReplayStoreProvider>
-            <SubscriptionStoreProvider>{children}</SubscriptionStoreProvider>
-          </ReplayStoreProvider>
+          <DatastreamStoreProvider>
+            <ReplayStoreProvider>
+              <SubscriptionStoreProvider>{children}</SubscriptionStoreProvider>
+            </ReplayStoreProvider>
+          </DatastreamStoreProvider>
         </ThingStoreProvider>
       </UserStoreProvider>
     </Provider>
