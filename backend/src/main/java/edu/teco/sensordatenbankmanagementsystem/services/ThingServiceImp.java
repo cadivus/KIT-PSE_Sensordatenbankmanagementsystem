@@ -1,9 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
-import edu.teco.sensordatenbankmanagementsystem.models.Location;
-import edu.teco.sensordatenbankmanagementsystem.models.Observation;
-import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
-import edu.teco.sensordatenbankmanagementsystem.models.Thing;
+import edu.teco.sensordatenbankmanagementsystem.models.*;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import org.json.JSONArray;
@@ -169,5 +166,14 @@ public class ThingServiceImp implements ThingService {
    */
   public List<Thing> getAllThings() {
     return thingRepository.findAll();
+  }
+
+  @Override
+  public List<List<String>> getThingsObsIds(List<String> thingIds) {
+    return thingIds.stream()
+            .map(id->datastreamRepository.findDatastreamsByThing_Id(id).stream()
+                    .map(Datastream::getObsId).collect(Collectors.toList())
+            )
+            .collect(Collectors.toList());
   }
 }

@@ -8,6 +8,7 @@ import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,8 +47,9 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class ObservationController {
 
     private DateTimeFormatter DATE_FORMAT;
+
     @Value("${globals.date_format}")
-    private void setDATE_FORMAT(String pattern, String b){
+    private void setDATE_FORMAT(String pattern, String b) {
         DATE_FORMAT = DateTimeFormatter.ofPattern(pattern);
     }
 
@@ -73,15 +76,15 @@ public class ObservationController {
      *
      * @return UUID of the created SSE stream
      */
-  @ResponseBody
-  @PostMapping(value = "/newSSE", consumes = "application/json", produces = "text/plain")
-  public String createNewSse(@RequestBody Requests data) {
-    if (data.getSpeed() == 0) {
-      data.setSpeed(1);
+    @ResponseBody
+    @PostMapping(value = "/newSSE", consumes = "application/json", produces = "text/plain")
+    public String createNewSse(@RequestBody Requests data) {
+        if (data.getSpeed() == 0) {
+            data.setSpeed(1);
+        }
+        log.info("received Datastream request");
+        return observationService.createNewDataStream(data).toString();
     }
-    log.info("received Datastream request");
-    return observationService.createNewDataStream(data).toString();
-  }
 
     /**
      * Maps a get request that gets the SSE stream with the given UUID
@@ -89,27 +92,28 @@ public class ObservationController {
      * @param id UUID of SSE stream to get
      * @return SSE stream for the given UUID
      */
-  @Produces(MediaType.SERVER_SENT_EVENTS)
-  @GetMapping("/stream/{id}")
-  public SseEmitter streamSseMvc(@PathVariable String id) {
-    log.info("request for outgoing stream for id: " + id);
-    UUID uuid = UUID.fromString(id);
-    return observationService.getDataStream(uuid);
-  }
+    @Produces(MediaType.SERVER_SENT_EVENTS)
+    @GetMapping("/stream/{id}")
+    public SseEmitter streamSseMvc(@PathVariable String id) {
+        log.info("request for outgoing stream for id: " + id);
+        UUID uuid = UUID.fromString(id);
+        return observationService.getDataStream(uuid);
+    }
 
     @GetMapping("/getAllObs")
-    public List<ObservedProperty> getAllObservedProperties(){
+    public List<ObservedProperty> getAllObservedProperties() {
         return observationService.getAllObservedProperties();
     }
 
     /**
      * Gets all observations of the given thing
-     * @param thingId of the thing to get the observations of
-     * @param limit maximum amount to get
-     * @param sort sort by what (see {@link #getSorting(String)for} for more
-     * @param obsIds whether or not to limit fetched data to a certain observed type
+     *
+     * @param thingId    of the thing to get the observations of
+     * @param limit      maximum amount to get
+     * @param sort       sort by what (see {@link #getSorting(String)for} for more
+     * @param obsIds     whether or not to limit fetched data to a certain observed type
      * @param frameStart start of time frame to fetch from
-     * @param frameEnd end of time frame to fetch from
+     * @param frameEnd   end of time frame to fetch from
      * @return list of observations according to the above criteria
      */
     @GetMapping("/observations/{id}")
@@ -128,7 +132,7 @@ public class ObservationController {
                 obsIds,
                 LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
                 Optional.ofNullable(frameEnd)
-                        .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
+                        .map(s -> LocalDate.parse(frameEnd, DATE_FORMAT))
                         .orElseGet(LocalDate::now)
                         .atStartOfDay()
         );
@@ -147,7 +151,7 @@ public class ObservationController {
     @GetMapping(value = {"/Export/{id}", "/Export/{id}/{start}", "/Export/{id}/{start}/{end}"})
     public void exportToCSV(@PathVariable String id,
                             @PathVariable(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd:HH-mm-ss") LocalDateTime start,
-                            @PathVariable(required = false)@DateTimeFormat(pattern = "yyyy-MM-dd:HH-mm-ss")  LocalDateTime end, HttpServletResponse response)
+                            @PathVariable(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd:HH-mm-ss") LocalDateTime end, HttpServletResponse response)
             throws IOException {
         response.setContentType("text/csv");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
@@ -179,11 +183,10 @@ public class ObservationController {
         if (sortingInfo.length != 2) {
             throw new BadSortingTypeStringException();
         }
-        Sort sort = switch (sortingInfo[0]) {
-            case "date" -> Sort.by("phenomenonStart", "phenomenonEnd");
-            case "value" -> Sort.by("resultNumber");
-            default -> throw new NoSuchSortException();
-        };
+        Sort sort = Observation.Order.getSort(sortingInfo[0].toUpperCase());
+        if (sort == null) {
+            throw new NoSuchSortException();
+        }
         return sortingInfo[1].equals("dsc") ? sort.descending() : sort.ascending();
     }
 

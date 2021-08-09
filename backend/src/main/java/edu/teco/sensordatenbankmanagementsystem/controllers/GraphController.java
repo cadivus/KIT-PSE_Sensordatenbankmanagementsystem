@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("graph")
 public class GraphController {
 
   private DateTimeFormatter DATE_FORMAT;
@@ -54,13 +54,13 @@ public class GraphController {
    * @param granularity visual granularity of the rendered graph
    * @return image of graph
    */
-  @GetMapping(value = "/graph")
+  @GetMapping(value = "")
   public ResponseEntity<byte[]> getGraphOfThing(
       @RequestParam(name="id")String id,
       @RequestParam(name="obsId")String obsId,
-      @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
+      @RequestParam(name = "frameStart", required = false) String frameStart,
       @RequestParam(name = "frameEnd", required = false) String frameEnd,
-      @RequestParam(name = "maxInterpolationPoints", defaultValue = "100") int maxInterPoints,
+      @RequestParam(name = "maxInterpolationPoints", defaultValue = "25") int maxInterPoints,
       @RequestParam(name = "imageSize", defaultValue = "400x225") String imageSize,
       @RequestParam(name = "renderGranularity", defaultValue = "1") int granularity,
       @RequestParam(name = "interpolationMethod", defaultValue = "lagrange") String interpolationMethod
@@ -70,7 +70,7 @@ public class GraphController {
     RenderedImage graphImage = graphService.getGraphImageOfThing(
         id,
         obsId,
-        LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
+        frameStart == null ? null : LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
         Optional.ofNullable(frameEnd)
             .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
             .orElseGet(LocalDate::now)

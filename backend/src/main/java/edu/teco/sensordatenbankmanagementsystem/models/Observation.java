@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDateTime;
 import lombok.Data;
+import org.glassfish.jersey.internal.guava.Maps;
+import org.springframework.data.domain.Sort;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * This data class represents one recorded observation of a sensor.
@@ -102,6 +106,31 @@ public class Observation {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public enum Order {
+        DATE{
+            @Override
+            public Sort toSort() {
+                return Sort.by("phenomenonStart", "phenomenonEnd");
+            }
+        },
+        VALUE{
+            @Override
+            public Sort toSort() {
+                return Sort.by("resultNumber");
+            }
+        };
+        abstract public Sort toSort();
+        private static final Map<String, Order> index = Maps.newHashMapWithExpectedSize(values().length);
+        static{
+            for(Order order : values()){
+                index.put(order.name(), order);
+            }
+        }
+        public static Sort getSort(String name){
+            return Optional.ofNullable(index.get(name)).map(Order::toSort).orElse(null);
+        }
     }
 
 }

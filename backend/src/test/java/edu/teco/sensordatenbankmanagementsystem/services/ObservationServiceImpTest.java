@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @SpringBootTest
@@ -105,7 +103,7 @@ public class ObservationServiceImpTest {
 
     end = LocalDateTime.now();
     Mockito.when(observationRepository
-        .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
+        .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(
             "test", start, end)).thenReturn(Stream.of(new Observation()));
     Stream<?> emptyStream3 = Stream.empty();
     Stream<?> streamDateDate = observationServiceImp.getObservationByDatastream(datastreams3, start, end);

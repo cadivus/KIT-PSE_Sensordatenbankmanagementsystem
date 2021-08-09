@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,25 +18,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservedPropertyRepository;
 import lombok.extern.apachecommons.CommonsLog;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
@@ -144,6 +135,8 @@ public class ObservationServiceImp implements ObservationService{
     if(frameEnd == null){
       frameEnd = LocalDateTime.now();
     }
+    LocalDateTime finalFrameStart = frameStart;
+    LocalDateTime finalFrameEnd = frameEnd;
 
     //this alternative would utilize a native query, but wouldn't be able to integrate the sort in the query
     //String orderBySQLString = sort.stream().map(Sort.Order::getProperty).collect(Collectors.joining(","));
@@ -153,23 +146,27 @@ public class ObservationServiceImp implements ObservationService{
             .ofNullable(filter).map(s -> this.datastreamRepository.findDatastreamsByThing_IdAndObsIdIn(thingId, s))
             .orElseGet(() -> this.datastreamRepository.findDatastreamsByThing_Id(thingId));
 
+//    int filterCount = filter == null ? -1 : filter.size();
 //    System.out.printf("%s %s %s %s %s %s\n", thingId, limit, sort, filter, frameStart, frameEnd);
-//    System.out.println(associatedStreams.size());
+//    System.out.printf("found %s datastreams of %s\n", associatedStreams.size(), filterCount);
 //    for(Datastream d : associatedStreams){
-//      System.out.printf("ids: %s %s\n", d.getThingId(), d.getObsId());
+//      System.out.printf("ids: %s %s\n", d.getThing().getId(), d.getObsId());
 //      System.out.printf(
 //              "%s items in %s\n",
 //              observationRepository.countAllByDatastreamId(d.getId()),
 //              d.getId()
 //      );
+//      System.out.printf("%s filtered items in %s\n",
+//              observationRepository.findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(d.getId(), finalFrameStart, finalFrameEnd, null).count(),
+//              d.getId());
 //    }
+//    System.out.printf("limit is %s\n", limit);
 
-    LocalDateTime finalFrameStart = frameStart;
-    LocalDateTime finalFrameEnd = frameEnd;
     return associatedStreams.stream()
-            .flatMap(a-> this.observationRepository
-                    .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(a.getId(),
-                            finalFrameStart, finalFrameEnd, PageRequest.of(0, limit).withSort(sort)))
+            .flatMap(a->this.observationRepository
+                    .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(a.getId(),
+                            finalFrameStart, finalFrameEnd, PageRequest.of(0, limit).withSort(sort))
+            )
             .limit(limit)
             .collect(Collectors.toList());
   }
@@ -199,7 +196,7 @@ public class ObservationServiceImp implements ObservationService{
             .findObservationsByDatastreamIdAndPhenomenonStartAfter(d.getId(), start);
       } else {
         return observationRepository
-            .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
+            .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(
                 d.getId(), start, end);
       }
     });

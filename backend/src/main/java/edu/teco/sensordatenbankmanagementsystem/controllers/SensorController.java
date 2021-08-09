@@ -86,7 +86,12 @@ public class SensorController {
         return thingService.getAllThings();
     }
 
-
+    @GetMapping("getThingsObsIds")
+    public List<List<String>> getThingsObsIds(
+            @RequestParam("ids")List<String> ids
+    ){
+        return thingService.getThingsObsIds(ids);
+    }
 
     /**
      * Maps a get request for getting a sensors metadata by UUID.
