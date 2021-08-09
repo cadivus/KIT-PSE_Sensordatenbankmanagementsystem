@@ -8,7 +8,6 @@ import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,12 +15,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.transaction.Transactional;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -45,7 +52,8 @@ public class ObservationController {
 
 
     public final ObservationService observationService;
-    public final SensorService sensorService;
+    @Autowired
+    SensorService sensorService;
 
     /**
      * Instantiates a new Observation controller.
@@ -58,7 +66,6 @@ public class ObservationController {
     public ObservationController(ObservationService observationService,
                                  SensorService sensorService) {
         this.observationService = observationService;
-        this.sensorService = sensorService;
     }
 
     /**
@@ -66,11 +73,15 @@ public class ObservationController {
      *
      * @return UUID of the created SSE stream
      */
-    @PostMapping("/newSSE")
-    public UUID createNewSse(@RequestBody Requests data) {
-        log.info("received Datastream request");
-        return observationService.createNewDataStream(data);
+  @ResponseBody
+  @PostMapping(value = "/newSSE", consumes = "application/json", produces = "text/plain")
+  public String createNewSse(@RequestBody Requests data) {
+    if (data.getSpeed() == 0) {
+      data.setSpeed(1);
     }
+    log.info("received Datastream request");
+    return observationService.createNewDataStream(data).toString();
+  }
 
     /**
      * Maps a get request that gets the SSE stream with the given UUID
@@ -78,11 +89,13 @@ public class ObservationController {
      * @param id UUID of SSE stream to get
      * @return SSE stream for the given UUID
      */
-    @GetMapping("/stream/{id}")
-    public SseEmitter streamSseMvc(@PathVariable UUID id) {
-        log.info("request for outgoing stream for id: " + id);
-        return observationService.getDataStream(id);
-    }
+  @Produces(MediaType.SERVER_SENT_EVENTS)
+  @GetMapping("/stream/{id}")
+  public SseEmitter streamSseMvc(@PathVariable String id) {
+    log.info("request for outgoing stream for id: " + id);
+    UUID uuid = UUID.fromString(id);
+    return observationService.getDataStream(uuid);
+  }
 
     @GetMapping("/getAllObs")
     public List<ObservedProperty> getAllObservedProperties(){
@@ -130,13 +143,14 @@ public class ObservationController {
      * @param response The HttpServlet in which the result should be written
      * @throws IOException If there is no way to write to the @param response
      */
+    @Transactional
     @GetMapping(value = {"/Export/{id}", "/Export/{id}/{start}", "/Export/{id}/{start}/{end}"})
     public void exportToCSV(@PathVariable String id,
-                            @PathVariable(required = false) LocalDateTime start,
-                            @PathVariable(required = false) LocalDateTime end, HttpServletResponse response)
+                            @PathVariable(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd:HH-mm-ss") LocalDateTime start,
+                            @PathVariable(required = false)@DateTimeFormat(pattern = "yyyy-MM-dd:HH-mm-ss")  LocalDateTime end, HttpServletResponse response)
             throws IOException {
         response.setContentType("text/csv");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
@@ -144,8 +158,8 @@ public class ObservationController {
         response.setHeader(headerKey, headerValue);
 
         //TODO: Overload these methods instead of using useless start and end points
-        List<Observation> list = observationService
-                .getObservationsByDatastream(sensorService.getDatastream(id, start, end), start, end);
+        Stream<Observation> list = observationService
+                .getObservationByDatastream(sensorService.getDatastreams(List.of(id), start, end), start, end);
 
         WriteCsvToResponse.writeObservation(response.getWriter(), list);
 

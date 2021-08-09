@@ -33,8 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
      * by the Controller
      */
     public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/**").allowedMethods("GET");
-        registry.addMapping("/NewSse").allowedMethods("POST");
+        registry.addMapping("/**");
     }
 
     @Bean

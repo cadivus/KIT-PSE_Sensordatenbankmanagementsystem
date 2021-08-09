@@ -1,5 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.exceptions;
 
+import java.util.List;
 import lombok.extern.apachecommons.CommonsLog;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,6 +74,20 @@ public class ExceptionController {
             }
             return ResponseEntity.unprocessableEntity().body(errorResponse);
         }
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    private ResponseEntity<ErrorResponse> handleIllegalArgumentException (
+        Exception exception,
+        WebRequest request){
+        log.error("Validation error. Check input", exception);
+
+        return buildErrorResponse(
+            exception,
+            "Validation error. Check input",
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            request
+        );
+    }
 
         /**
          * This is an exception handler for an InternalServerError exception
@@ -129,7 +144,7 @@ public class ExceptionController {
     ){
             ErrorResponse errorResponse = new ErrorResponse(
                 httpStatus.value(),
-                message
+                message + ": " + exception.getMessage()
             );
 
             if (printStackTrace && isTraceOn(request)) {

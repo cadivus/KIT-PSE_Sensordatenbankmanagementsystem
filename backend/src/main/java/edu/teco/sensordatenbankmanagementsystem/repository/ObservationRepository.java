@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import javax.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,14 +22,20 @@ public interface ObservationRepository extends JpaRepository<Observation, String
 
   Optional<Observation> findById(String id);
 
-  Stream<Observation> findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(
+  Stream<Observation> findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
       String dataStream, @Param("PhenomenonStart") LocalDateTime phenomenonStart,
       @Param("PhenomenonEnd") LocalDateTime phenomenonEnd, Pageable pageable);
+  Stream<Observation> findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
+      String dataStream, @Param("PhenomenonStart") LocalDateTime phenomenonStart,
+      @Param("PhenomenonEnd") LocalDateTime phenomenonEnd);
 
   Stream<Observation> findObservationsByDatastreamIdAndPhenomenonStartAfter(
       String dataStream, @Param("PhenomenonStart") LocalDateTime phenomenonStart);
 
   Stream<Observation> findObservationsByDatastreamId(String dataStream, Pageable pageable);
+
+  Stream<Observation> findObservationsByDatastreamId(String dataStream);
+
 
   @Query(value="select * from \"OBSERVATIONS\" where \"DATASTREAM_ID\" in :datastreams order by :sort", nativeQuery = true)
   Stream<Observation> findObservationsInDatastreams(List<Datastream> datastreams, String sort, Pageable pageable);
