@@ -3,6 +3,7 @@ package edu.teco.sensordatenbankmanagementsystem.models;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import javax.persistence.FetchType;
 import lombok.Data;
 import org.jooq.JSONB;
 
@@ -47,7 +48,7 @@ public class Sensor {
     String properties;
 
     @Transient
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Observation> observations;
 
     public List<Observation> getObservations() {

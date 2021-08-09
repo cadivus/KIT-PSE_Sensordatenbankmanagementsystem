@@ -1,28 +1,26 @@
 package edu.teco.sensordatenbankmanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.ElementCollection;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import lombok.Data;
-import lombok.Generated;
-
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Entity
 public class Requests {
+  @Id
+  @GeneratedValue
+  long id;
 
-    @Id
-    @GeneratedValue
-    long id;
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+  LocalDateTime start;
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+  LocalDateTime end;
+  int speed;
 
-    String start;
-    String end;
-    String speed;
-
-    @ElementCollection
-    List<String> sensors;
+  @ElementCollection
+  List<String> sensors;
 }

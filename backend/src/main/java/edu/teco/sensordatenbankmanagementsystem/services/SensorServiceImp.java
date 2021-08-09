@@ -7,17 +7,14 @@ import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
-import edu.teco.sensordatenbankmanagementsystem.repository.SensorRepository;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -60,23 +57,23 @@ public class SensorServiceImp implements SensorService {
   }
 
   @Transactional
-  public Datastream getDatastream(String sensor_id, LocalDateTime start, LocalDateTime end) {
+  public Stream<Datastream> getDatastreams(List<String> thingIds, LocalDateTime start, LocalDateTime end) {
 
     if (start == null)
       start = LocalDateTime.of(1900,1,1,0,0);
     if (end == null)
       end = LocalDateTime.now();
-    //TODO
-    Stream<Datastream> datastreams = datastreamRepository
-        .findDatastreamsBySensorIdOrderByPhenomenonStartDesc(sensor_id);
     LocalDateTime finalStart = start;
     LocalDateTime finalEnd = end;
-    Datastream result = datastreams.filter(e -> e.getPhenomenonStart() != null && e.getPhenomenonEnd() != null)
-        .filter(e -> e.getPhenomenonStart().isAfter(finalStart) && e.getPhenomenonEnd().isBefore(
-            finalEnd))
-        .collect(Collectors.toList()).get(0);
-    log.info(result);
-    return result;
+
+
+      return datastreamRepository
+          .findDatastreamsByThing_IdInOrderByPhenomenonStartDesc(thingIds).filter(e -> e.getPhenomenonStart() != null && e.getPhenomenonEnd() != null)
+          .filter(e -> (e.getPhenomenonStart().isBefore(finalStart) && e.getPhenomenonEnd().isAfter(finalStart))|| (e.getPhenomenonEnd().isAfter(
+              finalEnd) && e.getPhenomenonStart().isBefore(finalEnd)) || (e.getPhenomenonStart().isAfter(finalStart) && e.getPhenomenonEnd().isBefore(finalEnd)));
+
+
+
   }
 
   /**
@@ -87,7 +84,7 @@ public class SensorServiceImp implements SensorService {
   }
 
   //TODO
-  public Datastream getDatastream(String senor_id) {
+  public List<Datastream> getDatastreams(String senor_id) {
     return null;
   }
 

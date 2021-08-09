@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import javax.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,7 +23,7 @@ public interface ObservationRepository extends JpaRepository<Observation, String
 
   Optional<Observation> findById(String id);
 
-  Stream<Observation> findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBefore(
+  Stream<Observation> findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
       String dataStream, @Param("PhenomenonStart") LocalDateTime phenomenonStart,
       @Param("PhenomenonEnd") LocalDateTime phenomenonEnd);
 
