@@ -186,32 +186,23 @@ public class ObservationServiceImp implements ObservationService{
    */
   @Transactional
   @Cacheable("Observations")
-  public List<Observation> getObservationByDatastream(Stream<Datastream> datastreams,
+  public Stream<Observation> getObservationByDatastream(Stream<Datastream> datastreams,
       LocalDateTime start, LocalDateTime end)  {
     if (datastreams == null) {
       return null;
     }
-    List<Observation> result = new ArrayList<>();
-    if (start == null) {
-      for (Datastream d : datastreams.collect(Collectors.toList())) {
-        result.addAll(observationRepository.findObservationsByDatastreamId(d.getId())
-            .collect(Collectors.toList()));
-      }
-    } else if (end == null) {
-      for (Datastream d : datastreams.collect(Collectors.toList())) {
-        result.addAll(observationRepository
-            .findObservationsByDatastreamIdAndPhenomenonStartAfter(d.getId(), start)
-            .collect(Collectors.toList()));
-      }
-    } else {
-      for (Datastream d : datastreams.collect(Collectors.toList())) {
-        result.addAll(observationRepository
+    return datastreams.flatMap(d -> {
+      if (start == null) {
+        return observationRepository.findObservationsByDatastreamId(d.getId());
+      } else if (end == null) {
+        return observationRepository
+            .findObservationsByDatastreamIdAndPhenomenonStartAfter(d.getId(), start);
+      } else {
+        return observationRepository
             .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
-                d.getId(), start, end).collect(Collectors.toList()));
+                d.getId(), start, end);
       }
-
-    }
-    return result;
+    });
   }
 
 }

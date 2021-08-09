@@ -15,7 +15,7 @@ import lombok.extern.apachecommons.CommonsLog;
 @CommonsLog
 public class WriteCsvToResponse {
 
-  public static void writeObservation(PrintWriter writer, List<Observation> observations) {
+  public static void writeObservation(PrintWriter writer, Stream<Observation> observations) {
 
     try {
 

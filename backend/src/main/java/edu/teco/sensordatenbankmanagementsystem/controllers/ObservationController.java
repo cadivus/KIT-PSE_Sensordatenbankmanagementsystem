@@ -158,7 +158,7 @@ public class ObservationController {
         response.setHeader(headerKey, headerValue);
 
         //TODO: Overload these methods instead of using useless start and end points
-        List<Observation> list = observationService
+        Stream<Observation> list = observationService
                 .getObservationByDatastream(sensorService.getDatastreams(List.of(id), start, end), start, end);
 
         WriteCsvToResponse.writeObservation(response.getWriter(), list);

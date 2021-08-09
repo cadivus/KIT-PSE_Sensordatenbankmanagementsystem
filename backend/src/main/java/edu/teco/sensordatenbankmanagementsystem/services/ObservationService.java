@@ -51,7 +51,7 @@ public interface ObservationService {
      * @param end The date after which no observations should be returned
      * @return A Stream of Observations
      */
-    List<Observation> getObservationByDatastream(Stream<Datastream> datastreams, LocalDateTime start, LocalDateTime end);
+    Stream<Observation> getObservationByDatastream(Stream<Datastream> datastreams, LocalDateTime start, LocalDateTime end);
 
     /**
      * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(Requests)} but with
