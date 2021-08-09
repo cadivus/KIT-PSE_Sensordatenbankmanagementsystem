@@ -8,6 +8,7 @@ import ThingProperty from '../material/ThingProperty'
 import Location from '../material/Location'
 import LocationWithAddress from '../material/LocationWithAddress'
 import Unit from '../material/Units'
+import DatastreamStore from './DatastreamStore'
 
 /**
  * This is the storage for things.
@@ -22,8 +23,11 @@ class ThingStore {
 
   private _lastUpdate = 0
 
-  constructor() {
+  private _datastreamStore: DatastreamStore
+
+  constructor(datastreamStore: DatastreamStore) {
     this._things = new Map<string, Thing>()
+    this._datastreamStore = datastreamStore
     const {getThingsFromBackend} = this
     getThingsFromBackend()
   }

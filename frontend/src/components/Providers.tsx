@@ -11,13 +11,13 @@ const Providers: FC = ({children}) => (
   <AppContextProvider>
     <Provider>
       <UserStoreProvider>
-        <ThingStoreProvider>
-          <DatastreamStoreProvider>
+        <DatastreamStoreProvider>
+          <ThingStoreProvider>
             <ReplayStoreProvider>
               <SubscriptionStoreProvider>{children}</SubscriptionStoreProvider>
             </ReplayStoreProvider>
-          </DatastreamStoreProvider>
-        </ThingStoreProvider>
+          </ThingStoreProvider>
+        </DatastreamStoreProvider>
       </UserStoreProvider>
     </Provider>
   </AppContextProvider>
