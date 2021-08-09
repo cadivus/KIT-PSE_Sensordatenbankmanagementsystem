@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import {FormattedMessage} from 'react-intl'
+import useUserStore from "../../hooks/UseUserStore";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -35,8 +36,14 @@ const useStyles = makeStyles(theme => ({
  */
 const LoginStep2 = ({setAuthCode}) => {
   const [codeString, setCodeString] = useState('')
-
+  const userStore = useUserStore()
   const classes = useStyles()
+
+  function rightCode() {
+    if (!userStore.confirmCode(codeString)) {
+      userStore.user.logout()
+    }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -61,7 +68,14 @@ const LoginStep2 = ({setAuthCode}) => {
             autoComplete="current-password"
             onInput={e => setCodeString(e.target.value)}
           />
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={rightCode}
+          >
             <FormattedMessage id="loginpage.signInButton" />
           </Button>
         </form>

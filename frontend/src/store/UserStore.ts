@@ -9,27 +9,6 @@ declare interface UserStore {
   on(event: 'login-change', listener: (name: string) => void): this
 }
 
-class useableUser extends User {
-  public logout(): void {
-    throw new Error('Method not implemented.')
-  }
-
-  loginCode: LoginCode | undefined
-
-  set setLoginCode(value: (loginCode: LoginCode) => void) {
-    this.setLoginCode = value
-  }
-
-  get setLoginCode(): (loginCode: LoginCode) => void {
-    return this.setLoginCode
-  }
-
-  // eslint-disable-next-line no-useless-constructor
-  constructor(email: EMail) {
-    super(email)
-  }
-}
-
 /**
  * This is the storage for users.
  * It holds all the user objects, gets data from the backend and synchronizes data.
@@ -41,6 +20,8 @@ class UserStore extends EventEmitter {
    */
   user: User | null = null
 
+  code: LoginCode | undefined
+
   /**
    * Requests sending a login code to the specified email address.
    *
@@ -51,12 +32,10 @@ class UserStore extends EventEmitter {
     const path = `${NOTIFICATION_PATH}/getConfirmationCode/{${email}}`
     getJson(path).then(loginCodeJSON => {
       console.log(loginCodeJSON)
-      const code = loginCodeJSON
-      // eslint-disable-next-line new-cap
-      const currentUser = new useableUser(email)
-      currentUser.setLoginCode(code)
+      this.user = this.requestUser(email, loginCodeJSON)
+      return true
     })
-    return true
+    return false
   }
 
   /**
@@ -81,6 +60,11 @@ class UserStore extends EventEmitter {
     const {user} = this
     this.emit('login-change')
     return user
+    this.code = loginCode
+  }
+
+  confirmCode = (loginCode: LoginCode): boolean => {
+    return this.code === loginCode
   }
 }
 
