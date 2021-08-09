@@ -12,7 +12,8 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
-import Sensor from '../../material/Sensor'
+import {FormattedMessage} from 'react-intl'
+import Thing from '../../material/Thing'
 import Location from '../../material/Location'
 import LocationWithAddress from '../../material/LocationWithAddress'
 
@@ -51,9 +52,30 @@ const LocationRow = ({location}: {location: Location}) => {
           <Typography variant="h6">Location: </Typography>
         </StyledTableCell>
         <StyledTableCell>
-          <Typography variant="h6">{location.addressToString()}</Typography>
-          <br />
-          <Typography variant="h6">{location.coordinatesToString()}</Typography>
+          <StyledTableRow>
+            <StyledTableCell>
+              <Typography variant="h6">Street:</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography variant="h6">{location.addressToString().split(', ')[0]}</Typography>
+            </StyledTableCell>
+          </StyledTableRow>
+          <StyledTableRow>
+            <StyledTableCell>
+              <Typography variant="h6">City:</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography variant="h6">{location.addressToString().split(', ')[1]}</Typography>
+            </StyledTableCell>
+          </StyledTableRow>
+          <StyledTableRow>
+            <StyledTableCell>
+              <Typography variant="h6">Coordinates:</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography variant="h6">{location.coordinatesToString()}</Typography>
+            </StyledTableCell>
+          </StyledTableRow>
         </StyledTableCell>
       </StyledTableRow>
     )
@@ -71,10 +93,10 @@ const LocationRow = ({location}: {location: Location}) => {
 }
 
 /**
- *  Displays the properties of a selected sensor.
+ *  Displays the properties of a selected thing.
  *  This class implements a React component.
  */
-const Properties = ({sensor}: {sensor: Sensor}) => {
+const Properties = ({thing}: {thing: Thing}) => {
   const classes = useStyles()
 
   return (
@@ -83,10 +105,12 @@ const Properties = ({sensor}: {sensor: Sensor}) => {
         <TableBody>
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">Value: </Typography>
+              <Typography variant="h6">
+                <FormattedMessage id="infopage.value" />
+              </Typography>
             </StyledTableCell>
             <StyledTableCell>
-              <Typography variant="h6">{sensor.getValue().toString()}</Typography>
+              <Typography variant="h6">{thing.getValue().toString()}</Typography>
             </StyledTableCell>
           </StyledTableRow>
           <StyledTableRow>
@@ -94,12 +118,12 @@ const Properties = ({sensor}: {sensor: Sensor}) => {
               <Typography variant="h6">Description: </Typography>
             </StyledTableCell>
             <StyledTableCell>
-              <Typography variant="h6">{sensor.description}</Typography>
+              <Typography variant="h6">{thing.description}</Typography>
             </StyledTableCell>
           </StyledTableRow>
-          <LocationRow location={sensor.location} />
-          {sensor.properties.map(property => (
-            <StyledTableRow key={`${sensor.id.toString()}.${property.key}`}>
+          <LocationRow location={thing.location} />
+          {thing.properties.map(property => (
+            <StyledTableRow key={`${thing.id.toString()}.${property.key}`}>
               <StyledTableCell component="th" scope="row">
                 <Typography variant="h6">{property.key}: </Typography>
               </StyledTableCell>

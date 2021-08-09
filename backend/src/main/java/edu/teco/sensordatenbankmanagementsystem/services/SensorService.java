@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * The SensorService provides more complex methods for functionality concerning the querying of {@link Sensor} data based on the repositories.
@@ -30,14 +31,11 @@ public interface SensorService {
      */
     Sensor getSensorMetaData(String id);
 
+
     Datastream getDatastream(String sensor_id);
 
-    Datastream getDatastream(String sensor_id, LocalDateTime start, LocalDateTime end);
+    Stream<Datastream> getDatastreams(List<String> sensor_id, LocalDateTime start, LocalDateTime end);
 
     List<Sensor> getAllSensors();
-
-    RenderedImage getGraphImageOfThing(String id, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
-                                        int maxInterPoints, Dimension imageDimension, int granularity,
-                                        Interpolator<Double, Double> interpolator);
 
 }

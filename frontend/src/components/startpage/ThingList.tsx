@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {
   Button,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -16,8 +17,8 @@ import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Checkbox from '@material-ui/core/Checkbox'
 import {useHistory} from 'react-router-dom'
-import useSensorStore from '../../hooks/UseSensorStore'
-import Sensor from '../../material/Sensor'
+import useThingStore from '../../hooks/UseThingStore'
+import Thing from '../../material/Thing'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -40,45 +41,54 @@ const StyledTableRow = withStyles((theme: Theme) =>
   }),
 )(TableRow)
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 800,
-  },
-  sensorCell: {
-    width: '83%',
-  },
-  container: {
-    marginTop: '10px',
-  },
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      '& > * + *': {
+        marginLeft: theme.spacing(2),
+      },
+      marginLeft: '60%',
+    },
+    table: {
+      minWidth: 800,
+    },
+    thingCell: {
+      width: '83%',
+    },
+    container: {
+      marginTop: '10px',
+    },
+  }),
+)
 
 /**
- *  Displays a list of sensors.
+ *  Displays a list of things.
  *  This class implements a React component.
  */
-const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
+const ThingList = ({selectedThings}: {selectedThings: Set<Thing>}) => {
   const history = useHistory()
   const classes = useStyles()
-  const sensorStore = useSensorStore()
+  const thingStore = useThingStore()
 
-  const [sensorList, setSensorList] = useState(new Array<Sensor>())
+  const [thingList, setThingList] = useState(new Array<Thing>())
   const [lastUpdate, setLastUpdate] = useState(0)
 
-  const [selectedSensorsState, setSelectedSensorsState] = useState(new Set<Sensor>())
+  const [selectedThingsState, setSelectedThingsState] = useState(new Set<Thing>())
 
   useEffect(() => {
-    if (sensorStore) {
-      const newList = JSON.stringify(sensorList) !== JSON.stringify(sensorStore.sensors)
+    if (thingStore) {
+      const newList = JSON.stringify(thingList) !== JSON.stringify(thingStore.things)
 
-      if (newList) setSensorList(sensorStore.sensors)
-      if (lastUpdate !== sensorStore.lastUpdate) setLastUpdate(sensorStore.lastUpdate)
+      if (newList) setThingList(thingStore.things)
+      if (lastUpdate !== thingStore.lastUpdate) setLastUpdate(thingStore.lastUpdate)
     }
-  }, [sensorStore, lastUpdate, sensorList])
+  }, [thingStore, lastUpdate, thingList])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (sensorStore) {
-        if (lastUpdate !== sensorStore.lastUpdate) setLastUpdate(sensorStore.lastUpdate)
+      if (thingStore) {
+        if (lastUpdate !== thingStore.lastUpdate) setLastUpdate(thingStore.lastUpdate)
       }
     }, 1000)
 
@@ -92,9 +102,9 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell className={classes.sensorCell}>
+            <StyledTableCell className={classes.thingCell}>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Sensor
+                <ArrowDropDownIcon /> Thing
               </Typography>
             </StyledTableCell>
             <StyledTableCell />
@@ -102,25 +112,33 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sensorStore?.sensors.map(sensor => {
+          {thingList.length < 1 && (
+            <TableRow>
+              <TableCell align="center">
+                <CircularProgress className={classes.root} />
+              </TableCell>
+              <TableCell />
+              <TableCell />
+            </TableRow>
+          )}
+          {thingStore?.things.map(thing => {
             const checkChanged = (chk: boolean) => {
-              if (chk && !selectedSensorsState.has(sensor)) {
-                selectedSensors.add(sensor)
-                setSelectedSensorsState(new Set<Sensor>(selectedSensors))
-              } else if (selectedSensorsState.has(sensor)) {
-                selectedSensors.delete(sensor)
-                setSelectedSensorsState(new Set<Sensor>(selectedSensors))
+              if (chk && !selectedThingsState.has(thing)) {
+                selectedThings.add(thing)
+                setSelectedThingsState(new Set<Thing>(selectedThings))
+              } else if (selectedThingsState.has(thing)) {
+                selectedThings.delete(thing)
+                setSelectedThingsState(new Set<Thing>(selectedThings))
               }
             }
-
             return (
-              <StyledTableRow hover key={sensor.name.name}>
+              <StyledTableRow hover key={thing.name.name}>
                 <StyledTableCell component="th" scope="row">
-                  <Typography variant="h5">{sensor.name.name}</Typography>
+                  <Typography variant="h5">{thing.name.name}</Typography>
                 </StyledTableCell>
                 <StyledTableCell>
                   <Checkbox
-                    checked={selectedSensorsState.has(sensor)}
+                    checked={selectedThingsState.has(thing)}
                     onChange={e => checkChanged(e.target.checked)}
                     color="primary"
                     inputProps={{'aria-label': 'secondary checkbox'}}
@@ -130,9 +148,9 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={() => history.push(`/sensorInformation/${sensor.id.toString()}`)}
+                    onClick={() => history.push(`/thingInformation/${thing.id.toString()}`)}
                   >
-                    Info
+                    Datastream
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
@@ -144,4 +162,4 @@ const SensorList = ({selectedSensors}: {selectedSensors: Set<Sensor>}) => {
   )
 }
 
-export default SensorList
+export default ThingList

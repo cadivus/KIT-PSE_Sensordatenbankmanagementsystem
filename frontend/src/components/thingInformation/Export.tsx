@@ -1,6 +1,7 @@
 import React from 'react'
 import {createStyles} from '@material-ui/core/styles'
 import {Button, Container, Grid, makeStyles, Paper, TextField, Theme, Typography} from '@material-ui/core'
+import {FormattedMessage} from 'react-intl'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 /**
- *  Displays the export options for sensor data.
+ *  Displays the export options for thing data.
  *  This class implements a React component.
  */
 const Export = () => {
@@ -35,7 +36,9 @@ const Export = () => {
           <Grid item xs={4}>
             <Container className={classes.paper}>
               <Button variant="outlined">
-                <Typography variant="h5"> Export </Typography>
+                <Typography variant="h5">
+                  <FormattedMessage id="infopage.export" />
+                </Typography>
               </Button>
             </Container>
           </Grid>
@@ -43,7 +46,7 @@ const Export = () => {
             <Container className={classes.paper}>
               <TextField
                 id="date"
-                label="From date"
+                label={<FormattedMessage id="infopage.fromDate" />}
                 type="date"
                 defaultValue="2017-05-24"
                 className={classes.textField}
@@ -53,7 +56,7 @@ const Export = () => {
               />
               <TextField
                 id="time"
-                label="From time"
+                label={<FormattedMessage id="infopage.fromTime" />}
                 type="time"
                 defaultValue="07:30"
                 className={classes.textField}
@@ -70,7 +73,7 @@ const Export = () => {
             <Container className={classes.paper}>
               <TextField
                 id="date"
-                label="To date"
+                label={<FormattedMessage id="infopage.toDate" />}
                 type="date"
                 defaultValue="2017-05-24"
                 className={classes.textField}
@@ -80,7 +83,7 @@ const Export = () => {
               />
               <TextField
                 id="time"
-                label="To time"
+                label={<FormattedMessage id="infopage.toTime" />}
                 type="time"
                 defaultValue="07:30"
                 className={classes.textField}

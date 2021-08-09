@@ -2,9 +2,10 @@ import React, {FC, useState} from 'react'
 import {Button, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import {useHistory} from 'react-router-dom'
-import SensorList from './SensorList'
+import {FormattedMessage} from 'react-intl'
+import ThingList from './ThingList'
 import Search from './Search'
-import Sensor from '../../material/Sensor'
+import Thing from '../../material/Thing'
 
 const useStyles = makeStyles({
   container: {
@@ -23,13 +24,13 @@ const StartpageView: FC = () => {
   const history = useHistory()
   const classes = useStyles()
 
-  const [selectedSensors] = useState(new Set<Sensor>())
+  const [selectedThings] = useState(new Set<Thing>())
 
   const subscribeClicked = () => {
     history.push({
       pathname: '/subscriptions/subscriptionCreate',
       // eslint-disable-next-line object-shorthand
-      state: {selectedSensors: selectedSensors},
+      state: {selectedThings: selectedThings},
     })
   }
 
@@ -37,7 +38,7 @@ const StartpageView: FC = () => {
     <div>
       <Container maxWidth="lg" className={classes.container}>
         <Typography variant="h3" align="center" gutterBottom>
-          Startpage
+          <FormattedMessage id="startpage.startpage" />
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={8}>
@@ -46,19 +47,19 @@ const StartpageView: FC = () => {
           <Grid item xs={2}>
             <Container className={classes.buttons}>
               <Button variant="outlined" onClick={() => subscribeClicked()}>
-                Subscribe
+                <FormattedMessage id="startpage.subscribe" />
               </Button>
             </Container>
           </Grid>
           <Grid item xs={2}>
             <Container className={classes.buttons}>
               <Button variant="outlined" onClick={() => history.push('/replay/replayMultipleView')}>
-                Replay
+                <FormattedMessage id="startpage.replay" />
               </Button>
             </Container>
           </Grid>
         </Grid>
-        <SensorList selectedSensors={selectedSensors} />
+        <ThingList selectedThings={selectedThings} />
       </Container>
     </div>
   )

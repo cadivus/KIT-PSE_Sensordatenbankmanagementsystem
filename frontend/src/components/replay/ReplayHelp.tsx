@@ -1,6 +1,7 @@
 import React from 'react'
 import {Button, Dialog, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
+import {FormattedMessage} from 'react-intl'
 
 const useStyles = makeStyles({
   Margins: {
@@ -28,7 +29,7 @@ const ReplayHelp = () => {
   return (
     <div className={classes.Margins}>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Help?
+        <FormattedMessage id="replaypage.help" />
       </Button>
       <Dialog
         open={open}
@@ -36,15 +37,12 @@ const ReplayHelp = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Need Help?</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <FormattedMessage id="replaypage.helpTextHedding" />
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-            clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-            consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no
-            sea takimata sanctus est Lorem ipsum dolor sit amet.
+            <FormattedMessage id="replaypage.helpText" />
           </DialogContentText>
         </DialogContent>
       </Dialog>

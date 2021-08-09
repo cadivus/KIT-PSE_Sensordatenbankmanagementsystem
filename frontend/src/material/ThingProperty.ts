@@ -1,4 +1,4 @@
-class SensorProperty {
+class ThingProperty {
   readonly key: string
 
   readonly value: string
@@ -9,4 +9,4 @@ class SensorProperty {
   }
 }
 
-export default SensorProperty
+export default ThingProperty

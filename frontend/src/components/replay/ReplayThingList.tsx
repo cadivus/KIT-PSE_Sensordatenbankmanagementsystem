@@ -11,9 +11,10 @@ import {
   Typography,
   withStyles,
 } from '@material-ui/core'
-import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import useSensorStore from '../../hooks/UseSensorStore'
+import {createStyles, makeStyles} from '@material-ui/core/styles'
+import {FormattedMessage} from 'react-intl'
+import useThingStore from '../../hooks/UseThingStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -37,47 +38,46 @@ const StyledTableRow = withStyles((theme: Theme) =>
 )(TableRow)
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 800,
-  },
-  sensorCell: {
+  thingCell: {
     width: '70%',
   },
 })
 
 /**
- *  Displays the data of a selected sensor.
+ *  Displays the things of a replay.
  *  This class implements a React component.
  */
-const Data = () => {
+const ReplayThingList = () => {
   const classes = useStyles()
-  const sensorStore = useSensorStore()
+  const thingStore = useThingStore()
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table}>
+      <Table>
         <TableHead>
           <TableRow>
-            <StyledTableCell className={classes.sensorCell}>
+            <StyledTableCell className={classes.thingCell}>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Time
+                <ArrowDropDownIcon />
+                <FormattedMessage id="replaypage.thing" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Data
+                <ArrowDropDownIcon />
+                <FormattedMessage id="replaypage.value" />
               </Typography>
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sensorStore?.sensors.map(sensor => (
-            <StyledTableRow hover key={sensor.name.name}>
+          {thingStore?.things.map(thing => (
+            <StyledTableRow hover key={thing.name.name}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="h5">YYYY-MM-TT hh:mm:ss</Typography>
+                <Typography variant="body1">{thing.name.name}</Typography>
               </StyledTableCell>
               <StyledTableCell>
-                <Typography>00xx</Typography>
+                <Typography variant="body1">XXXX</Typography>
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -87,4 +87,4 @@ const Data = () => {
   )
 }
 
-export default Data
+export default ReplayThingList

@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 })
 
 /**
- * Shows the settings of a single subscribtion (sensor, direct notification, notification level).
+ * Shows the settings of a single subscribtion (thing, direct notification, notification level).
  * This class implements a React component.
  */
 // eslint-disable-next-line max-len

@@ -1,7 +1,7 @@
 /**
- * This class represents a sensors name.
+ * This class represents a things name.
  */
-class SensorName {
+class ThingName {
   readonly name: string
 
   constructor(name: string) {
@@ -14,4 +14,4 @@ class SensorName {
   }
 }
 
-export default SensorName
+export default ThingName

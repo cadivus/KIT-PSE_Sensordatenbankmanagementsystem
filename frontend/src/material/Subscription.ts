@@ -1,5 +1,5 @@
 import EventEmitter from 'events'
-import Sensor from './Sensor'
+import Thing from './Thing'
 import NotificationLevel from './NotificationLevel'
 import User from './User'
 import Id from './Id'
@@ -19,9 +19,9 @@ abstract class Subscription extends EventEmitter {
   readonly id: Id
 
   /**
-   * Sensor the subscription is for.
+   * Thing the subscription is for.
    */
-  sensors: Array<Sensor>
+  things: Array<Thing>
 
   /**
    * Indicates whether the user gets a direct notification on failures.
@@ -37,14 +37,14 @@ abstract class Subscription extends EventEmitter {
 
   constructor(
     id: Id,
-    sensors: Array<Sensor>,
+    things: Array<Thing>,
     directNotification: boolean,
     notificationLevel: NotificationLevel,
     owner: User,
   ) {
     super()
     this.id = id
-    this.sensors = sensors
+    this.things = things
     this._directNotification = directNotification
     this._notificationLevel = notificationLevel
     this.owner = owner

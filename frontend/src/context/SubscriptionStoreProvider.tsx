@@ -1,19 +1,19 @@
 import React, {createContext, useEffect, useState, FC} from 'react'
 import SubscriptionStore from '../store/SubscriptionStore'
 import useUserStore from '../hooks/UseUserStore'
-import useSensorStore from '../hooks/UseSensorStore'
+import useThingStore from '../hooks/UseThingStore'
 
 export const SubscriptionStoreContext = createContext<SubscriptionStore | undefined>(undefined)
 
 export const SubscriptionStoreProvider: FC = ({children}) => {
   const userStore = useUserStore()
-  const sensorStore = useSensorStore()
+  const thingStore = useThingStore()
 
   const [subscriptionStore, setSubscriptionStore] = useState<SubscriptionStore | undefined>(undefined)
 
   useEffect(() => {
-    if (sensorStore && !subscriptionStore) setSubscriptionStore(new SubscriptionStore(sensorStore))
-  }, [setSubscriptionStore, userStore, subscriptionStore, sensorStore])
+    if (thingStore && !subscriptionStore) setSubscriptionStore(new SubscriptionStore(thingStore))
+  }, [setSubscriptionStore, userStore, subscriptionStore, thingStore])
 
   useEffect(() => {
     if (subscriptionStore && userStore) {

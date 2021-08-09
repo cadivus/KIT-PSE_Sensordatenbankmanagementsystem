@@ -11,9 +11,10 @@ import {
   Typography,
   withStyles,
 } from '@material-ui/core'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
-import useSensorStore from '../../hooks/UseSensorStore'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import {FormattedMessage} from 'react-intl'
+import useThingStore from '../../hooks/UseThingStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -37,44 +38,49 @@ const StyledTableRow = withStyles((theme: Theme) =>
 )(TableRow)
 
 const useStyles = makeStyles({
-  sensorCell: {
+  table: {
+    minWidth: 800,
+  },
+  thingCell: {
     width: '70%',
   },
 })
 
 /**
- *  Displays the sensors of a replay.
+ *  Displays the data of a selected thing.
  *  This class implements a React component.
  */
-const ReplaySensorList = () => {
+const Data = () => {
   const classes = useStyles()
-  const sensorStore = useSensorStore()
+  const thingStore = useThingStore()
 
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell className={classes.sensorCell}>
+            <StyledTableCell className={classes.thingCell}>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Sensor
+                <ArrowDropDownIcon />
+                <FormattedMessage id="infopage.time" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Typography variant="h5">
-                <ArrowDropDownIcon /> Value
+                <ArrowDropDownIcon />
+                <FormattedMessage id="infopage.data" />
               </Typography>
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sensorStore?.sensors.map(sensor => (
-            <StyledTableRow hover key={sensor.name.name}>
+          {thingStore?.things.map(thing => (
+            <StyledTableRow hover key={thing.name.name}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="body1">{sensor.name.name}</Typography>
+                <Typography variant="h5">YYYY-MM-TT hh:mm:ss</Typography>
               </StyledTableCell>
               <StyledTableCell>
-                <Typography variant="body1">XXXX</Typography>
+                <Typography>00xx</Typography>
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -84,4 +90,4 @@ const ReplaySensorList = () => {
   )
 }
 
-export default ReplaySensorList
+export default Data

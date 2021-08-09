@@ -1,9 +1,6 @@
 package notificationsystem.controller;
 
-import notificationsystem.model.Sensor;
-import notificationsystem.model.SensorDAO;
-import notificationsystem.model.Subscription;
-import notificationsystem.model.SubscriptionDAO;
+import notificationsystem.model.*;
 import notificationsystem.view.Alert;
 import notificationsystem.view.ConfirmationMail;
 import notificationsystem.view.MailBuilder;
@@ -12,6 +9,7 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
@@ -41,15 +39,19 @@ public class Controller {
     private final MailSender mailSender;
     private final SubscriptionDAO subscriptionDAO;
     private SensorDAO sensorDAO;
+    private SystemLoginDAO systemLoginDAO;
+    private final static long SYSTEMLOGIN_ID = 1;
     private final RestTemplate restTemplate;
 
     /**
      * Constructs a new Controller instance. Instantiates the MailBuilder, MailSender, SubscriptionDAO and SensorDAO.
      */
     @Autowired
-    public Controller(SubscriptionDAO subscriptionDAO, RestTemplate restTemplate) {
+    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate) {
+        this.systemLoginDAO =  systemLoginDAO;
         this.mailBuilder = new MailBuilder();
-        this.mailSender = new MailSender();
+        SystemLogin login = systemLoginDAO.getLogin(SYSTEMLOGIN_ID).get();
+        this.mailSender = new MailSender(login.getUsername(), login.getPassword());
         this.subscriptionDAO = subscriptionDAO;
         this.restTemplate = restTemplate;
     }

@@ -10,7 +10,7 @@ import java.util.List;
  * setters for these attributes.
  */
 public abstract class EMail {
-    private final static String SENDER_MAIL = "sensornotifcationsystem@gmail.com";
+    private String senderMail;
     private String receiverMail;
     private String subject;
     private String message;
@@ -25,11 +25,12 @@ public abstract class EMail {
      * @param attachment any data attached to the e-mail.
      */
     public EMail( String receiverMail, String subject, String message, JSONArray attachment) {
+        this.senderMail = "sensornotificationsystemPSE@gmail.com";
         this.receiverMail = receiverMail;
         this.subject = subject;
         this.message = message;
         this.attachment = attachment;
-        this.senderName = "";
+        this.senderName = "PSE";
     }
 
     /**
@@ -37,7 +38,7 @@ public abstract class EMail {
      * @return e-mail address of the sender.
      */
     public String getSenderMail() {
-        return SENDER_MAIL;
+        return senderMail;
     }
 
     /**
