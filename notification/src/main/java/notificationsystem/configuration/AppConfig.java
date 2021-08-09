@@ -14,30 +14,4 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
-    /*@Bean
-    public Controller getMailManager() {
-        return new Controller();
-    }
-
-    @Bean
-    public MailSender getMailSender() {
-        return new MailSender();
-    }
-
-    @Bean
-    public MailBuilder getMailBuilder() {
-        return new MailBuilder();
-    }
-
-    @Bean
-    public SensorDAO getSensorDAO() {
-        return new SensorDAO();
-    }
-
-    @Bean
-    public SubscriptionDAO getSubscriptionDAO() {
-        return new SubscriptionDAO();
-        }
-     */
-
 }

@@ -54,7 +54,8 @@ public class MailBuilder {
      */
     public ConfirmationMail buildConfirmationMail(String mailAddress) {
         ConfirmationMail confirmationMail = new ConfirmationMail(mailAddress, SUBJECT_CONFIRM, null, null);
-        String message = "A log-in to ... was attempted with this E-Mail. Please enter the code:" + confirmationMail.getConfirmCode()
+        String message = "A log-in to the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' was attempted with this E-Mail." +
+                " Please enter the following code: " + confirmationMail.getConfirmCode()
                 + " to confirm that this is your E-Mail address and complete the log-in.";
         confirmationMail.setMessage(message);
         return confirmationMail;
