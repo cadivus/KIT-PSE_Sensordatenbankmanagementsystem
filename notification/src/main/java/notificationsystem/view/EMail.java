@@ -25,12 +25,12 @@ public abstract class EMail {
      * @param attachment any data attached to the e-mail.
      */
     public EMail( String receiverMail, String subject, String message, JSONArray attachment) {
-        this.senderMail = "";
+        this.senderMail = "sensornotificationsystemPSE@gmail.com";
         this.receiverMail = receiverMail;
         this.subject = subject;
         this.message = message;
         this.attachment = attachment;
-        this.senderName = "";
+        this.senderName = "PSE";
     }
 
     /**

@@ -19,6 +19,9 @@ CREATE TABLE public.subscription
     report_interval bigint
 );
 
+--TODO nur zum testen
+INSERT INTO public.systemlogin (username, password) VALUES ('sensornotificationsystemPSE@gmail.com', 'cKqp4Wa83pLddBv');
+
 COMMIT;
 
 ANALYZE public.systemlogin;
