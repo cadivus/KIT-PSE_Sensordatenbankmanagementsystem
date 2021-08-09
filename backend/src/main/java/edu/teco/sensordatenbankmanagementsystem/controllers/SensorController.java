@@ -9,8 +9,10 @@ import edu.teco.sensordatenbankmanagementsystem.models.Thing;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
+import edu.teco.sensordatenbankmanagementsystem.services.SensorServiceImp;
 import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
 
+import edu.teco.sensordatenbankmanagementsystem.services.ThingServiceImp;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
 
@@ -64,8 +66,8 @@ public class SensorController {
      */
     @Autowired
     public SensorController(
-        ThingService thingService,
-        SensorService sensorService) {
+        ThingServiceImp thingService,
+        SensorServiceImp sensorService) {
         this.thingService = thingService;
         this.sensorService = sensorService;
     }
@@ -84,62 +86,7 @@ public class SensorController {
         return thingService.getAllThings();
     }
 
-    /**
-     * Generates and returns an image of a graph interpolating the data in the specified time frame
-     *
-     * @param id of thing
-     * @param obsId of observed property
-     * @param frameStart start of time frame
-     * @param frameEnd end of time frame
-     * @param maxInterPoints maximum number of interpolation points to use (don't go too crazy)
-     * @param imageSize size of the image to return
-     * @param granularity visual granularity of the rendered graph
-     * @return image of graph
-     */
-    @GetMapping(value = "graph")
-    public ResponseEntity<byte[]> getGraphOfThing(
-            @RequestParam(name="id")String id,
-            @RequestParam(name="obsId")String obsId,
-            @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
-            @RequestParam(name = "frameEnd", required = false) String frameEnd,
-            @RequestParam(name = "maxInterpolationPoints", defaultValue = "100") int maxInterPoints,
-            @RequestParam(name = "imageSize", defaultValue = "400x225") String imageSize,
-            @RequestParam(name = "renderGranularity", defaultValue = "1") int granularity,
-            @RequestParam(name = "interpolationMethod", defaultValue = "lagrange") String interpolationMethod
-    ){
-        String[]iwh = imageSize.split("x");
-        Dimension idim = new Dimension(Integer.parseInt(iwh[0]), Integer.parseInt(iwh[1]));
-        RenderedImage graphImage = sensorService.getGraphImageOfThing(
-                id,
-                obsId,
-                LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
-                Optional.ofNullable(frameEnd)
-                        .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
-                        .orElseGet(LocalDate::now)
-                        .atStartOfDay(),
-                maxInterPoints,
-                idim,
-                granularity,
-                switch (interpolationMethod){
-                    case "lagrange" -> LagrangeInterpolator.getInstance();
-                    case "newton" -> NewtonInterpolator.getInstance();
-                    default -> throw new UnknownInterpolationMethodException(interpolationMethod);
-                }
-        );
-        ByteArrayOutputStream graphStream = new ByteArrayOutputStream();
-        try{
-            //there appears to be (at least locally) a problem where ImageIO only finds a writer for "png"-format
-            //otherwise "jpg" would be preferred here
-            ImageIO.write(graphImage, "png", graphStream);
-        } catch(IOException io) {
-            throw new ImageCantBeGeneratedException();
-        }
-        byte[] graphImageAsArray = graphStream.toByteArray();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>(graphImageAsArray, headers, HttpStatus.CREATED);
-    }
 
     /**
      * Maps a get request for getting a sensors metadata by UUID.

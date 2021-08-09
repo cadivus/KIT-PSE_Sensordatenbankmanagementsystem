@@ -18,8 +18,10 @@ import java.util.*;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import lombok.extern.apachecommons.CommonsLog;
@@ -49,7 +51,8 @@ public class ObservationController {
 
 
     public final ObservationService observationService;
-    public final SensorService sensorService;
+    @Autowired
+    SensorService sensorService;
 
     /**
      * Instantiates a new Observation controller.
@@ -62,7 +65,6 @@ public class ObservationController {
     public ObservationController(ObservationService observationService,
                                  SensorService sensorService) {
         this.observationService = observationService;
-        this.sensorService = sensorService;
     }
 
     /**
@@ -155,7 +157,7 @@ public class ObservationController {
 
         //TODO: Overload these methods instead of using useless start and end points
         List<Observation> list = observationService
-                .getObservationsByDatastream(sensorService.getDatastream(id, start, end), start, end);
+                .getObservationByDatastream(sensorService.getDatastreams(List.of(id), start, end), start, end);
 
         WriteCsvToResponse.writeObservation(response.getWriter(), list);
 

@@ -3,6 +3,7 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import java.util.ArrayList;
 
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

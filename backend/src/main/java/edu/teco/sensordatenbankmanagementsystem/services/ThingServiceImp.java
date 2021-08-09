@@ -1,33 +1,39 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import edu.teco.sensordatenbankmanagementsystem.models.Location;
+import edu.teco.sensordatenbankmanagementsystem.models.Observation;
+import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
+import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import javax.transaction.Transactional;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
-//TODO This might possibly not be needed
 @Service
-public class ThingServiceImp implements ThingService{
+public class ThingServiceImp implements ThingService {
 
   private final ThingRepository thingRepository;
+  private final DatastreamRepository datastreamRepository;
+  private final ObservationService observationService;
 
   @Autowired
   public ThingServiceImp(
-      ThingRepository thingRepository) {
+      ThingRepository thingRepository,
+      DatastreamRepository datastreamRepository,
+      ObservationService observationService) {
     this.thingRepository = thingRepository;
+    this.datastreamRepository = datastreamRepository;
+    this.observationService = observationService;
   }
 
   @Transactional
@@ -36,11 +42,64 @@ public class ThingServiceImp implements ThingService{
   }
 
   /**
+   * Gets whether the given things were active in the last X days
+   * @param thingIds of things to check activity of
+   * @param days to classify recent activity by
+   * @return active status of the given things in order
+   */
+  public List<Integer> getWhetherThingsActive(List<String> thingIds, int days) {
+    LocalDateTime lowerBound = LocalDateTime.now().minusDays(days);
+    return thingIds.stream()
+        .map(id -> thingRepository.existsById(id) ?
+            datastreamRepository.findDatastreamsByThing_Id(id).stream()
+                .anyMatch(
+                    datastream -> Optional.ofNullable(datastream.getPhenomenonEnd())
+                        .map(a->a.isAfter(lowerBound)).orElseGet(()->false)
+                ) ? 1 : 0
+            : -1
+        )
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Gets active rate of things, calculated as amount of data transmissions / days
+   * @param thingsIds of things to get active rate of
+   * @param frameStart start of time frame to calculate active rate from
+   * @param frameEnd end of time frame to calculate active rate from
+   * @return active rate of the given things in order
+   */
+  public List<Double> getActiveRateOfThings(List<String> thingsIds, LocalDateTime frameStart, LocalDateTime frameEnd) {
+    double days = Duration.between(frameStart, frameEnd).toDays();
+    return thingsIds.stream()
+        .map(id -> observationService.getObservationsByThingId(id, Integer.MAX_VALUE, Sort.unsorted(),
+            (List<String>) null,
+            frameStart,
+            frameEnd).size() / days)
+        .collect(Collectors.toList());
+  }
+
+  public List<ObservationStats> getObservationStatsOfThings(List<String> thingsIds, List<String> obsIds,
+      LocalDateTime frameStart, LocalDateTime frameEnd) {
+    return thingsIds.stream()
+        .map(thongId->{
+          ObservationStats r = new ObservationStats();
+          for(String obsId : obsIds){
+            r.addObservedProperty(obsId, observationService.getObservationsByThingId(thongId,
+                Integer.MAX_VALUE, Sort.unsorted(), List.of(obsId), frameStart, frameEnd).stream()
+                .map(Observation::getResultNumber).collect(Collectors.toList()));
+          }
+          return r;
+        })
+        .collect(Collectors.toList());
+  }
+
+  /**
    * This gets the list of all sensors (or things) from the database and orders them by distance
    * to a specified point
+   *
    * @param lat Latitude of the point
    * @param lon Longitude of the point
-   * @param el elevation of the point
+   * @param el  elevation of the point
    * @return The ordered List
    */
   @Cacheable("Sensors")
@@ -58,7 +117,7 @@ public class ThingServiceImp implements ThingService{
             jsonArray.put(0D);
           }
         }
-        map.put(calculateDistanceFromCoordinates(lat,lon,jsonArray.getDouble(0), jsonArray.getDouble(1), el, jsonArray.getDouble(2)), thing);
+        map.put(calculateDistanceFromCoordinates(lat, lon, jsonArray.getDouble(0), jsonArray.getDouble(1), el, jsonArray.getDouble(2)), thing);
       }
     }
 
@@ -74,12 +133,13 @@ public class ThingServiceImp implements ThingService{
   /**
    * This calculates the distance between two coordinates on earth. Each coordinate consists of
    * three different values.
+   *
    * @param lat1 latitude of the first point
    * @param lon1 longitude of the first point
    * @param lat2 latitude of the second point
    * @param lon2 longitude of the second point
-   * @param el1 elevation of the first point
-   * @param el2 elevation of the second point
+   * @param el1  elevation of the first point
+   * @param el2  elevation of the second point
    * @return The distance in meters as a double
    */
   private double calculateDistanceFromCoordinates(double lat1, double lon1, double lat2,
@@ -101,5 +161,13 @@ public class ThingServiceImp implements ThingService{
     distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
     return Math.sqrt(distance);
+  }
+
+  /**
+   * Gets all tings, skr
+   * @return all things in the entire universe
+   */
+  public List<Thing> getAllThings() {
+    return thingRepository.findAll();
   }
 }

@@ -27,8 +27,12 @@ import edu.teco.sensordatenbankmanagementsystem.repository.ObservedPropertyRepos
 import lombok.extern.apachecommons.CommonsLog;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,11 +47,13 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Service
 @CommonsLog(topic = "Observationservice")
 @Transactional
-public class ObservationServiceImp implements ObservationService {
+public class ObservationServiceImp implements ObservationService{
 
   final ObservationRepository observationRepository;
-  final DatastreamRepository datastreamRepository;
-  final SensorService sensorService;
+  @Autowired
+  DatastreamRepository datastreamRepository;
+  @Autowired
+  SensorService sensorService;
   final ProxyHelper proxyHelper;
   final ObservedPropertyRepository observedPropertyRepository;
 
@@ -55,11 +61,8 @@ public class ObservationServiceImp implements ObservationService {
 
   @Autowired
   public ObservationServiceImp(ObservationRepository observationRepository,
-      DatastreamRepository datastreamRepository, SensorService sensorService,
       ProxyHelper proxyHelper, ObservedPropertyRepository observedPropertyRepository) {
     this.observationRepository = observationRepository;
-    this.datastreamRepository = datastreamRepository;
-    this.sensorService = sensorService;
     this.proxyHelper = proxyHelper;
     this.observedPropertyRepository = observedPropertyRepository;
   }
@@ -182,27 +185,33 @@ public class ObservationServiceImp implements ObservationService {
    * @return
    */
   @Transactional
-  @Cacheable("Datastreams")
-  public Stream<Observation> getObservationByDatastream(Stream<Datastream> datastreams,
+  @Cacheable("Observations")
+  public List<Observation> getObservationByDatastream(Stream<Datastream> datastreams,
       LocalDateTime start, LocalDateTime end)  {
     if (datastreams == null) {
       return null;
     }
-    return datastreams.flatMap(d -> {
-      if (start == null) {
-        return observationRepository.findObservationsByDatastreamId(d.getId());
-      } else if (end == null) {
-        return observationRepository
-            .findObservationsByDatastreamIdAndPhenomenonStartAfter(d.getId(), start);
-      } else {
-        return observationRepository
+    List<Observation> result = new ArrayList<>();
+    if (start == null) {
+      for (Datastream d : datastreams.collect(Collectors.toList())) {
+        result.addAll(observationRepository.findObservationsByDatastreamId(d.getId())
+            .collect(Collectors.toList()));
+      }
+    } else if (end == null) {
+      for (Datastream d : datastreams.collect(Collectors.toList())) {
+        result.addAll(observationRepository
+            .findObservationsByDatastreamIdAndPhenomenonStartAfter(d.getId(), start)
+            .collect(Collectors.toList()));
+      }
+    } else {
+      for (Datastream d : datastreams.collect(Collectors.toList())) {
+        result.addAll(observationRepository
             .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
-                d.getId(), start, end);
+                d.getId(), start, end).collect(Collectors.toList()));
       }
 
-
-    });
-
+    }
+    return result;
   }
 
 }

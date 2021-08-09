@@ -31,15 +31,11 @@ public interface SensorService {
      */
     Sensor getSensorMetaData(String id);
 
-    List<Datastream> getDatastreams(String senor_id);
+
     Datastream getDatastream(String sensor_id);
 
     Stream<Datastream> getDatastreams(List<String> sensor_id, LocalDateTime start, LocalDateTime end);
 
     List<Sensor> getAllSensors();
-
-    RenderedImage getGraphImageOfThing(String id, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
-                                        int maxInterPoints, Dimension imageDimension, int granularity,
-                                        Interpolator<Double, Double> interpolator);
 
 }
