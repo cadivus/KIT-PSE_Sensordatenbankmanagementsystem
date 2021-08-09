@@ -1,5 +1,5 @@
 import Thing, {ThingState} from '../material/Thing'
-import ThingValue from '../material/ThingValue'
+import SensorValue from '../material/SensorValue'
 import ThingName from '../material/ThingName'
 import Id from '../material/Id'
 import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
@@ -7,6 +7,7 @@ import {getJson} from './communication/restClient'
 import ThingProperty from '../material/ThingProperty'
 import Location from '../material/Location'
 import LocationWithAddress from '../material/LocationWithAddress'
+import Unit from '../material/Units'
 
 /**
  * This is the storage for things.
@@ -54,8 +55,8 @@ class ThingStore {
       this._things.set(
         id.toString(),
         new (class extends Thing {
-          getValue(): ThingValue {
-            return new ThingValue(i * 10)
+          getValue(): SensorValue {
+            return new SensorValue(i * 10, Unit.DEGREES_CELSIUS)
           }
 
           isActive(): ThingState {
@@ -138,8 +139,8 @@ class ThingStore {
     const result = new (class extends Thing {
       private activeState = ThingState.Unknown
 
-      getValue(): ThingValue {
-        return new ThingValue(100)
+      getValue(): SensorValue {
+        return new SensorValue(100, Unit.DEGREES_CELSIUS)
       }
 
       isActive(): ThingState {

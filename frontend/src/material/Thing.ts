@@ -1,4 +1,4 @@
-import ThingValue from './ThingValue'
+import SensorValue from './SensorValue'
 import ThingName from './ThingName'
 import Id from './Id'
 import ThingProperty from './ThingProperty'
@@ -62,7 +62,7 @@ abstract class Thing {
    *
    * @return The current value of the thing.
    */
-  public abstract getValue(): ThingValue
+  public abstract getValue(): SensorValue
 
   /**
    * This function indicates whether the thing is active.

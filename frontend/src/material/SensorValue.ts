@@ -1,14 +1,19 @@
+import Unit from './Units'
+
 /**
  * This is a representation for thing values.
  */
-class ThingValue {
+class SensorValue {
   /**
    * Thing values stored as an Integer.
    */
   readonly value: number
 
-  constructor(value: number) {
+  readonly unit: Unit
+
+  constructor(value: number, unit: Unit) {
     this.value = value
+    this.unit = unit
   }
 
   toString(): string {
@@ -17,4 +22,4 @@ class ThingValue {
   }
 }
 
-export default ThingValue
+export default SensorValue
