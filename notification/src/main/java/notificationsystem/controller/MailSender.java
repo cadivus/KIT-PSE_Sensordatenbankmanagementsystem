@@ -31,11 +31,12 @@ public class MailSender {
     private void login(String username, String password) {
         Properties properties = new Properties();
 
-        properties.put("mail.smpt.auth", "true");
-        properties.put("mail.smpt.socketFactory.port", "587");
-        properties.put("mail.smpt.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smpt.host", "smpt.gmail.com");
-        properties.put("mail.smpt.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.socketFactory.port", "587");
+        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.starttls.enable", "true");
 
         Authenticator authenticator = new Authenticator() {
             @Override
