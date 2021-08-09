@@ -9,12 +9,12 @@ import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +57,7 @@ public class SensorServiceImp implements SensorService {
   }
 
   @Transactional
-  public Stream<Datastream> getDatastreams(List<String> sensorIds, LocalDateTime start, LocalDateTime end) {
+  public Stream<Datastream> getDatastreams(List<String> thingIds, LocalDateTime start, LocalDateTime end) {
 
     if (start == null)
       start = LocalDateTime.of(1900,1,1,0,0);
@@ -68,7 +68,7 @@ public class SensorServiceImp implements SensorService {
 
 
       return datastreamRepository
-          .findDatastreamsBySensorIdInOrderByPhenomenonStartDesc(sensorIds).filter(e -> e.getPhenomenonStart() != null && e.getPhenomenonEnd() != null)
+          .findDatastreamsByThing_IdInOrderByPhenomenonStartDesc(thingIds).filter(e -> e.getPhenomenonStart() != null && e.getPhenomenonEnd() != null)
           .filter(e -> (e.getPhenomenonStart().isBefore(finalStart) && e.getPhenomenonEnd().isAfter(finalStart))|| (e.getPhenomenonEnd().isAfter(
               finalEnd) && e.getPhenomenonStart().isBefore(finalEnd)) || (e.getPhenomenonStart().isAfter(finalStart) && e.getPhenomenonEnd().isBefore(finalEnd)));
 
