@@ -51,7 +51,14 @@ const useStyles = makeStyles({
 })
 
 const Date = ({date}: {date: Date}) => {
-  return <Typography variant="h5">{dateFormat(date, 'yyyy-mm-dd HH:MM:ss')}</Typography>
+  let formatted = date.toString()
+  try {
+    formatted = dateFormat(date, 'yyyy-mm-dd HH:MM:ss')
+  } catch (e) {
+    // nothing yet
+  }
+
+  return <Typography variant="h5">{formatted}</Typography>
 }
 
 /**
