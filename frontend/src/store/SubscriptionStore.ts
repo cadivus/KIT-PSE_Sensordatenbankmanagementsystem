@@ -42,16 +42,15 @@ class SubscriptionStore {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         subscriptionJSON.forEach((element: any) => {
           const directNotification = element.alert
-          const id = new Id(`${_user?.email.toString()}${element.sensorID}${element.notificationLevel}`)
+          const id = new Id(`${element.sensorID}`)
           const idStr = id.toString()
           const thing = _thingStore.getThing(element.thingID)
           if (thing) {
-            // @ts-ignore
             const subs = new (class extends Subscription {
               unsubscribe(): boolean {
                 return unsubscribeById(id)
               }
-            })(thing, directNotification, element.notificationLevel, _user)
+            })(id, thing, directNotification, element.notificationLevel, _user)
             subscriptions.set(idStr, subs)
           }
         })
@@ -105,14 +104,24 @@ class SubscriptionStore {
     return subscriptions.get(id.toString())
   }
 
-  createSubscription = (
+  createSubscriptions = (
     things: Array<Thing>,
+    directNotification: boolean,
+    notificationLevel: NotificationLevel,
+  ): void => {
+    things.forEach((element: Thing) => {
+      this.createSubscription(element, directNotification, notificationLevel)
+    })
+  }
+
+  createSubscription = (
+    thing: Thing,
     directNotification: boolean,
     notificationLevel: NotificationLevel,
   ): Subscription | null => {
     const {unsubscribe: unsubscribeById} = this
 
-    const id = new Id(`id${new Date().getTime() / 1000}`)
+    const id = new Id(thing.id.toString())
     const {_user, subscriptions} = this
 
     if (!_user) return null
@@ -121,24 +130,23 @@ class SubscriptionStore {
       unsubscribe(): boolean {
         return unsubscribeById(id)
       }
-    })(id, things, directNotification, notificationLevel, _user)
+    })(id, thing, directNotification, notificationLevel, _user)
     subscriptions.set(id.toString(), result)
-    things.forEach(thing => {
-      const subscriptionSetting = {
-        mailAddress: _user.email.toString(),
-        sensorID: thing.id.toString(),
-        reportInterval: notificationLevel.days,
-      }
-      console.log(subscriptionSetting)
-      postJsonGetText(POST_SUBSCRIPTION_PATH, subscriptionSetting)
-      getText(
-        this.getSubscriptionPath(
-          subscriptionSetting.mailAddress,
-          subscriptionSetting.sensorID,
-          subscriptionSetting.reportInterval,
-        ),
-      )
-    })
+    const setting = {
+      mailAddress: _user.email.toString(),
+      sensorID: thing.id.toString(),
+      reportInterval: notificationLevel.days,
+      directNotification: directNotification.valueOf(),
+    }
+    console.log(setting)
+    getText(
+      this.getSubscriptionPath(
+        setting.mailAddress,
+        setting.sensorID,
+        setting.reportInterval,
+        setting.directNotification,
+      ),
+    )
     return result
   }
 
@@ -149,8 +157,13 @@ class SubscriptionStore {
     return subscriptions.delete(id.toString())
   }
 
-  getSubscriptionPath = (mailAddress: string, thingID: string, notificationLevel: number): string => {
-    const path = `${POST_SUBSCRIPTION_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}`
+  getSubscriptionPath = (
+    mailAddress: string,
+    thingID: string,
+    notificationLevel: number,
+    directNotification: boolean,
+  ): string => {
+    const path = `${POST_SUBSCRIPTION_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}&toggleAlert=${directNotification}`
     console.log(path)
     return path
   }
