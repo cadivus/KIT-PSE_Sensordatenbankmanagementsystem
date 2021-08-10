@@ -6,6 +6,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import {FormattedMessage} from 'react-intl'
 import {AppContext} from '../../intl/AppContextProvider'
 import {LOCALES} from '../../intl/constants'
+import useUserStore from '../../hooks/UseUserStore'
 
 const useStyles = makeStyles({
   footer: {
@@ -17,6 +18,7 @@ const AppLayout: FC = ({children}) => {
   const history = useHistory()
   const classes = useStyles()
   const {state, dispatch} = useContext(AppContext)
+  const userStore = useUserStore()
 
   const setLanguage = useCallback(
     locale => {
@@ -29,6 +31,10 @@ const AppLayout: FC = ({children}) => {
   )
 
   const language = state.locale === LOCALES.ENGLISH ? 'Deutsch' : 'English'
+  const logout = () => {
+    userStore?.user?.logout()
+    history.push('/')
+  }
 
   return (
     <>
@@ -42,12 +48,20 @@ const AppLayout: FC = ({children}) => {
               <FormattedMessage id="appbar.subscription" />
             </Typography>
           </Button>
-          <Button color="inherit" onClick={() => history.push('/login')}>
-            <Typography variant="h6">
-              <FormattedMessage id="appbar.login" />
-            </Typography>
-          </Button>
-
+          {!userStore?.user && (
+            <Button color="inherit" onClick={() => history.push('/login')}>
+              <Typography variant="h6">
+                <FormattedMessage id="appbar.login" />
+              </Typography>
+            </Button>
+          )}
+          {userStore?.user && (
+            <Button color="inherit" onClick={logout}>
+              <Typography variant="h6">
+                <FormattedMessage id="appbar.logout" />
+              </Typography>
+            </Button>
+          )}
           <Button
             color="inherit"
             onClick={() => setLanguage(state.locale === LOCALES.ENGLISH ? LOCALES.GERMAN : LOCALES.ENGLISH)}

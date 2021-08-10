@@ -35,7 +35,6 @@ const useStyles = makeStyles(theme => ({
  */
 const LoginStep2 = ({setAuthCode}) => {
   const [codeString, setCodeString] = useState('')
-
   const classes = useStyles()
 
   return (
