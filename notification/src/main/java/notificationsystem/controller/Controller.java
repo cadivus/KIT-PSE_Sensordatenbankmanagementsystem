@@ -15,6 +15,7 @@ import javax.mail.MessagingException;
 import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,14 +110,20 @@ public class Controller {
         subscriptionDAO.delete(toDelete);
     }
 
+    //TODO:Javadoc anpassen
     /**
      * The getSubscription method allows the project website to inquire about the sensors a user is subscribed to.
      * @param mailAddress e-mail of the subscriber.
      * @return List of the sensors the user is subscribed to. The list contains the IDs of those sensors.
      */
     @GetMapping("/getSubscriptions/{mailAddress}")
-    public List<String> getSubscriptions(@PathVariable String mailAddress) {
-        return subscriptionDAO.getAllSensors(mailAddress);
+    public List<Subscription> getSubscriptions(@PathVariable String mailAddress) {
+        List<String> sensorIds = subscriptionDAO.getAllSensors(mailAddress);
+        LinkedList<Subscription> subs = new LinkedList<>();
+        for (String id : sensorIds) {
+            subs.add(subscriptionDAO.get(mailAddress, id));
+        }
+        return subs;
     }
 
     /**
