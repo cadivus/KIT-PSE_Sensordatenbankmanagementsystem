@@ -1,7 +1,7 @@
 import Datastream from '../material/Datastream'
 import DatastreamRow from '../material/DatastreamRow'
 import Id from '../material/Id'
-import Unit, {parseUnit} from '../material/Units'
+import Unit from '../material/Unit'
 import {getJson} from './communication/restClient'
 import {getAllThingDatastreamsUrl} from './communication/backendUrlCreator'
 import DatastreamName from '../material/DatastreamName'
@@ -26,7 +26,7 @@ class DatastreamStore {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           datastreamJSON.forEach((element: any) => {
             const id = new Id(element.id)
-            const unit = parseUnit(element.unit)
+            const unit = new Unit(element.unit)
             const name = new DatastreamName(element.name)
 
             let existingDatastream = _datastreams.get(id.toString())
@@ -47,17 +47,17 @@ class DatastreamStore {
     return resultPromise
   }
 
-  /* private getDatastream = (id: Id): Datastream => {
-    const {implementDatastream} = this
-    return implementDatastream(id, Unit.UNDEFINED, new DatastreamName('Test'))
-  } */
+  getDatastream = (id: Id): Datastream | undefined => {
+    const {_datastreams} = this
+    return _datastreams.get(id.toString())
+  }
 
   private implementDatastream = (id: Id, unit: Unit, name: DatastreamName): Datastream => {
     return new (class extends Datastream {
       getAllValues(): Promise<Array<DatastreamRow>> {
         return Promise.resolve(new Array<DatastreamRow>())
       }
-    })(id, Unit.DEGREES_CELSIUS, name)
+    })(id, new Unit('unknown'), name)
   }
 }
 

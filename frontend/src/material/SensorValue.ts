@@ -1,4 +1,4 @@
-import Unit from './Units'
+import Unit from './Unit'
 
 /**
  * This is a representation for thing values.

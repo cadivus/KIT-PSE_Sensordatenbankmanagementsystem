@@ -7,7 +7,7 @@ import {getJson} from './communication/restClient'
 import ThingProperty from '../material/ThingProperty'
 import Location from '../material/Location'
 import LocationWithAddress from '../material/LocationWithAddress'
-import Unit from '../material/Units'
+import Unit from '../material/Unit'
 import DatastreamStore from './DatastreamStore'
 import Datastream from '../material/Datastream'
 
@@ -109,7 +109,7 @@ class ThingStore {
       private activeState = ThingState.Unknown
 
       getValue(): SensorValue {
-        return new SensorValue(100, Unit.DEGREES_CELSIUS)
+        return new SensorValue(100, new Unit('unknown'))
       }
 
       isActive(): ThingState {
