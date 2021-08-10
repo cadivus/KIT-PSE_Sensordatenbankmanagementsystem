@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import User from '../material/User'
 import EMail from '../material/EMail'
 import LoginCode from '../material/LoginCode'
-import {getJson} from './communication/restClient'
+import {getJson, getText} from './communication/restClient'
 import {NOTIFICATION_PATH} from './communication/notificationUrlCreator'
 
 declare interface UserStore {
@@ -28,14 +28,14 @@ class UserStore extends EventEmitter {
    * @param email Email address to send the code to
    * @return True on success, false otherwise
    */
-  requestStep1 = (email: EMail): boolean => {
-    const path = `${NOTIFICATION_PATH}/getConfirmationCode/{${email}}`
-    getJson(path).then(loginCodeJSON => {
+  requestStep1 = (email: EMail): LoginCode | undefined => {
+    const path = `${NOTIFICATION_PATH}/getConfirmCode/${email.toString()}`
+    console.log(path)
+    getText(path).then(loginCodeJSON => {
       console.log(loginCodeJSON)
-      this.user = this.requestUser(email, loginCodeJSON)
-      return true
+      return new LoginCode(loginCodeJSON)
     })
-    return false
+    return undefined
   }
 
   /**

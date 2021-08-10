@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import {FormattedMessage} from 'react-intl'
-import useUserStore from '../../hooks/UseUserStore'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -37,11 +36,6 @@ const useStyles = makeStyles(theme => ({
 const LoginStep1 = ({setMailAddress}) => {
   const [mailString, setMailString] = useState('')
   const classes = useStyles()
-  const userStore = useUserStore()
-
-  function login() {
-    userStore.requestStep1(mailString)
-  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -66,14 +60,7 @@ const LoginStep1 = ({setMailAddress}) => {
             autoFocus
             onInput={e => setMailString(e.target.value)}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={login}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             <FormattedMessage id="loginpage.signInButton" />
           </Button>
         </form>

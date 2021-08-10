@@ -85,6 +85,7 @@ class ThingStore {
 
     const {_things, createThing, applyProperties, parseLocation} = this
     getJson(ALL_THINGS).then(thingJSON => {
+      /*
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       thingJSON.forEach((element: any) => {
         const id = new Id(element.id)
@@ -110,6 +111,8 @@ class ThingStore {
       })
 
       this._lastUpdate = Date.now()
+
+       */
     })
   }
 

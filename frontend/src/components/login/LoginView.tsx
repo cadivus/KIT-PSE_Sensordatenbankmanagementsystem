@@ -18,16 +18,19 @@ const LoginView = () => {
 
   const [secondStep, setSecondStep] = useState(false)
   const [mailString, setMailString] = useState('')
-  const [codeString, setCodeString] = useState('')
+  const [codeStringUser, setCodeStringUser] = useState('')
+  let codeStringAdmin: LoginCode | undefined
 
   const setMail = (adr: string) => {
     setMailString(adr)
     setSecondStep(true)
+    codeStringAdmin = userStore?.requestStep1(new EMail(mailString))
+    console.log('hier')
   }
 
   const requestUser = (code: string) => {
-    setCodeString(code)
-    if (userStore?.requestUser(new EMail(mailString), new LoginCode(codeString))) {
+    setCodeStringUser(code)
+    if (userStore?.requestUser(new EMail(mailString), new LoginCode(codeStringUser))) {
       history.push('/')
     }
   }
