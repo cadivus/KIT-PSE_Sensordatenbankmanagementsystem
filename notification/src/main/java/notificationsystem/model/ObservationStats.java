@@ -2,12 +2,12 @@ package notificationsystem.model;
 
 public class ObservationStats {
 
-    private String obsId;
-    private String obsName;
-    private double avg;
-    private double med;
-    private double stdv;
-    private double min;
+    private final String obsId;
+    private final String obsName;
+    private final double avg;
+    private final double med;
+    private final double stdv;
+    private final double min;
 
     public ObservationStats(String obsId, String obsName, double avg, double med, double stdv, double min) {
         this.obsId = obsId;

@@ -14,7 +14,7 @@ import java.util.*;
 
 /**
  * The SensorDAO class implements the DAO interface to handle database queries regarding sensors. For that end it
- * provides get, save, delete and getAll methods designed to hide the actual database queries, offering a single
+ * provides get and getAll methods designed to hide the actual database queries, offering a single
  * access point to all sensor related data and information.
  */
 @Service
@@ -33,7 +33,6 @@ public class SensorDAO implements DAO<Sensor> {
         this.getActiveRateApi = backendUrl + "/sensor/active_rate";
         this.getAllObsApi = backendUrl + "/observation/getAllObs";
         this.getStatsApi = backendUrl + "/stats";
-
         this.restTemplate = restTemplate;
     }
 

@@ -16,6 +16,9 @@ import java.util.LinkedList;
  */
 public class Sensor {
 
+    private final static int COORDINATES_IN_LOCATION = 0;
+    private final static String COORDINATES_KEY = "id";
+
     String id;
     String name;
     String description;
@@ -29,7 +32,7 @@ public class Sensor {
         this.name = name;
         this.description = description;
         this.properties = properties;
-        this.location = location.getJSONObject(0).getString("id");
+        this.location = location.getJSONObject(COORDINATES_IN_LOCATION).getString(COORDINATES_KEY);
     }
 
     public String getId() {
