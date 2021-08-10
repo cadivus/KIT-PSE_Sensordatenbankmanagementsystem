@@ -16,15 +16,23 @@ import java.util.Properties;
  */
 public class MailSender {
 
+    private final static String SEND_STATE_ERROR = "Has to be logged in to send e-mails.";
+
     private Session session;
 
+    /**
+     * Calling the constructor of the MailSender class constructs a new instance of the class and performs a log-in
+     * with the given log-in data.
+     * @param username e-mail with which to log-in.
+     * @param password password for the given e-mail.
+     */
     public MailSender(String username, String password) {
         login(username, password);
     }
 
     /**
-     * Log-in procedure needed for authentication before an e-mail can be sent. Also instanciates the session with
-     * the smpt-server.
+     * Log-in procedure needed for authentication before an e-mail can be sent. Also instantiates the session with
+     * the smtp-server.
      * @param username username used for authentication purposes.
      * @param password password used for authentication purposes.
      */
@@ -51,11 +59,11 @@ public class MailSender {
 
     /**
      * Used to send the finished e-mails.
-     * @param mail to be send to its receiver.
+     * @param mail to be sent to its receiver.
      */
     public void send(EMail mail) throws MessagingException, IllegalStateException, UnsupportedEncodingException {
         if (session == null) {
-            throw new IllegalStateException("Has to be logged in.");
+            throw new IllegalStateException(SEND_STATE_ERROR);
         }
 
         MimeMessage message = new MimeMessage(session);
