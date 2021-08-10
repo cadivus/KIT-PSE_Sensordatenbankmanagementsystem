@@ -111,11 +111,10 @@ public class Controller {
         subscriptionDAO.delete(toDelete);
     }
 
-    //TODO:Javadoc anpassen
     /**
-     * The getSubscription method allows the project website to inquire about the sensors a user is subscribed to.
+     * The getSubscription method allows the project website to inquire about the subscriptions in the database.
      * @param mailAddress e-mail of the subscriber.
-     * @return List of the sensors the user is subscribed to. The list contains the IDs of those sensors.
+     * @return List of the subscriptions of the user.
      */
     @GetMapping("/getSubscriptions/{mailAddress}")
     public List<Subscription> getSubscriptions(@PathVariable String mailAddress) {
