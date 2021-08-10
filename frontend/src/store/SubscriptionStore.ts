@@ -4,6 +4,7 @@ import ThingStore from './ThingStore'
 import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
 import Thing from '../material/Thing'
+import {postPath} from "./communication/restClient";
 
 /**
  * This is the storage for subscriptions.
@@ -84,17 +85,28 @@ class SubscriptionStore {
     directNotification: boolean,
     notificationLevel: NotificationLevel,
   ): Subscription | null => {
+    console.log('ja')
+
     const {unsubscribe: unsubscribeById} = this
 
     const id = new Id(`id${new Date().getTime() / 1000}`)
     const {_user, subscriptions} = this
+    console.log('warte')
+
     if (!_user) return null
+    console.log('warte')
+
     const result = new (class extends Subscription {
       unsubscribe(): boolean {
         return unsubscribeById(id)
       }
     })(id, things, directNotification, notificationLevel, _user)
     subscriptions.set(id.toString(), result)
+    console.log('warte')
+    things.forEach(thing => {
+      postPath(this.getSubscriptionPath(_user.email.toString(), thing.id.toString(), notificationLevel.days))
+    })
+    console.log('ja')
     return result
   }
 
@@ -103,6 +115,12 @@ class SubscriptionStore {
     if (!subscriptions.has(id.toString())) return false
 
     return subscriptions.delete(id.toString())
+  }
+
+  getSubscriptionPath = (mailAddress: string, thingID: string, notificationLevel: number): string => {
+    const path = `?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}`
+    console.log(path)
+    return path
   }
 }
 

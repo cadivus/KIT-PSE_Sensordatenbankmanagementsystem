@@ -61,6 +61,7 @@ class UserStore extends EventEmitter {
     }
 
     const {user} = this
+    this.emit('login-change')
     return user
   }
 }

@@ -135,8 +135,11 @@ const SubscriptionEditorView = (props: any) => {
   const updateSubscription = createMode
     ? () => {
         if (!subscriptionStore || !notificationLevel || !(typeof directNotification === 'boolean')) return
+        console.log('ah')
         subscriptionStore.createSubscription(things, directNotification, notificationLevel)
+        console.log('ah')
         history.push('/subscriptions')
+        console.log('ah')
       }
     : () => {
         if (!subscription) return
