@@ -1,15 +1,19 @@
 import Unit from './Units'
 import Id from './Id'
 import DatastreamRow from './DatastreamRow'
+import DatastreamName from './DatastreamName'
 
 abstract class Datastream {
   readonly unit: Unit
 
   readonly datastreamId: Id
 
-  constructor(datastreamId: Id, unit: Unit) {
+  readonly name: DatastreamName
+
+  constructor(datastreamId: Id, unit: Unit, name: DatastreamName) {
     this.unit = unit
     this.datastreamId = datastreamId
+    this.name = name
   }
 
   public abstract getAllValues(): Promise<Array<DatastreamRow>>

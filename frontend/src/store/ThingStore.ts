@@ -9,6 +9,7 @@ import Location from '../material/Location'
 import LocationWithAddress from '../material/LocationWithAddress'
 import Unit from '../material/Units'
 import DatastreamStore from './DatastreamStore'
+import Datastream from '../material/Datastream'
 
 /**
  * This is the storage for things.
@@ -47,47 +48,9 @@ class ThingStore {
   }
 
   /**
-   * Gets mock things.
-   */
-  private getMockThings = (): void => {
-    const {_things} = this
-    if (_things && _things.size > 0) return
-
-    const mockThing = (i: number) => {
-      const id = new Id(`${i}-${new Date().getTime() / 1000}`)
-      const location = new Location(10 * i, 1000 * i)
-      this._things.set(
-        id.toString(),
-        new (class extends Thing {
-          getValue(): SensorValue {
-            return new SensorValue(i * 10, Unit.DEGREES_CELSIUS)
-          }
-
-          isActive(): ThingState {
-            return ThingState.Unknown
-          }
-        })(new ThingName(`Thing${i}`), id, location),
-      )
-    }
-
-    for (let i = 0; i < 20; i += 1) {
-      mockThing(i)
-    }
-
-    this._lastUpdate = Date.now()
-  }
-
-  /**
    * Gets things from the backend.
    */
   private getThingsFromBackend = (): void => {
-    const {env} = process
-    if (env.USE_MOCK) {
-      const {getMockThings} = this
-      getMockThings()
-      return
-    }
-
     const {_things, createThing, applyProperties, parseLocation} = this
     getJson(ALL_THINGS).then(thingJSON => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -140,6 +103,8 @@ class ThingStore {
   }
 
   private createThing = (id: Id, name: ThingName, location: Location): Thing => {
+    const {_datastreamStore} = this
+
     const result = new (class extends Thing {
       private activeState = ThingState.Unknown
 
@@ -160,6 +125,10 @@ class ThingStore {
 
         const {activeState} = this
         return activeState
+      }
+
+      getDatastreams(): Promise<Array<Datastream>> {
+        return _datastreamStore.getDatastreams(id)
       }
     })(name, id, location)
 
