@@ -2,6 +2,8 @@ package edu.teco.sensordatenbankmanagementsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDateTime;
 import javax.persistence.FetchType;
@@ -54,6 +56,7 @@ public class Datastream {
     @Column(name = "\"OBS_PROPERTY_ID\"")
     String obsId;
 
+    @JsonIgnore
     @JoinColumn(name = "\"THING_ID\"")
     @ManyToOne(fetch = FetchType.LAZY)
     Thing thing;

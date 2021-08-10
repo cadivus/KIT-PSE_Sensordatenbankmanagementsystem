@@ -38,13 +38,15 @@ public class DatastreamController {
 
   @GetMapping("/listDatastreams")
   @Transactional
-  public List<Datastream> getDatastreams(@RequestParam(value = "id") String thingId){
+  public List<Datastream> getDatastreams(@RequestParam(value = "id") String thingId) {
     return thingService.getThing(thingId).getDatastream();
   }
 
   @GetMapping("/export")
   @Transactional
-  public void exportToCsv(@RequestParam(value =  "id") String datastreamId,@RequestParam(value = "limit", required = false) String limitStr, HttpServletResponse response)
+  public void exportToCsv(@RequestParam(value = "id") String datastreamId,
+      @RequestParam(value = "limit", required = false) String limitStr,
+      HttpServletResponse response)
       throws IOException {
     response.setContentType("text/csv");
     DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
@@ -62,12 +64,18 @@ public class DatastreamController {
     String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
     response.setHeader(headerKey, headerValue);
     Stream<Observation> list = observationService.getObservationByDatastreamId(datastreamId,
-        PageRequest.of(0,limit));
+        PageRequest.of(0, limit));
 
     WriteCsvToResponse.writeObservation(response.getWriter(), list);
 
-
   }
 
+  @GetMapping("/getDatastream")
+  public Datastream exportDatastream(@RequestParam(value = "id") String datastreamId) {
+    return thingService.getDatastream(datastreamId);
+  }
 
 }
+
+
+
