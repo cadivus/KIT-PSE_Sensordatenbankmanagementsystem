@@ -71,7 +71,7 @@ class DatastreamStore {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               json.forEach((row: any) => {
                 const date = new Date(row.RESULTTIME)
-                const value = new SensorValue(Number(row.RESULTNUMBER), unit)
+                const value = new SensorValue(row.RESULTNUMBER, unit)
 
                 const datastreamRow: DatastreamRow = {value, date}
                 result.push(datastreamRow)
