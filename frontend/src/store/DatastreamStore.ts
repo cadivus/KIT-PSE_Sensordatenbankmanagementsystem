@@ -2,9 +2,13 @@ import Datastream from '../material/Datastream'
 import DatastreamRow from '../material/DatastreamRow'
 import Id from '../material/Id'
 import Unit from '../material/Unit'
-import {getJson} from './communication/restClient'
-import {getAllThingDatastreamsUrl} from './communication/backendUrlCreator'
+import {getJson, getText} from './communication/restClient'
+import {getAllThingDatastreamsUrl, getExportDatastreamUrl} from './communication/backendUrlCreator'
 import DatastreamName from '../material/DatastreamName'
+import SensorValue from '../material/SensorValue'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const csvToJson = require('convert-csv-to-json')
 
 class DatastreamStore {
   private _datastreams: Map<string, Datastream>
@@ -55,7 +59,31 @@ class DatastreamStore {
   private implementDatastream = (id: Id, unit: Unit, name: DatastreamName): Datastream => {
     return new (class extends Datastream {
       getAllValues(): Promise<Array<DatastreamRow>> {
-        return Promise.resolve(new Array<DatastreamRow>())
+        const url = getExportDatastreamUrl(id)
+
+        const resultPromise = new Promise<Array<DatastreamRow>>((resolve, reject) => {
+          getText(url)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .then((csv: any): Array<DatastreamRow> => {
+              const result = new Array<DatastreamRow>()
+
+              const json = csvToJson.fieldDelimiter(',').csvStringToJson(csv)
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              json.forEach((row: any) => {
+                const date = new Date(row.RESULTTIME)
+                const value = new SensorValue(Number(row.VALUE), unit)
+
+                const datastreamRow: DatastreamRow = {value, date}
+                result.push(datastreamRow)
+              })
+
+              return result
+            })
+            .then(result => {
+              resolve(result)
+            })
+        })
+        return resultPromise
       }
     })(id, new Unit('unknown'), name)
   }
