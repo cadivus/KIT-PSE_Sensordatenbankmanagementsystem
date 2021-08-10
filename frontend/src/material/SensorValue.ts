@@ -17,8 +17,8 @@ class SensorValue {
   }
 
   toString(): string {
-    const {value} = this
-    return `${value}`
+    const {value, unit} = this
+    return `${value} ${unit.toString()}`
   }
 }
 

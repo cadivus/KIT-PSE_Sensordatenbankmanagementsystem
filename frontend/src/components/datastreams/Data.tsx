@@ -17,6 +17,9 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Datastream from '../../material/Datastream'
 import DatastreamRow from '../../material/DatastreamRow'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const dateFormat = require('dateformat')
+
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
     head: {
@@ -46,6 +49,10 @@ const useStyles = makeStyles({
     width: '70%',
   },
 })
+
+const Date = ({date}: {date: Date}) => {
+  return <Typography variant="h5">{dateFormat(date, 'yyyy-mm-dd HH:MM:ss')}</Typography>
+}
 
 /**
  *  Displays the data of a selected thing.
@@ -84,10 +91,10 @@ const Data = ({datastream}: {datastream: Datastream}) => {
           {dataList.map(dataRow => (
             <StyledTableRow hover key={dataRow.date.toString()}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="h5">{dataRow.date.toString()}</Typography>
+                <Date date={dataRow.date} />
               </StyledTableCell>
               <StyledTableCell>
-                <Typography>{dataRow.value.toString()}</Typography>
+                <Typography variant="h5">{dataRow.value.toString()}</Typography>
               </StyledTableCell>
             </StyledTableRow>
           ))}
