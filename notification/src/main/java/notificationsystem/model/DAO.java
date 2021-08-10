@@ -17,7 +17,7 @@ public interface DAO<T> {
      * @param t identifier for the object needed.
      * @return The object fetched.
      */
-    Optional<T> get(T t);
+    Optional<T> get(T t) throws Exception;
 
     /**
      * Gets a list of all the objects of the given class from the database.

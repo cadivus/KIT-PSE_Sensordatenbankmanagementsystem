@@ -1,11 +1,9 @@
 package notificationsystem.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,6 +23,15 @@ public class SensorDAO implements DAO<Sensor> {
     private final String getAllObsApi;
     private final String getStatsApi;
     private final RestTemplate restTemplate;
+    private final static int FIRST_ACTIVE_RATE = 0;
+    private final static int DEFAULT_ACTIVE_RATE = 0;
+    private final static String KEY_ID = "id";
+    private final static String KEY_NAME = "name";
+    private final static String KEY_AVG = "avg";
+    private final static String KEY_MED = "med";
+    private final static String KEY_STDV = "stdv";
+    private final static String KEY_MIN = "min";
+    private final static String ERROR_GET = "Found no such sensor.";
 
     @Autowired
     public SensorDAO(String backendUrl, RestTemplate restTemplate) {
@@ -37,9 +44,13 @@ public class SensorDAO implements DAO<Sensor> {
     }
 
     @Override
-    public Optional<Sensor> get(Sensor sensor) {
+    public Optional<Sensor> get(Sensor sensor) throws Exception {
         Sensor fetchedSensor = restTemplate.getForObject(getThingApi + sensor.getId(), Sensor.class);
-        return Optional.of(fetchedSensor);
+        if (fetchedSensor != null) {
+            return Optional.of(fetchedSensor);
+        } else {
+            throw new Exception(ERROR_GET);
+        }
     }
 
     /**
@@ -54,24 +65,31 @@ public class SensorDAO implements DAO<Sensor> {
     @Override
     public List<Sensor> getAll() {
         Sensor[] sensors = restTemplate.getForObject(getAllSensorsApi, Sensor[].class);
-        return Arrays.asList(sensors);
+        if (sensors != null) {
+            return Arrays.asList(sensors);
+        } else {
+            return new LinkedList<>();
+        }
     }
 
     public void setStats(Sensor sensor, LocalDate timeframe) throws JSONException {
 
         //Get activeRate
         Double[] result = restTemplate.getForObject(getActiveRateApi, Double[].class, List.of(sensor.getId()), timeframe);
-        sensor.setActiveRate(result[0]);
+        if (result != null) {
+            sensor.setActiveRate(result[FIRST_ACTIVE_RATE]);
+        } else {
+            sensor.setActiveRate(DEFAULT_ACTIVE_RATE);
+        }
 
         //Get stats
-        LinkedList<ObservationStats> stats = new LinkedList<>();
         LinkedList<String> obsIds = new LinkedList<>();
         LinkedList<String> obsNames = new LinkedList<>();
         JSONArray observationIds = restTemplate.getForObject(getAllObsApi, JSONArray.class);
         for (int i = 0; i < observationIds.length(); i++) {
             JSONObject entry = observationIds.getJSONObject(i);
-            String obsId = entry.getString("id");
-            String name = entry.getString("name");
+            String obsId = entry.getString(KEY_ID);
+            String name = entry.getString(KEY_NAME);
             obsIds.add(obsId);
             obsNames.add(name);
         }
@@ -81,12 +99,11 @@ public class SensorDAO implements DAO<Sensor> {
         JSONArray allStats = restTemplate.getForObject(getStatsApi, JSONArray.class, List.of(sensor.getId()), obsIds, timeframe);
         for(int i  = 0; i < allStats.length(); i++) {
             JSONObject entry = allStats.getJSONObject(i);
-            double avg = entry.getDouble("avg");
-            double med = entry.getDouble("med");
-            double stdv = entry.getDouble("stdv");
-            double min = entry.getDouble("min");
+            double avg = entry.getDouble(KEY_AVG);
+            double med = entry.getDouble(KEY_MED);
+            double stdv = entry.getDouble(KEY_STDV);
+            double min = entry.getDouble(KEY_MIN);
 
-            //TODO: obsIds, obsNames always as long as allStats?
             ObservationStats obsStat = new ObservationStats(obsIds.get(i), obsNames.get(i), avg, med, stdv, min);
             observationStats.add(obsStat);
         }
