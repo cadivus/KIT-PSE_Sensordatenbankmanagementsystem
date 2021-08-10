@@ -38,13 +38,3 @@ export async function postJsonGetText(path: string, postJson: any): Promise<stri
 
   return data
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function postPath(path: string): Promise<boolean> {
-  const response = await fetch(path, {
-    method: 'post',
-  })
-  await response.text()
-
-  return true
-}

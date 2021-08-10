@@ -4,7 +4,9 @@ import ThingStore from './ThingStore'
 import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
 import Thing from '../material/Thing'
-import {postPath} from "./communication/restClient";
+import {getJson, getText, postJsonGetJson, postJsonGetText} from './communication/restClient'
+import {CONFIRMCODE_PATH, GET_SUBSCRIPTION_PATH, POST_SUBSCRIPTION_PATH} from './communication/notificationUrlCreator'
+import LoginCode from '../material/LoginCode'
 
 /**
  * This is the storage for subscriptions.
@@ -34,6 +36,28 @@ class SubscriptionStore {
    */
   private getSubscriptionsFromBackend = (): void => {
     const {subscriptions, _thingStore, _user, unsubscribe: unsubscribeById} = this
+    if (_user) {
+      const path = `${GET_SUBSCRIPTION_PATH}/${_user?.email.toString()}`
+      getJson(path).then(subscriptionJSON => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        subscriptionJSON.forEach((element: any) => {
+          const directNotification = element.alert
+          const id = new Id(`${_user?.email.toString()}${element.sensorID}${element.notificationLevel}`)
+          const idStr = id.toString()
+          const thing = _thingStore.getThing(element.thingID)
+          if (thing) {
+            // @ts-ignore
+            const subs = new (class extends Subscription {
+              unsubscribe(): boolean {
+                return unsubscribeById(id)
+              }
+            })(thing, directNotification, element.notificationLevel, _user)
+            subscriptions.set(idStr, subs)
+          }
+        })
+      })
+    }
+    /*
     if (_user && (subscriptions.size === 0 || subscriptions.values().next().value.owner !== this._user)) {
       subscriptions.clear()
       for (let i = 1; i <= _thingStore.things.length; i += 1) {
@@ -49,6 +73,7 @@ class SubscriptionStore {
         subscriptions.set(idStr, subs)
       }
     }
+     */
   }
 
   /**
@@ -85,16 +110,12 @@ class SubscriptionStore {
     directNotification: boolean,
     notificationLevel: NotificationLevel,
   ): Subscription | null => {
-    console.log('ja')
-
     const {unsubscribe: unsubscribeById} = this
 
     const id = new Id(`id${new Date().getTime() / 1000}`)
     const {_user, subscriptions} = this
-    console.log('warte')
 
     if (!_user) return null
-    console.log('warte')
 
     const result = new (class extends Subscription {
       unsubscribe(): boolean {
@@ -102,11 +123,22 @@ class SubscriptionStore {
       }
     })(id, things, directNotification, notificationLevel, _user)
     subscriptions.set(id.toString(), result)
-    console.log('warte')
     things.forEach(thing => {
-      postPath(this.getSubscriptionPath(_user.email.toString(), thing.id.toString(), notificationLevel.days))
+      const subscriptionSetting = {
+        mailAddress: _user.email.toString(),
+        sensorID: thing.id.toString(),
+        reportInterval: notificationLevel.days,
+      }
+      console.log(subscriptionSetting)
+      postJsonGetText(POST_SUBSCRIPTION_PATH, subscriptionSetting)
+      getText(
+        this.getSubscriptionPath(
+          subscriptionSetting.mailAddress,
+          subscriptionSetting.sensorID,
+          subscriptionSetting.reportInterval,
+        ),
+      )
     })
-    console.log('ja')
     return result
   }
 
@@ -118,7 +150,7 @@ class SubscriptionStore {
   }
 
   getSubscriptionPath = (mailAddress: string, thingID: string, notificationLevel: number): string => {
-    const path = `?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}`
+    const path = `${POST_SUBSCRIPTION_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}`
     console.log(path)
     return path
   }

@@ -11,7 +11,6 @@ import {
   Typography,
   withStyles,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogTitle,
