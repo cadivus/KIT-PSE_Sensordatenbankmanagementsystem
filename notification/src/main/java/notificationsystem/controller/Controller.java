@@ -10,13 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
 import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The Controller is a central component to the E-Mail Notification System managing most tasks as well as providing an
@@ -34,23 +35,27 @@ public class Controller {
 
     @Value("${sensors.backend.url}")
     private String backendUrl;
+    private final static String CONSTRUCTOR_ERROR = "No Email login data found.";
 
     private final MailBuilder mailBuilder;
     private final MailSender mailSender;
     private final SubscriptionDAO subscriptionDAO;
     private SensorDAO sensorDAO;
-    private SystemLoginDAO systemLoginDAO;
     private final static long SYSTEMLOGIN_ID = 1;
     private final RestTemplate restTemplate;
 
-    /**
-     * Constructs a new Controller instance. Instantiates the MailBuilder, MailSender, SubscriptionDAO and SensorDAO.
-     */
     @Autowired
-    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate) {
-        this.systemLoginDAO =  systemLoginDAO;
+    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate) throws Exception {
         this.mailBuilder = new MailBuilder();
-        SystemLogin login = systemLoginDAO.getLogin(SYSTEMLOGIN_ID).get();
+
+        Optional<SystemLogin> loginOptional = systemLoginDAO.getLogin(SYSTEMLOGIN_ID);
+        SystemLogin login;
+        if (loginOptional.isPresent()) {
+            login = loginOptional.get();
+        } else {
+            throw new Exception(CONSTRUCTOR_ERROR);
+        }
+
         this.mailSender = new MailSender(login.getUsername(), login.getPassword());
         this.subscriptionDAO = subscriptionDAO;
         this.restTemplate = restTemplate;
@@ -63,8 +68,8 @@ public class Controller {
 
     /**
      * Sends a confirmation mail to a user.
-     * The method first uses the MailBuilder class to build the e-mail, then the MailSender class to send it to its
-     * recipient.
+     * The method first uses the MailBuilder class to build the e-mail and generate the confirmation code,
+     * then the MailSender class to send it to its recipient.
      * @param mailAddress e-mail address the confirmation mail is sent to.
      * @return String containing the confirmation code sent to the user.
      */
@@ -105,14 +110,20 @@ public class Controller {
         subscriptionDAO.delete(toDelete);
     }
 
+    //TODO:Javadoc anpassen
     /**
      * The getSubscription method allows the project website to inquire about the sensors a user is subscribed to.
      * @param mailAddress e-mail of the subscriber.
-     * @return List of the sensors the user is subscribed to. The list contains the UUIDs of those sensors.
+     * @return List of the sensors the user is subscribed to. The list contains the IDs of those sensors.
      */
     @GetMapping("/getSubscriptions/{mailAddress}")
-    public List<String> getSubscriptions(@PathVariable String mailAddress) {
-        return subscriptionDAO.getAllSensors(mailAddress);
+    public List<Subscription> getSubscriptions(@PathVariable String mailAddress) {
+        List<String> sensorIds = subscriptionDAO.getAllSensors(mailAddress);
+        LinkedList<Subscription> subs = new LinkedList<>();
+        for (String id : sensorIds) {
+            subs.add(subscriptionDAO.get(mailAddress, id));
+        }
+        return subs;
     }
 
     /**
@@ -136,7 +147,7 @@ public class Controller {
     }
 
     /**
-     * The getReport methos is used to sent report e-mails to a subscriber of the given sensor. Reports contain
+     * The getReport method is used to sent report e-mails to a subscriber of the given sensor. Reports contain
      * relevant information about the sensor and the data collected.
      * The method uses the SensorDAO class to retrieve the information about the sensor and its data. The e-mail is
      * then built and sent using the MailBuilder and MailSender classes, respectively.

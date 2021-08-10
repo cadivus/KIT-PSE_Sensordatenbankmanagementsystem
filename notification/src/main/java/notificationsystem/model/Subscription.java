@@ -14,11 +14,13 @@ import java.time.LocalDate;
 @Table(name = "Subscription")
 public class Subscription {
 
+    private final static int ALLOCATION_SIZE = 1;
+
     @Id
     @SequenceGenerator(
             name = "subscription_sequence",
             sequenceName = "subscription_sequence",
-            allocationSize = 1
+            allocationSize = ALLOCATION_SIZE
 
     )
     @GeneratedValue(
@@ -70,7 +72,6 @@ public class Subscription {
     }
 
     public Subscription() {
-
     }
 
     /**
@@ -82,27 +83,11 @@ public class Subscription {
     }
 
     /**
-     * Sets the e-mail address of the subscriber.
-     * @param subscriberAddress e-mail address of the subscriber.
-     */
-    public void setSubscriberAddress(String subscriberAddress) {
-        this.subscriberAddress = subscriberAddress;
-    }
-
-    /**
      * Gets the sensor the user is subscribed to.
      * @return the sensor the user is subscribed to.
      */
     public String getSensorId() {
         return sensorId;
-    }
-
-    /**
-     * Sets the sensor the user is subscribed to.
-     * @param sensorId the sensor the user is subscribed to.
-     */
-    public void setSensorId(String sensorId) {
-        this.sensorId = sensorId;
     }
 
     /**
@@ -130,13 +115,9 @@ public class Subscription {
     }
 
     /**
-     * Sets the time period between reports.
-     * @param reportInterval the time period between two reports.
+     * Gets id of the subscription.
+     * @return id of the subscription.
      */
-    public void setReportInterval(long reportInterval) {
-        this.reportInterval = reportInterval;
-    }
-
     public long getId() {
         return id;
     }
