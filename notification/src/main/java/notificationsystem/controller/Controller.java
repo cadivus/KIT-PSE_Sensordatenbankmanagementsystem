@@ -94,8 +94,9 @@ public class Controller {
      * @param reportInterval time period between reports.
      */
     @PostMapping(value = "/postSubscription", consumes = "application/json")
-    public void postSubscription(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") String sensorID, @RequestParam("reportInterval") long reportInterval) {
-        Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval);
+    public void postSubscription(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") String sensorID,
+                                 @RequestParam("reportInterval") long reportInterval, @RequestParam("toggleAlert") boolean toggleAlert) {
+        Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval, toggleAlert);
         subscriptionDAO.save(subscription);
     }
 
@@ -137,11 +138,13 @@ public class Controller {
         Sensor sensor = sensorDAO.get(sensorID);
         List<String> subscribers = subscriptionDAO.getAllSubscribers(sensorID);
         for (String subscriber : subscribers) {
+            if (subscriptionDAO.get(subscriber, sensorID).isToggleAlert()) {
             Alert alert = mailBuilder.buildAlert(subscriber, sensor);
             try {
                 mailSender.send(alert);
             } catch (MessagingException | UnsupportedEncodingException e) {
                 e.printStackTrace();
+            }
             }
         }
     }
