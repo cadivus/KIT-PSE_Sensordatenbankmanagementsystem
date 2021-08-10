@@ -44,15 +44,20 @@ public class DatastreamController {
 
   @GetMapping("/export")
   @Transactional
-  public void exportToCsv(@RequestParam(value =  "id") String datastreamId,@RequestParam(value = "limit", required = false) int limit, HttpServletResponse response)
+  public void exportToCsv(@RequestParam(value =  "id") String datastreamId,@RequestParam(value = "limit", required = false) String limitStr, HttpServletResponse response)
       throws IOException {
     response.setContentType("text/csv");
     DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
     String currentDateTime = dateFormatter.format(new Date());
-
-    if (limit == 0){
-      limit = Integer.MAX_VALUE;
+    int limit = Integer.MAX_VALUE;
+    if (limitStr != null) {
+      try {
+        limit = Integer.parseInt(limitStr);
+      } catch (NumberFormatException ex) {
+        throw new IllegalArgumentException("Limit has to be a number");
+      }
     }
+
     String headerKey = "Content-Disposition";
     String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
     response.setHeader(headerKey, headerValue);

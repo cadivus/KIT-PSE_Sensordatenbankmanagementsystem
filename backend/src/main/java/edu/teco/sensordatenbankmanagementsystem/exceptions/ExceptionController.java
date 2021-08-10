@@ -1,11 +1,13 @@
 package edu.teco.sensordatenbankmanagementsystem.exceptions;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 import lombok.extern.apachecommons.CommonsLog;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -75,7 +77,7 @@ public class ExceptionController {
             return ResponseEntity.unprocessableEntity().body(errorResponse);
         }
     @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     private ResponseEntity<ErrorResponse> handleIllegalArgumentException (
         Exception exception,
         WebRequest request){
@@ -85,6 +87,20 @@ public class ExceptionController {
             exception,
             "Validation error. Check input",
             HttpStatus.UNPROCESSABLE_ENTITY,
+            request
+        );
+    }
+
+    @ExceptionHandler({org.postgresql.util.PSQLException.class, CannotCreateTransactionException.class,
+        SocketTimeoutException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    private ResponseEntity<ErrorResponse> handlePSQLExcpetion(Exception exception, WebRequest request){
+        log.error("PSQL connection failed", exception);
+
+        return buildErrorResponse(
+            exception,
+            "Connection to the database failed. Please try again shortly",
+            HttpStatus.INTERNAL_SERVER_ERROR,
             request
         );
     }
