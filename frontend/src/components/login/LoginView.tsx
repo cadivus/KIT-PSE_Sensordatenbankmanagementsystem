@@ -24,7 +24,7 @@ const LoginView = () => {
   const setMail = (adr: string) => {
     setMailString(adr)
     setSecondStep(true)
-    codeStringAdmin = userStore?.requestStep1(new EMail(mailString))
+    codeStringAdmin = userStore?.requestStep1(new EMail(adr))
     console.log('hier')
   }
 

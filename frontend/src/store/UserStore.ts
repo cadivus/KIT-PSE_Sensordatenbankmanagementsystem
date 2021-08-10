@@ -29,6 +29,7 @@ class UserStore extends EventEmitter {
    * @return True on success, false otherwise
    */
   requestStep1 = (email: EMail): LoginCode | undefined => {
+    console.log(email.toString())
     const path = `${NOTIFICATION_PATH}/getConfirmCode/${email.toString()}`
     console.log(path)
     getText(path).then(loginCodeJSON => {
