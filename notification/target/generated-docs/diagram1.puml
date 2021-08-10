@@ -6,17 +6,16 @@ class notificationsystem.Application {
 
 
 class notificationsystem.configuration.AppConfig {
-}
-
-
-class notificationsystem.configuration.SecurityConfig {
-	{method} +configure ( paramAuthenticationManagerBuilder1 : org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder ) : void
-	{method} +getPasswordEncoder () : org.springframework.security.crypto.password.PasswordEncoder
+	{method} +backendURL () : String
+	{method} +restTemplate () : org.springframework.web.client.RestTemplate
 }
 
 
 class notificationsystem.controller.CheckerUtil {
+	{field} {static} -INACTIVE_DAYS_THRESHOLD : int
 	{field} {static} -log : org.apache.commons.logging.Log
+	{field} -restTemplate : org.springframework.web.client.RestTemplate
+	{field} -sensorActiveDict : java.util.Map
 	{method} +checkForReports () : void
 	{method} +checkForSensorFailure () : void
 }
@@ -25,13 +24,14 @@ class notificationsystem.controller.CheckerUtil {
 class notificationsystem.controller.Controller {
 	{field} {static} -SYSTEMLOGIN_ID : long
 	{field} -backendUrl : String
+	{field} -restTemplate : org.springframework.web.client.RestTemplate
 	{method} +getConfirmCode ( paramString1 : String ) : String
 	{method} +getSubscriptions ( paramString1 : String ) : java.util.List
 	{method} +postConstruct () : void
-	{method} +postSubscription ( paramString1 : String , paramUUID2 : java.util.UUID , paramlong3 : long ) : void
-	{method} +postUnsubscribe ( paramString1 : String , paramUUID2 : java.util.UUID ) : void
-	{method} +sendAlert ( paramUUID1 : java.util.UUID ) : void
-	{method} +sendReport ( paramString1 : String , paramUUID2 : java.util.UUID ) : void
+	{method} +postSubscription ( paramString1 : String , paramString2 : String , paramlong3 : long ) : void
+	{method} +postUnsubscribe ( paramString1 : String , paramString2 : String ) : void
+	{method} +sendAlert ( paramString1 : String ) : void
+	{method} +sendReport ( paramString1 : String , paramString2 : String ) : void
 }
 
 
@@ -48,33 +48,46 @@ interface notificationsystem.model.DAO {
 }
 
 
+class notificationsystem.model.ObservationStats {
+	{field} -avg : double
+	{field} -med : double
+	{field} -min : double
+	{field} -obsId : String
+	{field} -obsName : String
+	{field} -stdv : double
+}
+
+
 class notificationsystem.model.Sensor {
-	{field} +categories : java.util.List
-	{field} +data : String
-	{field} +failureRate : String
-	{field} -id : java.util.UUID
+	{field} +activeRate : double
+	{field} +description : String
+	{field} +id : String
 	{field} +location : String
-	{field} -name : String
-	{method} +toString () : String
+	{field} +name : String
+	{field} +properties : String
+	{field} +stats : java.util.LinkedList
 }
 
 
 class notificationsystem.model.SensorDAO {
-	{field} -backendUrl : String
+	{field} -getActiveRateApi : String
+	{field} -getAllObsApi : String
 	{field} -getAllSensorsApi : String
-	{field} -getSensorApi : String
-	{field} {static} ~restTemplate : org.springframework.web.client.RestTemplate
+	{field} -getStatsApi : String
+	{field} -getThingApi : String
+	{field} -restTemplate : org.springframework.web.client.RestTemplate
 	{method} +get ( paramObject1 : Object ) : java.util.Optional
-	{method} +get ( paramUUID1 : java.util.UUID ) : notificationsystem.model.Sensor
+	{method} +get ( paramString1 : String ) : notificationsystem.model.Sensor
 	{method} +get ( paramSensor1 : notificationsystem.model.Sensor ) : java.util.Optional
 	{method} +getAll () : java.util.List
+	{method} +setStats ( paramSensor1 : notificationsystem.model.Sensor , paramLocalDate2 : java.time.LocalDate ) : void
 }
 
 
 class notificationsystem.model.Subscription {
 	{field} -id : long
 	{field} +reportInterval : long
-	{field} +sensor : java.util.UUID
+	{field} +sensorId : String
 	{field} +subTime : java.time.LocalDate
 	{field} +subscriberAddress : String
 }
@@ -84,10 +97,10 @@ class notificationsystem.model.SubscriptionDAO {
 	{method} +delete ( paramSubscription1 : notificationsystem.model.Subscription ) : void
 	{method} +get ( paramObject1 : Object ) : java.util.Optional
 	{method} +get ( paramSubscription1 : notificationsystem.model.Subscription ) : java.util.Optional
-	{method} +get ( paramString1 : String , paramUUID2 : java.util.UUID ) : notificationsystem.model.Subscription
+	{method} +get ( paramString1 : String , paramString2 : String ) : notificationsystem.model.Subscription
 	{method} +getAll () : java.util.List
 	{method} +getAllSensors ( paramString1 : String ) : java.util.List
-	{method} +getAllSubscribers ( paramUUID1 : java.util.UUID ) : java.util.List
+	{method} +getAllSubscribers ( paramString1 : String ) : java.util.List
 	{method} +save ( paramSubscription1 : notificationsystem.model.Subscription ) : void
 }
 
@@ -152,6 +165,7 @@ class notificationsystem.view.Report {
 
 
 notificationsystem.controller.CheckerUtil -->  notificationsystem.controller.Controller : controller
+notificationsystem.controller.CheckerUtil -->  notificationsystem.model.SensorDAO : sensorDAO
 notificationsystem.controller.CheckerUtil -->  notificationsystem.model.SubscriptionDAO : subscriptionDAO
 notificationsystem.controller.Controller -->  notificationsystem.controller.MailSender : mailSender
 notificationsystem.controller.Controller -->  notificationsystem.model.SensorDAO : sensorDAO

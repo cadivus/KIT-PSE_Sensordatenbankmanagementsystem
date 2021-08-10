@@ -2,9 +2,6 @@ package notificationsystem.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.UUID;
 
 /**
  * The Subscription class stores data about a subscription of a single user to a single sensor. To allow for regular
@@ -44,7 +41,7 @@ public class Subscription {
             name = "sensor",
             nullable = false
     )
-    private UUID sensor;
+    private String sensorId;
 
     @Column(
             name = "sub_time",
@@ -61,14 +58,13 @@ public class Subscription {
     /**
      * Constructs a new subscription.
      * @param subscriberAddress e-mail address of the subscriber.
-     * @param sensor sensor the user subscribes to.
+     * @param sensorId sensor the user subscribes to.
      * @param subTime time at which the user subscribed to the sensor.
      * @param reportInterval time period at which report e-mails are sent.
      */
-    public Subscription(String subscriberAddress, UUID sensor, LocalDate subTime, long reportInterval) {
-        this.id = id;
+    public Subscription(String subscriberAddress, String sensorId, LocalDate subTime, long reportInterval) {
         this.subscriberAddress = subscriberAddress;
-        this.sensor = sensor;
+        this.sensorId = sensorId;
         this.subTime = subTime;
         this.reportInterval = reportInterval;
     }
@@ -97,16 +93,16 @@ public class Subscription {
      * Gets the sensor the user is subscribed to.
      * @return the sensor the user is subscribed to.
      */
-    public UUID getSensor() {
-        return sensor;
+    public String getSensorId() {
+        return sensorId;
     }
 
     /**
      * Sets the sensor the user is subscribed to.
-     * @param sensor the sensor the user is subscribed to.
+     * @param sensorId the sensor the user is subscribed to.
      */
-    public void setSensor(UUID sensor) {
-        this.sensor = sensor;
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 
     /**

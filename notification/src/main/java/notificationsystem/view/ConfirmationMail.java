@@ -3,7 +3,6 @@ package notificationsystem.view;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONArray;
 
-import java.util.List;
 
 /**
  * Confirmation e-mails are sent to an e-mail address when a user tries to log-in with that address on the website.
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public class ConfirmationMail extends EMail {
 
-    private String confirmCode;
+    private final String confirmCode;
     private final static int CODE_LENGTH = 8;
 
     /**
