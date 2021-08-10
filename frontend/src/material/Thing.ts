@@ -54,6 +54,7 @@ abstract class Thing {
     if (oldProperty && oldProperty.value === property.value) return
 
     _properties.set(property.key, property)
+
   }
 
   /**
