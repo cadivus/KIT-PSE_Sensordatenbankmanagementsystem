@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import {FormattedMessage} from 'react-intl'
 import {
   Paper,
   Table,
@@ -13,8 +14,11 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import {FormattedMessage} from 'react-intl'
-import useThingStore from '../../hooks/UseThingStore'
+import Datastream from '../../material/Datastream'
+import DatastreamRow from '../../material/DatastreamRow'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const dateFormat = require('dateformat')
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -46,13 +50,30 @@ const useStyles = makeStyles({
   },
 })
 
+const Date = ({date}: {date: Date}) => {
+  let formatted = date.toString()
+  try {
+    formatted = dateFormat(date, 'yyyy-mm-dd HH:MM:ss')
+  } catch (e) {
+    // nothing yet
+  }
+
+  return <Typography variant="h5">{formatted}</Typography>
+}
+
 /**
  *  Displays the data of a selected thing.
  *  This class implements a React component.
  */
-const Data = () => {
+const Data = ({datastream}: {datastream: Datastream}) => {
   const classes = useStyles()
-  const thingStore = useThingStore()
+
+  const [dataList, setDataList] = useState<Array<DatastreamRow>>(new Array<DatastreamRow>())
+  useEffect(() => {
+    datastream.getAllValues(25).then(list => {
+      setDataList(list)
+    })
+  })
 
   return (
     <TableContainer component={Paper}>
@@ -74,13 +95,13 @@ const Data = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {thingStore?.things.map(thing => (
-            <StyledTableRow hover key={thing.name.name}>
+          {dataList.map(dataRow => (
+            <StyledTableRow hover key={dataRow.date.toString()}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="h5">YYYY-MM-TT hh:mm:ss</Typography>
+                <Date date={dataRow.date} />
               </StyledTableCell>
               <StyledTableCell>
-                <Typography>00xx</Typography>
+                <Typography variant="h5">{dataRow.value.toString()}</Typography>
               </StyledTableCell>
             </StyledTableRow>
           ))}

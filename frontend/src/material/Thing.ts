@@ -58,14 +58,6 @@ abstract class Thing {
   }
 
   /**
-   * This function gets the things value.
-   * It is abstract for being implemented by the ThingStore.
-   *
-   * @return The current value of the thing.
-   */
-  public abstract getValue(): SensorValue
-
-  /**
    * This function indicates whether the thing is active.
    *
    * @return true, when the thing is active. false otherwise

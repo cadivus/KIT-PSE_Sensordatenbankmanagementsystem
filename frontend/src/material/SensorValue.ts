@@ -7,16 +7,21 @@ class SensorValue {
   /**
    * Thing values stored as an Integer.
    */
-  readonly value: number
+  readonly value: string
 
   readonly unit: Unit
 
-  constructor(value: number, unit: Unit) {
+  constructor(value: string, unit: Unit) {
     this.value = value
     this.unit = unit
   }
 
   toString(): string {
+    const {value, unit} = this
+    return `${value} ${unit.toString()}`
+  }
+
+  valueToString(): string {
     const {value} = this
     return `${value}`
   }

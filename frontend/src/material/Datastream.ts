@@ -16,7 +16,7 @@ abstract class Datastream {
     this.name = name
   }
 
-  public abstract getAllValues(): Promise<Array<DatastreamRow>>
+  public abstract getAllValues(limit: number): Promise<Array<DatastreamRow>>
 }
 
 export default Datastream
