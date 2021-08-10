@@ -20,6 +20,11 @@ class SensorValue {
     const {value, unit} = this
     return `${value} ${unit.toString()}`
   }
+
+  valueToString(): string {
+    const {value} = this
+    return `${value}`
+  }
 }
 
 export default SensorValue

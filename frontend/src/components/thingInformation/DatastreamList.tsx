@@ -90,7 +90,7 @@ const DatastreamList = ({thing}: {thing: Thing}) => {
                 <Typography variant="h5">{datastream.name.toString()}</Typography>
               </StyledTableCell>
               <StyledTableCell>
-                <Typography>{datastream.datastreamId.toString()}</Typography>
+                <Typography>{datastream.unit.toString()}</Typography>
               </StyledTableCell>
               <StyledTableCell>
                 <Button

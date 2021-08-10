@@ -85,7 +85,7 @@ class DatastreamStore {
         })
         return resultPromise
       }
-    })(id, new Unit('unknown'), name)
+    })(id, unit, name)
   }
 }
 
