@@ -72,9 +72,9 @@ public class GraphController {
         obsId,
         frameStart == null ? null : LocalDate.parse(frameStart, DATE_FORMAT).atStartOfDay(),
         Optional.ofNullable(frameEnd)
-            .map(s->LocalDate.parse(frameEnd, DATE_FORMAT))
-            .orElseGet(LocalDate::now)
-            .atStartOfDay(),
+            .map(s->LocalDate.parse(frameEnd, DATE_FORMAT)
+                    .atStartOfDay())
+            .orElse(null),
         maxInterPoints,
         idim,
         granularity,

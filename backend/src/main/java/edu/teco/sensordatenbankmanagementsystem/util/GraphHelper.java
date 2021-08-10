@@ -20,6 +20,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -57,11 +58,15 @@ public class GraphHelper {
       throw new CantInterpolateWithNoSamplesException();
     }
 
+    //the spring framework sort for the x-axis of the interpolation
+    final Sort xSort = Observation.Order.DATE.toSort();
+
+    //gets the earliest value as frame start if not specified
     if(frameStart == null) {
       List<Observation> earliest = observationService.getObservationsByThingId(
               id,
               1,
-              Observation.Order.DATE.toSort().ascending(),
+              xSort.ascending(),
               List.of(obsId),
               LocalDateTime.of(1, 1, 1, 1, 1),
               LocalDateTime.now()
@@ -71,10 +76,24 @@ public class GraphHelper {
       }
       frameStart = earliest.get(0).getResultTime().minusDays(1);
     }
+    //gets the latest value as frame end if not specified
+    if(frameEnd == null){
+      List<Observation> latest = observationService.getObservationsByThingId(
+              id,
+              1,
+              xSort.descending(),
+              List.of(obsId),
+              LocalDateTime.of(1, 1, 1, 1, 1),
+              LocalDateTime.now()
+      );
+      if(latest.isEmpty()) {
+        throw new CantInterpolateWithNoSamplesException();
+      }
+      frameEnd = latest.get(0).getResultTime().plusDays(1);
+    }
     LocalDateTime finalFrameStart = frameStart;
 
     BufferedImage r = new BufferedImage(imageDimension.width, imageDimension.height, BufferedImage.TYPE_INT_ARGB);
-
 
     //calculates various stats required for drawing and normalizing the x axis
     double unnormalizedIntervalStart = frameStart.atZone(ZONE_ID).toEpochSecond();
@@ -94,19 +113,22 @@ public class GraphHelper {
             o->normalizer.apply(unnormalizedXExtractor.apply(o));
     Function<Observation, Double> fExtractor = Observation::getResultNumber;
 
-    Function<Double, Observation> sampleGetter = (Double a) -> {
-//      System.out.printf("epoch second: %.2f, date: %s\n", a,
-//              LocalDateTime.ofEpochSecond((long)(double)a, 0,
-//              ZonedDateTime.now(ZONE_ID).getOffset()));
+    BiFunction<Double, List<Observation>, Observation> sampleGetter = (Double a, List<Observation> o) -> {
+      System.out.printf("date: %s, already found %s samples\n", LocalDateTime.ofEpochSecond((long)(double)a, 0,
+              ZonedDateTime.now(ZONE_ID).getOffset()), o.size());
       Observation rr = observationService.getObservationsByThingId(
               id,
-              1,
-              Observation.Order.DATE.toSort().descending(),
+              o.size() + 1,
+              xSort.descending(),
               List.of(obsId),
               finalFrameStart,
               LocalDateTime.ofEpochSecond((long)(double)a, 0, ZonedDateTime.now(ZONE_ID).getOffset())
-      ).stream().findFirst().orElse(null);
-      if(rr!=null) System.out.println(rr.getResultTime());
+      ).stream().filter(oo->!o.contains(oo)).findFirst().orElse(null);
+      if(rr!=null) {
+        System.out.printf("found one at time: %s\n", rr.getResultTime());
+      }else{
+        System.out.println("didn't find one");
+      }
       return rr;
     };
 
@@ -240,7 +262,7 @@ public class GraphHelper {
   }
 
   private <T> List<T> getApproximateTschebyscheffSamplingPoints(
-          Function<Double, T> sampleGetter, Function<T, Double> xExtractor,
+          BiFunction<Double, List<T>, T> sampleGetterWithExcluded, Function<T, Double> xExtractor,
       int maxInterPoints,
       double intervalStart, double intervalEnd)
   {
@@ -250,7 +272,7 @@ public class GraphHelper {
       //calculates the i-th Tschebyscheff sampling point transformed onto the given interval
       double samplingPoint =
           intervalStart + (Math.cos((double)(2 * i + 1) / (2 * maxInterPoints) * Math.PI) + 1) / 2 * (intervalEnd - intervalStart);
-      T toAdd = sampleGetter.apply(samplingPoint);
+      T toAdd = sampleGetterWithExcluded.apply(samplingPoint, r);
       if(toAdd != null){
         r.add(toAdd);
       }

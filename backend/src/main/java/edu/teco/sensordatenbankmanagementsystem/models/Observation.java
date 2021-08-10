@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.time.LocalDateTime;
+
 import lombok.Data;
 import org.glassfish.jersey.internal.guava.Maps;
 import org.springframework.data.domain.Sort;
@@ -25,8 +27,8 @@ import java.util.Optional;
 @Data
 @Table(name = "\"OBSERVATIONS\"")
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = "id")
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Observation {
 
 
@@ -48,15 +50,15 @@ public class Observation {
     String id;
 
     @Column(name = "\"PHENOMENON_TIME_START\"")
-    @JsonFormat(pattern="dd/MM/yyyy@hh:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy@hh:mm:ss")
     LocalDateTime phenomenonStart;
 
     @Column(name = "\"PHENOMENON_TIME_END\"")
-    @JsonFormat(pattern="dd/MM/yyyy@hh:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy@hh:mm:ss")
     LocalDateTime phenomenonEnd;
 
     @Column(name = "\"RESULT_TIME\"")
-    @JsonFormat(pattern="dd/MM/yyyy@hh:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy@hh:mm:ss")
     LocalDateTime resultTime;
 
     @Column(name = "\"RESULT_TYPE\"")
@@ -92,14 +94,14 @@ public class Observation {
     @Column(name = "\"MULTI_DATASTREAM_ID\"")
     String mDataStreamID;
 
-    public Observation(){
+    public Observation() {
 
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Observation )) return false;
+        if (!(o instanceof Observation)) return false;
         return id != null && id.equals(((Observation) o).getId());
     }
 
@@ -109,26 +111,36 @@ public class Observation {
     }
 
     public enum Order {
-        DATE{
+        DATE {
             @Override
             public Sort toSort() {
-                return Sort.by("phenomenonStart", "phenomenonEnd");
+                return Sort.by("phenomenonStart");
             }
         },
-        VALUE{
+        VALUE {
             @Override
             public Sort toSort() {
                 return Sort.by("resultNumber");
             }
+        },
+        RESULT {
+            @Override
+            public Sort toSort() {
+                return Sort.by("resultTime");
+            }
         };
+
         abstract public Sort toSort();
+
         private static final Map<String, Order> index = Maps.newHashMapWithExpectedSize(values().length);
-        static{
-            for(Order order : values()){
+
+        static {
+            for (Order order : values()) {
                 index.put(order.name(), order);
             }
         }
-        public static Sort getSort(String name){
+
+        public static Sort getSort(String name) {
             return Optional.ofNullable(index.get(name)).map(Order::toSort).orElse(null);
         }
     }
