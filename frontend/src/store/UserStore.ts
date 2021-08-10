@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import User from '../material/User'
 import EMail from '../material/EMail'
 import LoginCode from '../material/LoginCode'
-import {getJson, getText} from './communication/restClient'
+import {getText} from './communication/restClient'
 import {NOTIFICATION_PATH} from './communication/notificationUrlCreator'
 
 declare interface UserStore {
@@ -28,15 +28,12 @@ class UserStore extends EventEmitter {
    * @param email Email address to send the code to
    * @return True on success, false otherwise
    */
-  requestStep1 = (email: EMail): LoginCode | undefined => {
-    console.log(email.toString())
+  requestStep1 = (email: EMail): void => {
     const path = `${NOTIFICATION_PATH}/getConfirmCode/${email.toString()}`
-    console.log(path)
-    getText(path).then(loginCodeJSON => {
-      console.log(loginCodeJSON)
-      return new LoginCode(loginCodeJSON)
+    getText(path).then(loginCode => {
+      console.log(loginCode)
+      this.code = new LoginCode(loginCode)
     })
-    return undefined
   }
 
   /**
@@ -52,20 +49,19 @@ class UserStore extends EventEmitter {
       this.emit('login-change')
     }
 
-    this.user = new (class extends User {
-      logout(): void {
-        logoutUser()
-      }
-    })(email)
+    if (this.code?.code === loginCode.code) {
+      this.user = new (class extends User {
+        logout(): void {
+          logoutUser()
+        }
+      })(email)
+    } else {
+      // eslint-disable-next-line no-unused-expressions
+      this.user = null
+    }
 
     const {user} = this
-    this.emit('login-change')
     return user
-    this.code = loginCode
-  }
-
-  confirmCode = (loginCode: LoginCode): boolean => {
-    return this.code === loginCode
   }
 }
 

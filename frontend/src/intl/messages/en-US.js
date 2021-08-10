@@ -5,6 +5,7 @@ export default {
     // Appbar
     'appbar.subscription': 'SUBSCRIPTIONS',
     'appbar.login': 'LOGIN',
+    'appbar.logout': 'LOGOUT',
     // Startpage
     'startpage.startpage': 'Startpage',
     'startpage.subscribe': 'Subscribe',

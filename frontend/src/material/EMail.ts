@@ -14,7 +14,6 @@ class EMail {
   toString = (): string => {
     return this.email
   }
-
 }
 
 export default EMail
