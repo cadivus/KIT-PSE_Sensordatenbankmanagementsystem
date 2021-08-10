@@ -108,10 +108,6 @@ class ThingStore {
     const result = new (class extends Thing {
       private activeState = ThingState.Unknown
 
-      getValue(): SensorValue {
-        return new SensorValue(100, new Unit('unknown'))
-      }
-
       isActive(): ThingState {
         try {
           getJson(getActiveStateUrl(id)).then(thingJSON => {
