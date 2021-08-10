@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import {FormattedMessage} from 'react-intl'
 import {
   Paper,
   Table,
@@ -13,8 +14,8 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import {FormattedMessage} from 'react-intl'
-import useThingStore from '../../hooks/UseThingStore'
+import Datastream from '../../material/Datastream'
+import DatastreamRow from '../../material/DatastreamRow'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -50,9 +51,15 @@ const useStyles = makeStyles({
  *  Displays the data of a selected thing.
  *  This class implements a React component.
  */
-const Data = () => {
+const Data = ({datastream}: {datastream: Datastream}) => {
   const classes = useStyles()
-  const thingStore = useThingStore()
+
+  const [dataList, setDataList] = useState<Array<DatastreamRow>>(new Array<DatastreamRow>())
+  useEffect(() => {
+    datastream.getAllValues(25).then(list => {
+      setDataList(list)
+    })
+  })
 
   return (
     <TableContainer component={Paper}>
@@ -74,13 +81,13 @@ const Data = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {thingStore?.things.map(thing => (
-            <StyledTableRow hover key={thing.name.name}>
+          {dataList.map(dataRow => (
+            <StyledTableRow hover key={dataRow.date.toString()}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="h5">YYYY-MM-TT hh:mm:ss</Typography>
+                <Typography variant="h5">{dataRow.date.toString()}</Typography>
               </StyledTableCell>
               <StyledTableCell>
-                <Typography>00xx</Typography>
+                <Typography>{dataRow.value.toString()}</Typography>
               </StyledTableCell>
             </StyledTableRow>
           ))}

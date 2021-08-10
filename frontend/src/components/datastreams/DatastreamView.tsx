@@ -91,7 +91,7 @@ const DatastreamView: FC = () => {
             <Export />
           </Grid>
           <Grid item xs={12}>
-            <Data />
+            <Data datastream={datastream} />
           </Grid>
         </Grid>
       </Container>
