@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -82,6 +83,8 @@ public interface ObservationService {
     List<Observation> getObservationsByThingId(String thingId, int limit, Sort sort, List<String> filter, LocalDateTime frameStart, LocalDateTime frameEnd);
 
     List<ObservedProperty> getAllObservedProperties();
+
+    Stream<Observation> getObservationByDatastreamId(String datastreamId, Pageable page);
 
 }
 

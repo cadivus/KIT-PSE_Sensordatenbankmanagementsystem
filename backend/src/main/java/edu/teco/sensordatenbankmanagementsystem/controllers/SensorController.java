@@ -13,11 +13,13 @@ import edu.teco.sensordatenbankmanagementsystem.services.SensorServiceImp;
 import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
 
 import edu.teco.sensordatenbankmanagementsystem.services.ThingServiceImp;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
 
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.NewtonInterpolator;
+import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -167,10 +169,7 @@ public class SensorController {
                         .atStartOfDay());
     }
 
-    @GetMapping("/datastream/{sensorId}")
-    public Datastream getDatastrean(@PathVariable String sensorId){
-        return sensorService.getDatastream(sensorId);
-    }
+
     /**
      * This will get a single Thing, which is a single sensor, from the Database
      *
