@@ -9,5 +9,5 @@ export const getActiveStateUrl = (thingId: Id): string => `${BACKEND_PATH}/senso
 export const getAllThingDatastreamsUrl = (thingId: Id): string =>
   `${BACKEND_PATH}/datastream/listDatastreams?id=${thingId.toString()}`
 
-export const getExportDatastreamUrl = (datastreamId: Id): string =>
-  `${BACKEND_PATH}/datastream/export?id=${datastreamId.toString()}`
+export const getExportDatastreamUrl = (datastreamId: Id, limit: number): string =>
+  `${BACKEND_PATH}/datastream/export?id=${datastreamId.toString()}${limit < 1 ? '' : `&limit=${limit}`}`

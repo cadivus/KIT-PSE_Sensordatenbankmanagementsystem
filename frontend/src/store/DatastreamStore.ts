@@ -58,8 +58,8 @@ class DatastreamStore {
 
   private implementDatastream = (id: Id, unit: Unit, name: DatastreamName): Datastream => {
     return new (class extends Datastream {
-      getAllValues(): Promise<Array<DatastreamRow>> {
-        const url = getExportDatastreamUrl(id)
+      getAllValues(limit = 0): Promise<Array<DatastreamRow>> {
+        const url = getExportDatastreamUrl(id, limit)
 
         const resultPromise = new Promise<Array<DatastreamRow>>((resolve, reject) => {
           getText(url)
