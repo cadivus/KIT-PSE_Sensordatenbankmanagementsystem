@@ -1,7 +1,6 @@
 import Datastream from '../material/Datastream'
 import DatastreamRow from '../material/DatastreamRow'
 import Id from '../material/Id'
-import Thing from '../material/Thing'
 import Unit, {parseUnit} from '../material/Units'
 import {getJson} from './communication/restClient'
 import {getAllThingDatastreamsUrl} from './communication/backendUrlCreator'
@@ -48,10 +47,10 @@ class DatastreamStore {
     return resultPromise
   }
 
-  private getDatastream = (id: Id): Datastream => {
+  /* private getDatastream = (id: Id): Datastream => {
     const {implementDatastream} = this
     return implementDatastream(id, Unit.UNDEFINED, new DatastreamName('Test'))
-  }
+  } */
 
   private implementDatastream = (id: Id, unit: Unit, name: DatastreamName): Datastream => {
     return new (class extends Datastream {
