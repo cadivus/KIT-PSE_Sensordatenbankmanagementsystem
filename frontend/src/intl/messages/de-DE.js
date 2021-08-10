@@ -8,7 +8,7 @@ export default {
     // Startpage
     'startpage.startpage': 'Startseite',
     'startpage.subscribe': 'Abonieren',
-    'startpage.replay': 'Wiedergabe ',
+    'startpage.replay': 'Replay',
     // Infopage
     'infopage.value': 'Werte:',
     'infopage.subscribe': 'Abonieren',
