@@ -1,5 +1,5 @@
 import Thing, {ThingState} from '../material/Thing'
-import ThingValue from '../material/ThingValue'
+import SensorValue from '../material/SensorValue'
 import ThingName from '../material/ThingName'
 import Id from '../material/Id'
 import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
@@ -7,6 +7,9 @@ import {getJson} from './communication/restClient'
 import ThingProperty from '../material/ThingProperty'
 import Location from '../material/Location'
 import LocationWithAddress from '../material/LocationWithAddress'
+import Unit from '../material/Unit'
+import DatastreamStore from './DatastreamStore'
+import Datastream from '../material/Datastream'
 
 /**
  * This is the storage for things.
@@ -21,8 +24,11 @@ class ThingStore {
 
   private _lastUpdate = 0
 
-  constructor() {
+  private _datastreamStore: DatastreamStore
+
+  constructor(datastreamStore: DatastreamStore) {
     this._things = new Map<string, Thing>()
+    this._datastreamStore = datastreamStore
     const {getThingsFromBackend} = this
     getThingsFromBackend()
   }
@@ -42,47 +48,9 @@ class ThingStore {
   }
 
   /**
-   * Gets mock things.
-   */
-  private getMockThings = (): void => {
-    const {_things} = this
-    if (_things && _things.size > 0) return
-
-    const mockThing = (i: number) => {
-      const id = new Id(`${i}-${new Date().getTime() / 1000}`)
-      const location = new Location(10 * i, 1000 * i)
-      this._things.set(
-        id.toString(),
-        new (class extends Thing {
-          getValue(): ThingValue {
-            return new ThingValue(i * 10)
-          }
-
-          isActive(): ThingState {
-            return ThingState.Unknown
-          }
-        })(new ThingName(`Thing${i}`), id, location),
-      )
-    }
-
-    for (let i = 0; i < 20; i += 1) {
-      mockThing(i)
-    }
-
-    this._lastUpdate = Date.now()
-  }
-
-  /**
    * Gets things from the backend.
    */
   private getThingsFromBackend = (): void => {
-    const {env} = process
-    if (env.USE_MOCK) {
-      const {getMockThings} = this
-      getMockThings()
-      return
-    }
-
     const {_things, createThing, applyProperties, parseLocation} = this
     getJson(ALL_THINGS).then(thingJSON => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -135,11 +103,13 @@ class ThingStore {
   }
 
   private createThing = (id: Id, name: ThingName, location: Location): Thing => {
+    const {_datastreamStore} = this
+
     const result = new (class extends Thing {
       private activeState = ThingState.Unknown
 
-      getValue(): ThingValue {
-        return new ThingValue(100)
+      getValue(): SensorValue {
+        return new SensorValue(100, new Unit('unknown'))
       }
 
       isActive(): ThingState {
@@ -155,6 +125,10 @@ class ThingStore {
 
         const {activeState} = this
         return activeState
+      }
+
+      getDatastreams(): Promise<Array<Datastream>> {
+        return _datastreamStore.getDatastreams(id)
       }
     })(name, id, location)
 

@@ -6,6 +6,7 @@ import LoginView from '../components/login/LoginView'
 import ReplayRouter from './ReplayRouter'
 import SubscribeRouter from './SubscribeRouter'
 import AppLayout from '../components/layout/AppLayout'
+import DatastreamView from '../components/datastreams/DatastreamView'
 
 /**
  * Resets the children by creating a new div.
@@ -31,6 +32,9 @@ const Router = () => (
         </Route>
         <Route path="/thingInformation/:thingId" exact>
           <ThingInformationView />
+        </Route>
+        <Route path="/thingInformation/:thingId/:datastreamId" exact>
+          <DatastreamView />
         </Route>
         <Route path="/replay">
           <ReplayRouter />
