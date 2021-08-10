@@ -94,8 +94,9 @@ public class Controller {
      * @param reportInterval time period between reports.
      */
     @PostMapping(value = "/postSubscription", consumes = "application/json")
-    public void postSubscription(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") String sensorID, @RequestParam("reportInterval") long reportInterval) {
-        Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval);
+    public void postSubscription(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") String sensorID,
+                                 @RequestParam("reportInterval") long reportInterval, @RequestParam("toggleAlert") boolean toggleAlert) {
+        Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval, toggleAlert);
         subscriptionDAO.save(subscription);
     }
 
@@ -110,11 +111,10 @@ public class Controller {
         subscriptionDAO.delete(toDelete);
     }
 
-    //TODO:Javadoc anpassen
     /**
-     * The getSubscription method allows the project website to inquire about the sensors a user is subscribed to.
+     * The getSubscription method allows the project website to inquire about the subscriptions in the database.
      * @param mailAddress e-mail of the subscriber.
-     * @return List of the sensors the user is subscribed to. The list contains the IDs of those sensors.
+     * @return List of the subscriptions of the user.
      */
     @GetMapping("/getSubscriptions/{mailAddress}")
     public List<Subscription> getSubscriptions(@PathVariable String mailAddress) {
@@ -137,11 +137,13 @@ public class Controller {
         Sensor sensor = sensorDAO.get(sensorID);
         List<String> subscribers = subscriptionDAO.getAllSubscribers(sensorID);
         for (String subscriber : subscribers) {
+            if (subscriptionDAO.get(subscriber, sensorID).isToggleAlert()) {
             Alert alert = mailBuilder.buildAlert(subscriber, sensor);
             try {
                 mailSender.send(alert);
             } catch (MessagingException | UnsupportedEncodingException e) {
                 e.printStackTrace();
+            }
             }
         }
     }

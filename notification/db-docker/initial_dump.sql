@@ -16,7 +16,8 @@ CREATE TABLE public.subscription
     subscriber_address character varying(250) COLLATE pg_catalog."default",
     sensor integer,
     sub_time date,
-    report_interval bigint
+    report_interval bigint,
+    toggle_alert boolean
 );
 
 --TODO nur zum testen

@@ -57,6 +57,12 @@ public class Subscription {
     )
     private long reportInterval;
 
+    @Column(
+            name = "toggle_alert",
+            nullable = false
+    )
+    private boolean toggleAlert;
+
     /**
      * Constructs a new subscription.
      * @param subscriberAddress e-mail address of the subscriber.
@@ -64,11 +70,12 @@ public class Subscription {
      * @param subTime time at which the user subscribed to the sensor.
      * @param reportInterval time period at which report e-mails are sent.
      */
-    public Subscription(String subscriberAddress, String sensorId, LocalDate subTime, long reportInterval) {
+    public Subscription(String subscriberAddress, String sensorId, LocalDate subTime, long reportInterval, boolean toggleAlert) {
         this.subscriberAddress = subscriberAddress;
         this.sensorId = sensorId;
         this.subTime = subTime;
         this.reportInterval = reportInterval;
+        this.toggleAlert = toggleAlert;
     }
 
     public Subscription() {
@@ -120,5 +127,13 @@ public class Subscription {
      */
     public long getId() {
         return id;
+    }
+
+    /**
+     * Checks if toggleAlert is true or false
+     * @return status of toggleAlert
+     */
+    public boolean isToggleAlert() {
+        return toggleAlert;
     }
 }
