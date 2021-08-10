@@ -1,12 +1,8 @@
 package notificationsystem.configuration;
 
-import notificationsystem.controller.Controller;
-import notificationsystem.controller.MailSender;
-import notificationsystem.model.SensorDAO;
-import notificationsystem.model.SubscriptionDAO;
-import notificationsystem.view.MailBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 
 //webconfig, restconfig, websecurityconfig, 'webinitializerconfig'
@@ -14,4 +10,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    //TODO: Fix (application.properties)
+    @Bean
+    public String backendURL() {
+        return "http://localhost:8080";
+    }
 }
