@@ -36,7 +36,7 @@ class notificationsystem.controller.Controller {
 	{method} +getConfirmCode ( paramString1 : String ) : String
 	{method} +getSubscriptions ( paramString1 : String ) : java.util.List
 	{method} +postConstruct () : void
-	{method} +postSubscription ( paramString1 : String , paramString2 : String , paramlong3 : long ) : void
+	{method} +postSubscription ( paramString1 : String , paramString2 : String , paramlong3 : long , paramboolean4 : boolean ) : void
 	{method} +postUnsubscribe ( paramString1 : String , paramString2 : String ) : void
 	{method} +sendAlert ( paramString1 : String ) : void
 	{method} +sendReport ( paramString1 : String , paramString2 : String ) : void
@@ -111,6 +111,7 @@ class notificationsystem.model.Subscription {
 	{field} -sensorId : String
 	{field} +subTime : java.time.LocalDate
 	{field} -subscriberAddress : String
+	{field} -toggleAlert : boolean
 }
 
 
