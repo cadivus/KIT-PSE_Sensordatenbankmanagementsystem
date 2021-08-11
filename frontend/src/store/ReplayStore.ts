@@ -1,6 +1,8 @@
 import Replay from '../material/Replay'
 import Thing from '../material/Thing'
 import ReplaySpeed from '../material/ReplaySpeed'
+import {CREATE_REPLAY} from './communication/backendUrlCreator'
+import {createReplayRequestJson} from './communication/backendJsonCreator'
 
 /**
  * This is the storage for replays.
@@ -17,7 +19,14 @@ class ReplayStore {
    * @return The created replay on success, null on failure
    */
   private requestReplay(start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>): Promise<Replay | null> {
-    return Promise.resolve(null)
+    const url = CREATE_REPLAY
+    const json = createReplayRequestJson(start, end, speed, things)
+
+    const resultPromise = new Promise<Replay | null>((resolve, reject) => {
+      resolve(null)
+    })
+
+    return resultPromise
   }
 
   /**
