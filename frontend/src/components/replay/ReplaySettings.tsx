@@ -14,6 +14,7 @@ import {
   withStyles,
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
+import ReplaySpeed from '../../material/ReplaySpeed'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFormat = require('dateformat')
@@ -62,6 +63,7 @@ const ReplaySettings = () => {
 
   const [startDate, setStartDateState] = useState<Date>(new Date())
   const [endDate, setEndDateState] = useState<Date>(new Date())
+  const [replaySpeed, setReplaySpeedState] = useState(new ReplaySpeed(10))
 
   const setStartDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
     const newDate = new Date(e.target.value)
@@ -71,6 +73,12 @@ const ReplaySettings = () => {
   const setEndDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
     const newDate = new Date(e.target.value)
     setEndDateState(newDate)
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const setReplaySpeed = (event: any, newValue: number | number[]): void => {
+    const newSpeed = new ReplaySpeed(Number(newValue))
+    setReplaySpeedState(newSpeed)
   }
 
   return (
@@ -124,10 +132,10 @@ const ReplaySettings = () => {
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
-              <Slider defaultValue={0} />
+              <Slider defaultValue={replaySpeed.toNumber()} min={1} max={1000} onChange={setReplaySpeed} />
             </StyledTableCell>
             <StyledTableCell>
-              <Typography variant="body1">50x</Typography>
+              <Typography variant="body1">{`${replaySpeed.toString()}x`}</Typography>
             </StyledTableCell>
           </StyledTableRow>
         </TableBody>
