@@ -13,18 +13,26 @@ class ReplayStore {
    * @param replay The replay to request
    * @return True on success, false on failure
    */
-  private requestReplay(replay: Replay): boolean {
-    return false
+  private requestReplay(start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>): Promise<Replay | null> {
+    return Promise.resolve(null)
   }
 
   /**
    * Creates a replay for the specified things
    *
    * @param things Thing to be replayed.
-   * @return The created object
+   * @return The created object or null on failure
    */
-  createReplay = (start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>): Replay | null => {
-    return null
+  createReplay = (start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>): Promise<Replay | null> => {
+    const {requestReplay} = this
+
+    const resultPromise = new Promise<Replay | null>((resolve, reject) => {
+      requestReplay(start, end, speed, things).then((result: Replay | null) => {
+        resolve(result)
+      })
+    })
+
+    return resultPromise
   }
 }
 
