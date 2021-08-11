@@ -1,5 +1,6 @@
 import Replay from '../material/Replay'
 import Thing from '../material/Thing'
+import ReplaySpeed from '../material/ReplaySpeed'
 
 /**
  * This is the storage for replays.
@@ -22,7 +23,7 @@ class ReplayStore {
    * @param things Thing to be replayed.
    * @return The created object
    */
-  createReplay = (things: Array<Thing>): Replay | null => {
+  createReplay = (start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>): Replay | null => {
     return null
   }
 }

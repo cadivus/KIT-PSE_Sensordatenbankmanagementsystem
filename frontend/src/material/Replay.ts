@@ -1,4 +1,5 @@
 import Thing from './Thing'
+import ReplaySpeed from './ReplaySpeed'
 
 /**
 * This class represents a replay.
@@ -7,58 +8,28 @@ class Replay {
   /**
   * This list contains all things being part of the replay.
   */
-  things: Array<Thing> = []
+  readonly things: Set<Thing>
 
   /**
   * Speed multiplier
   */
-  speed: number = 1
+  readonly speed: ReplaySpeed
 
   /**
-  * Indicates whether the replay is running.
-  */
-  running: boolean = false
+   * Start time and date of the replay
+   */
+  readonly start: Date
 
   /**
-  * The ActionListener will be triggered on every change.
-  *
-  * @param actionListener The ActionListener to be triggered.
-  */
-  onChange = (actionListener: any): void => {
+   * End time and date of the replay
+   */
+  readonly end: Date
 
-  }
-
-  /**
-  * Starts the replay.
-  */
-  start = (): void => {
-    // Nothing yet
-  }
-
-  /**
-  * Stops the replay
-  */
-  stop = (): void => {
-    // Nothing yet
-  }
-
-  /**
-  * Adds a thing to the replay.
-  *
-  * @param thing Thing to add
-  */
-  addThing = (thing: Thing): void => {
-
-  }
-
-  /**
-  * Removes a thing from the replay.
-  *
-  * @param thing Thing to remove
-  * @return True on success, false on failure.
-  */
-  removeThing = (thing: Thing): boolean => {
-    return false
+  constructor(start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>) {
+    this.start = start
+    this.end = end
+    this.speed = speed
+    this.things = things
   }
 }
 
