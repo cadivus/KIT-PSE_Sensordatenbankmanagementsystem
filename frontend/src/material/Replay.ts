@@ -1,18 +1,24 @@
 import Thing from './Thing'
 import ReplaySpeed from './ReplaySpeed'
+import Id from './Id'
 
 /**
-* This class represents a replay.
-*/
+ * This class represents a replay.
+ */
 class Replay {
   /**
-  * This list contains all things being part of the replay.
-  */
+   * Id of the replay
+   */
+  readonly id: Id
+
+  /**
+   * This list contains all things being part of the replay.
+   */
   readonly things: Set<Thing>
 
   /**
-  * Speed multiplier
-  */
+   * Speed multiplier
+   */
   readonly speed: ReplaySpeed
 
   /**
@@ -25,7 +31,17 @@ class Replay {
    */
   readonly end: Date
 
-  constructor(start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>) {
+  /**
+   * Creates a new onject representing a replay
+   *
+   * @param id Id of the replay
+   * @param start Start time of the replay
+   * @param end End time of the replay
+   * @param speed Speed of the replay
+   * @param things Thing being part of the replay
+   */
+  constructor(id: Id, start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>) {
+    this.id = id
     this.start = start
     this.end = end
     this.speed = speed
