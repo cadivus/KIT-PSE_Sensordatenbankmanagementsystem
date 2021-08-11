@@ -25,6 +25,7 @@ const ReplayRequest = ({replay}: {replay: Replay | null}) => {
           <FormattedMessage id="replaypage.request" />
         </Typography>
         <Typography variant="body1">{replay.id.toString()}</Typography>
+        <p />
         <Typography variant="body1">{getReplayStreamLink(replay.id)}</Typography>
       </div>
     )

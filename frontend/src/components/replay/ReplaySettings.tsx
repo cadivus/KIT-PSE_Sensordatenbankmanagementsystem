@@ -91,8 +91,9 @@ const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>
   }
 
   const createReplay = (): void => {
-    const newReplay = replayStore?.createReplay(startDate, endDate, replaySpeed, things)
-    setReplay(newReplay)
+    replayStore?.createReplay(startDate, endDate, replaySpeed, things).then(newReplay => {
+      setReplay(newReplay)
+    })
   }
 
   return (

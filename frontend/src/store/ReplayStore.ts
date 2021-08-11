@@ -27,7 +27,6 @@ class ReplayStore {
     const resultPromise = new Promise<Replay | null>((resolve, reject) => {
       postJsonGetText(url, json).then((newIdString: string) => {
         const newId = new Id(`${newIdString}`)
-        console.log('newId', newId)
         const newReplay = new Replay(newId, start, end, speed, things)
 
         resolve(newReplay)
