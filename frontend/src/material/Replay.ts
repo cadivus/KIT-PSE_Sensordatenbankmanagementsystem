@@ -38,7 +38,7 @@ class Replay {
    * @param start Start time of the replay
    * @param end End time of the replay
    * @param speed Speed of the replay
-   * @param things Thing being part of the replay
+   * @param things Things being part of the replay
    */
   constructor(id: Id, start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>) {
     this.id = id

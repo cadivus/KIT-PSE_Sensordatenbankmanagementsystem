@@ -10,8 +10,11 @@ class ReplayStore {
   /**
    * Requests a replay from the backend
    *
-   * @param replay The replay to request
-   * @return True on success, false on failure
+   * @param start Start date of the replay requested
+   * @param end End date of the replay requested
+   * @param speed Replay speed of the replay requested
+   * @param things Things being part of the replay requested
+   * @return The created replay on success, null on failure
    */
   private requestReplay(start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>): Promise<Replay | null> {
     return Promise.resolve(null)
