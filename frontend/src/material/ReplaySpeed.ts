@@ -12,6 +12,11 @@ class ReplaySpeed {
     const {speed} = this
     return `${speed}`
   }
+
+  toNumber(): number {
+    const {speed} = this
+    return speed
+  }
 }
 
 export default ReplaySpeed
