@@ -55,6 +55,16 @@ const ThingInformationView: FC = () => {
     })
   }
 
+  const onReplayClick = () => {
+    const selectedThings = new Set<Thing>()
+    selectedThings.add(thing)
+    history.push({
+      pathname: '/replay',
+      // eslint-disable-next-line object-shorthand
+      state: {selectedThings: selectedThings},
+    })
+  }
+
   const [activeState, setActiveState] = useState(thing.isActive())
 
   useEffect(() => {
@@ -90,11 +100,7 @@ const ThingInformationView: FC = () => {
           <Grid item xs={4}>
             <Grid container spacing={3}>
               <Grid item xs={12} className={classes.buttonspacing}>
-                <Button
-                  variant="outlined"
-                  className={classes.button}
-                  onClick={() => history.push('/replay/replaySingleView')}
-                >
+                <Button variant="outlined" className={classes.button} onClick={onReplayClick}>
                   <Typography variant="h5">
                     <FormattedMessage id="infopage.replay" />
                   </Typography>

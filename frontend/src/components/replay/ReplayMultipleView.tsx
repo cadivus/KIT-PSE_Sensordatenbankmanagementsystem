@@ -1,12 +1,11 @@
-// http://localhost:3000/replay/replayMultipleView
-
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import ReplaySettings from './ReplaySettings'
 import ReplayRequest from './ReplayRequest'
 import ReplayHelp from './ReplayHelp'
 import ReplayThingList from './ReplayThingList'
+import Thing from '../../material/Thing'
 
 const useStyles = makeStyles({
   container: {
@@ -20,18 +19,27 @@ const useStyles = makeStyles({
  *  Displays the webpage of the replay with multiple things.
  *  This class implements a React component.
  */
-const ReplayMultipleView = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ReplayMultipleView = (props: any) => {
   const classes = useStyles()
+
+  const [things, setThings] = useState(new Set<Thing>())
+
+  useEffect(() => {
+    const newSelected = new Set<Thing>()
+    props.location.state.selectedThings.forEach((e: Thing) => {
+      newSelected.add(e)
+    })
+    setThings(newSelected)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div>
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={4}>
           <Grid item xs={6}>
-            <Typography variant="h3" gutterBottom>
-              2020-12-12 10:10:10
-            </Typography>
-            <ReplayThingList />
+            <ReplayThingList things={things} />
           </Grid>
           <Grid item xs={6}>
             <ReplaySettings />
