@@ -1,7 +1,15 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {createStyles} from '@material-ui/core/styles'
 import {Button, Container, Grid, makeStyles, Paper, TextField, Theme, Typography} from '@material-ui/core'
 import {FormattedMessage} from 'react-intl'
+import Datastream from '../../material/Datastream'
+import {getCsvDownloadUrl} from '../../store/communication/backendUrlCreator'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const dateFormat = require('dateformat')
+
+const toMaterialDate = (date: Date) => `${dateFormat(date, 'yyyy-mm-dd')}T${dateFormat(date, 'HH:MM')}`
+const toFileDate = (date: Date) => dateFormat(date, 'yyyy-mm-dd')
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      width: 130,
+      width: 240,
     },
   }),
 )
@@ -26,8 +34,29 @@ const useStyles = makeStyles((theme: Theme) =>
  *  Displays the export options for thing data.
  *  This class implements a React component.
  */
-const Export = () => {
+const Export = ({datastream}: {datastream: Datastream}) => {
   const classes = useStyles()
+
+  const [startDate, setStartDateState] = useState<Date>(new Date())
+  const [endDate, setEndDateState] = useState<Date>(new Date())
+  const [downloadLink, setDownloadLink] = useState(getCsvDownloadUrl(datastream.datastreamId, startDate, endDate))
+  const [downloadName, setDownloadName] = useState(
+    `${datastream.datastreamId.toString()}__${toFileDate(startDate)}_to_${toFileDate(endDate)}.csv`,
+  )
+
+  const setStartDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+    const newDate = new Date(e.target.value)
+    setStartDateState(newDate)
+    setDownloadLink(getCsvDownloadUrl(datastream.datastreamId, newDate, endDate))
+    setDownloadName(`${datastream.datastreamId.toString()}__${toFileDate(newDate)}_to_${toFileDate(endDate)}.csv`)
+  }
+
+  const setEndDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+    const newDate = new Date(e.target.value)
+    setEndDateState(newDate)
+    setDownloadLink(getCsvDownloadUrl(datastream.datastreamId, startDate, newDate))
+    setDownloadName(`${datastream.datastreamId.toString()}__${toFileDate(startDate)}_to_${toFileDate(newDate)}.csv`)
+  }
 
   return (
     <div className={classes.root}>
@@ -35,64 +64,42 @@ const Export = () => {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <Container className={classes.paper}>
-              <Button variant="outlined">
-                <Typography variant="h5">
-                  <FormattedMessage id="infopage.export" />
-                </Typography>
-              </Button>
+              <a href={downloadLink} download={downloadName}>
+                <Button variant="outlined">
+                  <Typography variant="h5">
+                    <FormattedMessage id="infopage.export" />
+                  </Typography>
+                </Button>
+              </a>
             </Container>
           </Grid>
           <Grid item xs={4}>
             <Container className={classes.paper}>
               <TextField
-                id="date"
-                label={<FormattedMessage id="infopage.fromDate" />}
-                type="date"
-                defaultValue="2017-05-24"
+                id="datetime-start"
+                label="Start point"
+                type="datetime-local"
+                defaultValue={toMaterialDate(startDate)}
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
                 }}
-              />
-              <TextField
-                id="time"
-                label={<FormattedMessage id="infopage.fromTime" />}
-                type="time"
-                defaultValue="07:30"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
-                }}
+                onChange={setStartDate}
               />
             </Container>
           </Grid>
           <Grid item xs={4}>
             <Container className={classes.paper}>
               <TextField
-                id="date"
-                label={<FormattedMessage id="infopage.toDate" />}
-                type="date"
-                defaultValue="2017-05-24"
+                id="datetime-end"
+                label="End point"
+                type="datetime-local"
+                defaultValue={toMaterialDate(endDate)}
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
                 }}
-              />
-              <TextField
-                id="time"
-                label={<FormattedMessage id="infopage.toTime" />}
-                type="time"
-                defaultValue="07:30"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
-                }}
+                onChange={setEndDate}
               />
             </Container>
           </Grid>
