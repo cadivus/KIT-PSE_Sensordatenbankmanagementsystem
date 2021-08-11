@@ -21,9 +21,6 @@ const ReplayRequest = ({replay}: {replay: Replay | null}) => {
   if (replay) {
     return (
       <div>
-        <Button variant="outlined" className={classes.Margins}>
-          <FormattedMessage id="replaypage.play" />
-        </Button>
         <Typography variant="h5" className={classes.Margins}>
           <FormattedMessage id="replaypage.request" />
         </Typography>

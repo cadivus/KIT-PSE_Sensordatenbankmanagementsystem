@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {FormattedMessage} from 'react-intl'
 import {
+  Button,
   Paper,
   Slider,
   Table,
@@ -15,6 +16,9 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ReplaySpeed from '../../material/ReplaySpeed'
+import Replay from '../../material/Replay'
+import Thing from '../../material/Thing'
+import useReplayStore from "../../hooks/UseReplayStore";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFormat = require('dateformat')
@@ -52,14 +56,19 @@ const useStyles = makeStyles({
   topMargin: {
     marginTop: '12.2%',
   },
+  Margins: {
+    marginTop: '3%',
+  },
 })
 
 /**
  *  Displays the settings of the current replay.
  *  This class implements a React component.
  */
-const ReplaySettings = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>}) => {
   const classes = useStyles()
+  const replayStore = useReplayStore()
 
   const [startDate, setStartDateState] = useState<Date>(new Date())
   const [endDate, setEndDateState] = useState<Date>(new Date())
@@ -81,66 +90,76 @@ const ReplaySettings = () => {
     setReplaySpeedState(newSpeed)
   }
 
+  const createReplay = (): void => {
+    const newReplay = replayStore?.createReplay(startDate, endDate, replaySpeed, things)
+    setReplay(newReplay)
+  }
+
   return (
-    <TableContainer component={Paper} className={classes.topMargin}>
-      <Table>
-        <TableBody>
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
-              <Typography variant="body1">
-                <FormattedMessage id="replaypage.start" />
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField
-                id="datetime-start"
-                label="Next appointment"
-                type="datetime-local"
-                defaultValue={toMaterialDate(startDate)}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={setStartDate}
-              />
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
-              <Typography variant="body1">
-                <FormattedMessage id="replaypage.stop" />
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField
-                id="datetime-end"
-                label="Next appointment"
-                type="datetime-local"
-                defaultValue={toMaterialDate(endDate)}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={setEndDate}
-              />
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
-              <Typography variant="body1">
-                <FormattedMessage id="replaypage.speed" />
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <Slider defaultValue={replaySpeed.toNumber()} min={1} max={1000} onChange={setReplaySpeed} />
-            </StyledTableCell>
-            <StyledTableCell>
-              <Typography variant="body1">{`${replaySpeed.toString()}x`}</Typography>
-            </StyledTableCell>
-          </StyledTableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <TableContainer component={Paper} className={classes.topMargin}>
+        <Table>
+          <TableBody>
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row">
+                <Typography variant="body1">
+                  <FormattedMessage id="replaypage.start" />
+                </Typography>
+              </StyledTableCell>
+              <StyledTableCell>
+                <TextField
+                  id="datetime-start"
+                  label="Next appointment"
+                  type="datetime-local"
+                  defaultValue={toMaterialDate(startDate)}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={setStartDate}
+                />
+              </StyledTableCell>
+            </StyledTableRow>
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row">
+                <Typography variant="body1">
+                  <FormattedMessage id="replaypage.stop" />
+                </Typography>
+              </StyledTableCell>
+              <StyledTableCell>
+                <TextField
+                  id="datetime-end"
+                  label="Next appointment"
+                  type="datetime-local"
+                  defaultValue={toMaterialDate(endDate)}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={setEndDate}
+                />
+              </StyledTableCell>
+            </StyledTableRow>
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row">
+                <Typography variant="body1">
+                  <FormattedMessage id="replaypage.speed" />
+                </Typography>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Slider defaultValue={replaySpeed.toNumber()} min={1} max={1000} onChange={setReplaySpeed} />
+              </StyledTableCell>
+              <StyledTableCell>
+                <Typography variant="body1">{`${replaySpeed.toString()}x`}</Typography>
+              </StyledTableCell>
+            </StyledTableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Button variant="outlined" className={classes.Margins} onClick={createReplay}>
+        <FormattedMessage id="replaypage.play" />
+      </Button>
+    </div>
   )
 }
 

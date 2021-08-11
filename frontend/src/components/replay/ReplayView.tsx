@@ -25,7 +25,7 @@ const ReplayView = (props: any) => {
   const classes = useStyles()
 
   const [things, setThings] = useState(new Set<Thing>())
-  const [replay, setRepay] = useState<Replay | null>(null)
+  const [replay, setReplay] = useState<Replay | null>(null)
 
   useEffect(() => {
     const newSelected = new Set<Thing>()
@@ -44,7 +44,7 @@ const ReplayView = (props: any) => {
             <ReplayThingList things={things} />
           </Grid>
           <Grid item xs={5}>
-            <ReplaySettings />
+            <ReplaySettings setReplay={setReplay} things={things} />
             <ReplayRequest replay={replay} />
             <ReplayHelp />
           </Grid>
