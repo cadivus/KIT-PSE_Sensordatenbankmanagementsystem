@@ -1,5 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Location;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
@@ -24,6 +25,8 @@ public interface ThingService {
 
     @Transactional
     public Thing getThing(String id);
+
+    public Datastream getDatastream(String id);
 
     /**
      * Gets whether the given things were active in the last X days
