@@ -49,7 +49,7 @@ abstract class Thing {
     return result
   }
 
-  setProperty = (property: ThingProperty): void => {
+  setProperty(property: ThingProperty): void {
     const {_properties} = this
     const oldProperty = _properties.get(property.key)
     if (oldProperty && oldProperty.value === property.value) return

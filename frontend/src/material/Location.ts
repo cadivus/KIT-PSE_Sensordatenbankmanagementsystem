@@ -8,12 +8,12 @@ class Location {
     this.y = y
   }
 
-  toString = (): string => {
+  toString(): string {
     const {x, y} = this
     return `${x}  ${y}`
   }
 
-  coordinatesToString = (): string => {
+  coordinatesToString(): string {
     const {x, y} = this
     return `${x} | ${y}`
   }

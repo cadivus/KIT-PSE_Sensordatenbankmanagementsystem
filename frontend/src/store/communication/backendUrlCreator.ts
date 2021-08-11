@@ -17,6 +17,10 @@ export const getAllThingDatastreamsUrl = (thingId: Id): string =>
 export const getExportDatastreamUrl = (datastreamId: Id, limit: number): string =>
   `${BACKEND_PATH}/datastream/export?id=${datastreamId.toString()}${limit < 1 ? '' : `&limit=${limit}`}`
 
+export const CREATE_REPLAY = `${BACKEND_PATH}/observation/newSSE`
+
+export const getReplayStreamLink = (replayId: Id): string => `${BACKEND_PATH}/observation/stream/${replayId.toString()}`
+
 export const getCsvDownloadUrl = (datastreamId: Id, startDate: Date, endDate: Date): string => {
   const formatedStart = `start=${toBackendDate(startDate)}`
   const formatedEnd = `end=${toBackendDate(endDate)}`
