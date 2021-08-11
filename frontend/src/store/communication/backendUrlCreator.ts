@@ -18,9 +18,8 @@ export const getExportDatastreamUrl = (datastreamId: Id, limit: number): string 
   `${BACKEND_PATH}/datastream/export?id=${datastreamId.toString()}${limit < 1 ? '' : `&limit=${limit}`}`
 
 export const getCsvDownloadUrl = (datastreamId: Id, startDate: Date, endDate: Date): string => {
-  const formatedStart = `startDate=${toBackendDate(startDate)}`
-  const formatedEnd = `endDate=${toBackendDate(endDate)}`
+  const formatedStart = `start=${toBackendDate(startDate)}`
+  const formatedEnd = `end=${toBackendDate(endDate)}`
 
-  // return `${BACKEND_PATH}/datastream/export?id=${datastreamId.toString()}&${formatedStart}&${formatedEnd}`
-  return `https://www.teco.edu/wp-content/themes/teco/images/teco_trans.png?${formatedStart}&${formatedEnd}`
+  return `${BACKEND_PATH}/datastream/export?id=${datastreamId.toString()}&${formatedStart}&${formatedEnd}`
 }
