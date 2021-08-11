@@ -77,7 +77,7 @@ const Export = ({datastream}: {datastream: Datastream}) => {
             <Container className={classes.paper}>
               <TextField
                 id="datetime-start"
-                label="Next appointment"
+                label="Start point"
                 type="datetime-local"
                 defaultValue={toMaterialDate(startDate)}
                 className={classes.textField}
@@ -92,7 +92,7 @@ const Export = ({datastream}: {datastream: Datastream}) => {
             <Container className={classes.paper}>
               <TextField
                 id="datetime-end"
-                label="Next appointment"
+                label="End point"
                 type="datetime-local"
                 defaultValue={toMaterialDate(endDate)}
                 className={classes.textField}
