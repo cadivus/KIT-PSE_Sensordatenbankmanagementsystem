@@ -6,6 +6,7 @@ import ReplayRequest from './ReplayRequest'
 import ReplayHelp from './ReplayHelp'
 import ReplayThingList from './ReplayThingList'
 import Thing from '../../material/Thing'
+import Replay from '../../material/Replay'
 
 const useStyles = makeStyles({
   container: {
@@ -20,10 +21,11 @@ const useStyles = makeStyles({
  *  This class implements a React component.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ReplayMultipleView = (props: any) => {
+const ReplayView = (props: any) => {
   const classes = useStyles()
 
   const [things, setThings] = useState(new Set<Thing>())
+  const [replay, setRepay] = useState<Replay | null>(null)
 
   useEffect(() => {
     const newSelected = new Set<Thing>()
@@ -38,12 +40,12 @@ const ReplayMultipleView = (props: any) => {
     <div>
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={4}>
-          <Grid item xs={6}>
+          <Grid item xs={7}>
             <ReplayThingList things={things} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={5}>
             <ReplaySettings />
-            <ReplayRequest />
+            <ReplayRequest replay={replay} />
             <ReplayHelp />
           </Grid>
         </Grid>
@@ -52,4 +54,4 @@ const ReplayMultipleView = (props: any) => {
   )
 }
 
-export default ReplayMultipleView
+export default ReplayView

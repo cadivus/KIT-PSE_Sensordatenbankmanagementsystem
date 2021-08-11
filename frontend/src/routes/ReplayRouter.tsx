@@ -1,5 +1,5 @@
 import {Route, Switch, useRouteMatch} from 'react-router-dom'
-import ReplayMultipleView from '../components/replay/ReplayMultipleView'
+import ReplayView from '../components/replay/ReplayView'
 
 /**
  * This class routes requests to replays from the users web browser.
@@ -9,7 +9,7 @@ const ReplayRouter = () => {
 
   return (
     <Switch>
-      <Route component={ReplayMultipleView} path={`${path}/`} />
+      <Route component={ReplayView} path={`${path}/`} />
     </Switch>
   )
 }
