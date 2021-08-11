@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {FormattedMessage} from 'react-intl'
 import {
   Paper,
   Slider,
@@ -13,7 +14,11 @@ import {
   withStyles,
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
-import {FormattedMessage} from 'react-intl'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const dateFormat = require('dateformat')
+
+const toMaterialDate = (date: Date) => `${dateFormat(date, 'yyyy-mm-dd')}T${dateFormat(date, 'HH:MM')}`
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -41,7 +46,7 @@ const useStyles = makeStyles({
     width: '83%',
   },
   textField: {
-    width: 130,
+    width: 240,
   },
   topMargin: {
     marginTop: '12.2%',
@@ -55,6 +60,19 @@ const useStyles = makeStyles({
 const ReplaySettings = () => {
   const classes = useStyles()
 
+  const [startDate, setStartDateState] = useState<Date>(new Date())
+  const [endDate, setEndDateState] = useState<Date>(new Date())
+
+  const setStartDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+    const newDate = new Date(e.target.value)
+    setStartDateState(newDate)
+  }
+
+  const setEndDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+    const newDate = new Date(e.target.value)
+    setEndDateState(newDate)
+  }
+
   return (
     <TableContainer component={Paper} className={classes.topMargin}>
       <Table>
@@ -67,27 +85,15 @@ const ReplaySettings = () => {
             </StyledTableCell>
             <StyledTableCell>
               <TextField
-                id="date"
-                type="date"
-                defaultValue="2017-05-24"
+                id="datetime-start"
+                label="Next appointment"
+                type="datetime-local"
+                defaultValue={toMaterialDate(startDate)}
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
                 }}
-              />
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField
-                id="time"
-                type="time"
-                defaultValue="07:30"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
-                }}
+                onChange={setStartDate}
               />
             </StyledTableCell>
           </StyledTableRow>
@@ -99,27 +105,15 @@ const ReplaySettings = () => {
             </StyledTableCell>
             <StyledTableCell>
               <TextField
-                id="date"
-                type="date"
-                defaultValue="2017-05-24"
+                id="datetime-end"
+                label="Next appointment"
+                type="datetime-local"
+                defaultValue={toMaterialDate(endDate)}
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
                 }}
-              />
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField
-                id="time"
-                type="time"
-                defaultValue="07:30"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
-                }}
+                onChange={setEndDate}
               />
             </StyledTableCell>
           </StyledTableRow>
