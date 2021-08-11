@@ -11,3 +11,5 @@ export const getAllThingDatastreamsUrl = (thingId: Id): string =>
 
 export const getExportDatastreamUrl = (datastreamId: Id, limit: number): string =>
   `${BACKEND_PATH}/datastream/export?id=${datastreamId.toString()}${limit < 1 ? '' : `&limit=${limit}`}`
+
+export const CREATE_REPLAY = `${BACKEND_PATH}/createReplay`
