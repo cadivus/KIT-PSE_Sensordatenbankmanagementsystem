@@ -16,9 +16,8 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ReplaySpeed from '../../material/ReplaySpeed'
-import Replay from '../../material/Replay'
 import Thing from '../../material/Thing'
-import useReplayStore from "../../hooks/UseReplayStore";
+import useReplayStore from '../../hooks/UseReplayStore'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFormat = require('dateformat')
@@ -70,9 +69,9 @@ const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>
   const classes = useStyles()
   const replayStore = useReplayStore()
 
-  const [startDate, setStartDateState] = useState<Date>(new Date())
-  const [endDate, setEndDateState] = useState<Date>(new Date())
-  const [replaySpeed, setReplaySpeedState] = useState(new ReplaySpeed(10))
+  const [startDate, setStartDateState] = useState<Date>((d => new Date(d.setDate(d.getDate() - 3)))(new Date()))
+  const [endDate, setEndDateState] = useState<Date>((d => new Date(d.setDate(d.getDate() - 1)))(new Date()))
+  const [replaySpeed, setReplaySpeedState] = useState(new ReplaySpeed(1))
 
   const setStartDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
     const newDate = new Date(e.target.value)
