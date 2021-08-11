@@ -1,16 +1,15 @@
 import React, {FC, useEffect, useState} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
-import {Button, Container, Grid, Typography} from '@material-ui/core'
+import {Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import {FormattedMessage} from 'react-intl'
 import {green, red, grey} from '@material-ui/core/colors'
 import Properties from '../thingInformation/Properties'
 import Export from './Export'
 import Data from './Data'
 import useThingStore from '../../hooks/UseThingStore'
 import Id from '../../material/Id'
-import Thing, {ThingState} from '../../material/Thing'
+import {ThingState} from '../../material/Thing'
 import useDatastreamStore from '../../hooks/UseDatastreamStore'
 
 const useStyles = makeStyles({
@@ -88,7 +87,7 @@ const DatastreamView: FC = () => {
             {thing ? <Properties thing={thing} /> : <></>}
           </Grid>
           <Grid item xs={12}>
-            <Export />
+            <Export datastream={datastream} />
           </Grid>
           <Grid item xs={12}>
             <Data datastream={datastream} />

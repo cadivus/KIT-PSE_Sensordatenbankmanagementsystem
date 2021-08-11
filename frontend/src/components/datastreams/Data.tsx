@@ -73,7 +73,8 @@ const Data = ({datastream}: {datastream: Datastream}) => {
     datastream.getAllValues(25).then(list => {
       setDataList(list)
     })
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <TableContainer component={Paper}>
