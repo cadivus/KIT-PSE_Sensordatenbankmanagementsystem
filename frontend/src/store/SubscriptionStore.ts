@@ -4,9 +4,8 @@ import ThingStore from './ThingStore'
 import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
 import Thing from '../material/Thing'
-import {getJson, getText, postJsonAsURLGetText, postJsonGetJson, postJsonGetText} from './communication/restClient'
-import {CONFIRMCODE_PATH, GET_SUBSCRIPTION_PATH, POST_SUBSCRIPTION_PATH} from './communication/notificationUrlCreator'
-import LoginCode from '../material/LoginCode'
+import {getJson, postJsonAsURLGetText} from './communication/restClient'
+import {GET_SUBSCRIPTION_PATH, POST_SUBSCRIPTION_PATH} from './communication/notificationUrlCreator'
 
 /**
  * This is the storage for subscriptions.
@@ -39,18 +38,21 @@ class SubscriptionStore {
     if (_user) {
       const path = `${GET_SUBSCRIPTION_PATH}/${_user?.email.toString()}`
       getJson(path).then(subscriptionJSON => {
+        console.log(subscriptionJSON)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         subscriptionJSON.forEach((element: any) => {
-          const directNotification = element.alert
-          const id = new Id(`${element.sensorID}`)
+          const directNotification = element.toggleAlert
+          const notifcationLevel = new NotificationLevel(element.reportInterval)
+          const id = new Id(`${element.sensorId}`)
           const idStr = id.toString()
-          const thing = _thingStore.getThing(element.thingID)
+          const thing = _thingStore.getThing(id)
+          console.log(thing)
           if (thing) {
             const subs = new (class extends Subscription {
               unsubscribe(): boolean {
                 return unsubscribeById(id)
               }
-            })(id, thing, directNotification, element.notificationLevel, _user)
+            })(id, thing, directNotification, notifcationLevel, _user)
             subscriptions.set(idStr, subs)
           }
         })
@@ -100,7 +102,6 @@ class SubscriptionStore {
     const {getSubscriptionsFromBackend} = this
     getSubscriptionsFromBackend()
     const {subscriptions} = this
-
     return subscriptions.get(id.toString())
   }
 
@@ -138,7 +139,6 @@ class SubscriptionStore {
       reportInterval: notificationLevel.days,
       directNotification: directNotification.valueOf(),
     }
-    console.log(setting)
     postJsonAsURLGetText(
       this.getSubscriptionPath(
         setting.mailAddress,
@@ -163,9 +163,7 @@ class SubscriptionStore {
     notificationLevel: number,
     directNotification: boolean,
   ): string => {
-    const path = `${POST_SUBSCRIPTION_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}&toggleAlert=${directNotification}`
-    console.log(path)
-    return path
+    return `${POST_SUBSCRIPTION_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}&toggleAlert=${directNotification}`
   }
 }
 
