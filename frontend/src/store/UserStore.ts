@@ -31,6 +31,7 @@ class UserStore extends EventEmitter {
   requestStep1 = (email: EMail): void => {
     const path = `${CONFIRMCODE_PATH}/${email.toString()}`
     getText(path).then(loginCode => {
+      // eslint-disable-next-line no-console
       console.log(loginCode)
       this.code = new LoginCode(loginCode)
     })
@@ -61,6 +62,7 @@ class UserStore extends EventEmitter {
     }
 
     const {user} = this
+    this.emit('login-change')
     return user
   }
 }

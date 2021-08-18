@@ -21,7 +21,9 @@ abstract class Subscription extends EventEmitter {
   /**
    * Thing the subscription is for.
    */
-  things: Array<Thing>
+  // things: Array<Thing>
+
+  thing: Thing
 
   /**
    * Indicates whether the user gets a direct notification on failures.
@@ -35,6 +37,7 @@ abstract class Subscription extends EventEmitter {
 
   owner: User
 
+  /*
   constructor(
     id: Id,
     things: Array<Thing>,
@@ -45,6 +48,17 @@ abstract class Subscription extends EventEmitter {
     super()
     this.id = id
     this.things = things
+    this._directNotification = directNotification
+    this._notificationLevel = notificationLevel
+    this.owner = owner
+  }
+
+   */
+
+  constructor(id: Id, thing: Thing, directNotification: boolean, notificationLevel: NotificationLevel, owner: User) {
+    super()
+    this.id = id
+    this.thing = thing
     this._directNotification = directNotification
     this._notificationLevel = notificationLevel
     this.owner = owner
