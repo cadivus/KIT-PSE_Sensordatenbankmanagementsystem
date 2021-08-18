@@ -38,7 +38,6 @@ class SubscriptionStore {
     if (_user) {
       const path = `${GET_SUBSCRIPTION_PATH}/${_user?.email.toString()}`
       getJson(path).then(subscriptionJSON => {
-        console.log(subscriptionJSON)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         subscriptionJSON.forEach((element: any) => {
           const directNotification = element.toggleAlert
@@ -46,7 +45,6 @@ class SubscriptionStore {
           const id = new Id(`${element.sensorId}`)
           const idStr = id.toString()
           const thing = _thingStore.getThing(id)
-          console.log(thing)
           if (thing) {
             const subs = new (class extends Subscription {
               unsubscribe(): boolean {
