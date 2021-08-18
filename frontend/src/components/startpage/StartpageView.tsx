@@ -34,6 +34,14 @@ const StartpageView: FC = () => {
     })
   }
 
+  const onReplayClick = () => {
+    history.push({
+      pathname: '/replay',
+      // eslint-disable-next-line object-shorthand
+      state: {selectedThings: selectedThings},
+    })
+  }
+
   return (
     <div>
       <Container maxWidth="lg" className={classes.container}>
@@ -41,9 +49,9 @@ const StartpageView: FC = () => {
           <FormattedMessage id="startpage.startpage" />
         </Typography>
         <Grid container spacing={3}>
-          <Grid item xs={8}>
+          {/* <Grid item xs={8}>
             <Search />
-          </Grid>
+          </Grid> */}
           <Grid item xs={2}>
             <Container className={classes.buttons}>
               <Button variant="outlined" onClick={() => subscribeClicked()}>
@@ -53,7 +61,7 @@ const StartpageView: FC = () => {
           </Grid>
           <Grid item xs={2}>
             <Container className={classes.buttons}>
-              <Button variant="outlined" onClick={() => history.push('/replay/replayMultipleView')}>
+              <Button variant="outlined" onClick={onReplayClick}>
                 <FormattedMessage id="startpage.replay" />
               </Button>
             </Container>

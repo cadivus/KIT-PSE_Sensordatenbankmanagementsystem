@@ -105,16 +105,6 @@ const Properties = ({thing}: {thing: Thing}) => {
         <TableBody>
           <StyledTableRow>
             <StyledTableCell component="th" scope="row">
-              <Typography variant="h6">
-                <FormattedMessage id="infopage.value" />
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <Typography variant="h6">{thing.getValue().toString()}</Typography>
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
               <Typography variant="h6">Description: </Typography>
             </StyledTableCell>
             <StyledTableCell>

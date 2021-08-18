@@ -13,6 +13,13 @@ class notificationsystem.configuration.AppConfig {
 
 class notificationsystem.controller.CheckerUtil {
 	{field} {static} -INACTIVE_DAYS_THRESHOLD : int
+	{field} {static} -LOG_ALERT : String
+	{field} {static} -LOG_ERROR : String
+	{field} {static} -LOG_REPORT : String
+	{field} {static} -SENSOR_ACTIVE : int
+	{field} {static} -SENSOR_INACTIVE : int
+	{field} -backendUrl : String
+	{field} -checkActiveUrl : String
 	{field} {static} -log : org.apache.commons.logging.Log
 	{field} -restTemplate : org.springframework.web.client.RestTemplate
 	{field} -sensorActiveDict : java.util.Map
@@ -22,13 +29,14 @@ class notificationsystem.controller.CheckerUtil {
 
 
 class notificationsystem.controller.Controller {
+	{field} {static} -CONSTRUCTOR_ERROR : String
 	{field} {static} -SYSTEMLOGIN_ID : long
 	{field} -backendUrl : String
 	{field} -restTemplate : org.springframework.web.client.RestTemplate
 	{method} +getConfirmCode ( paramString1 : String ) : String
 	{method} +getSubscriptions ( paramString1 : String ) : java.util.List
 	{method} +postConstruct () : void
-	{method} +postSubscription ( paramString1 : String , paramString2 : String , paramlong3 : long ) : void
+	{method} +postSubscription ( paramString1 : String , paramString2 : String , paramlong3 : long , paramboolean4 : boolean ) : void
 	{method} +postUnsubscribe ( paramString1 : String , paramString2 : String ) : void
 	{method} +sendAlert ( paramString1 : String ) : void
 	{method} +sendReport ( paramString1 : String , paramString2 : String ) : void
@@ -36,6 +44,7 @@ class notificationsystem.controller.Controller {
 
 
 class notificationsystem.controller.MailSender {
+	{field} {static} -SEND_STATE_ERROR : String
 	{field} -session : javax.mail.Session
 	{method} -login ( paramString1 : String , paramString2 : String ) : void
 	{method} +send ( paramEMail1 : notificationsystem.view.EMail ) : void
@@ -59,17 +68,28 @@ class notificationsystem.model.ObservationStats {
 
 
 class notificationsystem.model.Sensor {
+	{field} {static} -COORDINATES_IN_LOCATION : int
+	{field} {static} -COORDINATES_KEY : String
 	{field} +activeRate : double
-	{field} +description : String
+	{field} ~description : String
 	{field} +id : String
-	{field} +location : String
-	{field} +name : String
-	{field} +properties : String
+	{field} ~location : String
+	{field} ~name : String
+	{field} ~properties : String
 	{field} +stats : java.util.LinkedList
 }
 
 
 class notificationsystem.model.SensorDAO {
+	{field} {static} -DEFAULT_ACTIVE_RATE : int
+	{field} {static} -ERROR_GET : String
+	{field} {static} -FIRST_ACTIVE_RATE : int
+	{field} {static} -KEY_AVG : String
+	{field} {static} -KEY_ID : String
+	{field} {static} -KEY_MED : String
+	{field} {static} -KEY_MIN : String
+	{field} {static} -KEY_NAME : String
+	{field} {static} -KEY_STDV : String
 	{field} -getActiveRateApi : String
 	{field} -getAllObsApi : String
 	{field} -getAllSensorsApi : String
@@ -85,11 +105,13 @@ class notificationsystem.model.SensorDAO {
 
 
 class notificationsystem.model.Subscription {
+	{field} {static} -ALLOCATION_SIZE : int
 	{field} -id : long
-	{field} +reportInterval : long
-	{field} +sensorId : String
+	{field} -reportInterval : long
+	{field} -sensorId : String
 	{field} +subTime : java.time.LocalDate
-	{field} +subscriberAddress : String
+	{field} -subscriberAddress : String
+	{field} -toggleAlert : boolean
 }
 
 
@@ -131,20 +153,20 @@ class notificationsystem.view.Alert {
 
 class notificationsystem.view.ConfirmationMail {
 	{field} {static} -CODE_LENGTH : int
+	{field} {static} -CODE_LETTERS : boolean
+	{field} {static} -CODE_NUMBERS : boolean
 	{field} -confirmCode : String
 	{method} -generateConfirmCode () : String
 }
 
 
 abstract class notificationsystem.view.EMail {
-	{field} +attachment : org.json.JSONArray
 	{field} +message : String
-	{field} +receiverMail : String
+	{field} -receiverMail : String
 	{field} -senderMail : String
-	{field} +senderName : String
-	{field} +subject : String
+	{field} -senderName : String
+	{field} -subject : String
 	{method} +getReceiverMails () : String
-	{method} +setReceiverMails ( paramString1 : String ) : void
 }
 
 
@@ -170,7 +192,6 @@ notificationsystem.controller.CheckerUtil -->  notificationsystem.model.Subscrip
 notificationsystem.controller.Controller -->  notificationsystem.controller.MailSender : mailSender
 notificationsystem.controller.Controller -->  notificationsystem.model.SensorDAO : sensorDAO
 notificationsystem.controller.Controller -->  notificationsystem.model.SubscriptionDAO : subscriptionDAO
-notificationsystem.controller.Controller -->  notificationsystem.model.SystemLoginDAO : systemLoginDAO
 notificationsystem.controller.Controller -->  notificationsystem.view.MailBuilder : mailBuilder
 notificationsystem.model.SensorDAO ..|>  notificationsystem.model.DAO
 notificationsystem.model.SubscriptionDAO -->  notificationsystem.model.SubscriptionRepository : subscriptionRepository

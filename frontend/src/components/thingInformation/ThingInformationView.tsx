@@ -6,11 +6,10 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import {FormattedMessage} from 'react-intl'
 import {green, red, grey} from '@material-ui/core/colors'
 import Properties from './Properties'
-import Export from './Export'
-import Data from './Data'
 import useThingStore from '../../hooks/UseThingStore'
 import Id from '../../material/Id'
 import Thing, {ThingState} from '../../material/Thing'
+import DatastreamList from './DatastreamList'
 
 const useStyles = makeStyles({
   container: {
@@ -56,6 +55,16 @@ const ThingInformationView: FC = () => {
     })
   }
 
+  const onReplayClick = () => {
+    const selectedThings = new Set<Thing>()
+    selectedThings.add(thing)
+    history.push({
+      pathname: '/replay',
+      // eslint-disable-next-line object-shorthand
+      state: {selectedThings: selectedThings},
+    })
+  }
+
   const [activeState, setActiveState] = useState(thing.isActive())
 
   useEffect(() => {
@@ -85,17 +94,13 @@ const ThingInformationView: FC = () => {
               )}
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={8}>
             {thing ? <Properties thing={thing} /> : <></>}
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Grid container spacing={3}>
               <Grid item xs={12} className={classes.buttonspacing}>
-                <Button
-                  variant="outlined"
-                  className={classes.button}
-                  onClick={() => history.push('/replay/replaySingleView')}
-                >
+                <Button variant="outlined" className={classes.button} onClick={onReplayClick}>
                   <Typography variant="h5">
                     <FormattedMessage id="infopage.replay" />
                   </Typography>
@@ -111,10 +116,7 @@ const ThingInformationView: FC = () => {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Export />
-          </Grid>
-          <Grid item xs={12}>
-            <Data />
+            <DatastreamList thing={thing} />
           </Grid>
         </Grid>
       </Container>

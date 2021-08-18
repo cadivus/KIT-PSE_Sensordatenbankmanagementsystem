@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -11,11 +13,11 @@ import {
   Typography,
   withStyles,
 } from '@material-ui/core'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {FormattedMessage} from 'react-intl'
-import useThingStore from '../../hooks/UseThingStore'
 import Thing from '../../material/Thing'
+import Datastream from '../../material/Datastream'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -39,46 +41,67 @@ const StyledTableRow = withStyles((theme: Theme) =>
 )(TableRow)
 
 const useStyles = makeStyles({
+  table: {
+    minWidth: 800,
+  },
   thingCell: {
     width: '70%',
   },
 })
 
 /**
- *  Displays the things of a replay.
+ *  Displays the data of a selected thing.
  *  This class implements a React component.
  */
-const ReplayThingList = ({things}: {things: Set<Thing>}) => {
+const DatastreamList = ({thing}: {thing: Thing}) => {
+  const history = useHistory()
   const classes = useStyles()
-  const thingStore = useThingStore()
+
+  const [datastreamList, setDatastreamList] = useState<Array<Datastream>>(new Array<Datastream>())
+  useEffect(() => {
+    thing.getDatastreams().then(list => {
+      setDatastreamList(list)
+    })
+  })
 
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table className={classes.table}>
         <TableHead>
           <TableRow>
             <StyledTableCell className={classes.thingCell}>
               <Typography variant="h5">
                 <ArrowDropDownIcon />
-                <FormattedMessage id="replaypage.thing" />
+                <FormattedMessage id="infopage.time" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Typography variant="h5">
                 <ArrowDropDownIcon />
-                <FormattedMessage id="replaypage.value" />
+                <FormattedMessage id="infopage.data" />
               </Typography>
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {Array.from(things).map(thing => (
-            <StyledTableRow hover key={thing.name.name}>
+          {datastreamList.map(datastream => (
+            <StyledTableRow hover key={datastream.datastreamId.toString()}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="body1">{thing.name.toString()}</Typography>
+                <Typography variant="h5">{datastream.name.toString()}</Typography>
               </StyledTableCell>
               <StyledTableCell>
-                <Typography variant="body1">{thing.id.toString()}</Typography>
+                <Typography>{datastream.unit.toString()}</Typography>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() =>
+                    history.push(`/thingInformation/${thing.id.toString()}/${datastream.datastreamId.toString()}`)
+                  }
+                >
+                  View
+                </Button>
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -88,4 +111,4 @@ const ReplayThingList = ({things}: {things: Set<Thing>}) => {
   )
 }
 
-export default ReplayThingList
+export default DatastreamList
