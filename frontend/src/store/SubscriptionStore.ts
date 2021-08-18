@@ -4,7 +4,7 @@ import ThingStore from './ThingStore'
 import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
 import Thing from '../material/Thing'
-import {getJson, getText, postJsonGetJson, postJsonGetText} from './communication/restClient'
+import {getJson, getText, postJsonAsURLGetText, postJsonGetJson, postJsonGetText} from './communication/restClient'
 import {CONFIRMCODE_PATH, GET_SUBSCRIPTION_PATH, POST_SUBSCRIPTION_PATH} from './communication/notificationUrlCreator'
 import LoginCode from '../material/LoginCode'
 
@@ -139,7 +139,7 @@ class SubscriptionStore {
       directNotification: directNotification.valueOf(),
     }
     console.log(setting)
-    getText(
+    postJsonAsURLGetText(
       this.getSubscriptionPath(
         setting.mailAddress,
         setting.sensorID,
