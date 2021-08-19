@@ -1,4 +1,4 @@
-package notificationsystem;
+package notificationsystem.controller;
 
 import notificationsystem.controller.Controller;
 import notificationsystem.model.Subscription;
@@ -28,13 +28,12 @@ public class ControllerIntegrationTests {
 
     @Test
     public void testGetConfirmCode() throws Exception {
-        String mailAddress = "test";
-
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("http://localhost:8082/getConfirmCode/test");
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
 
-        //Result is semi-random complicating exact testing
+        //Result (confirmation code) is semi-random complicating exact testing
         assertNotNull(mvcResult);
+        assertEquals(8, mvcResult.getResponse().getContentLength());
         //TODO: Test mail?
     }
 
