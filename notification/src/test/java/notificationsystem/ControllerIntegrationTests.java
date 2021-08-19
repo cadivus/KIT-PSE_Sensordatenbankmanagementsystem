@@ -27,6 +27,18 @@ public class ControllerIntegrationTests {
     private SubscriptionDAO subscriptionDAO;
 
     @Test
+    public void testGetConfirmCode() throws Exception {
+        String mailAddress = "test";
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("http://localhost:8082/getConfirmCode/test");
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+
+        //Result is semi-random complicating exact testing
+        assertNotNull(mvcResult);
+        //TODO: Test mail?
+    }
+
+    @Test
     public void testPostSubscription() throws Exception {
         String mailAddress = "test";
         String sensorId = "test-id";

@@ -17,6 +17,4 @@ public class MailIntegrationTests {
     @Test
     public void testSendReport() {}
 
-    @Test
-    public void testGetConfirmCode() {}
 }
