@@ -5,7 +5,11 @@ import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
 import Thing from '../material/Thing'
 import {getJson, postJsonAsURLGetText} from './communication/restClient'
-import {GET_SUBSCRIPTION_PATH, POST_SUBSCRIPTION_PATH} from './communication/notificationUrlCreator'
+import {
+  GET_SUBSCRIPTION_PATH,
+  POST_SUBSCRIPTION_PATH,
+  POST_UBSUBSCRIBE_PATH
+} from './communication/notificationUrlCreator'
 
 /**
  * This is the storage for subscriptions.
@@ -151,8 +155,14 @@ class SubscriptionStore {
   private unsubscribe = (id: Id): boolean => {
     const {subscriptions} = this
     if (!subscriptions.has(id.toString())) return false
-
+    if (!this._user) return false
+    const path = this.getUnsubscriptionPath(this._user?.email.toString(), id.toString())
+    postJsonAsURLGetText(path)
     return subscriptions.delete(id.toString())
+  }
+
+  getUnsubscriptionPath = (mailAddress: string, thingID: string): string => {
+    return `${POST_UBSUBSCRIBE_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}`
   }
 
   getSubscriptionPath = (
