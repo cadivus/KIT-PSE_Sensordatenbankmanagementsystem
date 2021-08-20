@@ -68,34 +68,6 @@ public class ObservationController {
         this.observationService = observationService;
     }
 
-    /**
-     * Maps a post request that creates a new SSE stream
-     *
-     * @return UUID of the created SSE stream
-     */
-  @ResponseBody
-  @PostMapping(value = "/newSSE", consumes = "application/json", produces = "text/plain")
-  public String createNewSse(@RequestBody Requests data) {
-    if (data.getSpeed() == 0) {
-      data.setSpeed(1);
-    }
-    log.info("received Datastream request");
-    return observationService.createNewDataStream(data).toString();
-  }
-
-    /**
-     * Maps a get request that gets the SSE stream with the given UUID
-     *
-     * @param id UUID of SSE stream to get
-     * @return SSE stream for the given UUID
-     */
-  @Produces(MediaType.SERVER_SENT_EVENTS)
-  @GetMapping("/stream/{id}")
-  public SseEmitter streamSseMvc(@PathVariable String id) {
-    log.info("request for outgoing stream for id: " + id);
-    UUID uuid = UUID.fromString(id);
-    return observationService.getDataStream(uuid);
-  }
 
     @GetMapping("/getAllObs")
     public List<ObservedProperty> getAllObservedProperties(){

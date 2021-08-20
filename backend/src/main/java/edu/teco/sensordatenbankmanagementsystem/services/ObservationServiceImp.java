@@ -3,42 +3,24 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.ObservedProperty;
-import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
-import edu.teco.sensordatenbankmanagementsystem.util.ProxyHelper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservedPropertyRepository;
 import lombok.extern.apachecommons.CommonsLog;
-import org.apache.commons.collections4.BidiMap;
-import org.apache.commons.collections4.bidimap.DualHashBidiMap;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * The ObservationServiceImp is an implementation of the {@link ObservationService} interface
@@ -50,84 +32,28 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class ObservationServiceImp implements ObservationService{
 
   final ObservationRepository observationRepository;
-  @Autowired
-  DatastreamRepository datastreamRepository;
-  @Autowired
-  SensorService sensorService;
-  final ProxyHelper proxyHelper;
+  // @Autowired
+  final DatastreamRepository datastreamRepository;
   final ObservedPropertyRepository observedPropertyRepository;
 
-  BidiMap<UUID, SseEmitter> sseStreams = new DualHashBidiMap<>();
 
   @Autowired
   public ObservationServiceImp(ObservationRepository observationRepository,
-      ProxyHelper proxyHelper, ObservedPropertyRepository observedPropertyRepository) {
+      DatastreamRepository datastreamRepository,
+      ObservedPropertyRepository observedPropertyRepository) {
     this.observationRepository = observationRepository;
-    this.proxyHelper = proxyHelper;
+    this.datastreamRepository = datastreamRepository;
     this.observedPropertyRepository = observedPropertyRepository;
   }
 
   /**
    * {@inheritDoc}
    */
-  @Transactional()
-  public UUID createNewDataStream(Requests information) {
-    if(information == null || information.getStart() == null || information.getEnd() == null || information.getSensors() == null || information.getSensors().isEmpty()){
-      throw new IllegalArgumentException("Neither information, nor start, nor end, nor sensors can be empty");
-    }
-    if (information.getSpeed() == 0) {
-      information.setSpeed(1);
-    }
-    if (information.getSpeed() > 1 && information.getEnd().isAfter(LocalDateTime.now())) {
-      throw new IllegalArgumentException("Speed can not be over 1 with the end in the future");
-    }
-    if (information.getStart().equals(information.getEnd()))
-      throw new IllegalArgumentException("Start and end can not be the same time");
-    Long life = (long) (ChronoUnit.MILLIS.between(information.getStart(), information.getEnd())/information.getSpeed() * 1.05);
-    SseEmitter emitter = new SseEmitter(life);
-    ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
 
-    UUID id = UUID.randomUUID();
-    sseStreams.put(id, emitter);
-    List<Datastream> datastreams = sensorService
-        .getDatastreams(information.getSensors(), information.getStart(),
-            information.getEnd()).collect(Collectors.toList());
-    if (datastreams.size() == 0)
-        datastreams.add(new Datastream());
-    sseMvcExecutor.execute(() -> {
-      proxyHelper.sseHelper(datastreams, information, emitter);
-
-    });
-
-    log.info("finished datastream creation for id: " + id);
-    return id;
-  }
 
   @Override
   public Observation getObservation(String id) {
     return null;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public UUID createReplay(Requests information) {
-    information.setSpeed(1);
-    return createNewDataStream((information));
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public SseEmitter getDataStream(UUID id) {
-    return sseStreams.get(id);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public void destroyDataStream(UUID id) {
-    sseStreams.remove(id);
   }
 
   @Transactional

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ThingRepository extends JpaRepository<Thing, String> {
 
-  Optional<Thing> findAllByDatastream_Id(String id);
+  Optional<Thing> findAllByDatastreams_Id(String id);
   Optional<Thing> findById(String id);
 
   List<Thing> getAllBy();

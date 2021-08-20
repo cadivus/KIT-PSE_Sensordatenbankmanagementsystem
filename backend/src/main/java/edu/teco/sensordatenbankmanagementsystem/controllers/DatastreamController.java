@@ -2,6 +2,8 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
+import edu.teco.sensordatenbankmanagementsystem.services.DatastreamService;
+import edu.teco.sensordatenbankmanagementsystem.services.DatastreamServiceImp;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationServiceImp;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorServiceImp;
@@ -20,7 +22,6 @@ import javax.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,18 +32,21 @@ public class DatastreamController {
 
   private final ThingService thingService;
   private final ObservationService observationService;
+  private final DatastreamService datastreamService;
 
   public DatastreamController(
       ThingServiceImp thingService, SensorServiceImp sensorService,
-      ObservationServiceImp observationService) {
+      ObservationServiceImp observationService,
+      DatastreamServiceImp datastreamService) {
     this.thingService = thingService;
     this.observationService = observationService;
+    this.datastreamService = datastreamService;
   }
 
   @GetMapping("/listDatastreams")
   @Transactional
   public List<Datastream> getDatastreams(@RequestParam(value = "id") String thingId) {
-    return thingService.getThing(thingId).getDatastream();
+    return datastreamService.getDatastreamsByThing(thingId);
   }
 
   @GetMapping(value = "/export", params = "limit")
@@ -89,14 +93,14 @@ public class DatastreamController {
     response.setHeader(headerKey, headerValue);
 
     Stream<Observation> list = observationService
-        .getObservationByDatastream(Stream.of(thingService.getDatastream(datastreamId)), start, end);
+        .getObservationByDatastream(Stream.of(datastreamService.getDatastream(datastreamId)), start, end);
 
     WriteCsvToResponse.writeObservation(response.getWriter(), list);
   }
 
   @GetMapping("/getDatastream")
   public Datastream exportDatastream(@RequestParam(value = "id") String datastreamId) {
-    return thingService.getDatastream(datastreamId);
+    return datastreamService.getDatastream(datastreamId);
   }
 
 }
