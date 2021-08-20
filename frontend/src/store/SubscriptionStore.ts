@@ -8,7 +8,7 @@ import {getJson, postJsonAsURLGetText} from './communication/restClient'
 import {
   GET_SUBSCRIPTION_PATH,
   POST_SUBSCRIPTION_PATH,
-  POST_UBSUBSCRIBE_PATH
+  POST_UBSUBSCRIBE_PATH,
 } from './communication/notificationUrlCreator'
 
 /**
