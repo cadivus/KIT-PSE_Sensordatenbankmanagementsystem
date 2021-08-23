@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This is the entry point for all datastream related API calls.
+ */
 @RestController
 @RequestMapping("/datastream")
 public class DatastreamController {
@@ -43,12 +46,25 @@ public class DatastreamController {
     this.datastreamService = datastreamService;
   }
 
+  /**
+   * This will return all Datastreams belonging to a specific thing
+   * @param thingId The Things unique identifier
+   * @return A List of Datastreams. The Observations are excluded from this list due to size issues
+   */
   @GetMapping("/listDatastreams")
   @Transactional
   public List<Datastream> getDatastreams(@RequestParam(value = "id") String thingId) {
     return datastreamService.getDatastreamsByThing(thingId);
   }
 
+  /**
+   * This adds the possibility to export Observations belonging to a specific datastreams as a CSV
+   * file
+   * @param datastreamId The datastreams unique identifier
+   * @param limitStr The maximum amount of Observations expressed as a simple Integer
+   * @param response The HTTPServlet response is given to this function by the frontcontroller
+   * @throws IOException If the function is unable to write to the output
+   */
   @GetMapping(value = "/export", params = "limit")
   @Transactional
   public void exportToCsv(@RequestParam(value = "id") String datastreamId,
@@ -77,6 +93,17 @@ public class DatastreamController {
 
   }
 
+  /**
+   * This adds the possibility to export Observations belonging to a specific datastreams as a CSV
+   * file
+   * @param datastreamId The datastreams unique identifier
+   * @param start The start point of the request. The function will only check for observations
+   *              after this date
+   * @param end The end point of the request. The function will only check for observations
+   *            before this date
+   * @param response The HTTPServlet response is given to this function by the frontcontroller
+   * @throws IOException If the function is unable to write to the output
+   */
   @Transactional
   @GetMapping(value = "/export", params = {"start", "end"})
   public void exportToCsv(@RequestParam(value = "id") String datastreamId,
@@ -98,6 +125,11 @@ public class DatastreamController {
     WriteCsvToResponse.writeObservation(response.getWriter(), list);
   }
 
+  /**
+   * This exports a datastream by its Id
+   * @param datastreamId the datastreams unique identifier
+   * @return A Datastream which will be formatted as a JSON
+   */
   @GetMapping("/getDatastream")
   public Datastream exportDatastream(@RequestParam(value = "id") String datastreamId) {
     return datastreamService.getDatastream(datastreamId);

@@ -47,11 +47,32 @@ public interface ObservationService {
     Stream<Observation> getObservationByDatastream(Stream<Datastream> datastreams, LocalDateTime start, LocalDateTime end);
 
 
-
+    /**
+     * This tries to return a List of all Observations belonging to a specific Thing
+     * There are various limitations that can be turned on to reduce processing time.
+     * In 1 month there can be easily more than 100 000 results.
+     * @param thingId The 'things' unique identifier
+     * @param limit The maximum amount of results to be returned
+     * @param sort The sorting function in which the results are to be sorted
+     * @param filter
+     * @param frameStart The start time
+     * @param frameEnd The end time
+     * @return A list of observations
+     */
     List<Observation> getObservationsByThingId(String thingId, int limit, Sort sort, List<String> filter, LocalDateTime frameStart, LocalDateTime frameEnd);
 
+    /**
+     *
+     * @return the list of all Observer properties in the database
+     */
     List<ObservedProperty> getAllObservedProperties();
 
+    /**
+     * Gets all observations belonging to a specific Datastream
+     * @param datastreamId The datastreams unique identifier
+     * @param page A Pageable limits the amount of results to a specific amount of pages
+     * @return A Stream of Observations
+     */
     Stream<Observation> getObservationByDatastreamId(String datastreamId, Pageable page);
 
 }

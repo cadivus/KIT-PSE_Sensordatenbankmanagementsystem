@@ -49,8 +49,6 @@ public class ObservationServiceImp implements ObservationService{
   /**
    * {@inheritDoc}
    */
-
-
   @Override
   public Observation getObservation(String id) {
     return null;

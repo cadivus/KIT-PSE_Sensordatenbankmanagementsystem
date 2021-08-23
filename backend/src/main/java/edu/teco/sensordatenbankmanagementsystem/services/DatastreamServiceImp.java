@@ -23,10 +23,16 @@ public class DatastreamServiceImp implements DatastreamService {
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Datastream> getDatastreamsByThing(String id) {
     return thingService.getThing(id).getDatastreams();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Datastream getDatastream(String id) {
 
     // return datastreamRepository.getById(id);
