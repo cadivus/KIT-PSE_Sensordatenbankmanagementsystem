@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, {FC, useState} from 'react'
 import {
   Paper,
   Table,
@@ -70,8 +70,8 @@ const SubscriptionList: FC = () => {
   const history = useHistory()
   const subscriptionStore = useSubscriptionStore()
 
-  const [open, setOpen] = React.useState(false)
-  const [clickedSubscription, setClickedSubscription] = React.useState<Subscription | null>(null)
+  const [open, setOpen] = useState(false)
+  const [clickedSubscription, setClickedSubscription] = useState<Subscription | null>(null)
 
   const handleClickOpen = (subscription: Subscription) => {
     setClickedSubscription(subscription)
