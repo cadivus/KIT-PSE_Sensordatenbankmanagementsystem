@@ -33,8 +33,7 @@ const useStyles = makeStyles(theme => ({
  *  Displays the login page.
  *  This class implements a React component.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const LoginStep1 = ({setMailAddress}: {setMailAddress: any}) => {
+const LoginStep1 = ({setMailAddress}: {setMailAddress: (mailString: string) => void}) => {
   const [mailString, setMailString] = useState('')
   const classes = useStyles()
 

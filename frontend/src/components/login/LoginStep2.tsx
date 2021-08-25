@@ -33,8 +33,7 @@ const useStyles = makeStyles(theme => ({
  *  Displays the login page.
  *  This class implements a React component.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const LoginStep2 = ({setAuthCode}: {setAuthCode: any}) => {
+const LoginStep2 = ({setAuthCode}: {setAuthCode: (authCode: string) => void}) => {
   const [codeString, setCodeString] = useState('')
   const classes = useStyles()
 
