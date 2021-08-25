@@ -72,13 +72,13 @@ const DatastreamList = ({thing}: {thing: Thing}) => {
             <StyledTableCell className={classes.thingCell}>
               <Typography variant="h5">
                 <ArrowDropDownIcon />
-                <FormattedMessage id="infopage.time" />
+                <FormattedMessage id="infopage.stream" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Typography variant="h5">
                 <ArrowDropDownIcon />
-                <FormattedMessage id="infopage.data" />
+                <FormattedMessage id="infopage.unit" />
               </Typography>
             </StyledTableCell>
           </TableRow>

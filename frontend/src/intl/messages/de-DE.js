@@ -22,6 +22,8 @@ export default {
     'infopage.toTime': 'End Zeit',
     'infopage.time': 'Zeit',
     'infopage.data': 'Daten',
+    'infopage.unit': 'Einheit',
+    'infopage.stream': 'Datenstream',
     // Replaypage
     'replaypage.start': 'Start:',
     'replaypage.stop': 'Stop:',
