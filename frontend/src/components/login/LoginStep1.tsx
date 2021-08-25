@@ -33,7 +33,8 @@ const useStyles = makeStyles(theme => ({
  *  Displays the login page.
  *  This class implements a React component.
  */
-const LoginStep1 = ({setMailAddress}) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const LoginStep1 = ({setMailAddress}: {setMailAddress: any}) => {
   const [mailString, setMailString] = useState('')
   const classes = useStyles()
 
@@ -58,7 +59,7 @@ const LoginStep1 = ({setMailAddress}) => {
             name="email"
             autoComplete="email"
             autoFocus
-            onInput={e => setMailString(e.target.value)}
+            onInput={e => setMailString((e.target as HTMLTextAreaElement).value)}
           />
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             <FormattedMessage id="loginpage.signInButton" />

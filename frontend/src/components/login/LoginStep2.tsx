@@ -33,7 +33,8 @@ const useStyles = makeStyles(theme => ({
  *  Displays the login page.
  *  This class implements a React component.
  */
-const LoginStep2 = ({setAuthCode}) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const LoginStep2 = ({setAuthCode}: {setAuthCode: any}) => {
   const [codeString, setCodeString] = useState('')
   const classes = useStyles()
 
@@ -58,7 +59,7 @@ const LoginStep2 = ({setAuthCode}) => {
             type="password"
             id="password"
             autoComplete="current-password"
-            onInput={e => setCodeString(e.target.value)}
+            onInput={e => setCodeString((e.target as HTMLTextAreaElement).value)}
           />
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             <FormattedMessage id="loginpage.signInButton" />
