@@ -2,7 +2,7 @@ import Thing, {ThingState} from '../material/Thing'
 import ThingName from '../material/ThingName'
 import Id from '../material/Id'
 import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
-import {getJson} from './communication/restClient'
+import {getJson, postJsonGetText} from './communication/restClient'
 import ThingProperty from '../material/ThingProperty'
 import Location from '../material/Location'
 import LocationWithAddress from '../material/LocationWithAddress'
@@ -31,10 +31,25 @@ class ThingStore {
     getThingsFromBackend()
   }
 
-  get things(): Array<Thing> {
+  get things(): Promise<Array<Thing>> {
     const {getThingsFromBackend} = this
-    getThingsFromBackend()
 
+    const resultPromise = new Promise<Array<Thing>>((resolve, reject) => {
+      getThingsFromBackend().then(things => {
+        const result = new Array<Thing>()
+
+        things.forEach(e => {
+          result.push(e)
+        })
+
+        resolve(result)
+      })
+    })
+
+    return resultPromise
+  }
+
+  get cachedThings(): Array<Thing> {
     const {_things} = this
     const result = new Array<Thing>()
 
@@ -48,35 +63,40 @@ class ThingStore {
   /**
    * Gets things from the backend.
    */
-  private getThingsFromBackend = (): void => {
+  private getThingsFromBackend = (): Promise<Map<string, Thing>> => {
     const {_things, createThing, applyProperties, parseLocation} = this
-    getJson(ALL_THINGS).then(thingJSON => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      thingJSON.forEach((element: any) => {
-        const id = new Id(element.id)
-        const name = new ThingName(element.name)
 
-        let existingThing = _things.get(id.toString())
-        if (!existingThing) {
-          let location = new Location(0, 0)
-          if (element.locations && element.locations[0]) {
-            const {name: address} = element.locations[0]
-            const jsonString = element.locations[0].location
-            location = parseLocation(jsonString, address)
+    const resultPromise = new Promise<Map<string, Thing>>((resolve, reject) => {
+      getJson(ALL_THINGS).then(thingJSON => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        thingJSON.forEach((element: any) => {
+          const id = new Id(element.id)
+          const name = new ThingName(element.name)
+
+          let existingThing = _things.get(id.toString())
+          if (!existingThing) {
+            let location = new Location(0, 0)
+            if (element.locations && element.locations[0]) {
+              const {name: address} = element.locations[0]
+              const jsonString = element.locations[0].location
+              location = parseLocation(jsonString, address)
+            }
+            existingThing = createThing(id, name, location)
+            _things.set(id.toString(), existingThing)
+          } else {
+            existingThing.name = name
           }
-          existingThing = createThing(id, name, location)
-          _things.set(id.toString(), existingThing)
-        } else {
-          existingThing.name = name
-        }
-        if (element.properties !== null && element.properties !== 'null') {
-          applyProperties(existingThing, element.properties)
-        }
-        existingThing.description = element.description ? element.description : ''
-      })
+          if (element.properties !== null && element.properties !== 'null') {
+            applyProperties(existingThing, element.properties)
+          }
+          existingThing.description = element.description ? element.description : ''
+        })
 
-      this._lastUpdate = Date.now()
+        resolve(_things)
+      })
     })
+
+    return resultPromise
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
