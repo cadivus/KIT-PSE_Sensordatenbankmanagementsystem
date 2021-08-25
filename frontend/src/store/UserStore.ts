@@ -57,7 +57,6 @@ class UserStore extends EventEmitter {
         }
       })(email)
     } else {
-      // eslint-disable-next-line no-unused-expressions
       this.user = null
     }
 
