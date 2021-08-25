@@ -1,5 +1,4 @@
 import Thing, {ThingState} from '../material/Thing'
-import SensorValue from '../material/SensorValue'
 import ThingName from '../material/ThingName'
 import Id from '../material/Id'
 import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
@@ -7,7 +6,6 @@ import {getJson} from './communication/restClient'
 import ThingProperty from '../material/ThingProperty'
 import Location from '../material/Location'
 import LocationWithAddress from '../material/LocationWithAddress'
-import Unit from '../material/Unit'
 import DatastreamStore from './DatastreamStore'
 import Datastream from '../material/Datastream'
 
