@@ -151,10 +151,21 @@ class ThingStore {
     return result
   }
 
-  getThing = (id: Id): Thing | undefined => {
-    const {_things} = this
+  getThing = (id: Id): Promise<Thing> => {
+    const {things} = this
 
-    return _things.get(id.toString())
+    const resultPromise = new Promise<Thing>((resolve, reject) => {
+      things.then(thingsList => {
+        const {_things} = this
+        const result = _things.get(id.toString())
+        if (result) {
+          resolve(result)
+        }
+        reject()
+      })
+    })
+
+    return resultPromise
   }
 
   get lastUpdate(): number {

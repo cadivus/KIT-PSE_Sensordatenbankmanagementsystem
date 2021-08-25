@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
-import {Button, Container, Grid, Typography} from '@material-ui/core'
+import {Button, CircularProgress, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import {FormattedMessage} from 'react-intl'
@@ -31,6 +31,11 @@ const ErrorHandling = () => {
   return <Redirect to="/" />
 }
 
+const Loading = () => {
+  const classes = useStyles()
+  return <CircularProgress className={classes.root} />
+}
+
 /**
  *  Displays the thing information page.
  *  This class implements a React component.
@@ -40,12 +45,25 @@ const ThingInformationView: FC = () => {
   const classes = useStyles()
   const thingStore = useThingStore()
   const {thingId} = useParams<{thingId: string}>()
-  const thing = thingStore?.getThing(new Id(thingId))
-  if (!thing) {
-    return <ErrorHandling />
-  }
+
+  const [loading, setLoading] = useState(true)
+  const [thing, setThing] = useState<undefined | Thing>(undefined)
+  useEffect(() => {
+    if (thingStore && !thing) {
+      thingStore
+        .getThing(new Id(thingId))
+        .then(newThing => {
+          setThing(newThing)
+          setLoading(false)
+        })
+        .catch(() => {
+          setLoading(false)
+        })
+    }
+  }, [thingStore, setThing, setLoading, thingId, thing])
 
   const onSubscribeClick = () => {
+    if (!thing) return
     const selectedThings = new Set<Thing>()
     selectedThings.add(thing)
     history.push({
@@ -56,6 +74,7 @@ const ThingInformationView: FC = () => {
   }
 
   const onReplayClick = () => {
+    if (!thing) return
     const selectedThings = new Set<Thing>()
     selectedThings.add(thing)
     history.push({
@@ -65,10 +84,11 @@ const ThingInformationView: FC = () => {
     })
   }
 
-  const [activeState, setActiveState] = useState(thing.isActive())
+  const [activeState, setActiveState] = useState(ThingState.Unknown)
 
   useEffect(() => {
     const interval = setInterval(() => {
+      if (!thing) return
       const active = thing.isActive()
       if (activeState !== active) setActiveState(active)
     }, 2000)
@@ -77,6 +97,10 @@ const ThingInformationView: FC = () => {
       clearInterval(interval)
     }
   })
+
+  if (loading) return <Loading />
+
+  if (!thing) return <ErrorHandling />
 
   return (
     <div>

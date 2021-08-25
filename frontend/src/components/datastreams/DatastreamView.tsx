@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
-import {Container, Grid, Typography} from '@material-ui/core'
+import {CircularProgress, Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import {green, red, grey} from '@material-ui/core/colors'
@@ -9,7 +9,7 @@ import Export from './Export'
 import Data from './Data'
 import useThingStore from '../../hooks/UseThingStore'
 import Id from '../../material/Id'
-import {ThingState} from '../../material/Thing'
+import Thing, {ThingState} from '../../material/Thing'
 import useDatastreamStore from '../../hooks/UseDatastreamStore'
 
 const useStyles = makeStyles({
@@ -32,6 +32,11 @@ const ErrorHandling = () => {
   return <Redirect to="/" />
 }
 
+const Loading = () => {
+  const classes = useStyles()
+  return <CircularProgress className={classes.root} />
+}
+
 /**
  *  Displays the thing information page.
  *  This class implements a React component.
@@ -42,11 +47,23 @@ const DatastreamView: FC = () => {
   const thingStore = useThingStore()
   const datastreamStore = useDatastreamStore()
 
+  const [loading, setLoading] = useState(true)
+  const [thing, setThing] = useState<undefined | Thing>(undefined)
+
   const {thingId} = useParams<{thingId: string}>()
-  const thing = thingStore?.getThing(new Id(thingId))
-  if (!thing) {
-    return <ErrorHandling />
-  }
+  useEffect(() => {
+    if (thingStore && !thing) {
+      thingStore
+        .getThing(new Id(thingId))
+        .then(newThing => {
+          setThing(newThing)
+          setLoading(false)
+        })
+        .catch(() => {
+          setLoading(false)
+        })
+    }
+  }, [thingStore, setThing, setLoading, thingId, thing])
 
   const {datastreamId} = useParams<{datastreamId: string}>()
   const datastream = datastreamStore?.getDatastream(new Id(datastreamId))
@@ -54,10 +71,11 @@ const DatastreamView: FC = () => {
     return <ErrorHandling />
   }
 
-  const [activeState, setActiveState] = useState(thing.isActive())
+  const [activeState, setActiveState] = useState(ThingState.Unknown)
 
   useEffect(() => {
     const interval = setInterval(() => {
+      if (!thing) return
       const active = thing.isActive()
       if (activeState !== active) setActiveState(active)
     }, 2000)
@@ -66,6 +84,10 @@ const DatastreamView: FC = () => {
       clearInterval(interval)
     }
   })
+
+  if (loading) return <Loading />
+
+  if (!thing) return <ErrorHandling />
 
   return (
     <div>
