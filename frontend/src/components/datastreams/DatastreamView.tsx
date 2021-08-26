@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react'
-import {Redirect, useHistory, useParams} from 'react-router-dom'
-import {CircularProgress, Container, Grid, Typography} from '@material-ui/core'
+import {Redirect, useParams} from 'react-router-dom'
+import {Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import {green, red, grey} from '@material-ui/core/colors'
@@ -14,6 +14,7 @@ import useDatastreamStore from '../../hooks/UseDatastreamStore'
 import Datastream from '../../material/Datastream'
 import ThingStore from '../../store/ThingStore'
 import DatastreamStore from '../../store/DatastreamStore'
+import Loading from '../Loading'
 
 const useStyles = makeStyles({
   container: {
@@ -33,11 +34,6 @@ const useStyles = makeStyles({
 
 const ErrorHandling = () => {
   return <Redirect to="/" />
-}
-
-const Loading = () => {
-  const classes = useStyles()
-  return <CircularProgress className={classes.root} />
 }
 
 const loadThing = (
