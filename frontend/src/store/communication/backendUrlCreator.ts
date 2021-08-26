@@ -27,3 +27,6 @@ export const getCsvDownloadUrl = (datastreamId: Id, startDate: Date, endDate: Da
 
   return `${BACKEND_PATH}/datastream/export?id=${datastreamId.toString()}&${formatedStart}&${formatedEnd}`
 }
+
+export const getDatastreamUrl = (datastreamId: Id): string =>
+  `${BACKEND_PATH}/datastream/getDatastream?id=${datastreamId.toString()}`
