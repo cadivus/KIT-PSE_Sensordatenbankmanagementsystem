@@ -3,13 +3,13 @@ package edu.teco.sensordatenbankmanagementsystem.util;
 import static edu.teco.sensordatenbankmanagementsystem.util.Meth.round;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.CantInterpolateWithNoSamplesException;
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
+import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.Interpolator;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.BufferedWriter;
@@ -34,10 +34,12 @@ import org.springframework.stereotype.Service;
 public class GraphHelper {
 
   private final ObservationService observationService;
+  private final DatastreamRepository datastreamRepository;
 
-  GraphHelper(ObservationService observationService) {
+  GraphHelper(ObservationService observationService, DatastreamRepository datastreamRepository) {
 
     this.observationService = observationService;
+    this.datastreamRepository = datastreamRepository;
   }
 
   private ZoneId ZONE_ID ;
@@ -50,7 +52,7 @@ public class GraphHelper {
   }
 
 
-  public RenderedImage getGraphImageOfThing(String id, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
+  public RenderedImage getGraphImageOfThing(String thingId, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
       int maxInterPoints, Dimension imageDimension, int granularity,
       Interpolator<Double, Double> interpolator) {
 
@@ -61,35 +63,18 @@ public class GraphHelper {
     //the spring framework sort for the x-axis of the interpolation
     final Sort xSort = Observation.Order.DATE.toSort();
 
-    //gets the earliest value as frame start if not specified
-    if(frameStart == null) {
-      List<Observation> earliest = observationService.getObservationsByThingId(
-              id,
-              1,
-              xSort.ascending(),
-              List.of(obsId),
-              LocalDateTime.of(1, 1, 1, 1, 1),
-              LocalDateTime.now()
-      );
-      if(earliest.isEmpty()) {
-        throw new CantInterpolateWithNoSamplesException();
+    if(frameStart == null || frameEnd == null) {
+      Datastream datastream =
+              datastreamRepository.findDatastreamsByThing_IdAndObsIdIn(thingId, List.of(obsId)).
+                      stream().findFirst().orElseThrow(CantInterpolateWithNoSamplesException::new);
+      //gets the earliest value as frame start if not specified
+      if (frameStart == null) {
+        frameStart = datastream.getPhenomenonStart();
       }
-      frameStart = earliest.get(0).getResultTime().minusDays(1);
-    }
-    //gets the latest value as frame end if not specified
-    if(frameEnd == null){
-      List<Observation> latest = observationService.getObservationsByThingId(
-              id,
-              1,
-              xSort.descending(),
-              List.of(obsId),
-              LocalDateTime.of(1, 1, 1, 1, 1),
-              LocalDateTime.now()
-      );
-      if(latest.isEmpty()) {
-        throw new CantInterpolateWithNoSamplesException();
+      //gets the latest value as frame end if not specified
+      if (frameEnd == null) {
+        frameEnd = datastream.getPhenomenonEnd();
       }
-      frameEnd = latest.get(0).getResultTime().plusDays(1);
     }
     LocalDateTime finalFrameStart = frameStart;
 
@@ -117,7 +102,7 @@ public class GraphHelper {
       System.out.printf("date: %s, already found %s samples\n", LocalDateTime.ofEpochSecond((long)(double)a, 0,
               ZonedDateTime.now(ZONE_ID).getOffset()), o.size());
       Observation rr = observationService.getObservationsByThingId(
-              id,
+              thingId,
               o.size() + 1,
               xSort.descending(),
               List.of(obsId),
