@@ -25,6 +25,7 @@ const StartpageView: FC = () => {
   const classes = useStyles()
 
   const [selectedThings] = useState(new Set<Thing>())
+  const [searchExpression, setSearchExpression] = useState(new RegExp('^.*$', 'i'))
 
   const subscribeClicked = () => {
     history.push({
@@ -49,9 +50,9 @@ const StartpageView: FC = () => {
           <FormattedMessage id="startpage.startpage" />
         </Typography>
         <Grid container spacing={3}>
-          {/* <Grid item xs={8}>
-            <Search />
-          </Grid> */}
+          <Grid item xs={8}>
+            <Search setSearchExpression={setSearchExpression} />
+          </Grid>
           <Grid item xs={2}>
             <Container className={classes.buttons}>
               <Button variant="outlined" onClick={() => subscribeClicked()}>
@@ -67,7 +68,7 @@ const StartpageView: FC = () => {
             </Container>
           </Grid>
         </Grid>
-        <ThingList selectedThings={selectedThings} />
+        <ThingList selectedThings={selectedThings} searchExpression={searchExpression} />
       </Container>
     </div>
   )
