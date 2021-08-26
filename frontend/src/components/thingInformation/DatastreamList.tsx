@@ -62,7 +62,7 @@ const DatastreamList = ({thing}: {thing: Thing}) => {
     thing.getDatastreams().then(list => {
       setDatastreamList(list)
     })
-  })
+  }, [thing])
 
   return (
     <TableContainer component={Paper}>
