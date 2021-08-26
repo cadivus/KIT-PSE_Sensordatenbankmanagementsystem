@@ -51,9 +51,19 @@ class DatastreamStore {
     return resultPromise
   }
 
-  getDatastream = (id: Id): Datastream | undefined => {
+  getDatastream = (id: Id): Promise<Datastream> => {
     const {_datastreams} = this
-    return _datastreams.get(id.toString())
+
+    const resultPromise = new Promise<Datastream>((resolve, reject) => {
+      const datastream = _datastreams.get(id.toString())
+      if (datastream) {
+        resolve(datastream)
+      } else {
+        reject()
+      }
+    })
+
+    return resultPromise
   }
 
   private implementDatastream = (id: Id, unit: Unit, name: DatastreamName): Datastream => {

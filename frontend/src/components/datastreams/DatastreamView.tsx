@@ -11,6 +11,9 @@ import useThingStore from '../../hooks/UseThingStore'
 import Id from '../../material/Id'
 import Thing, {ThingState} from '../../material/Thing'
 import useDatastreamStore from '../../hooks/UseDatastreamStore'
+import Datastream from '../../material/Datastream'
+import ThingStore from '../../store/ThingStore'
+import DatastreamStore from '../../store/DatastreamStore'
 
 const useStyles = makeStyles({
   container: {
@@ -37,39 +40,68 @@ const Loading = () => {
   return <CircularProgress className={classes.root} />
 }
 
+const loadThing = (
+  thingStore: ThingStore | undefined,
+  setThing: (newValue: Thing) => void,
+  setThingLoading: (newValue: boolean) => void,
+  thingId: string,
+  thing: Thing | undefined,
+) => {
+  if (thingStore && !thing) {
+    thingStore
+      .getThing(new Id(thingId))
+      .then(newThing => {
+        setThing(newThing)
+        setThingLoading(false)
+      })
+      .catch(() => {
+        setThingLoading(false)
+      })
+  }
+}
+
+const loadDatastream = (
+  datastreamStore: DatastreamStore | undefined,
+  setDatastream: (newValue: Datastream) => void,
+  setDatastreamLoading: (newValue: boolean) => void,
+  datastreamId: string,
+  datastream: Datastream | undefined,
+) => {
+  if (datastreamStore && !datastream) {
+    datastreamStore
+      .getDatastream(new Id(datastreamId))
+      .then(newDatastream => {
+        setDatastream(newDatastream)
+        setDatastreamLoading(false)
+      })
+      .catch(() => {
+        setDatastreamLoading(false)
+      })
+  }
+}
+
 /**
  *  Displays the thing information page.
  *  This class implements a React component.
  */
 const DatastreamView: FC = () => {
-  const history = useHistory()
   const classes = useStyles()
   const thingStore = useThingStore()
   const datastreamStore = useDatastreamStore()
 
-  const [loading, setLoading] = useState(true)
+  const [thingLoading, setThingLoading] = useState(true)
   const [thing, setThing] = useState<undefined | Thing>(undefined)
-
   const {thingId} = useParams<{thingId: string}>()
   useEffect(() => {
-    if (thingStore && !thing) {
-      thingStore
-        .getThing(new Id(thingId))
-        .then(newThing => {
-          setThing(newThing)
-          setLoading(false)
-        })
-        .catch(() => {
-          setLoading(false)
-        })
-    }
-  }, [thingStore, setThing, setLoading, thingId, thing])
+    loadThing(thingStore, setThing, setThingLoading, thingId, thing)
+  }, [thingStore, setThing, setThingLoading, thingId, thing])
 
+  const [datastreamLoading, setDatastreamLoading] = useState(true)
+  const [datastream, setDatastream] = useState<undefined | Datastream>(undefined)
   const {datastreamId} = useParams<{datastreamId: string}>()
-  const datastream = datastreamStore?.getDatastream(new Id(datastreamId))
-  if (!datastream) {
-    return <ErrorHandling />
-  }
+  useEffect(() => {
+    loadDatastream(datastreamStore, setDatastream, setDatastreamLoading, datastreamId, datastream)
+  }, [datastreamStore, setDatastream, setDatastreamLoading, datastreamId, datastream])
 
   const [activeState, setActiveState] = useState(ThingState.Unknown)
 
@@ -85,9 +117,8 @@ const DatastreamView: FC = () => {
     }
   })
 
-  if (loading) return <Loading />
-
-  if (!thing) return <ErrorHandling />
+  if (thingLoading || datastreamLoading) return <Loading />
+  if (!thing || !datastream) return <ErrorHandling />
 
   return (
     <div>
