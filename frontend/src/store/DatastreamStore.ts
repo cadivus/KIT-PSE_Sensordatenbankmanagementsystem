@@ -96,7 +96,10 @@ class DatastreamStore {
               const json = csvToJson.fieldDelimiter(',').csvStringToJson(csv)
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               json.forEach((row: any) => {
-                const date = new Date(row.RESULTTIME)
+                let dateString = row.RESULTTIME
+                if (dateString === '') dateString = row.PHENOMENONEND
+
+                const date = new Date(dateString)
                 const value = new SensorValue(row.RESULTNUMBER, unit)
 
                 const datastreamRow: DatastreamRow = {value, date}
