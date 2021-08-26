@@ -110,7 +110,7 @@ const DatastreamView: FC = () => {
       if (!thing) return
       const active = thing.isActive()
       if (activeState !== active) setActiveState(active)
-    }, 2000)
+    }, 10000)
 
     return () => {
       clearInterval(interval)
