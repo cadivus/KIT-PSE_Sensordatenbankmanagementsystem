@@ -85,8 +85,9 @@ const ThingInformationView: FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (!thing) return
-      const active = thing.isActive()
-      if (activeState !== active) setActiveState(active)
+      thing.isActive().then(state => {
+        setActiveState(state)
+      })
     }, 10000)
 
     return () => {

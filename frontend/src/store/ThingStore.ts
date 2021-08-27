@@ -2,7 +2,7 @@ import Thing, {ThingState} from '../material/Thing'
 import ThingName from '../material/ThingName'
 import Id from '../material/Id'
 import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
-import {getJson, postJsonGetText} from './communication/restClient'
+import {getJson} from './communication/restClient'
 import ThingProperty from '../material/ThingProperty'
 import Location from '../material/Location'
 import LocationWithAddress from '../material/LocationWithAddress'
@@ -124,29 +124,27 @@ class ThingStore {
     const {_datastreamStore} = this
 
     const result = new (class extends Thing {
-      private activeState = ThingState.Unknown
+      isActive(): Promise<ThingState> {
+        const resultPromise = new Promise<ThingState>((resolve, reject) => {
+          getJson(getActiveStateUrl(id))
+            .then(thingJSON => {
+              const jsonState = thingJSON[0]
+              const activeState =
+                jsonState === true ? ThingState.Online : jsonState === false ? ThingState.Offline : ThingState.Unknown
+              resolve(activeState)
+            })
+            .catch(() => {
+              resolve(ThingState.Unknown)
+            })
+        })
 
-      isActive(): ThingState {
-        try {
-          getJson(getActiveStateUrl(id)).then(thingJSON => {
-            const jsonState = thingJSON[0]
-            this.activeState =
-              jsonState === true ? ThingState.Online : jsonState === false ? ThingState.Offline : ThingState.Unknown
-          })
-        } catch (e) {
-          this.activeState = ThingState.Unknown
-        }
-
-        const {activeState} = this
-        return activeState
+        return resultPromise
       }
 
       getDatastreams(): Promise<Array<Datastream>> {
         return _datastreamStore.getDatastreams(id)
       }
     })(name, id, location)
-
-    result.isActive()
 
     return result
   }
