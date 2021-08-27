@@ -48,15 +48,14 @@ class SubscriptionStore {
           const notifcationLevel = new NotificationLevel(element.reportInterval)
           const id = new Id(`${element.sensorId}`)
           const idStr = id.toString()
-          const thing = _thingStore.getThing(id)
-          if (thing) {
+          _thingStore.getThing(id).then(thing => {
             const subs = new (class extends Subscription {
               unsubscribe(): boolean {
                 return unsubscribeById(id)
               }
             })(id, thing, directNotification, notifcationLevel, _user)
             subscriptions.set(idStr, subs)
-          }
+          })
         })
       })
     }
