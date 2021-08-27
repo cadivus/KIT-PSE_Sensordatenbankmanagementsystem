@@ -33,8 +33,8 @@ const useStyles = makeStyles(theme => ({
  *  Displays the login page.
  *  This class implements a React component.
  */
-const LoginStep1 = ({setMailAddress}) => {
-  const [mailString, setMailString] = useState('')
+const LoginStep2 = ({setAuthCode}: {setAuthCode: (authCode: string) => void}) => {
+  const [codeString, setCodeString] = useState('')
   const classes = useStyles()
 
   return (
@@ -47,18 +47,18 @@ const LoginStep1 = ({setMailAddress}) => {
         <Typography component="h1" variant="h5">
           <FormattedMessage id="loginpage.signIn" />
         </Typography>
-        <form className={classes.form} onSubmit={() => setMailAddress(mailString)} noValidate>
+        <form className={classes.form} onSubmit={() => setAuthCode(codeString)} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label={<FormattedMessage id="loginpage.emailaddress" />}
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onInput={e => setMailString(e.target.value)}
+            name="password"
+            label={<FormattedMessage id="loginpage.password" />}
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onInput={e => setCodeString((e.target as HTMLTextAreaElement).value)}
           />
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             <FormattedMessage id="loginpage.signInButton" />
@@ -69,4 +69,4 @@ const LoginStep1 = ({setMailAddress}) => {
   )
 }
 
-export default LoginStep1
+export default LoginStep2
