@@ -83,6 +83,12 @@ const ThingInformationView: FC = () => {
   const [activeState, setActiveState] = useState(ThingState.Unknown)
 
   useEffect(() => {
+    if (thing) {
+      thing.isActive().then(state => {
+        setActiveState(state)
+      })
+    }
+
     const interval = setInterval(() => {
       if (!thing) return
       thing.isActive().then(state => {
@@ -93,7 +99,7 @@ const ThingInformationView: FC = () => {
     return () => {
       clearInterval(interval)
     }
-  })
+  }, [thing])
 
   if (loading) return <Loading />
 

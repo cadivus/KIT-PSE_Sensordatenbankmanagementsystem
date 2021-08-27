@@ -102,6 +102,12 @@ const DatastreamView: FC = () => {
   const [activeState, setActiveState] = useState(ThingState.Unknown)
 
   useEffect(() => {
+    if (thing) {
+      thing.isActive().then(state => {
+        setActiveState(state)
+      })
+    }
+
     const interval = setInterval(() => {
       if (!thing) return
       thing.isActive().then(state => {
@@ -112,7 +118,7 @@ const DatastreamView: FC = () => {
     return () => {
       clearInterval(interval)
     }
-  })
+  }, [thing])
 
   if (thingLoading || datastreamLoading) return <Loading />
   if (!thing || !datastream) return <ErrorHandling />
