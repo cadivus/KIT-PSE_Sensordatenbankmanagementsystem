@@ -1,9 +1,13 @@
 package notificationsystem.controller;
 
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetup;
 import notificationsystem.controller.Controller;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import javax.mail.Message;
 import java.time.LocalDate;
 
 import static org.junit.Assert.*;
@@ -25,6 +30,18 @@ public class ControllerIntegrationTests {
     private MockMvc mockMvc;
     @Autowired
     private SubscriptionDAO subscriptionDAO;
+    private GreenMail greenMail;
+
+    @BeforeAll
+    private void setup() {
+        greenMail = new GreenMail(ServerSetup.ALL);
+        greenMail.start();
+    }
+
+    @AfterAll
+    private void cleanup() {
+        greenMail.stop();
+    }
 
     @Test
     public void testGetConfirmCode() throws Exception {
@@ -34,7 +51,12 @@ public class ControllerIntegrationTests {
         //Result (confirmation code) is semi-random complicating exact testing
         assertNotNull(mvcResult);
         assertEquals(8, mvcResult.getResponse().getContentLength());
-        //TODO: Test mail?
+        //TODO: Mail of GreenMail
+        //TODO: Port problems expected
+        assertTrue(greenMail.waitForIncomingEmail(5000, 1));
+        Message[] messages = greenMail.getReceivedMessages();
+        assertEquals(1, messages.length);
+        assertEquals("Log-in attempt", messages[0].getSubject());
     }
 
     @Test
