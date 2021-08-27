@@ -2,8 +2,6 @@ import React, {FC, useEffect, useState} from 'react'
 import {Redirect, useParams} from 'react-router-dom'
 import {Container, Grid, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import {green, red, grey} from '@material-ui/core/colors'
 import Properties from '../thingInformation/Properties'
 import Export from './Export'
 import Data from './Data'
@@ -15,6 +13,7 @@ import Datastream from '../../material/Datastream'
 import ThingStore from '../../store/ThingStore'
 import DatastreamStore from '../../store/DatastreamStore'
 import Loading from '../Loading'
+import ThingTitle from '../thingInformation/ThingTitle'
 
 const useStyles = makeStyles({
   container: {
@@ -99,27 +98,6 @@ const DatastreamView: FC = () => {
     loadDatastream(datastreamStore, setDatastream, setDatastreamLoading, datastreamId, datastream)
   }, [datastreamStore, setDatastream, setDatastreamLoading, datastreamId, datastream])
 
-  const [activeState, setActiveState] = useState(ThingState.Unknown)
-
-  useEffect(() => {
-    if (thing) {
-      thing.isActive().then(state => {
-        setActiveState(state)
-      })
-    }
-
-    const interval = setInterval(() => {
-      if (!thing) return
-      thing.isActive().then(state => {
-        setActiveState(state)
-      })
-    }, 10000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [thing])
-
   if (thingLoading || datastreamLoading) return <Loading />
   if (!thing || !datastream) return <ErrorHandling />
 
@@ -128,16 +106,7 @@ const DatastreamView: FC = () => {
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h3" align="center" gutterBottom>
-              {datastream.name.toString()}
-              {activeState === ThingState.Online ? (
-                <FiberManualRecordIcon style={{color: green[500]}} fontSize="large" />
-              ) : activeState === ThingState.Offline ? (
-                <FiberManualRecordIcon style={{color: red[500]}} fontSize="large" />
-              ) : (
-                <FiberManualRecordIcon style={{color: grey[500]}} fontSize="large" /> /* Unknown state */
-              )}
-            </Typography>
+            <ThingTitle thing={thing} />
           </Grid>
           <Grid item xs={12}>
             {thing ? <Properties thing={thing} /> : <></>}
