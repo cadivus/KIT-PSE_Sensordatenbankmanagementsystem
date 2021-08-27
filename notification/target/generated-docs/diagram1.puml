@@ -11,6 +11,14 @@ class notificationsystem.configuration.AppConfig {
 }
 
 
+class notificationsystem.configuration.SecurityConfig {
+	{method} +configure ( paramAuthenticationManagerBuilder1 : org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder ) : void
+	{method} +configure ( paramHttpSecurity1 : org.springframework.security.config.annotation.web.builders.HttpSecurity ) : void
+	{method} ~corsConfigurationSource () : org.springframework.web.cors.CorsConfigurationSource
+	{method} +getPasswordEncoder () : org.springframework.security.crypto.password.PasswordEncoder
+}
+
+
 class notificationsystem.controller.CheckerUtil {
 	{field} {static} -INACTIVE_DAYS_THRESHOLD : int
 	{field} {static} -LOG_ALERT : String
