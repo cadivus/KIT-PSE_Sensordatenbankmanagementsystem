@@ -78,7 +78,7 @@ class ReplayControllerTest {
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(response.getBody().contains("Connection to the database failed"));
     } else if (response.getStatusCode().is4xxClientError()) {
-      assertTrue(response.getBody().contains("Validation error"));
+      assertTrue(response.getBody().contains("Neither information"));
     } else fail();
   }
   @Test
