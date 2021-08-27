@@ -4,6 +4,12 @@ import ThingStore from './ThingStore'
 import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
 import Thing from '../material/Thing'
+import {getJson, postJsonAsURLGetText} from './communication/restClient'
+import {
+  GET_SUBSCRIPTION_PATH,
+  POST_SUBSCRIPTION_PATH,
+  POST_UBSUBSCRIBE_PATH,
+} from './communication/notificationUrlCreator'
 
 /**
  * This is the storage for subscriptions.
@@ -33,6 +39,28 @@ class SubscriptionStore {
    */
   private getSubscriptionsFromBackend = (): void => {
     const {subscriptions, _thingStore, _user, unsubscribe: unsubscribeById} = this
+    if (_user) {
+      const path = `${GET_SUBSCRIPTION_PATH}/${_user?.email.toString()}`
+      getJson(path).then(subscriptionJSON => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        subscriptionJSON.forEach((element: any) => {
+          const directNotification = element.toggleAlert
+          const notifcationLevel = new NotificationLevel(element.reportInterval)
+          const id = new Id(`${element.sensorId}`)
+          const idStr = id.toString()
+          const thing = _thingStore.getThing(id)
+          if (thing) {
+            const subs = new (class extends Subscription {
+              unsubscribe(): boolean {
+                return unsubscribeById(id)
+              }
+            })(id, thing, directNotification, notifcationLevel, _user)
+            subscriptions.set(idStr, subs)
+          }
+        })
+      })
+    }
+    /*
     if (_user && (subscriptions.size === 0 || subscriptions.values().next().value.owner !== this._user)) {
       subscriptions.clear()
       for (let i = 1; i <= _thingStore.things.length; i += 1) {
@@ -48,6 +76,7 @@ class SubscriptionStore {
         subscriptions.set(idStr, subs)
       }
     }
+     */
   }
 
   /**
@@ -75,34 +104,74 @@ class SubscriptionStore {
     const {getSubscriptionsFromBackend} = this
     getSubscriptionsFromBackend()
     const {subscriptions} = this
-
     return subscriptions.get(id.toString())
   }
 
-  createSubscription = (
+  createSubscriptions = (
     things: Array<Thing>,
+    directNotification: boolean,
+    notificationLevel: NotificationLevel,
+  ): void => {
+    things.forEach((element: Thing) => {
+      this.createSubscription(element, directNotification, notificationLevel)
+    })
+  }
+
+  createSubscription = (
+    thing: Thing,
     directNotification: boolean,
     notificationLevel: NotificationLevel,
   ): Subscription | null => {
     const {unsubscribe: unsubscribeById} = this
 
-    const id = new Id(`id${new Date().getTime() / 1000}`)
+    const id = new Id(thing.id.toString())
     const {_user, subscriptions} = this
+
     if (!_user) return null
+
     const result = new (class extends Subscription {
       unsubscribe(): boolean {
         return unsubscribeById(id)
       }
-    })(id, things, directNotification, notificationLevel, _user)
+    })(id, thing, directNotification, notificationLevel, _user)
     subscriptions.set(id.toString(), result)
+    const setting = {
+      mailAddress: _user.email.toString(),
+      sensorID: thing.id.toString(),
+      reportInterval: notificationLevel.days,
+      directNotification: directNotification.valueOf(),
+    }
+    postJsonAsURLGetText(
+      this.getSubscriptionPath(
+        setting.mailAddress,
+        setting.sensorID,
+        setting.reportInterval,
+        setting.directNotification,
+      ),
+    )
     return result
   }
 
   private unsubscribe = (id: Id): boolean => {
     const {subscriptions} = this
     if (!subscriptions.has(id.toString())) return false
-
+    if (!this._user) return false
+    const path = this.getUnsubscriptionPath(this._user?.email.toString(), id.toString())
+    postJsonAsURLGetText(path)
     return subscriptions.delete(id.toString())
+  }
+
+  getUnsubscriptionPath = (mailAddress: string, thingID: string): string => {
+    return `${POST_UBSUBSCRIBE_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}`
+  }
+
+  getSubscriptionPath = (
+    mailAddress: string,
+    thingID: string,
+    notificationLevel: number,
+    directNotification: boolean,
+  ): string => {
+    return `${POST_SUBSCRIPTION_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}&toggleAlert=${directNotification}`
   }
 }
 

@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
  *  Displays a list of things.
  *  This class implements a React component.
  */
-const ThingList = ({selectedThings}: {selectedThings: Set<Thing>}) => {
+const ThingList = ({selectedThings, searchExpression}: {selectedThings: Set<Thing>; searchExpression: RegExp}) => {
   const history = useHistory()
   const classes = useStyles()
   const thingStore = useThingStore()
@@ -131,30 +131,33 @@ const ThingList = ({selectedThings}: {selectedThings: Set<Thing>}) => {
                 setSelectedThingsState(new Set<Thing>(selectedThings))
               }
             }
-            return (
-              <StyledTableRow hover key={thing.name.name}>
-                <StyledTableCell component="th" scope="row">
-                  <Typography variant="h5">{thing.name.name}</Typography>
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Checkbox
-                    checked={selectedThingsState.has(thing)}
-                    onChange={e => checkChanged(e.target.checked)}
-                    color="primary"
-                    inputProps={{'aria-label': 'secondary checkbox'}}
-                  />
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => history.push(`/thingInformation/${thing.id.toString()}`)}
-                  >
-                    Datastream
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>
-            )
+            if (thing.name.toString().match(searchExpression)) {
+              return (
+                <StyledTableRow hover key={thing.name.name}>
+                  <StyledTableCell component="th" scope="row">
+                    <Typography variant="h5">{thing.name.name}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Checkbox
+                      checked={selectedThingsState.has(thing)}
+                      onChange={e => checkChanged(e.target.checked)}
+                      color="primary"
+                      inputProps={{'aria-label': 'secondary checkbox'}}
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => history.push(`/thingInformation/${thing.id.toString()}`)}
+                    >
+                      Datastream
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              )
+            }
+            return <></>
           })}
         </TableBody>
       </Table>

@@ -1,15 +1,10 @@
 package notificationsystem.view;
 
-import org.json.JSONArray;
-
-import java.util.List;
-
 /**
- * Report e-mails are sent to subscribers of a sensor at regular intervals dependant on the time of subscription and
- * user adjustments. The reports contain the data collected by the sensor over the last time period as well as
- * potentially interesting metadata such as failure rate over the last timer period.
+ * Report e-mails are sent to subscribers of a sensor at regular intervals dependent on the time of subscription and
+ * user adjustments. The reports interesting metadata calculated over the last timer period.
  * The Report class represents such a report e-mail. It contains the e-mail addresses of sender and receiver, as well
- * as a subject and a message. Lastly the e-mail includes an attachment with the data collected by the sensor.
+ * as a subject and a message.
  */
 public class Report extends EMail {
 
@@ -18,9 +13,8 @@ public class Report extends EMail {
      * @param receiverMail e-mail address the mail is sent to.
      * @param subject subject of the e-mail.
      * @param message message body of the e-mail.
-     * @param attachment any data attached to the e-mail.
      */
-    public Report(String receiverMail, String subject, String message, JSONArray attachment) {
-        super(receiverMail, subject, message, attachment);
+    public Report(String receiverMail, String subject, String message) {
+        super(receiverMail, subject, message);
     }
 }

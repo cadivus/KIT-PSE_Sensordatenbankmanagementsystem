@@ -16,26 +16,35 @@ import java.util.Properties;
  */
 public class MailSender {
 
+    private final static String SEND_STATE_ERROR = "Has to be logged in to send e-mails.";
+
     private Session session;
 
+    /**
+     * Calling the constructor of the MailSender class constructs a new instance of the class and performs a log-in
+     * with the given log-in data.
+     * @param username e-mail with which to log-in.
+     * @param password password for the given e-mail.
+     */
     public MailSender(String username, String password) {
         login(username, password);
     }
 
     /**
-     * Log-in procedure needed for authentication before an e-mail can be sent. Also instanciates the session with
-     * the smpt-server.
+     * Log-in procedure needed for authentication before an e-mail can be sent. Also instantiates the session with
+     * the smtp-server.
      * @param username username used for authentication purposes.
      * @param password password used for authentication purposes.
      */
     private void login(String username, String password) {
         Properties properties = new Properties();
 
-        properties.put("mail.smpt.auth", "true");
-        properties.put("mail.smpt.socketFactory.port", "587");
-        properties.put("mail.smpt.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smpt.host", "smpt.gmail.com");
-        properties.put("mail.smpt.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.socketFactory.port", "587");
+        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.starttls.enable", "true");
 
         Authenticator authenticator = new Authenticator() {
             @Override
@@ -50,11 +59,11 @@ public class MailSender {
 
     /**
      * Used to send the finished e-mails.
-     * @param mail to be send to its receiver.
+     * @param mail to be sent to its receiver.
      */
     public void send(EMail mail) throws MessagingException, IllegalStateException, UnsupportedEncodingException {
         if (session == null) {
-            throw new IllegalStateException("Has to be logged in.");
+            throw new IllegalStateException(SEND_STATE_ERROR);
         }
 
         MimeMessage message = new MimeMessage(session);

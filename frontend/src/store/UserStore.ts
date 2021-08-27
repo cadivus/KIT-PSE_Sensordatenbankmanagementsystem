@@ -2,6 +2,8 @@ import EventEmitter from 'events'
 import User from '../material/User'
 import EMail from '../material/EMail'
 import LoginCode from '../material/LoginCode'
+import {getText} from './communication/restClient'
+import {CONFIRMCODE_PATH} from './communication/notificationUrlCreator'
 
 declare interface UserStore {
   on(event: 'login-change', listener: (name: string) => void): this
@@ -18,14 +20,21 @@ class UserStore extends EventEmitter {
    */
   user: User | null = null
 
+  code: LoginCode | undefined
+
   /**
    * Requests sending a login code to the specified email address.
    *
    * @param email Email address to send the code to
    * @return True on success, false otherwise
    */
-  requestStep1 = (email: EMail): boolean => {
-    return true
+  requestStep1 = (email: EMail): void => {
+    const path = `${CONFIRMCODE_PATH}/${email.toString()}`
+    getText(path).then(loginCode => {
+      // eslint-disable-next-line no-console
+      console.log(loginCode)
+      this.code = new LoginCode(loginCode)
+    })
   }
 
   /**
@@ -41,11 +50,16 @@ class UserStore extends EventEmitter {
       this.emit('login-change')
     }
 
-    this.user = new (class extends User {
-      logout(): void {
-        logoutUser()
-      }
-    })(email)
+    if (this.code?.code === loginCode.code) {
+      this.user = new (class extends User {
+        logout(): void {
+          logoutUser()
+        }
+      })(email)
+    } else {
+      // eslint-disable-next-line no-unused-expressions
+      this.user = null
+    }
 
     const {user} = this
     this.emit('login-change')

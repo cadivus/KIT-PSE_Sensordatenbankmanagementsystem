@@ -1,5 +1,6 @@
 package notificationsystem.view;
 
+import notificationsystem.model.ObservationStats;
 import notificationsystem.model.Sensor;
 
 /**
@@ -9,9 +10,10 @@ import notificationsystem.model.Sensor;
  */
 public class MailBuilder {
 
-    private static String SUBJECT_ALERT = "Alert for sensor malfunction";
-    private static String SUBJECT_CONFIRM = "Log-in attempt";
-    private static String MAIL_SIGNING = "This E-Mail was sent automatically by the ... E-Mail Notification System.";
+    private final static String SUBJECT_ALERT = "Alert for sensor malfunction";
+    private final static String SUBJECT_CONFIRM = "Log-in attempt";
+    private final static String MAIL_SIGNING = "This E-Mail was sent automatically by the E-Mail Notification System" +
+            " of the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' Project.";
 
     /**
      * The buildAlert method builds an alert e-mail which is sent to subscribers of a sensor when that sensor
@@ -22,40 +24,55 @@ public class MailBuilder {
      * of the given sensor.
      */
     public Alert buildAlert(String mailAddress, Sensor sensor) {
-        String message = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
-                " and the location: " + sensor.getLocation() + " has malfunctioned and is currently not collecting data.";
+        String body = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
+                "at the location: " + sensor.getLocation() + " has malfunctioned and is currently not collecting data.";
+        String message = body + "/n" + MAIL_SIGNING;
 
-        Alert alert = new Alert(mailAddress, SUBJECT_ALERT, message, null);
-        return alert;
+        return new Alert(mailAddress, SUBJECT_ALERT, message);
     }
 
     /**
      * The buildReport method builds a report e-mail which is periodically sent to subscribers of a sensor and
-     * contains information about the sensor and the data that sensor collected in the last time-interval.
+     * contains information about the sensor calculated in the last time-interval.
      * @param mailAddress e-mail address the mail is sent to.
      * @param sensor the sensor the report is about.
      * @return The finished report e-mail for the subscriber with the given e-mail address about the given sensor.
      */
     public Report buildReport(String mailAddress, Sensor sensor) {
-        String subject = "Report for Sensorthings sensor: " + sensor.getId();
-        String message = "The following is the regular report for the the Sensorthings sensor: " + sensor.getId()
-                + "you are subscribed to.";
-        Report report = new Report(mailAddress, subject, message, null);
-        return report;
+        String subject = "Report for Sensorthings sensor: " + sensor.getName() + ". /n";
+        String opener = "The following is the regular report for the the Sensorthings sensor: " + sensor.getId()
+                + "you are subscribed to. /n";
+        String active = "Since the last Report, the sensor was active "+ sensor.getActiveRate() + " times a day on average. /n";
+
+        StringBuilder allStatsText = new StringBuilder();
+        for (int i = 0; i < sensor.getStats().size(); i++) {
+            ObservationStats stat = sensor.getStats().get(i);
+            String statText = "/n The sensor collected data about " + stat.getObsName() + ": /n" +
+                    "The average value of the collected data was " + stat.getAvg() + ". /n" +
+                    "The median of the collected data was " + stat.getMed() +
+                    "and the data has a standard deviation of " + stat.getStdv() + ". /n" +
+                    "The minimum recorded data point was " + stat.getMin() + ". /n";
+            allStatsText.append(statText);
+        }
+
+        String message = opener + "/n" + active + "/n" + allStatsText + "/n" + MAIL_SIGNING;
+        return new Report(mailAddress, subject, message);
     }
 
     /**
      * The buildConfirmationMail method build a confirmation e-mail which is sent to an e-mail address when a
-     * user tries to log-in with that e-mail on the project website.
+     * user tries to log in with that e-mail on the project website.
      * The confirmation e-mail contains a confirmation code which the user has to enter on the website to validate
      * the e-mail address.
      * @param mailAddress e-mail address the mail is sent to.
-     * @return The finished confirmation e-mail to the e-mail address the user is trying to log-in with.
+     * @return The finished confirmation e-mail to the e-mail address the user is trying to log in with.
      */
     public ConfirmationMail buildConfirmationMail(String mailAddress) {
-        ConfirmationMail confirmationMail = new ConfirmationMail(mailAddress, SUBJECT_CONFIRM, null, null);
-        String message = "A log-in to ... was attempted with this E-Mail. Please enter the code:" + confirmationMail.getConfirmCode()
+        ConfirmationMail confirmationMail = new ConfirmationMail(mailAddress, SUBJECT_CONFIRM, null);
+        String body = "A log-in to the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' was attempted with this E-Mail." +
+                " Please enter the following code: " + confirmationMail.getConfirmCode()
                 + " to confirm that this is your E-Mail address and complete the log-in.";
+        String message = body + "/n" + MAIL_SIGNING;
         confirmationMail.setMessage(message);
         return confirmationMail;
     }

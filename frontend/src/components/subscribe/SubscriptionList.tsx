@@ -11,7 +11,6 @@ import {
   Typography,
   withStyles,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -124,9 +123,9 @@ const SubscriptionList: FC = () => {
           </TableHead>
           <TableBody>
             {subscriptionStore?.getSubscriptions().map(subscription => (
-              <StyledTableRow hover key={subscription.things[0].name.name}>
+              <StyledTableRow hover key={subscription.thing.name.name}>
                 <StyledTableCell component="th" scope="row">
-                  <Typography variant="h5">{subscription.things[0].name.name}</Typography>
+                  <Typography variant="h5">{subscription.thing.name.name}</Typography>
                 </StyledTableCell>
                 <StyledTableCell>
                   <Typography variant="body1">

@@ -38,3 +38,14 @@ export async function postJsonGetText(path: string, postJson: any): Promise<stri
 
   return data
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function postJsonAsURLGetText(path: string): Promise<string> {
+  const response = await fetch(path, {
+    method: 'post',
+    headers: {'Content-Type': 'application/json'},
+  })
+  const data = await response.text()
+
+  return data
+}

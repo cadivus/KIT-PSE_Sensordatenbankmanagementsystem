@@ -15,6 +15,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import {FormattedMessage} from 'react-intl'
 import useThingStore from '../../hooks/UseThingStore'
+import Thing from '../../material/Thing'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -47,7 +48,7 @@ const useStyles = makeStyles({
  *  Displays the things of a replay.
  *  This class implements a React component.
  */
-const ReplayThingList = () => {
+const ReplayThingList = ({things}: {things: Set<Thing>}) => {
   const classes = useStyles()
   const thingStore = useThingStore()
 
@@ -71,13 +72,13 @@ const ReplayThingList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {thingStore?.things.map(thing => (
+          {Array.from(things).map(thing => (
             <StyledTableRow hover key={thing.name.name}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="body1">{thing.name.name}</Typography>
+                <Typography variant="body1">{thing.name.toString()}</Typography>
               </StyledTableCell>
               <StyledTableCell>
-                <Typography variant="body1">XXXX</Typography>
+                <Typography variant="body1">{thing.id.toString()}</Typography>
               </StyledTableCell>
             </StyledTableRow>
           ))}

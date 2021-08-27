@@ -35,7 +35,6 @@ const useStyles = makeStyles(theme => ({
  */
 const LoginStep1 = ({setMailAddress}) => {
   const [mailString, setMailString] = useState('')
-
   const classes = useStyles()
 
   return (

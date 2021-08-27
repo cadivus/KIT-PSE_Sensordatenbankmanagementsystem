@@ -1,64 +1,51 @@
 import Thing from './Thing'
+import ReplaySpeed from './ReplaySpeed'
+import Id from './Id'
 
 /**
-* This class represents a replay.
-*/
+ * This class represents a replay.
+ */
 class Replay {
   /**
-  * This list contains all things being part of the replay.
-  */
-  things: Array<Thing> = []
+   * Id of the replay
+   */
+  readonly id: Id
 
   /**
-  * Speed multiplier
-  */
-  speed: number = 1
+   * This list contains all things being part of the replay.
+   */
+  readonly things: Set<Thing>
 
   /**
-  * Indicates whether the replay is running.
-  */
-  running: boolean = false
+   * Speed multiplier
+   */
+  readonly speed: ReplaySpeed
 
   /**
-  * The ActionListener will be triggered on every change.
-  *
-  * @param actionListener The ActionListener to be triggered.
-  */
-  onChange = (actionListener: any): void => {
-
-  }
+   * Start time and date of the replay
+   */
+  readonly start: Date
 
   /**
-  * Starts the replay.
-  */
-  start = (): void => {
-    // Nothing yet
-  }
+   * End time and date of the replay
+   */
+  readonly end: Date
 
   /**
-  * Stops the replay
-  */
-  stop = (): void => {
-    // Nothing yet
-  }
-
-  /**
-  * Adds a thing to the replay.
-  *
-  * @param thing Thing to add
-  */
-  addThing = (thing: Thing): void => {
-
-  }
-
-  /**
-  * Removes a thing from the replay.
-  *
-  * @param thing Thing to remove
-  * @return True on success, false on failure.
-  */
-  removeThing = (thing: Thing): boolean => {
-    return false
+   * Creates a new onject representing a replay
+   *
+   * @param id Id of the replay
+   * @param start Start time of the replay
+   * @param end End time of the replay
+   * @param speed Speed of the replay
+   * @param things Things being part of the replay
+   */
+  constructor(id: Id, start: Date, end: Date, speed: ReplaySpeed, things: Set<Thing>) {
+    this.id = id
+    this.start = start
+    this.end = end
+    this.speed = speed
+    this.things = things
   }
 }
 

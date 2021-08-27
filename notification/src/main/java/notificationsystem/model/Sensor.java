@@ -1,12 +1,14 @@
 package notificationsystem.model;
 
-import java.util.List;
-import java.util.UUID;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.LinkedList;
 
 /**
- * The Sensor class represents the air-quality sensors stationed in Augsburg. Each sensor collects data, has a
- * failure rate, a location, and is part of one, none or multiple categories. The Sensor class also provides access to
- * these data points.
+ * The Sensor class represents the air-quality sensors stationed in Augsburg (Called 'Things' in the Sensorthings database).
+ * Each sensor collects data, has a failure rate, a location, and is part of one, none or multiple categories.
+ * The Sensor class also provides access to these data points.
  * In the E-Mail-Notification System, this class is mainly used organize and transport data collected by and about
  * sensors. This information is then needed for report- and alert-mails.
  * The Sensor class does not hold information about the subscribers to a sensor, as the subscriptions are handled in
@@ -14,103 +16,96 @@ import java.util.UUID;
  */
 public class Sensor {
 
-    private String name;
-    private UUID id;
-    private String data;
-    private String failureRate;
-    private String location;
-    private List<String> categories;
+    private final static int COORDINATES_IN_LOCATION = 0;
+    private final static String COORDINATES_KEY = "id";
+
+    String id;
+    String name;
+    String description;
+    String properties;
+    String location;
+    double activeRate;
+    LinkedList<ObservationStats> stats;
 
     /**
-     * Constructs a new sensor.
-     * @param data data the sensor collected.
-     * @param failureRate percentage of time the sensor was inactive.
-     * @param location gps-coordinates of the sensor location.
-     * @param categories list of categories describing the sensor and its properties.
+     * Constructs a new instance of the sensor class.
+     * @param id id of the sensor.
+     * @param name name of the sensor.
+     * @param description a short description of the sensor.
+     * @param properties a short description of some properties of the sensor.
+     * @param location a JSONArray containing information about the location of the sensor.
+     * @throws JSONException throws this exception if the conversion from JSONArray to JSONObject of the parameter
+     * location fails.
      */
-    public Sensor(String name, UUID id, String data, String failureRate, String location, List<String> categories) {
-        this.name = name;
+    public Sensor(String id, String name, String description, String properties, JSONArray location) throws JSONException {
         this.id = id;
-        this.data = data;
-        this.failureRate = failureRate;
-        this.location = location;
-        this.categories = categories;
+        this.name = name;
+        this.description = description;
+        this.properties = properties;
+        this.location = location.getJSONObject(COORDINATES_IN_LOCATION).getString(COORDINATES_KEY);
     }
 
     /**
-     * Gets the data a sensor collected.
-     * @return String containing the collected data.
+     * Gets unique id of the sensor.
+     * @return id of the sensor.
      */
-    public String getData() {
-        return data;
+    public String getId() {
+        return id;
     }
 
     /**
-     * Gets the failure rate of the sensor.
-     * @return String representing the failure rate of the sensor in percent.
+     * Gets the name of the sensor.
+     * @return name of the sensor.
      */
-    public String getFailureRate() {
-        return failureRate;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Gets the location of the sensor.
-     * @return Location of the sensor as a gps-coordinate.
+     * Gets the coordinates of the sensor.
+     * @return coordinates of the sensor.
      */
     public String getLocation() {
         return location;
     }
 
     /**
-     * Gets a list of categories describing the sensor.
-     * @return List of Strings with the category names.
+     * Gets the average times a sensor is active a day.
+     * @return active rate of the sensor.
      */
-    public List<String> getCategories() {
-        return categories;
+    public double getActiveRate() {
+        return activeRate;
     }
 
     /**
-     * Sets the data collected by the sensor.
-     * @param data data collected by the sensor.
+     * Gets a list of stats about the data observed by the sensor.
+     * @return List of stats about the observed data.
      */
-    public void setData(String data) {
-        this.data = data;
+    public LinkedList<ObservationStats> getStats() {
+        return stats;
     }
 
     /**
-     * Sets the failure rate of a sensor.
-     * @param failureRate String representing the failure rate of the sensor in percent.
+     * Sets the id of a sensor.
+     * @param id new id of the sensor.
      */
-    public void setFailureRate(String failureRate) {
-        this.failureRate = failureRate;
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
-     * Sets the location of a sensor.
-     * @param location Location of the sensor as a gps-coordinate.
+     * Sets the active rate of a sensor.
+     * @param activeRate new active rate of the sensor.
      */
-    public void setLocation(String location) {
-        this.location = location;
+    public void setActiveRate(double activeRate) {
+        this.activeRate = activeRate;
     }
 
     /**
-     * Sets the categories of the sensor.
-     * @param categories List of Strings with the category names.
+     * Sets a new list of stats for the sensor.
+     * @param stats new list of stats.
      */
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
-    }
-
-    @Override
-    public String toString() {
-        return id.toString();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public UUID getId() {
-        return id;
+    public void setStats(LinkedList<ObservationStats> stats) {
+        this.stats = stats;
     }
 }
