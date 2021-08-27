@@ -50,6 +50,9 @@ public class ReplayServiceImp implements ReplayService {
     }
     if (information.getStart().equals(information.getEnd()))
       throw new IllegalArgumentException("Start and end can not be the same time");
+    if (information.getStart().isAfter(information.getEnd()))
+      throw new IllegalArgumentException("Start can not be after end");
+
     Long life = (long) (ChronoUnit.MILLIS.between(information.getStart(), information.getEnd())/information.getSpeed() * 1.05);
     SseEmitter emitter = new SseEmitter(life);
     ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();

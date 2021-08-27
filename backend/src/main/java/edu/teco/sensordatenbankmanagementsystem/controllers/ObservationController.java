@@ -109,15 +109,15 @@ public class ObservationController {
     /**
      * This is the entry point for Csv exports
      *
-     * @param id       This is the Sensor ID for which the observations should be exported
+     * @param thingId       This is the Sensor ID for which the observations should be exported
      * @param start    The (Optional) start date
      * @param end      The (Optional) End date
      * @param response The HttpServlet in which the result should be written
      * @throws IOException If there is no way to write to the @param response
      */
     @Transactional
-    @GetMapping(value = {"/Export/{id}", "/Export/{id}/{start}", "/Export/{id}/{start}/{end}"})
-    public void exportToCSV(@PathVariable String id,
+    @GetMapping(value = {"/Export/{thingId}", "/Export/{thingId}/{start}", "/Export/{thingId}/{start}/{end}"})
+    public void exportToCSV(@PathVariable String thingId,
                             @PathVariable(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd:HH-mm-ss") LocalDateTime start,
                             @PathVariable(required = false)@DateTimeFormat(pattern = "yyyy-MM-dd:HH-mm-ss")  LocalDateTime end, HttpServletResponse response)
             throws IOException {
@@ -131,7 +131,7 @@ public class ObservationController {
 
         //TODO: Overload these methods instead of using useless start and end points
         Stream<Observation> list = observationService
-                .getObservationByDatastream(sensorService.getDatastreams(List.of(id), start, end), start, end);
+                .getObservationByDatastream(sensorService.getDatastreams(List.of(thingId), start, end), start, end);
 
         WriteCsvToResponse.writeObservation(response.getWriter(), list);
 
