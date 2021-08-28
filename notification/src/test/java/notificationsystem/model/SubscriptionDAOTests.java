@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SubscriptionTests {
+public class SubscriptionDAOTests {
 
     @Autowired
     SubscriptionDAO subscriptionDAO;

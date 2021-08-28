@@ -77,7 +77,7 @@ public class MailSender {
         message.setText(mail.getMessage(), "UTF-8");
         message.setSentDate(new Date());
 
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getReceiverMails(), false));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getReceiverMail(), false));
 
         Transport.send(message);
     }

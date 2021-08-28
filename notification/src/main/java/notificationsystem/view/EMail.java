@@ -38,7 +38,7 @@ public abstract class EMail {
      * Gets the e-mail address the mail is sent to.
      * @return the e-mail address the mail is sent to.
      */
-    public String getReceiverMails() {
+    public String getReceiverMail() {
         return receiverMail;
     }
 
