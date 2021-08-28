@@ -26,8 +26,8 @@ public class MailSender {
      * @param username e-mail with which to log-in.
      * @param password password for the given e-mail.
      */
-    public MailSender(String username, String password) {
-        login(username, password);
+    public MailSender(String username, String password, String port, String host) {
+        login(username, password, port, host);
     }
 
     /**
@@ -36,14 +36,14 @@ public class MailSender {
      * @param username username used for authentication purposes.
      * @param password password used for authentication purposes.
      */
-    private void login(String username, String password) {
+    private void login(String username, String password, String port, String host) {
         Properties properties = new Properties();
 
         properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.socketFactory.port", "587");
+        properties.put("mail.smtp.socketFactory.port", port);
         properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.starttls.enable", "true");
 
         Authenticator authenticator = new Authenticator() {

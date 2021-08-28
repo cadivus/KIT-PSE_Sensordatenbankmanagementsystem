@@ -36,6 +36,7 @@ public class ControllerIntegrationTests {
     private void setup() {
         greenMail = new GreenMail(ServerSetup.ALL);
         greenMail.start();
+        //TODO: Set port to 3025, host to localhost
     }
 
     @AfterAll
@@ -51,8 +52,6 @@ public class ControllerIntegrationTests {
         //Result (confirmation code) is semi-random complicating exact testing
         assertNotNull(mvcResult);
         assertEquals(8, mvcResult.getResponse().getContentLength());
-        //TODO: Mail of GreenMail
-        //TODO: Port problems expected
         assertTrue(greenMail.waitForIncomingEmail(5000, 1));
         Message[] messages = greenMail.getReceivedMessages();
         assertEquals(1, messages.length);

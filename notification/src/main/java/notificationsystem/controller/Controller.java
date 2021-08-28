@@ -43,6 +43,8 @@ public class Controller {
     private SensorDAO sensorDAO;
     private final static long SYSTEMLOGIN_ID = 1;
     private final RestTemplate restTemplate;
+    private final static String EMAIL_PORT = "587";
+    private final static String EMAIL_HOST = "smtp.gmail.com";
 
     @Autowired
     public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate) throws Exception {
@@ -56,7 +58,7 @@ public class Controller {
             throw new Exception(CONSTRUCTOR_ERROR);
         }
 
-        this.mailSender = new MailSender(login.getUsername(), login.getPassword());
+        this.mailSender = new MailSender(login.getUsername(), login.getPassword(), EMAIL_PORT, EMAIL_HOST);
         this.subscriptionDAO = subscriptionDAO;
         this.restTemplate = restTemplate;
     }
