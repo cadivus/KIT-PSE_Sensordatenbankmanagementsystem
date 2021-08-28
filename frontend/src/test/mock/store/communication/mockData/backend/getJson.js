@@ -21,9 +21,16 @@ const datastreamSensor1Id = 'saqn:ds:d98d0a2'
 const datastreamSensor2Id = 'saqn:ds:ffc6f61'
 const datastreamSensor3Id = 'saqn:ds:b88cfcb'
 
-export const datastreamSensor1 = {"id":datastreamSensor1Id,"name":"PM2.5 Datastream of Crowdsensing Node (SDS011, 183100)","description":"Datastream for recording Particulate Matter","sensorId":"saqn:s:b3dd2c9","phenomenonStart":"22/11/2019@07:17:46","phenomenonEnd":"27/01/2020@07:51:30","resultTimeStart":"22/11/2019@07:17:46","resultTimeEnd":"27/01/2020@07:51:30","obsId":"saqn:op:mcpm2p5","unit":"microgram per cubic meter"}
-export const datastreamSensor2 = {"id":datastreamSensor2Id,"name":"Offset-Bestimmung (Auto-Zero)","description":"Das Gerät führt einen Auto-Zero durch. Das bedeutet der E-Filter ist eingeschaltet und filtert alle Partikel aus der Luft (Null-Luft).","sensorId":"saqn:s:1e51f2e","phenomenonStart":"01/11/2018@01:10:08","phenomenonEnd":"04/02/2020@11:04:55","resultTimeStart":"01/11/2018@01:10:08","resultTimeEnd":"04/02/2020@11:04:55","obsId":"saqn:op:cal_edm80neph_zero_det","unit":"Array of calibration data"}
-export const datastreamSensor3 = {"id":datastreamSensor3Id,"name":"Particulate matter - PM10, first measurement Datastream of station DEBY110","description":"A Datastream measuring Particulate matter - PM10, first measurement using nephelometry and beta attenuation","sensorId":"saqn:s:fa2dbc8","phenomenonStart":"31/12/2016@12:00:00","phenomenonEnd":"11/07/2019@02:00:00","resultTimeStart":null,"resultTimeEnd":null,"obsId":"saqn:op:mcpm10","unit":"microgram per cubic meter"}
+export const datastreamSensor1Start = '22/11/2019@07:17:46'
+export const datastreamSensor1End = '27/01/2020@07:51:30'
+export const datastreamSensor2Start = '01/11/2018@01:10:08'
+export const datastreamSensor2End = '04/02/2020@11:04:55'
+export const datastreamSensor3Start = '31/12/2016@12:00:00'
+export const datastreamSensor3End = '11/07/2019@02:00:00'
+
+export const datastreamSensor1 = {"id":datastreamSensor1Id,"name":"PM2.5 Datastream of Crowdsensing Node (SDS011, 183100)","description":"Datastream for recording Particulate Matter","sensorId":"saqn:s:b3dd2c9","phenomenonStart":datastreamSensor1Start,"phenomenonEnd":datastreamSensor1End,"resultTimeStart":datastreamSensor1Start,"resultTimeEnd":datastreamSensor1End,"obsId":"saqn:op:mcpm2p5","unit":"microgram per cubic meter"}
+export const datastreamSensor2 = {"id":datastreamSensor2Id,"name":"Offset-Bestimmung (Auto-Zero)","description":"Das Gerät führt einen Auto-Zero durch. Das bedeutet der E-Filter ist eingeschaltet und filtert alle Partikel aus der Luft (Null-Luft).","sensorId":"saqn:s:1e51f2e","phenomenonStart":datastreamSensor2Start,"phenomenonEnd":datastreamSensor2End,"resultTimeStart":datastreamSensor2Start,"resultTimeEnd":datastreamSensor2End,"obsId":"saqn:op:cal_edm80neph_zero_det","unit":"Array of calibration data"}
+export const datastreamSensor3 = {"id":datastreamSensor3Id,"name":"Particulate matter - PM10, first measurement Datastream of station DEBY110","description":"A Datastream measuring Particulate matter - PM10, first measurement using nephelometry and beta attenuation","sensorId":"saqn:s:fa2dbc8","phenomenonStart":datastreamSensor3Start,"phenomenonEnd":datastreamSensor3End,"resultTimeStart":null,"resultTimeEnd":null,"obsId":"saqn:op:mcpm10","unit":"microgram per cubic meter"}
 
 const activeStateSensor1 = [true]
 const activeStateSensor2 = [false]
