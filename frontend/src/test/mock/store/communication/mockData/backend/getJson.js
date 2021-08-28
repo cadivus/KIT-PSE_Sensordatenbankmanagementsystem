@@ -1,34 +1,49 @@
 /* eslint-disable */
-
 import {
   ALL_THINGS,
   getActiveStateUrl,
-  getAllThingDatastreamsUrl, getDatastreamUrl
+  getAllThingDatastreamsUrl,
+  getDatastreamUrl,
 } from '../../../../../../store/communication/backendUrlCreator'
 import Id from '../../../../../../material/Id'
 
-const allThings = [{"id":"saqn:t:43ae704","name":"Online Sensor Mock","description":"Low Cost Node Measuring Particulate Matter","properties":"{\"shortname\": \"crowdsensor\", \"hardware.id\": \"183100\", \"operator.domain\": \"teco.edu\"}","locations":[{"id":"geo:48.371540,10.898510,nan","name":"Oberländerstraße 73, 86161 Augsburg","description":"","encodingType":"application/vnd.geo+json","location":"{\"type\":\"Point\",\"coordinates\":[10.89851,48.37154]}","geom":"0101000020E61000000742B28009CC2540F3936A9F8E2F4840","genFoiId":"ac1f4032-1c37-11ea-b2b8-f75e175e6959","properties":null}]},
-  {"id":"saqn:t:grimm-aerosol.com:EDM80NEPH:SN17001","name":"Offline Sensor Mock","description":"Mid Cost Device Measuring Particulate Matter","properties":"{\"shortname\": \"edm80neph\", \"hardware.id\": \"sn17001\", \"operator.domain\": \"grimm-aerosol.com\"}","locations":[{"id":"1ab23546-8555-11ea-a024-33cf9a467dab","name":"","description":"","encodingType":"application/vnd.geo+json","location":"{\"type\":\"Point\",\"coordinates\":[10.896306,48.370278]}","geom":"0101000020E6100000CA6ABA9EE8CA2540D236FE44652F4840","genFoiId":null,"properties":null}]},
-  {"id":"saqn:t:4049564","name":"Unknown State Sensor Mock","description":"A station measuring -Gaseous air pollutants- -Particulate air pollutants-","properties":"{\"dem_status\": \"M\", \"network_code\": \"DE007A\", \"operator_url\": \"lfu.bayern.de\", \"station_code\": \"DEBY110\", \"station_name\": \"Augsburg/Karlstraße\", \"type_of_station\": \"traffic\", \"station_altitude\": 485, \"station_end_date\": \"nan\", \"station_latitude_d\": 48.370237, \"station_local_code\": \"DEBY110\", \"station_start_date\": 20030801, \"station_longitude_d\": 10.896221, \"station_latitude_dms\": \"+048.22.12\", \"station_type_of_area\": \"urban\", \"station_longitude_dms\": \"+010.53.46\", \"station_ozone_classification\": \"urban\", \"station_subcat_rural_background\": \"unknown\"}","locations":[{"id":"geo:48.370237,10.896221,485.0","name":"Karlstraße Ecke Kesselmarkt, 86150 Augsburg","description":"","encodingType":"application/vnd.geo+json","location":"{\"type\":\"Point\",\"coordinates\":[10.896221,48.370237,485.0]}","geom":"0101000020E610000012FA997ADDCA254074620FED632F4840","genFoiId":"f832296e-a3e5-11e9-b2c0-f3f0362af6f7","properties":null}]}]
+const sensor1Id = 'saqn:t:43ae704'
+const sensor2Id = 'saqn:t:grimm-aerosol.com:EDM80NEPH:SN17001'
+const sensor3Id = 'saqn:t:4049564'
 
-const datastreamSensor1 = {"id":"saqn:ds:d98d0a2","name":"PM2.5 Datastream of Crowdsensing Node (SDS011, 183100)","description":"Datastream for recording Particulate Matter","sensorId":"saqn:s:b3dd2c9","phenomenonStart":"22/11/2019@07:17:46","phenomenonEnd":"27/01/2020@07:51:30","resultTimeStart":"22/11/2019@07:17:46","resultTimeEnd":"27/01/2020@07:51:30","obsId":"saqn:op:mcpm2p5","unit":"microgram per cubic meter"}
-const datastreamSensor2 = {"id":"saqn:ds:ffc6f61","name":"Offset-Bestimmung (Auto-Zero)","description":"Das Gerät führt einen Auto-Zero durch. Das bedeutet der E-Filter ist eingeschaltet und filtert alle Partikel aus der Luft (Null-Luft).","sensorId":"saqn:s:1e51f2e","phenomenonStart":"01/11/2018@01:10:08","phenomenonEnd":"04/02/2020@11:04:55","resultTimeStart":"01/11/2018@01:10:08","resultTimeEnd":"04/02/2020@11:04:55","obsId":"saqn:op:cal_edm80neph_zero_det","unit":"Array of calibration data"}
-const datastreamSensor3 = {"id":"saqn:ds:b88cfcb","name":"Particulate matter - PM10, first measurement Datastream of station DEBY110","description":"A Datastream measuring Particulate matter - PM10, first measurement using nephelometry and beta attenuation","sensorId":"saqn:s:fa2dbc8","phenomenonStart":"31/12/2016@12:00:00","phenomenonEnd":"11/07/2019@02:00:00","resultTimeStart":null,"resultTimeEnd":null,"obsId":"saqn:op:mcpm10","unit":"microgram per cubic meter"}
+export const sensor1 = {"id":sensor1Id,"name":"Online Sensor Mock","description":"Low Cost Node Measuring Particulate Matter","properties":"{\"shortname\": \"crowdsensor\", \"hardware.id\": \"183100\", \"operator.domain\": \"teco.edu\"}","locations":[{"id":"geo:48.371540,10.898510,nan","name":"Oberländerstraße 73, 86161 Augsburg","description":"","encodingType":"application/vnd.geo+json","location":"{\"type\":\"Point\",\"coordinates\":[10.89851,48.37154]}","geom":"0101000020E61000000742B28009CC2540F3936A9F8E2F4840","genFoiId":"ac1f4032-1c37-11ea-b2b8-f75e175e6959","properties":null}]}
+export const sensor2 = {"id":sensor2Id,"name":"Offline Sensor Mock","description":"Mid Cost Device Measuring Particulate Matter","properties":"{\"shortname\": \"edm80neph\", \"hardware.id\": \"sn17001\", \"operator.domain\": \"grimm-aerosol.com\"}","locations":[{"id":"1ab23546-8555-11ea-a024-33cf9a467dab","name":"","description":"","encodingType":"application/vnd.geo+json","location":"{\"type\":\"Point\",\"coordinates\":[10.896306,48.370278]}","geom":"0101000020E6100000CA6ABA9EE8CA2540D236FE44652F4840","genFoiId":null,"properties":null}]}
+export const sensor3 = {"id":sensor3Id,"name":"Unknown State Sensor Mock","description":"A station measuring -Gaseous air pollutants- -Particulate air pollutants-","properties":"{\"dem_status\": \"M\", \"network_code\": \"DE007A\", \"operator_url\": \"lfu.bayern.de\", \"station_code\": \"DEBY110\", \"station_name\": \"Augsburg/Karlstraße\", \"type_of_station\": \"traffic\", \"station_altitude\": 485, \"station_end_date\": \"nan\", \"station_latitude_d\": 48.370237, \"station_local_code\": \"DEBY110\", \"station_start_date\": 20030801, \"station_longitude_d\": 10.896221, \"station_latitude_dms\": \"+048.22.12\", \"station_type_of_area\": \"urban\", \"station_longitude_dms\": \"+010.53.46\", \"station_ozone_classification\": \"urban\", \"station_subcat_rural_background\": \"unknown\"}","locations":[{"id":"geo:48.370237,10.896221,485.0","name":"Karlstraße Ecke Kesselmarkt, 86150 Augsburg","description":"","encodingType":"application/vnd.geo+json","location":"{\"type\":\"Point\",\"coordinates\":[10.896221,48.370237,485.0]}","geom":"0101000020E610000012FA997ADDCA254074620FED632F4840","genFoiId":"f832296e-a3e5-11e9-b2c0-f3f0362af6f7","properties":null}]}
+
+const allThings = [sensor1, sensor2, sensor3]
+
+const datastreamSensor1Id = 'saqn:ds:d98d0a2'
+const datastreamSensor2Id = 'saqn:ds:ffc6f61'
+const datastreamSensor3Id = 'saqn:ds:b88cfcb'
+
+export const datastreamSensor1 = {"id":datastreamSensor1Id,"name":"PM2.5 Datastream of Crowdsensing Node (SDS011, 183100)","description":"Datastream for recording Particulate Matter","sensorId":"saqn:s:b3dd2c9","phenomenonStart":"22/11/2019@07:17:46","phenomenonEnd":"27/01/2020@07:51:30","resultTimeStart":"22/11/2019@07:17:46","resultTimeEnd":"27/01/2020@07:51:30","obsId":"saqn:op:mcpm2p5","unit":"microgram per cubic meter"}
+export const datastreamSensor2 = {"id":datastreamSensor2Id,"name":"Offset-Bestimmung (Auto-Zero)","description":"Das Gerät führt einen Auto-Zero durch. Das bedeutet der E-Filter ist eingeschaltet und filtert alle Partikel aus der Luft (Null-Luft).","sensorId":"saqn:s:1e51f2e","phenomenonStart":"01/11/2018@01:10:08","phenomenonEnd":"04/02/2020@11:04:55","resultTimeStart":"01/11/2018@01:10:08","resultTimeEnd":"04/02/2020@11:04:55","obsId":"saqn:op:cal_edm80neph_zero_det","unit":"Array of calibration data"}
+export const datastreamSensor3 = {"id":datastreamSensor3Id,"name":"Particulate matter - PM10, first measurement Datastream of station DEBY110","description":"A Datastream measuring Particulate matter - PM10, first measurement using nephelometry and beta attenuation","sensorId":"saqn:s:fa2dbc8","phenomenonStart":"31/12/2016@12:00:00","phenomenonEnd":"11/07/2019@02:00:00","resultTimeStart":null,"resultTimeEnd":null,"obsId":"saqn:op:mcpm10","unit":"microgram per cubic meter"}
+
+const activeStateSensor1 = [0]
+const activeStateSensor2 = [0]
+const activeStateSensor3 = [0]
+/* eslint-enable */
 
 export const getJsonMap = new Map()
 getJsonMap.set(ALL_THINGS, allThings)
 
-getJsonMap.set(getActiveStateUrl(new Id('saqn:t:43ae704')), [0])
-getJsonMap.set(getActiveStateUrl(new Id('saqn:t:grimm-aerosol.com:EDM80NEPH:SN17001')), [0])
-getJsonMap.set(getActiveStateUrl(new Id('saqn:t:4049564')), [0])
+getJsonMap.set(getActiveStateUrl(new Id(sensor1Id)), activeStateSensor1)
+getJsonMap.set(getActiveStateUrl(new Id(sensor2Id)), activeStateSensor2)
+getJsonMap.set(getActiveStateUrl(new Id(sensor3Id)), activeStateSensor3)
 
-getJsonMap.set(getAllThingDatastreamsUrl(new Id('saqn:t:43ae704')), [datastreamSensor1])
-getJsonMap.set(getDatastreamUrl(new Id('saqn:ds:d98d0a2')), datastreamSensor1)
+getJsonMap.set(getAllThingDatastreamsUrl(new Id(sensor1Id)), [datastreamSensor1])
+getJsonMap.set(getDatastreamUrl(new Id(datastreamSensor1Id)), datastreamSensor1)
 
-getJsonMap.set(getAllThingDatastreamsUrl(new Id('saqn:t:grimm-aerosol.com:EDM80NEPH:SN17001')), [datastreamSensor2])
-getJsonMap.set(getDatastreamUrl(new Id('saqn:ds:ffc6f61')), datastreamSensor2)
+getJsonMap.set(getAllThingDatastreamsUrl(new Id(sensor2Id)), [datastreamSensor2])
+getJsonMap.set(getDatastreamUrl(new Id(datastreamSensor2Id)), datastreamSensor2)
 
-getJsonMap.set(getAllThingDatastreamsUrl(new Id('saqn:t:4049564')), [datastreamSensor3])
-getJsonMap.set(getDatastreamUrl(new Id('saqn:ds:b88cfcb')), datastreamSensor3)
+getJsonMap.set(getAllThingDatastreamsUrl(new Id(sensor3Id)), [datastreamSensor3])
+getJsonMap.set(getDatastreamUrl(new Id(datastreamSensor3Id)), datastreamSensor3)
 
 export default getJsonMap
