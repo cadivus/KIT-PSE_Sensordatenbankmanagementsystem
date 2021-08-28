@@ -25,8 +25,8 @@ export const datastreamSensor1 = {"id":datastreamSensor1Id,"name":"PM2.5 Datastr
 export const datastreamSensor2 = {"id":datastreamSensor2Id,"name":"Offset-Bestimmung (Auto-Zero)","description":"Das Gerät führt einen Auto-Zero durch. Das bedeutet der E-Filter ist eingeschaltet und filtert alle Partikel aus der Luft (Null-Luft).","sensorId":"saqn:s:1e51f2e","phenomenonStart":"01/11/2018@01:10:08","phenomenonEnd":"04/02/2020@11:04:55","resultTimeStart":"01/11/2018@01:10:08","resultTimeEnd":"04/02/2020@11:04:55","obsId":"saqn:op:cal_edm80neph_zero_det","unit":"Array of calibration data"}
 export const datastreamSensor3 = {"id":datastreamSensor3Id,"name":"Particulate matter - PM10, first measurement Datastream of station DEBY110","description":"A Datastream measuring Particulate matter - PM10, first measurement using nephelometry and beta attenuation","sensorId":"saqn:s:fa2dbc8","phenomenonStart":"31/12/2016@12:00:00","phenomenonEnd":"11/07/2019@02:00:00","resultTimeStart":null,"resultTimeEnd":null,"obsId":"saqn:op:mcpm10","unit":"microgram per cubic meter"}
 
-const activeStateSensor1 = [0]
-const activeStateSensor2 = [0]
+const activeStateSensor1 = [true]
+const activeStateSensor2 = [false]
 const activeStateSensor3 = [0]
 /* eslint-enable */
 
