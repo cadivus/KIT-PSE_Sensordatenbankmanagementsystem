@@ -200,4 +200,13 @@ public class ThingServiceImp implements ThingService {
   public List<Thing> getAllThings() {
     return thingRepository.findAll();
   }
+
+  @Override
+  public List<List<String>> getThingsObsIds(List<String> thingIds) {
+    return thingIds.stream()
+            .map(id->datastreamRepository.findDatastreamsByThing_Id(id).stream()
+                    .map(Datastream::getObsId).collect(Collectors.toList())
+            )
+            .collect(Collectors.toList());
+  }
 }

@@ -79,7 +79,7 @@ public interface ObservationService {
      */
     @Deprecated
     void destroyDataStream(UUID id);
-    ObservationRepository
+
     List<Observation> getObservationsByThingId(String thingId, int limit, Sort sort, List<String> filter, LocalDateTime frameStart, LocalDateTime frameEnd);
 
     List<ObservedProperty> getAllObservedProperties();

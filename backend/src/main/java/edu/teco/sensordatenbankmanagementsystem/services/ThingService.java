@@ -66,4 +66,6 @@ public interface ThingService {
      * @return all things in the entire universe
      */
     public List<Thing> getAllThings();
+
+    List<List<String>> getThingsObsIds(List<String> thingIds);
 }
