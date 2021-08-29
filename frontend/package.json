@@ -37,7 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "NODE_OPTIONS=\"--no-warnings\" react-scripts test --watchAll=false --coverage",
+    "test": "NODE_OPTIONS=\"--no-warnings\" react-scripts test --watchAll=false --coverage && jest-coverage-badges",
     "test:coverage": "npm test -- --coverage",
     "test:badges": "npm run test:coverage  && jest-coverage-badges",
     "eject": "react-scripts eject"
