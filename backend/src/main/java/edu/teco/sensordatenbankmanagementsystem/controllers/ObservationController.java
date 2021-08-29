@@ -158,7 +158,7 @@ public class ObservationController {
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
+        String headerValue = "attachment; filename=observations_" + currentDateTime + ".csv";
         response.setHeader(headerKey, headerValue);
 
         //TODO: Overload these methods instead of using useless start and end points

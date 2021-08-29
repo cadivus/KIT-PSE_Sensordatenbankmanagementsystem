@@ -8,12 +8,12 @@ class LocationWithAddress extends Location {
     this.address = address
   }
 
-  addressToString = (): string => {
+  addressToString(): string {
     const {address} = this
     return address
   }
 
-  toString = (): string => {
+  toString(): string {
     const {x, y, address} = this
     return `${address}: ${x} | ${y}`
   }

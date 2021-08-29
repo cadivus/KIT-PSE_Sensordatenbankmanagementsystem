@@ -1,19 +1,32 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
+import edu.teco.sensordatenbankmanagementsystem.models.Location;
+import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
+import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
+import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public interface ThingService {
 
     @Transactional
     public Thing getThing(String id);
+
+    public Datastream getDatastream(String id);
 
     /**
      * Gets whether the given things were active in the last X days
@@ -53,6 +66,4 @@ public interface ThingService {
      * @return all things in the entire universe
      */
     public List<Thing> getAllThings();
-
-    List<List<String>> getThingsObsIds(List<String> thingIds);
 }

@@ -5,11 +5,11 @@ import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvException;
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.stream.Stream;
-import javax.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 
 @CommonsLog
@@ -19,18 +19,8 @@ public class WriteCsvToResponse {
 
     try {
 
-      ColumnPositionMappingStrategy<Observation> mapStrategy
-          = new ColumnPositionMappingStrategy<>();
-
-      mapStrategy.setType(Observation.class);
-
-      String[] columns = new String[]{"id", "phenomenonStart", "phenomenonEnd", "resultTime",
-          "type", "resultNumber", "resultString", "resultJson", "resultBool", "resultQuality",
-          "validTimeStart", "validTimeEnd", "params", "featureID", "mDataStreamID"};      mapStrategy.setColumnMapping(columns);
-
       StatefulBeanToCsv<Observation> btcsv = new StatefulBeanToCsvBuilder<Observation>(writer)
           .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-          .withMappingStrategy(mapStrategy)
           .withSeparator(',')
           .build();
 
@@ -42,27 +32,16 @@ public class WriteCsvToResponse {
     }
   }
 
-  public static void writeObservation(PrintWriter writer, Observation city) {
+  public static void writeDatastream(PrintWriter writer, List<Datastream> datastreams) {
 
     try {
 
-      ColumnPositionMappingStrategy<Observation> mapStrategy
-          = new ColumnPositionMappingStrategy<>();
-
-      mapStrategy.setType(Observation.class);
-
-      String[] columns = new String[]{"id", "phenomenonStart", "phenomenonEnd", "resultTime",
-          "type", "resultNumber", "resultString", "resultJson", "resultBool", "resultQuality",
-          "validTimeStart", "validTimeEnd", "params", "featureID", "mDataStreamID"};
-      mapStrategy.setColumnMapping(columns);
-
-      StatefulBeanToCsv<Observation> btcsv = new StatefulBeanToCsvBuilder<Observation>(writer)
+      StatefulBeanToCsv<Datastream> btcsv = new StatefulBeanToCsvBuilder<Datastream>(writer)
           .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-          .withMappingStrategy(mapStrategy)
           .withSeparator(',')
           .build();
 
-      btcsv.write(city);
+      btcsv.write(datastreams);
 
     } catch (CsvException ex) {
 

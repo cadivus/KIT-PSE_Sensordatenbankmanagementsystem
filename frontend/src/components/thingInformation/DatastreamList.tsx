@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -14,7 +16,8 @@ import {
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {FormattedMessage} from 'react-intl'
-import useThingStore from '../../hooks/UseThingStore'
+import Thing from '../../material/Thing'
+import Datastream from '../../material/Datastream'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -50,9 +53,16 @@ const useStyles = makeStyles({
  *  Displays the data of a selected thing.
  *  This class implements a React component.
  */
-const Data = () => {
+const DatastreamList = ({thing}: {thing: Thing}) => {
+  const history = useHistory()
   const classes = useStyles()
-  const thingStore = useThingStore()
+
+  const [datastreamList, setDatastreamList] = useState<Array<Datastream>>(new Array<Datastream>())
+  useEffect(() => {
+    thing.getDatastreams().then(list => {
+      setDatastreamList(list)
+    })
+  }, [thing])
 
   return (
     <TableContainer component={Paper}>
@@ -62,25 +72,36 @@ const Data = () => {
             <StyledTableCell className={classes.thingCell}>
               <Typography variant="h5">
                 <ArrowDropDownIcon />
-                <FormattedMessage id="infopage.time" />
+                <FormattedMessage id="infopage.stream" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
               <Typography variant="h5">
                 <ArrowDropDownIcon />
-                <FormattedMessage id="infopage.data" />
+                <FormattedMessage id="infopage.unit" />
               </Typography>
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {thingStore?.things.map(thing => (
-            <StyledTableRow hover key={thing.name.name}>
+          {datastreamList.map(datastream => (
+            <StyledTableRow hover key={datastream.datastreamId.toString()}>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="h5">YYYY-MM-TT hh:mm:ss</Typography>
+                <Typography variant="h5">{datastream.name.toString()}</Typography>
               </StyledTableCell>
               <StyledTableCell>
-                <Typography>00xx</Typography>
+                <Typography>{datastream.unit.toString()}</Typography>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() =>
+                    history.push(`/thingInformation/${thing.id.toString()}/${datastream.datastreamId.toString()}`)
+                  }
+                >
+                  View
+                </Button>
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -90,4 +111,4 @@ const Data = () => {
   )
 }
 
-export default Data
+export default DatastreamList

@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, {FC, useState} from 'react'
 import {
   Paper,
   Table,
@@ -11,7 +11,6 @@ import {
   Typography,
   withStyles,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -71,8 +70,8 @@ const SubscriptionList: FC = () => {
   const history = useHistory()
   const subscriptionStore = useSubscriptionStore()
 
-  const [open, setOpen] = React.useState(false)
-  const [clickedSubscription, setClickedSubscription] = React.useState<Subscription | null>(null)
+  const [open, setOpen] = useState(false)
+  const [clickedSubscription, setClickedSubscription] = useState<Subscription | null>(null)
 
   const handleClickOpen = (subscription: Subscription) => {
     setClickedSubscription(subscription)
@@ -124,9 +123,9 @@ const SubscriptionList: FC = () => {
           </TableHead>
           <TableBody>
             {subscriptionStore?.getSubscriptions().map(subscription => (
-              <StyledTableRow hover key={subscription.things[0].name.name}>
+              <StyledTableRow hover key={subscription.thing.name.toString()}>
                 <StyledTableCell component="th" scope="row">
-                  <Typography variant="h5">{subscription.things[0].name.name}</Typography>
+                  <Typography variant="h5">{subscription.thing.name.toString()}</Typography>
                 </StyledTableCell>
                 <StyledTableCell>
                   <Typography variant="body1">

@@ -10,6 +10,10 @@ class EMail {
   constructor(email: string) {
     this.email = email
   }
+
+  toString = (): string => {
+    return this.email
+  }
 }
 
 export default EMail

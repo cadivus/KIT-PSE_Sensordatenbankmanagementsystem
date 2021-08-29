@@ -33,7 +33,7 @@ const Export = () => {
     <div className={classes.root}>
       <Paper>
         <Grid container spacing={3}>
-          <Grid item xs={4}>
+          <Grid item xs={2}>
             <Container className={classes.paper}>
               <Button variant="outlined">
                 <Typography variant="h5">
@@ -42,7 +42,7 @@ const Export = () => {
               </Button>
             </Container>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <Container className={classes.paper}>
               <TextField
                 id="date"
@@ -69,7 +69,7 @@ const Export = () => {
               />
             </Container>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <Container className={classes.paper}>
               <TextField
                 id="date"

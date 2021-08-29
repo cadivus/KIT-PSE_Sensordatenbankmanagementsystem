@@ -176,11 +176,18 @@ public class ObservationServiceImp implements ObservationService{
     return observedPropertyRepository.findAll();
   }
 
+  @Override
+  @Transactional
+  public Stream<Observation> getObservationByDatastreamId(String datastreamId, Pageable page){
+    return observationRepository.findObservationsByDatastreamId(datastreamId, page);
+  }
+
   /**
    * {@inheritDoc}
    *
    * @return
    */
+
   @Transactional
   @Cacheable("Observations")
   public Stream<Observation> getObservationByDatastream(Stream<Datastream> datastreams,

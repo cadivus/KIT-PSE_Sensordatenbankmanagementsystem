@@ -66,36 +66,22 @@ const useStyles = makeStyles((theme: Theme) =>
  *  Displays a list of things.
  *  This class implements a React component.
  */
-const ThingList = ({selectedThings}: {selectedThings: Set<Thing>}) => {
+const ThingList = ({selectedThings, searchExpression}: {selectedThings: Set<Thing>; searchExpression: RegExp}) => {
   const history = useHistory()
   const classes = useStyles()
   const thingStore = useThingStore()
 
-  const [thingList, setThingList] = useState(new Array<Thing>())
-  const [lastUpdate, setLastUpdate] = useState(0)
+  const [thingList, setThingList] = useState(thingStore ? thingStore.cachedThings : new Array<Thing>())
 
   const [selectedThingsState, setSelectedThingsState] = useState(new Set<Thing>())
 
   useEffect(() => {
     if (thingStore) {
-      const newList = JSON.stringify(thingList) !== JSON.stringify(thingStore.things)
-
-      if (newList) setThingList(thingStore.things)
-      if (lastUpdate !== thingStore.lastUpdate) setLastUpdate(thingStore.lastUpdate)
+      thingStore.things.then(newThingsList => {
+        setThingList(newThingsList)
+      })
     }
-  }, [thingStore, lastUpdate, thingList])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (thingStore) {
-        if (lastUpdate !== thingStore.lastUpdate) setLastUpdate(thingStore.lastUpdate)
-      }
-    }, 1000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  })
+  }, [thingStore, setThingList])
 
   return (
     <TableContainer component={Paper} className={classes.container}>
@@ -121,7 +107,7 @@ const ThingList = ({selectedThings}: {selectedThings: Set<Thing>}) => {
               <TableCell />
             </TableRow>
           )}
-          {thingStore?.things.map(thing => {
+          {thingList.map(thing => {
             const checkChanged = (chk: boolean) => {
               if (chk && !selectedThingsState.has(thing)) {
                 selectedThings.add(thing)
@@ -131,30 +117,33 @@ const ThingList = ({selectedThings}: {selectedThings: Set<Thing>}) => {
                 setSelectedThingsState(new Set<Thing>(selectedThings))
               }
             }
-            return (
-              <StyledTableRow hover key={thing.name.name}>
-                <StyledTableCell component="th" scope="row">
-                  <Typography variant="h5">{thing.name.name}</Typography>
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Checkbox
-                    checked={selectedThingsState.has(thing)}
-                    onChange={e => checkChanged(e.target.checked)}
-                    color="primary"
-                    inputProps={{'aria-label': 'secondary checkbox'}}
-                  />
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => history.push(`/thingInformation/${thing.id.toString()}`)}
-                  >
-                    Datastream
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>
-            )
+            if (thing.name.toString().match(searchExpression)) {
+              return (
+                <StyledTableRow hover key={thing.name.name}>
+                  <StyledTableCell component="th" scope="row">
+                    <Typography variant="h5">{thing.name.name}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Checkbox
+                      checked={selectedThingsState.has(thing)}
+                      onChange={e => checkChanged(e.target.checked)}
+                      color="primary"
+                      inputProps={{'aria-label': 'secondary checkbox'}}
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => history.push(`/thingInformation/${thing.id.toString()}`)}
+                    >
+                      Datastream
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              )
+            }
+            return <></>
           })}
         </TableBody>
       </Table>

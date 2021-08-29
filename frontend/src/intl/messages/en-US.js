@@ -5,6 +5,7 @@ export default {
     // Appbar
     'appbar.subscription': 'SUBSCRIPTIONS',
     'appbar.login': 'LOGIN',
+    'appbar.logout': 'LOGOUT',
     // Startpage
     'startpage.startpage': 'Startpage',
     'startpage.subscribe': 'Subscribe',
@@ -21,6 +22,8 @@ export default {
     'infopage.toTime': 'To time',
     'infopage.time': 'Time',
     'infopage.data': 'Data',
+    'infopage.unit': 'Unit',
+    'infopage.stream': 'Datastream',
     // Replaypage
     'replaypage.start': 'Start:',
     'replaypage.stop': 'Stop:',

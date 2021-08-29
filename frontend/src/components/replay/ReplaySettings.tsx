@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {FormattedMessage} from 'react-intl'
 import {
+  Button,
   Paper,
   Slider,
   Table,
@@ -13,7 +15,14 @@ import {
   withStyles,
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
-import {FormattedMessage} from 'react-intl'
+import ReplaySpeed from '../../material/ReplaySpeed'
+import Thing from '../../material/Thing'
+import useReplayStore from '../../hooks/UseReplayStore'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const dateFormat = require('dateformat')
+
+const toMaterialDate = (date: Date) => `${dateFormat(date, 'yyyy-mm-dd')}T${dateFormat(date, 'HH:MM')}`
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -41,10 +50,13 @@ const useStyles = makeStyles({
     width: '83%',
   },
   textField: {
-    width: 130,
+    width: 240,
   },
   topMargin: {
     marginTop: '12.2%',
+  },
+  Margins: {
+    marginTop: '3%',
   },
 })
 
@@ -52,93 +64,102 @@ const useStyles = makeStyles({
  *  Displays the settings of the current replay.
  *  This class implements a React component.
  */
-const ReplaySettings = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>}) => {
   const classes = useStyles()
+  const replayStore = useReplayStore()
+
+  const [startDate, setStartDateState] = useState<Date>((d => new Date(d.setDate(d.getDate() - 3)))(new Date()))
+  const [endDate, setEndDateState] = useState<Date>((d => new Date(d.setDate(d.getDate() - 1)))(new Date()))
+  const [replaySpeed, setReplaySpeedState] = useState(new ReplaySpeed(1))
+
+  const setStartDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+    const newDate = new Date(e.target.value)
+    setStartDateState(newDate)
+  }
+
+  const setEndDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+    const newDate = new Date(e.target.value)
+    setEndDateState(newDate)
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const setReplaySpeed = (event: any, newValue: number | number[]): void => {
+    const newSpeed = new ReplaySpeed(Number(newValue))
+    setReplaySpeedState(newSpeed)
+  }
+
+  const createReplay = (): void => {
+    replayStore?.createReplay(startDate, endDate, replaySpeed, things).then(newReplay => {
+      setReplay(newReplay)
+    })
+  }
 
   return (
-    <TableContainer component={Paper} className={classes.topMargin}>
-      <Table>
-        <TableBody>
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
-              <Typography variant="body1">
-                <FormattedMessage id="replaypage.start" />
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField
-                id="date"
-                type="date"
-                defaultValue="2017-05-24"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField
-                id="time"
-                type="time"
-                defaultValue="07:30"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
-                }}
-              />
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
-              <Typography variant="body1">
-                <FormattedMessage id="replaypage.stop" />
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField
-                id="date"
-                type="date"
-                defaultValue="2017-05-24"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </StyledTableCell>
-            <StyledTableCell>
-              <TextField
-                id="time"
-                type="time"
-                defaultValue="07:30"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
-                }}
-              />
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow>
-            <StyledTableCell component="th" scope="row">
-              <Typography variant="body1">
-                <FormattedMessage id="replaypage.speed" />
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <Slider defaultValue={0} />
-            </StyledTableCell>
-            <StyledTableCell>
-              <Typography variant="body1">50x</Typography>
-            </StyledTableCell>
-          </StyledTableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <TableContainer component={Paper} className={classes.topMargin}>
+        <Table>
+          <TableBody>
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row">
+                <Typography variant="body1">
+                  <FormattedMessage id="replaypage.start" />
+                </Typography>
+              </StyledTableCell>
+              <StyledTableCell>
+                <TextField
+                  id="datetime-start"
+                  label="Next appointment"
+                  type="datetime-local"
+                  defaultValue={toMaterialDate(startDate)}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={setStartDate}
+                />
+              </StyledTableCell>
+            </StyledTableRow>
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row">
+                <Typography variant="body1">
+                  <FormattedMessage id="replaypage.stop" />
+                </Typography>
+              </StyledTableCell>
+              <StyledTableCell>
+                <TextField
+                  id="datetime-end"
+                  label="Next appointment"
+                  type="datetime-local"
+                  defaultValue={toMaterialDate(endDate)}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={setEndDate}
+                />
+              </StyledTableCell>
+            </StyledTableRow>
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row">
+                <Typography variant="body1">
+                  <FormattedMessage id="replaypage.speed" />
+                </Typography>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Slider defaultValue={replaySpeed.toNumber()} min={1} max={1000} onChange={setReplaySpeed} />
+              </StyledTableCell>
+              <StyledTableCell>
+                <Typography variant="body1">{`${replaySpeed.toString()}x`}</Typography>
+              </StyledTableCell>
+            </StyledTableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Button variant="outlined" className={classes.Margins} onClick={createReplay}>
+        <FormattedMessage id="replaypage.play" />
+      </Button>
+    </div>
   )
 }
 

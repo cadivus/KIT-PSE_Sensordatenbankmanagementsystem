@@ -25,10 +25,19 @@ const StartpageView: FC = () => {
   const classes = useStyles()
 
   const [selectedThings] = useState(new Set<Thing>())
+  const [searchExpression, setSearchExpression] = useState(new RegExp('^.*$', 'i'))
 
   const subscribeClicked = () => {
     history.push({
       pathname: '/subscriptions/subscriptionCreate',
+      // eslint-disable-next-line object-shorthand
+      state: {selectedThings: selectedThings},
+    })
+  }
+
+  const onReplayClick = () => {
+    history.push({
+      pathname: '/replay',
       // eslint-disable-next-line object-shorthand
       state: {selectedThings: selectedThings},
     })
@@ -42,7 +51,7 @@ const StartpageView: FC = () => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={8}>
-            <Search />
+            <Search setSearchExpression={setSearchExpression} />
           </Grid>
           <Grid item xs={2}>
             <Container className={classes.buttons}>
@@ -53,13 +62,13 @@ const StartpageView: FC = () => {
           </Grid>
           <Grid item xs={2}>
             <Container className={classes.buttons}>
-              <Button variant="outlined" onClick={() => history.push('/replay/replayMultipleView')}>
+              <Button variant="outlined" onClick={onReplayClick}>
                 <FormattedMessage id="startpage.replay" />
               </Button>
             </Container>
           </Grid>
         </Grid>
-        <ThingList selectedThings={selectedThings} />
+        <ThingList selectedThings={selectedThings} searchExpression={searchExpression} />
       </Container>
     </div>
   )

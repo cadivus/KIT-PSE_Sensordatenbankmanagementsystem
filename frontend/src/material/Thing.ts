@@ -1,8 +1,9 @@
-import ThingValue from './ThingValue'
+import SensorValue from './SensorValue'
 import ThingName from './ThingName'
 import Id from './Id'
 import ThingProperty from './ThingProperty'
 import Location from './Location'
+import Datastream from './Datastream'
 
 export enum ThingState {
   Unknown,
@@ -48,7 +49,7 @@ abstract class Thing {
     return result
   }
 
-  setProperty = (property: ThingProperty): void => {
+  setProperty(property: ThingProperty): void {
     const {_properties} = this
     const oldProperty = _properties.get(property.key)
     if (oldProperty && oldProperty.value === property.value) return
@@ -57,19 +58,13 @@ abstract class Thing {
   }
 
   /**
-   * This function gets the things value.
-   * It is abstract for being implemented by the ThingStore.
-   *
-   * @return The current value of the thing.
-   */
-  public abstract getValue(): ThingValue
-
-  /**
    * This function indicates whether the thing is active.
    *
    * @return true, when the thing is active. false otherwise
    */
-  public abstract isActive(): ThingState
+  public abstract isActive(): Promise<ThingState>
+
+  public abstract getDatastreams(): Promise<Array<Datastream>>
 }
 
 export default Thing

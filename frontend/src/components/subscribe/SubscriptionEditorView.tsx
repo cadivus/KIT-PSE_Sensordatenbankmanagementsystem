@@ -123,7 +123,7 @@ const SubscriptionEditorView = (props: any) => {
     ? useState(new NotificationLevel(5, true))
     : useState(subscription?.notificationLevel)
 
-  const things = subscription ? subscription.things : new Array<Thing>()
+  const things = new Array<Thing>()
   if (createMode) {
     props.location.state.selectedThings.forEach((e: Thing) => {
       things.push(e)
@@ -135,7 +135,7 @@ const SubscriptionEditorView = (props: any) => {
   const updateSubscription = createMode
     ? () => {
         if (!subscriptionStore || !notificationLevel || !(typeof directNotification === 'boolean')) return
-        subscriptionStore.createSubscription(things, directNotification, notificationLevel)
+        subscriptionStore.createSubscriptions(things, directNotification, notificationLevel)
         history.push('/subscriptions')
       }
     : () => {

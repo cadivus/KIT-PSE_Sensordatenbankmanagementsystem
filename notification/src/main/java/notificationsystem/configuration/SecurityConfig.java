@@ -1,4 +1,4 @@
-package notificationsystem.configuration;
+/*package notificationsystem.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,8 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.inMemoryAuthentication()
                 .withUser("frontend")
-                .password("frontend")
-                .roles("USER");
+                .password("{noop}frontend")
+                .roles("ADMIN");
 
     }
 
@@ -30,4 +30,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder getPasswordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-}
+}*/

@@ -33,9 +33,8 @@ const useStyles = makeStyles(theme => ({
  *  Displays the login page.
  *  This class implements a React component.
  */
-const LoginStep2 = ({setAuthCode}) => {
+const LoginStep2 = ({setAuthCode}: {setAuthCode: (authCode: string) => void}) => {
   const [codeString, setCodeString] = useState('')
-
   const classes = useStyles()
 
   return (
@@ -59,7 +58,7 @@ const LoginStep2 = ({setAuthCode}) => {
             type="password"
             id="password"
             autoComplete="current-password"
-            onInput={e => setCodeString(e.target.value)}
+            onInput={e => setCodeString((e.target as HTMLTextAreaElement).value)}
           />
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             <FormattedMessage id="loginpage.signInButton" />

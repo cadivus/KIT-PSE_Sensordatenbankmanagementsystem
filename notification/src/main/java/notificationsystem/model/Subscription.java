@@ -2,9 +2,6 @@ package notificationsystem.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.UUID;
 
 /**
  * The Subscription class stores data about a subscription of a single user to a single sensor. To allow for regular
@@ -17,11 +14,13 @@ import java.util.UUID;
 @Table(name = "Subscription")
 public class Subscription {
 
+    private final static int ALLOCATION_SIZE = 1;
+
     @Id
     @SequenceGenerator(
             name = "subscription_sequence",
             sequenceName = "subscription_sequence",
-            allocationSize = 1
+            allocationSize = ALLOCATION_SIZE
 
     )
     @GeneratedValue(
@@ -44,7 +43,7 @@ public class Subscription {
             name = "sensor",
             nullable = false
     )
-    private UUID sensor;
+    private String sensorId;
 
     @Column(
             name = "sub_time",
@@ -58,23 +57,28 @@ public class Subscription {
     )
     private long reportInterval;
 
+    @Column(
+            name = "toggle_alert",
+            nullable = false
+    )
+    private boolean toggleAlert;
+
     /**
      * Constructs a new subscription.
      * @param subscriberAddress e-mail address of the subscriber.
-     * @param sensor sensor the user subscribes to.
+     * @param sensorId sensor the user subscribes to.
      * @param subTime time at which the user subscribed to the sensor.
      * @param reportInterval time period at which report e-mails are sent.
      */
-    public Subscription(String subscriberAddress, UUID sensor, LocalDate subTime, long reportInterval) {
-        this.id = id;
+    public Subscription(String subscriberAddress, String sensorId, LocalDate subTime, long reportInterval, boolean toggleAlert) {
         this.subscriberAddress = subscriberAddress;
-        this.sensor = sensor;
+        this.sensorId = sensorId;
         this.subTime = subTime;
         this.reportInterval = reportInterval;
+        this.toggleAlert = toggleAlert;
     }
 
     public Subscription() {
-
     }
 
     /**
@@ -86,27 +90,11 @@ public class Subscription {
     }
 
     /**
-     * Sets the e-mail address of the subscriber.
-     * @param subscriberAddress e-mail address of the subscriber.
-     */
-    public void setSubscriberAddress(String subscriberAddress) {
-        this.subscriberAddress = subscriberAddress;
-    }
-
-    /**
      * Gets the sensor the user is subscribed to.
      * @return the sensor the user is subscribed to.
      */
-    public UUID getSensor() {
-        return sensor;
-    }
-
-    /**
-     * Sets the sensor the user is subscribed to.
-     * @param sensor the sensor the user is subscribed to.
-     */
-    public void setSensor(UUID sensor) {
-        this.sensor = sensor;
+    public String getSensorId() {
+        return sensorId;
     }
 
     /**
@@ -134,14 +122,18 @@ public class Subscription {
     }
 
     /**
-     * Sets the time period between reports.
-     * @param reportInterval the time period between two reports.
+     * Gets id of the subscription.
+     * @return id of the subscription.
      */
-    public void setReportInterval(long reportInterval) {
-        this.reportInterval = reportInterval;
-    }
-
     public long getId() {
         return id;
+    }
+
+    /**
+     * Checks if toggleAlert is true or false
+     * @return status of toggleAlert
+     */
+    public boolean isToggleAlert() {
+        return toggleAlert;
     }
 }
