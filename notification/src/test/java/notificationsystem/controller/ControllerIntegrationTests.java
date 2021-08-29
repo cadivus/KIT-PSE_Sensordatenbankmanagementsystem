@@ -2,12 +2,11 @@ package notificationsystem.controller;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import notificationsystem.controller.Controller;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,18 +29,21 @@ public class ControllerIntegrationTests {
     private MockMvc mockMvc;
     @Autowired
     private SubscriptionDAO subscriptionDAO;
+    @Autowired
+    private Controller controller;
     private GreenMail greenMail;
 
-    @BeforeAll
-    private void setup() {
+    @Before
+    public void setup() {
         greenMail = new GreenMail(ServerSetup.ALL);
         greenMail.start();
-        //TODO: Set port to 3025, host to localhost
+        controller.setMailData("3025", "localhost");
     }
 
-    @AfterAll
-    private void cleanup() {
+    @After
+    public void cleanup() {
         greenMail.stop();
+        controller.setMailData("587", "smtp.gmail.com");
     }
 
     @Test
@@ -52,7 +54,7 @@ public class ControllerIntegrationTests {
         //Result (confirmation code) is semi-random complicating exact testing
         assertNotNull(mvcResult);
         assertEquals(8, mvcResult.getResponse().getContentLength());
-        assertTrue(greenMail.waitForIncomingEmail(5000, 1));
+        assertTrue(greenMail.waitForIncomingEmail(50000, 1));
         Message[] messages = greenMail.getReceivedMessages();
         assertEquals(1, messages.length);
         assertEquals("Log-in attempt", messages[0].getSubject());
