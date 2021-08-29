@@ -5,9 +5,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ main, Create-.yml-file ]
+    branches: [ frontend/test/badges ]
   pull_request:
-    branches: [ main, Create-.yml-file ]
+    branches: [ frontend/test/badges ]
 
 jobs:
   javatest:
