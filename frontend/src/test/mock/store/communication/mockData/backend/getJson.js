@@ -17,9 +17,9 @@ export const sensor3 = {"id":sensor3Id,"name":"Unknown State Sensor Mock","descr
 
 const allThings = [sensor1, sensor2, sensor3]
 
-const datastreamSensor1Id = 'saqn:ds:d98d0a2'
-const datastreamSensor2Id = 'saqn:ds:ffc6f61'
-const datastreamSensor3Id = 'saqn:ds:b88cfcb'
+export const datastreamSensor1Id = 'saqn:ds:d98d0a2'
+export const datastreamSensor2Id = 'saqn:ds:ffc6f61'
+export const datastreamSensor3Id = 'saqn:ds:b88cfcb'
 
 export const datastreamSensor1Start = '22/11/2019@07:17:46'
 export const datastreamSensor1End = '27/01/2020@07:51:30'
