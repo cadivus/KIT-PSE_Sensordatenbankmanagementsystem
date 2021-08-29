@@ -114,7 +114,7 @@ public class ControllerIntegrationTests {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("http://localhost:8082/getSubscriptions/test");
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
         //TODO: Fill in
-        assertEquals("", mvcResult.getResponse().getContentAsString());
+        assertEquals("[{\"id\":1,\"subscriberAddress\":\"test\",\"sensorId\":\"test-id\",\"subTime\":\"2021-08-28\",\"reportInterval\":7,\"toggleAlert\":true}]", mvcResult.getResponse().getContentAsString());
 
         subscriptionDAO.delete(subscription);
     }
