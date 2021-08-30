@@ -28,8 +28,7 @@ describe('fetching data', () => {
   it('check data match', async () => {
     const store = initValue()
     const fetchedThings = await store.things
-    const result = thingCollectionMatches(fetchedThings, allThings)
-    expect(result).toBe(true)
+    thingCollectionMatches(fetchedThings, allThings)
   })
 })
 
@@ -47,7 +46,6 @@ describe('cache', () => {
     await store.things
     const cachedThings = store.cachedThings
 
-    const result = thingCollectionMatches(cachedThings, allThings)
-    expect(result).toBe(true)
+    thingCollectionMatches(cachedThings, allThings)
   })
 })
