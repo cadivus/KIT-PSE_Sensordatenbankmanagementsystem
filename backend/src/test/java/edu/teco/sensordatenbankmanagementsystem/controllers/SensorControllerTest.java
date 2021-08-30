@@ -331,7 +331,7 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(response.getBody().contains("Connection"));
     } else {
       assertTrue(response.getBody().contains("\"id\""));
     }
