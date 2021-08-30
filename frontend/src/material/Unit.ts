@@ -22,12 +22,6 @@ class Unit {
     // eslint-disable-next-line no-unneeded-ternary
     return translated ? translated : name
   }
-
-  getTranslateId = (): string => {
-    const {name} = this
-    const id = `units.${name.replace(' ', '_')}`
-    return id
-  }
 }
 
 export default Unit
