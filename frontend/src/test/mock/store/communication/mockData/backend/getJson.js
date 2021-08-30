@@ -7,9 +7,9 @@ import {
 } from '../../../../../../store/communication/backendUrlCreator'
 import Id from '../../../../../../material/Id'
 
-const sensor1Id = 'saqn:t:43ae704'
-const sensor2Id = 'saqn:t:grimm-aerosol.com:EDM80NEPH:SN17001'
-const sensor3Id = 'saqn:t:4049564'
+export const sensor1Id = 'saqn:t:43ae704'
+export const sensor2Id = 'saqn:t:grimm-aerosol.com:EDM80NEPH:SN17001'
+export const sensor3Id = 'saqn:t:4049564'
 
 export const sensor1 = {"id":sensor1Id,"name":"Online Sensor Mock","description":"Low Cost Node Measuring Particulate Matter","properties":"{\"shortname\": \"crowdsensor\", \"hardware.id\": \"183100\", \"operator.domain\": \"teco.edu\"}","locations":[{"id":"geo:48.371540,10.898510,nan","name":"Oberländerstraße 73, 86161 Augsburg","description":"","encodingType":"application/vnd.geo+json","location":"{\"type\":\"Point\",\"coordinates\":[10.89851,48.37154]}","geom":"0101000020E61000000742B28009CC2540F3936A9F8E2F4840","genFoiId":"ac1f4032-1c37-11ea-b2b8-f75e175e6959","properties":null}]}
 export const sensor2 = {"id":sensor2Id,"name":"Offline Sensor Mock","description":"Mid Cost Device Measuring Particulate Matter","properties":"{\"shortname\": \"edm80neph\", \"hardware.id\": \"sn17001\", \"operator.domain\": \"grimm-aerosol.com\"}","locations":[{"id":"1ab23546-8555-11ea-a024-33cf9a467dab","name":"","description":"","encodingType":"application/vnd.geo+json","location":"{\"type\":\"Point\",\"coordinates\":[10.896306,48.370278]}","geom":"0101000020E6100000CA6ABA9EE8CA2540D236FE44652F4840","genFoiId":null,"properties":null}]}
