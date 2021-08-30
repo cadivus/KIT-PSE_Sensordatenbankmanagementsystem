@@ -75,7 +75,7 @@ public class SensorServiceImp implements SensorService {
    * {@inheritDoc}
    */
   public Sensor getSensor(String id) {
-    return repository.getById(id);
+    return repository.findById(id).get();
   }
 
   @Transactional
@@ -107,7 +107,7 @@ public class SensorServiceImp implements SensorService {
 
   @Override
   public Datastream getDatastream(String sensor_id) {
-    return datastreamRepository.getById(sensor_id);
+    return datastreamRepository.findById(sensor_id).get();
   }
 
 

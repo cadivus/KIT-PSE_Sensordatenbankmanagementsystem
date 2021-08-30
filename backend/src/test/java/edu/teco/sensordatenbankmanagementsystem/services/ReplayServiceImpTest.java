@@ -9,6 +9,7 @@ import edu.teco.sensordatenbankmanagementsystem.util.ProxyHelper;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ class ReplayServiceImpTest {
   @SpyBean
   ProxyHelper proxyHelper;
   @Test
-    //@Disabled("Until we can figure out how to create a database connection on the github")
+  @Disabled("Until we can figure out how to create a database connection on the github")
   void createNewDataStream() {
 
     Requests requests = new Requests();

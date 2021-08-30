@@ -129,7 +129,6 @@ public class ObservationController {
         String headerValue = "attachment; filename=observations_" + currentDateTime + ".csv";
         response.setHeader(headerKey, headerValue);
 
-        //TODO: Overload these methods instead of using useless start and end points
         Stream<Observation> list = observationService
                 .getObservationByDatastream(sensorService.getDatastreams(List.of(thingId), start, end), start, end);
 
