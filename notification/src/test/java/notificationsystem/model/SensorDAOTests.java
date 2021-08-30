@@ -25,7 +25,7 @@ public class SensorDAOTests {
     }*/
 
     @Test
-    void testGetSensorById() {
+    public void testGetSensorById() {
         String sensorId = "saqn:t:7bd2cd3";
 
         Sensor sensor = sensorDAO.get(sensorId);
@@ -37,7 +37,7 @@ public class SensorDAOTests {
     }
 
     @Test
-    void testGetAll() {
+    public void testGetAll() {
         //TODO: How to test?
 
         List<Sensor> sensors = sensorDAO.getAll();
@@ -47,7 +47,7 @@ public class SensorDAOTests {
     }
 
     @Test
-    void testSetStats() throws JSONException {
+    public void testSetStats() throws JSONException {
         //TODO: How to test?
         String sensorId = "saqn:t:7bd2cd3";
         Sensor sensor = sensorDAO.get(sensorId);

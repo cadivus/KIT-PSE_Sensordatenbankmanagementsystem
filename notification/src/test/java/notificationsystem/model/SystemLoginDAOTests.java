@@ -17,7 +17,7 @@ public class SystemLoginDAOTests {
     SystemLoginDAO systemLoginDAO;
 
     @Test
-    void testGetLogin() {
+    public void testGetLogin() {
         long loginId = 1;
 
         SystemLogin systemLogin = systemLoginDAO.getLogin(loginId).get();

@@ -36,7 +36,7 @@ public class MailBuilderTests {
     }
 
     @Test
-    void testBuildAlert() throws JSONException {
+    public void testBuildAlert() throws JSONException {
         String mailAddress = "test";
         Sensor sensor = getTestSensor();
 
@@ -53,7 +53,7 @@ public class MailBuilderTests {
     }
 
     @Test
-    void testBuildReport() throws JSONException {
+    public void testBuildReport() throws JSONException {
         String mailAddress = "test";
         Sensor sensor = getTestSensor();
         sensor.setActiveRate(0.5);
@@ -74,7 +74,7 @@ public class MailBuilderTests {
     }
 
     @Test
-    void testBuildConfirmationMail() {
+    public void testBuildConfirmationMail() {
         String mailAddress = "test";
 
         ConfirmationMail confirmationMail = mailBuilder.buildConfirmationMail(mailAddress);

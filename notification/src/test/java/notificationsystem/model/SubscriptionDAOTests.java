@@ -86,7 +86,7 @@ public class SubscriptionDAOTests {
     }*/
 
     @Test
-    void testGetByMailAndId() {
+    public void testGetByMailAndId() {
         Subscription subscription = getTestSub();
         subscriptionDAO.save(subscription);
 
@@ -104,7 +104,7 @@ public class SubscriptionDAOTests {
     }
 
     @Test
-    void testGetAll() {
+    public void testGetAll() {
         List<Subscription> subscriptions = setupAll();
 
         List<Subscription> subs = subscriptionDAO.getAll();
@@ -118,7 +118,7 @@ public class SubscriptionDAOTests {
     }
 
     @Test
-    void testGetAllSubscribers() {
+    public void testGetAllSubscribers() {
         List<Subscription> subscriptions = setupAll();
 
         List<String> allSubs = (subscriptionDAO.getAllSubscribers(subscriptions.get(0).getSensorId()));
@@ -131,7 +131,7 @@ public class SubscriptionDAOTests {
     }
 
     @Test
-    void testGetAllSensors() {
+    public void testGetAllSensors() {
         List<Subscription> subscriptions = setupAll();
 
         List<String> allSensors = (subscriptionDAO.getAllSensors(subscriptions.get(0).getSubscriberAddress()));
@@ -144,7 +144,7 @@ public class SubscriptionDAOTests {
     }
 
     @Test
-    void testSave() {
+    public void testSave() {
         Subscription subscription = getTestSub();
 
         subscriptionDAO.save(subscription);
@@ -155,7 +155,7 @@ public class SubscriptionDAOTests {
     }
 
     @Test
-    void testDelete() {
+    public void testDelete() {
         Subscription subscription = getTestSub();
         subscriptionDAO.save(subscription);
 
