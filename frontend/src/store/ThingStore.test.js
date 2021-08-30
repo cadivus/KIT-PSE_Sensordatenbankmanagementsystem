@@ -16,10 +16,20 @@ const initValue = () => {
 }
 
 describe('fetching data', () => {
-  it('get data length', async () => {
-    const value = initValue()
+  it('check data length', async () => {
+    const store = initValue()
 
-    const fetchedThings = await value.things
+    const fetchedThings = await store.things
     expect(fetchedThings.length).toBe(3)
+  })
+})
+
+describe('cache', () => {
+  it('check cache length', async () => {
+    const store = initValue()
+
+    await store.things
+    const cachedThings = store.cachedThings
+    expect(cachedThings.length).toBe(3)
   })
 })
