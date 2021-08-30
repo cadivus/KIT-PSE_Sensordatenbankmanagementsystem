@@ -4,7 +4,10 @@
 name: Java CI with Maven
 
 on:
-  [push, pull_request]
+  push:
+    branches: [ main, Create-.yml-file ]
+  pull_request:
+    branches: [ main, Create-.yml-file ]
 
 jobs:
   javatest:
