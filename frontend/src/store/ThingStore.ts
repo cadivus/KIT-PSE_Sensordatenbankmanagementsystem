@@ -20,8 +20,6 @@ class ThingStore {
    */
   private _things: Map<string, Thing>
 
-  private _lastUpdate = 0
-
   private _datastreamStore: DatastreamStore
 
   constructor(datastreamStore: DatastreamStore) {
@@ -164,11 +162,6 @@ class ThingStore {
     })
 
     return resultPromise
-  }
-
-  get lastUpdate(): number {
-    const {_lastUpdate} = this
-    return _lastUpdate
   }
 }
 
