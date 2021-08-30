@@ -110,6 +110,7 @@ public class ThingServiceImp implements ThingService {
       LocalDateTime frameStart, LocalDateTime frameEnd) {
     return thingsIds.stream()
         .map(thongId -> {
+          if(!thingRepository.existsById(thongId)) return null;
           ObservationStats r = new ObservationStats();
           for (String obsId : obsIds) {
             r.addObservedProperty(obsId, observationService.getObservationsByThingId(thongId,
