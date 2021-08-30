@@ -79,20 +79,19 @@ jobs:
   nodejstest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install
-        working-directory: ./frontend
-
       - if: github.event_name != 'pull_request'
         uses: actions/checkout@v2
       - if: github.event_name == 'pull_request'
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./frontend
 
       - name: Run tests and create badges
         run: npm run test:badges
