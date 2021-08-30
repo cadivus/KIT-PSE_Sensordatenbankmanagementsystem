@@ -1,46 +1,80 @@
 package notificationsystem.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
+import notificationsystem.ApplicationContextProvider;
+import notificationsystem.TestConfig;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
+import notificationsystem.model.SubscriptionRepository;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.jvnet.staxex.util.XMLStreamReaderToXMLStreamWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.http.*;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextLoader;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.testng.annotations.BeforeTest;
 
+import javax.annotation.PostConstruct;
 import javax.mail.Message;
 import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(Controller.class)
-public class ControllerIntegrationTests {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableAutoConfiguration
+@ComponentScan(basePackages = {"notification"})
+public class ControllerIntegrationTest {
+
+    @LocalServerPort
+    Integer port;
+    HttpHeaders headers = new HttpHeaders();
 
     @Autowired
-    private MockMvc mockMvc;
+    TestRestTemplate testRestTemplate;
     @Autowired
     private SubscriptionDAO subscriptionDAO;
     @Autowired
     private Controller controller;
     private GreenMail greenMail;
 
-    @Before
+    @BeforeAll
     public void setup() {
         greenMail = new GreenMail(ServerSetup.ALL);
         greenMail.start();
         controller.setMailData("3025", "localhost");
+        testRestTemplate = new TestRestTemplate();
     }
 
-    @After
+    @AfterAll
     public void cleanup() {
         greenMail.stop();
         controller.setMailData("587", "smtp.gmail.com");
@@ -48,12 +82,19 @@ public class ControllerIntegrationTests {
 
     @Test
     public void testGetConfirmCode() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("http://localhost:8082/getConfirmCode/test");
-        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+        //ObjectMapper mapper = new ObjectMapper();
+        //ObjectNode obj = mapper.createObjectNode();
+
+        //String s = mapper.writeValueAsString(obj);
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+        ResponseEntity<String> response = testRestTemplate.exchange(
+                createURLWithPort("/getConfirmCode/test"), HttpMethod.GET, entity, String.class);
 
         //Result (confirmation code) is semi-random complicating exact testing
-        assertNotNull(mvcResult);
-        assertEquals(8, mvcResult.getResponse().getContentLength());
+        assertNotNull(response);
         assertTrue(greenMail.waitForIncomingEmail(50000, 1));
         Message[] messages = greenMail.getReceivedMessages();
         assertEquals(1, messages.length);
@@ -67,9 +108,8 @@ public class ControllerIntegrationTests {
         long reportInterval = 7;
         boolean toggleAlert = true;
 
-        //TODO: Header?
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("http://localhost:8082/postSubscription?mailAddress=test&sensorID=test-id&reportInterval=7&toggleAlert=true");
-        mockMvc.perform(requestBuilder);
+        //mockMvc.perform(requestBuilder);
 
         Subscription subscription = subscriptionDAO.get(mailAddress, sensorId);
         assertNotNull(subscription);
@@ -90,7 +130,7 @@ public class ControllerIntegrationTests {
 
         //TODO: Header?
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("http://localhost:8082/postUnsubscribe?mailAddress=test&sensorID=test-id");
-        mockMvc.perform(requestBuilder);
+        //mockMvc.perform(requestBuilder);
 
         assertNull(subscriptionDAO.get(mailAddress, sensorId));
     }
@@ -98,8 +138,8 @@ public class ControllerIntegrationTests {
     @Test
     public void testEmptyGetSubscriptions() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("http://localhost:8082/getSubscriptions/");
-        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
-        assertEquals("", mvcResult.getResponse().getContentAsString());
+        //MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+        //assertEquals("", mvcResult.getResponse().getContentAsString());
     }
 
     @Test
@@ -112,11 +152,15 @@ public class ControllerIntegrationTests {
         subscriptionDAO.save(subscription);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("http://localhost:8082/getSubscriptions/test");
-        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+        //MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
         //TODO: Fill in
-        assertEquals("[{\"id\":1,\"subscriberAddress\":\"test\",\"sensorId\":\"test-id\",\"subTime\":\"2021-08-28\",\"reportInterval\":7,\"toggleAlert\":true}]", mvcResult.getResponse().getContentAsString());
+        //assertEquals("[{\"id\":1,\"subscriberAddress\":\"test\",\"sensorId\":\"test-id\",\"subTime\":\"2021-08-28\",\"reportInterval\":7,\"toggleAlert\":true}]", mvcResult.getResponse().getContentAsString());
 
         subscriptionDAO.delete(subscription);
+    }
+
+    private String createURLWithPort(String uri) {
+        return "http://localhost:" + port + uri;
     }
 
 }

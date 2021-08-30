@@ -3,7 +3,6 @@ package notificationsystem.view;
 import notificationsystem.model.ObservationStats;
 import notificationsystem.model.Sensor;
 import org.springframework.stereotype.Component;
-import org.springframework.test.annotation.Commit;
 
 /**
  * The MailBuilder class is responsible to build the different types of e-mails needed, alert, report and confirmation

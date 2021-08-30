@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.LinkedList;
@@ -16,20 +17,18 @@ import java.util.LinkedList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringRunner.class)
+@ComponentScan(basePackages = {"notificationsystem"})
 @SpringBootTest
 public class MailBuilderTests {
 
-    @Autowired
-    MailBuilder mailBuilder;
+    MailBuilder mailBuilder = new MailBuilder();
 
     private Sensor getTestSensor() throws JSONException {
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("key1", "value1");
+        jsonObject1.put("id", "value1");
         JSONObject jsonObject2 = new JSONObject();
         jsonObject1.put("key2", "value2");
         JSONArray jsonArray = new JSONArray();
-        //TODO: Does put overwrite old entries?
         jsonArray.put(jsonObject1);
         jsonArray.put(jsonObject2);
         return new Sensor("test-id", "test-name", "test-desc", "test-prop", jsonArray);
