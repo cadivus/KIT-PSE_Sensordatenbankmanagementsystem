@@ -5,7 +5,7 @@ import Unit from './Unit'
  */
 class SensorValue {
   /**
-   * Thing values stored as an Integer.
+   * Thing values stored as a string.
    */
   readonly value: string
 
