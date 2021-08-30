@@ -2,6 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Objects;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("saqn:s"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:s"));
     }
   }
 
@@ -58,9 +59,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("saqn:t"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:t"));
     }
   }
 
@@ -74,9 +75,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("saqn:s:9682e37"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:s:9682e37"));
     }
   }
   @Test
@@ -89,9 +90,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("Failed to find the requested element"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Failed to find the requested element"));
     }
   }
 
@@ -105,17 +106,17 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().equals("[1]"));
+      assertEquals("[1]", response.getBody());
     }
     response = testRestTemplate.exchange(
         createURLWithPort("/sensor/active/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&days=0"), HttpMethod.GET, entity,
         String.class);
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().equals("[0]"));
+      assertEquals("[0]", response.getBody());
     }
   }
   @Test
@@ -130,9 +131,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().equals("[0]"));
+      assertEquals("[0]", response.getBody());
     }
 
     response = testRestTemplate.exchange(
@@ -142,9 +143,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().equals("[-1]"));
+      assertEquals("[-1]", response.getBody());
     }
   }
 
@@ -160,9 +161,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().startsWith("[1"));
+      assertTrue(Objects.requireNonNull(response.getBody()).startsWith("[1"));
     }
     response = testRestTemplate.exchange(
         createURLWithPort(
@@ -171,9 +172,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().matches("\\[-?\\d+(\\.\\d+)?\\]"));
+      assertTrue(Objects.requireNonNull(response.getBody()).matches("\\[-?\\d+(\\.\\d+)?]"));
     }
   }
   void getActiveRateOfThingsInvalid() {
@@ -187,9 +188,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().equals("[0.0]"));
+      assertEquals("[0.0]", response.getBody());
     }
 
     response = testRestTemplate.exchange(
@@ -199,9 +200,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("could not be parsed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("could not be parsed"));
     }
     response = testRestTemplate.exchange(
         createURLWithPort(
@@ -210,9 +211,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().equals("[-0.0]"));
+      assertEquals("[-0.0]", response.getBody());
     }
   }
 
@@ -228,9 +229,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("saqn:o:PM10"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:o:PM10"));
     }
     response = testRestTemplate.exchange(
         createURLWithPort(
@@ -239,9 +240,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("saqn:o:PM10"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:o:PM10"));
     }
     response = testRestTemplate.exchange(
         createURLWithPort(
@@ -250,9 +251,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("saqn:o:PM10"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:o:PM10"));
     }
   }
   @Disabled("This method does not have correct error handling yet")
@@ -267,9 +268,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("xyz"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("xyz"));
     }
     response = testRestTemplate.exchange(
         createURLWithPort(
@@ -278,9 +279,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("saqn:o:PM10"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:o:PM10"));
     }
   }
 
@@ -296,9 +297,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("saqn:t:grimm-aerosol.com:edm80opc:sn19001"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:t:grimm-aerosol.com:edm80opc:sn19001"));
     }
   }
   @Test
@@ -313,9 +314,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("Failed to find the requested element"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Failed to find the requested element"));
     }
   }
 
@@ -331,9 +332,9 @@ class SensorControllerTest {
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection"));
     } else {
-      assertTrue(response.getBody().contains("\"id\""));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("\"id\""));
     }
   }
   private String createURLWithPort(String uri) {

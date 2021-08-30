@@ -1,7 +1,9 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface DatastreamService {
 
@@ -20,5 +22,6 @@ public interface DatastreamService {
    */
   public Datastream getDatastream(String id);
 
+  public Stream<Datastream> getDatastreams(List<String> thingIds, LocalDateTime start, LocalDateTime end);
 
 }

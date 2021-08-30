@@ -7,15 +7,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public interface ReplayService {
 
   /**
-   * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(Requests)} but with
-   * live data opposed to using already existing data
-   *
-   * @param information This should contain the Sensor Information for the replay
-   * @return The UUID under which the Replay is to be reached
-   */
-  UUID createReplay(Requests information);
-
-  /**
    * This will return a previously created Datastream from its specified UUID.
    * If there is no DataStream under the given UUID, none will be created
    *
