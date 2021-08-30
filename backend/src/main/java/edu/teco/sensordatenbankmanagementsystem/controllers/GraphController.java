@@ -3,6 +3,7 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ImageCantBeGeneratedException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.UnknownInterpolationMethodException;
 import edu.teco.sensordatenbankmanagementsystem.util.GraphHelper;
+import edu.teco.sensordatenbankmanagementsystem.util.interpolation.ClampedCubicSplineInterpolator;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.NewtonInterpolator;
 import java.awt.Dimension;
@@ -63,7 +64,7 @@ public class GraphController {
       @RequestParam(name = "maxInterpolationPoints", defaultValue = "25") int maxInterPoints,
       @RequestParam(name = "imageSize", defaultValue = "400x225") String imageSize,
       @RequestParam(name = "renderGranularity", defaultValue = "1") int granularity,
-      @RequestParam(name = "interpolationMethod", defaultValue = "lagrange") String interpolationMethod
+      @RequestParam(name = "interpolationMethod", defaultValue = "spline") String interpolationMethod
   ){
     String[]iwh = imageSize.split("x");
     Dimension idim = new Dimension(Integer.parseInt(iwh[0]), Integer.parseInt(iwh[1]));
@@ -81,6 +82,7 @@ public class GraphController {
         switch (interpolationMethod){
           case "lagrange" -> LagrangeInterpolator.getInstance();
           case "newton" -> NewtonInterpolator.getInstance();
+          case "spline" -> ClampedCubicSplineInterpolator.getInstance();
           default -> throw new UnknownInterpolationMethodException(interpolationMethod);
         }
     );

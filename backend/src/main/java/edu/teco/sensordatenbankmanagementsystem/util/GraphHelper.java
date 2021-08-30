@@ -164,10 +164,10 @@ public class GraphHelper {
       }
       lastX = x;
     }
-    System.out.printf("%s knots out of %s done goofed!\n", alertus, sample.size());
-
-    System.out.printf("interpolator: %s\n", interpolFunc);
-    System.out.printf("function: %s\n", ((LagrangeInterpolator.LagrangePolynomial)interpolFunc).toMathString());
+//    System.out.printf("%s knots out of %s done goofed!\n", alertus, sample.size());
+//
+//    System.out.printf("interpolator: %s\n", interpolFunc);
+//    System.out.printf("function: %s\n", ((LagrangeInterpolator.LagrangePolynomial)interpolFunc).toMathString());
 //    System.out.println(sample.stream().map(Observation::getResultNumber).collect(Collectors.toList()));
 //    System.out.println(sample.stream().map(o->(double)o.getResultTime().atZone(ZONE_ID).toEpochSecond()).collect(Collectors.toList()));
 //    System.out.printf("lowx: %s, highx: %s\n", intervalStart, intervalEnd);
