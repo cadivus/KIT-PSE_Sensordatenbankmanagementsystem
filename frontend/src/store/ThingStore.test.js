@@ -1,7 +1,7 @@
 import ThingStore from './ThingStore'
 import DatastreamStore from './DatastreamStore'
-import {getJson} from './communication/restClient'
-import {getJson as getJsonMock} from '../test/mock/store/communication/restClientMock'
+import {getJson, getText} from './communication/restClient'
+import {getJson as getJsonMock, getText as getTextMock} from '../test/mock/store/communication/restClientMock'
 import {thingCollectionMatches} from '../test/matchTest/material/ThingMatch'
 import {
   allThings,
@@ -20,6 +20,7 @@ jest.mock('./communication/restClient')
 
 const initValue = () => {
   getJson.mockImplementation(getJsonMock)
+  getText.mockImplementation(getTextMock)
 
   const thingStore = new ThingStore(new DatastreamStore())
 
