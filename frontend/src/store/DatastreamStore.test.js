@@ -6,11 +6,14 @@ import {
   datastreamSensor2Id,
   datastreamSensor3Id,
   sensor1Datastream1,
-  sensor1Datastreams, sensor1Id,
+  sensor1Datastreams,
+  sensor1Id,
   sensor2Datastream1,
-  sensor2Datastreams, sensor2Id,
+  sensor2Datastreams,
+  sensor2Id,
   sensor3Datastream1,
-  sensor3Datastreams, sensor3Id,
+  sensor3Datastreams,
+  sensor3Id,
 } from '../test/mock/store/communication/mockData/backend/getJson'
 import Id from '../material/Id'
 import datastreamMatches, {datastreamCollectionMatches} from '../test/matchTest/material/DatastreamMatch'
@@ -69,5 +72,14 @@ describe('get datastreams for thing', () => {
 
     const datastreams3 = await store.getDatastreams(new Id(sensor3Id))
     datastreamCollectionMatches(datastreams3, sensor3Datastreams)
+  })
+})
+
+
+describe('test datastream implementation', () => {
+  it('get datastreams of first sensor', async () => {
+    const store = initValue()
+
+    const datastream1 = await store.getDatastream(new Id(datastreamSensor1Id))
   })
 })
