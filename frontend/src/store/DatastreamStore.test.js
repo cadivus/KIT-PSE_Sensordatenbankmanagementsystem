@@ -17,6 +17,8 @@ import {
 } from '../test/mock/store/communication/mockData/backend/getJson'
 import Id from '../material/Id'
 import datastreamMatches, {datastreamCollectionMatches} from '../test/matchTest/material/DatastreamMatch'
+import {datastreamRowListValuesMatches} from '../test/matchTest/material/DatastreamRowMatch'
+import {sensor1Datastream1Json} from '../test/mock/store/communication/mockData/backend/files/csvFiles'
 
 jest.mock('./communication/restClient')
 
@@ -81,5 +83,16 @@ describe('test datastream implementation', () => {
     const store = initValue()
 
     const datastream1 = await store.getDatastream(new Id(datastreamSensor1Id))
+    const datastream1Values = await datastream1.getAllValues(25)
+    datastreamRowListValuesMatches(datastream1Values, sensor1Datastream1Json)
+  })
+
+  it('get datastreams of first sensor two times', async () => {
+    const store = initValue()
+
+    await store.getDatastream(new Id(datastreamSensor1Id))
+    const datastream1 = await store.getDatastream(new Id(datastreamSensor1Id))
+    const datastream1Values = await datastream1.getAllValues(25)
+    datastreamRowListValuesMatches(datastream1Values, sensor1Datastream1Json)
   })
 })
