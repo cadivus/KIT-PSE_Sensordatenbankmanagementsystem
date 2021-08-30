@@ -68,34 +68,6 @@ public class ObservationController {
         this.observationService = observationService;
     }
 
-    /**
-     * Maps a post request that creates a new SSE stream
-     *
-     * @return UUID of the created SSE stream
-     */
-  @ResponseBody
-  @PostMapping(value = "/newSSE", consumes = "application/json", produces = "text/plain")
-  public String createNewSse(@RequestBody Requests data) {
-    if (data.getSpeed() == 0) {
-      data.setSpeed(1);
-    }
-    log.info("received Datastream request");
-    return observationService.createNewDataStream(data).toString();
-  }
-
-    /**
-     * Maps a get request that gets the SSE stream with the given UUID
-     *
-     * @param id UUID of SSE stream to get
-     * @return SSE stream for the given UUID
-     */
-  @Produces(MediaType.SERVER_SENT_EVENTS)
-  @GetMapping("/stream/{id}")
-  public SseEmitter streamSseMvc(@PathVariable String id) {
-    log.info("request for outgoing stream for id: " + id);
-    UUID uuid = UUID.fromString(id);
-    return observationService.getDataStream(uuid);
-  }
 
     @GetMapping("/getAllObs")
     public List<ObservedProperty> getAllObservedProperties(){
@@ -137,15 +109,15 @@ public class ObservationController {
     /**
      * This is the entry point for Csv exports
      *
-     * @param id       This is the Sensor ID for which the observations should be exported
+     * @param thingId       This is the Sensor ID for which the observations should be exported
      * @param start    The (Optional) start date
      * @param end      The (Optional) End date
      * @param response The HttpServlet in which the result should be written
      * @throws IOException If there is no way to write to the @param response
      */
     @Transactional
-    @GetMapping(value = {"/Export/{id}", "/Export/{id}/{start}", "/Export/{id}/{start}/{end}"})
-    public void exportToCSV(@PathVariable String id,
+    @GetMapping(value = {"/Export/{thingId}", "/Export/{thingId}/{start}", "/Export/{thingId}/{start}/{end}"})
+    public void exportToCSV(@PathVariable String thingId,
                             @PathVariable(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd:HH-mm-ss") LocalDateTime start,
                             @PathVariable(required = false)@DateTimeFormat(pattern = "yyyy-MM-dd:HH-mm-ss")  LocalDateTime end, HttpServletResponse response)
             throws IOException {
@@ -157,9 +129,8 @@ public class ObservationController {
         String headerValue = "attachment; filename=observations_" + currentDateTime + ".csv";
         response.setHeader(headerKey, headerValue);
 
-        //TODO: Overload these methods instead of using useless start and end points
         Stream<Observation> list = observationService
-                .getObservationByDatastream(sensorService.getDatastreams(List.of(id), start, end), start, end);
+                .getObservationByDatastream(sensorService.getDatastreams(List.of(thingId), start, end), start, end);
 
         WriteCsvToResponse.writeObservation(response.getWriter(), list);
 
