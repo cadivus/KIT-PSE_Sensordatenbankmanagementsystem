@@ -46,23 +46,7 @@ public class ThingServiceImp implements ThingService {
     return thingRepository.findById(id).get();
   }
 
-  public Datastream getDatastream(String id) {
 
-   // return datastreamRepository.getById(id);
-
-    Optional<Thing> thing = thingRepository.findAllByDatastream_Id(id);
-
-    if (thing.isPresent()) {
-      for (Datastream ds :
-          thingRepository.findAllByDatastream_Id(id).get().getDatastream()) {
-        if (ds.getId().equals(id)) {
-          return ds;
-        }
-
-      }
-    }
-    return null;
-  }
 
   /**
    * Gets whether the given things were active in the last X days

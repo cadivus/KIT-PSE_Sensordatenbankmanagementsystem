@@ -19,7 +19,7 @@ import lombok.ToString;
 @Data
 @Entity
 @Table(name = "\"THINGS\"")
-@ToString(exclude = {"locations", "datastream"})
+@ToString(exclude = {"locations", "datastreams"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Thing {
 
@@ -42,6 +42,6 @@ public class Thing {
 
   @JsonIgnore
   @OneToMany(mappedBy = "thing", fetch = FetchType.EAGER)
-  List<Datastream> datastream;
+  List<Datastream> datastreams;
 
 }
