@@ -3,9 +3,18 @@ import DatastreamStore from './DatastreamStore'
 import {getJson} from './communication/restClient'
 import {getJson as getJsonMock} from '../test/mock/store/communication/restClientMock'
 import {thingCollectionMatches} from '../test/matchTest/material/ThingMatch'
-import {allThings, sensor1Id, sensor2Id, sensor3Id} from '../test/mock/store/communication/mockData/backend/getJson'
+import {
+  allThings,
+  sensor1Datastreams,
+  sensor2Datastreams,
+  sensor3Datastreams,
+  sensor1Id,
+  sensor2Id,
+  sensor3Id,
+} from '../test/mock/store/communication/mockData/backend/getJson'
 import Id from '../material/Id'
 import {ThingState} from '../material/Thing'
+import {datastreamCollectionMatches} from '../test/matchTest/material/DatastreamMatch'
 
 jest.mock('./communication/restClient')
 
@@ -75,5 +84,29 @@ describe('thing implementations', () => {
     const unknownThing = await store.getThing(new Id(sensor3Id))
     const unknownThingState = await unknownThing.isActive()
     expect(unknownThingState).toBe(ThingState.Unknown)
+  })
+
+  it('get datastreams sensor 1', async () => {
+    const store = initValue()
+
+    const thing1 = await store.getThing(new Id(sensor1Id))
+    const datastreams1 = await thing1.getDatastreams()
+    datastreamCollectionMatches(datastreams1, sensor1Datastreams)
+  })
+
+  it('get datastreams sensor 2', async () => {
+    const store = initValue()
+
+    const thing2 = await store.getThing(new Id(sensor2Id))
+    const datastreams2 = await thing2.getDatastreams()
+    datastreamCollectionMatches(datastreams2, sensor2Datastreams)
+  })
+
+  it('get datastreams sensor 3', async () => {
+    const store = initValue()
+
+    const thing3 = await store.getThing(new Id(sensor3Id))
+    const datastreams3 = await thing3.getDatastreams()
+    datastreamCollectionMatches(datastreams3, sensor3Datastreams)
   })
 })
