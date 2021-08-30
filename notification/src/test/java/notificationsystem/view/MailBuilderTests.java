@@ -19,6 +19,7 @@ import static org.junit.Assert.assertNotNull;
 
 @ComponentScan(basePackages = {"notificationsystem"})
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class MailBuilderTests {
 
     MailBuilder mailBuilder = new MailBuilder();

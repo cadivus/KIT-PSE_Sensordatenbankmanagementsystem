@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 //@SpringBootTest
 @DataJpaTest
+@RunWith(SpringRunner.class)
 public class SensorTests {
 
     @Test

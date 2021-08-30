@@ -1,49 +1,27 @@
 package notificationsystem.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import notificationsystem.ApplicationContextProvider;
-import notificationsystem.TestConfig;
 import notificationsystem.model.Subscription;
 import notificationsystem.model.SubscriptionDAO;
 import notificationsystem.model.SubscriptionRepository;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.jvnet.staxex.util.XMLStreamReaderToXMLStreamWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.http.*;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextLoader;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.testng.annotations.BeforeTest;
 
-import javax.annotation.PostConstruct;
 import javax.mail.Message;
 import java.time.LocalDate;
 
@@ -52,6 +30,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {"notification"})
+@RunWith(SpringRunner.class)
 public class ControllerIntegrationTest {
 
     @LocalServerPort
@@ -59,7 +38,7 @@ public class ControllerIntegrationTest {
     HttpHeaders headers = new HttpHeaders();
 
     @Autowired
-    TestRestTemplate testRestTemplate;
+    private TestRestTemplate testRestTemplate;
     @Autowired
     private SubscriptionDAO subscriptionDAO;
     @Autowired
@@ -71,7 +50,6 @@ public class ControllerIntegrationTest {
         greenMail = new GreenMail(ServerSetup.ALL);
         greenMail.start();
         controller.setMailData("3025", "localhost");
-        testRestTemplate = new TestRestTemplate();
     }
 
     @AfterAll
@@ -163,4 +141,11 @@ public class ControllerIntegrationTest {
         return "http://localhost:" + port + uri;
     }
 
+    @Configuration
+    public class testconfig {
+        @Bean
+        public TestRestTemplate testRestTemplate(){
+            return new TestRestTemplate();
+        }
+    }
 }
