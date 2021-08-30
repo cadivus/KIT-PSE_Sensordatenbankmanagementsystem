@@ -33,6 +33,8 @@ class ReplayServiceImpTest {
   @Autowired
   ReplayServiceImp replayServiceImp;
   @MockBean
+  DatastreamService datastreamService;
+  @MockBean
   ObservationRepository observationRepository;
   @MockBean
   DatastreamRepository datastreamRepository;
@@ -86,7 +88,7 @@ class ReplayServiceImpTest {
   @Test
   void destroyDataStream() {
     Requests requests = new Requests();
-    requests.setStart(LocalDateTime.now());
+    requests.setStart(LocalDateTime.now().minusMinutes(1));
     requests.setEnd(requests.getStart());
     IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () ->
         replayServiceImp.createNewDataStream(requests));
@@ -110,6 +112,10 @@ class ReplayServiceImpTest {
   @Configuration
   @Import(ReplayServiceImp.class)
   static class TestConfig {
+    @Bean
+    DatastreamService datastreamService() {
+      return mock(DatastreamService.class);
+    }
     @Bean
     ObservationRepository observationRepository() {
       return mock(ObservationRepository.class);

@@ -49,6 +49,8 @@ public class ObservationServiceImpTest {
 
 
   @MockBean
+  DatastreamService datastreamService;
+  @MockBean
   ObservationRepository observationRepository;
   @MockBean
   DatastreamRepository datastreamRepository;
@@ -140,7 +142,10 @@ public class ObservationServiceImpTest {
     ObservedPropertyRepository observedPropertyRepository() {
       return mock(ObservedPropertyRepository.class);
     }
-
+    @Bean
+    DatastreamService datastreamService() {
+      return mock(DatastreamService.class);
+    }
     @Bean
     DatastreamRepository datastreamRepository() {
       return mock(DatastreamRepository.class);

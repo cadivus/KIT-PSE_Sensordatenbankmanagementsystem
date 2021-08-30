@@ -21,8 +21,11 @@ class SensorServiceImpTest {
 
   @MockBean
   SensorRepository sensorRepository;
+  @MockBean
+  DatastreamService datastreamService;
   @Autowired
   SensorServiceImp sensorServiceImp;
+
 
   @Test
   void getSensor() {
@@ -43,6 +46,10 @@ class SensorServiceImpTest {
     @Bean
     SensorRepository sensorRepository() {
       return mock(SensorRepository.class);
+    }
+    @Bean
+    DatastreamService datastreamService() {
+      return mock(DatastreamService.class);
     }
   }
 }

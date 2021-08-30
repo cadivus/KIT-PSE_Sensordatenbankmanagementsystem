@@ -39,6 +39,8 @@ public class ThingServiceImpTest {
   DatastreamRepository datastreamRepository;
   @MockBean
   ObservationService observationService;
+  @MockBean
+  DatastreamService datastreamService;
 
   @Test
   public void getListOfClosestSensors() {
@@ -116,6 +118,10 @@ public class ThingServiceImpTest {
     @Bean
     ThingRepository thingRepository() {
       return mock(ThingRepository.class);
+    }
+    @Bean
+    DatastreamService datastreamService() {
+      return mock(DatastreamService.class);
     }
 
     @Bean
