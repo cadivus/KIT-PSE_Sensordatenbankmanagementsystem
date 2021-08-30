@@ -32,6 +32,9 @@
       "json-summary",
       "text",
       "lcov"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/test/*"
     ]
   },
   "scripts": {
