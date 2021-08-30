@@ -3,7 +3,7 @@ import User from '../material/User'
 import EMail from '../material/EMail'
 import LoginCode from '../material/LoginCode'
 import {getText} from './communication/restClient'
-import {CONFIRMCODE_PATH} from './communication/notificationUrlCreator'
+import {getConfirmCodeUrl} from './communication/notificationUrlCreator'
 
 declare interface UserStore {
   on(event: 'login-change', listener: (name: string) => void): this
@@ -29,7 +29,7 @@ class UserStore extends EventEmitter {
    * @return True on success, false otherwise
    */
   requestStep1 = (email: EMail): void => {
-    const path = `${CONFIRMCODE_PATH}/${email.toString()}`
+    const path = getConfirmCodeUrl(email)
     getText(path).then(loginCode => {
       // eslint-disable-next-line no-console
       console.log(loginCode)
