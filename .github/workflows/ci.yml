@@ -98,6 +98,8 @@ jobs:
         run: npm run test:badges
         working-directory: ./frontend
 
+      - run echo ${{ github.event.pull_request.head.ref }}
+
       - name: Push Jest badges
         run: |
           mkdir -p .github/badges/frontend
