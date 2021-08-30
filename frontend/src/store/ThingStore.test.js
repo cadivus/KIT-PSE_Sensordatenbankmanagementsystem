@@ -19,9 +19,7 @@ import {datastreamCollectionMatches} from '../test/matchTest/material/Datastream
 jest.mock('./communication/restClient')
 
 const initValue = () => {
-  getJson.mockImplementation(param => {
-    return getJsonMock(param)
-  })
+  getJson.mockImplementation(getJsonMock)
 
   const thingStore = new ThingStore(new DatastreamStore())
 
