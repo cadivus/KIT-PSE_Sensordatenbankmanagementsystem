@@ -101,6 +101,8 @@ jobs:
       - name: Push Jest badges
         run: |
           if [[ `git status --porcelain` ]]; then
+            echo "Hallo"
+            echo "$(pwd)"
             mkdir -p .github/badges/frontend
             cp frontend/coverage/badge* .github/badges/frontend/
             git config --global user.name 'Frontend test badges'
