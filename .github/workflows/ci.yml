@@ -98,6 +98,8 @@ jobs:
         run: npm run test:badges
         working-directory: ./frontend
 
+      - run: pwd
+
       - name: Push Jest badges
         run: |
           if [[ `git status --porcelain` ]]; then
