@@ -33,250 +33,250 @@ export const sensor1Datastream1Json = [
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:21:37",
     "PHENOMENONSTART": "2020-01-22T14:21:37",
-    "RESULTNUMBER": 49.3,
-    "RESULTSTRING": 49.3,
+    "RESULTNUMBER": "49.3",
+    "RESULTSTRING": "49.3",
     "RESULTTIME": "2020-01-22T14:21:37",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:21:47",
     "PHENOMENONSTART": "2020-01-22T14:21:47",
-    "RESULTNUMBER": 48.9,
-    "RESULTSTRING": 48.9,
+    "RESULTNUMBER": "48.9",
+    "RESULTSTRING": "48.9",
     "RESULTTIME": "2020-01-22T14:21:47",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:54:10",
     "PHENOMENONSTART": "2020-01-22T14:54:10",
-    "RESULTNUMBER": 51.2,
-    "RESULTSTRING": 51.2,
+    "RESULTNUMBER": "51.2",
+    "RESULTSTRING": "51.2",
     "RESULTTIME": "2020-01-22T14:54:10",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:21:57",
     "PHENOMENONSTART": "2020-01-22T14:21:57",
-    "RESULTNUMBER": 49,
-    "RESULTSTRING": 49,
+    "RESULTNUMBER": "49.0",
+    "RESULTSTRING": "49",
     "RESULTTIME": "2020-01-22T14:21:57",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:22:07",
     "PHENOMENONSTART": "2020-01-22T14:22:07",
-    "RESULTNUMBER": 48.9,
-    "RESULTSTRING": 48.9,
+    "RESULTNUMBER": "48.9",
+    "RESULTSTRING": "48.9",
     "RESULTTIME": "2020-01-22T14:22:07",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:22:17",
     "PHENOMENONSTART": "2020-01-22T14:22:17",
-    "RESULTNUMBER": 49.6,
-    "RESULTSTRING": 49.6,
+    "RESULTNUMBER": "49.6",
+    "RESULTSTRING": "49.6",
     "RESULTTIME": "2020-01-22T14:22:17",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:22:27",
     "PHENOMENONSTART": "2020-01-22T14:22:27",
-    "RESULTNUMBER": 50,
-    "RESULTSTRING": 50,
+    "RESULTNUMBER": "50.0",
+    "RESULTSTRING": "50",
     "RESULTTIME": "2020-01-22T14:22:27",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:22:37",
     "PHENOMENONSTART": "2020-01-22T14:22:37",
-    "RESULTNUMBER": 49.7,
-    "RESULTSTRING": 49.7,
+    "RESULTNUMBER": "49.7",
+    "RESULTSTRING": "49.7",
     "RESULTTIME": "2020-01-22T14:22:37",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:22:47",
     "PHENOMENONSTART": "2020-01-22T14:22:47",
-    "RESULTNUMBER": 49.6,
-    "RESULTSTRING": 49.6,
+    "RESULTNUMBER": "49.6",
+    "RESULTSTRING": "49.6",
     "RESULTTIME": "2020-01-22T14:22:47",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:22:57",
     "PHENOMENONSTART": "2020-01-22T14:22:57",
-    "RESULTNUMBER": 49.9,
-    "RESULTSTRING": 49.9,
+    "RESULTNUMBER": "49.9",
+    "RESULTSTRING": "49.9",
     "RESULTTIME": "2020-01-22T14:22:57",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:23:07",
     "PHENOMENONSTART": "2020-01-22T14:23:07",
-    "RESULTNUMBER": 50.1,
-    "RESULTSTRING": 50.1,
+    "RESULTNUMBER": "50.1",
+    "RESULTSTRING": "50.1",
     "RESULTTIME": "2020-01-22T14:23:07",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:23:17",
     "PHENOMENONSTART": "2020-01-22T14:23:17",
-    "RESULTNUMBER": 49.9,
-    "RESULTSTRING": 49.9,
+    "RESULTNUMBER": "49.9",
+    "RESULTSTRING": "49.9",
     "RESULTTIME": "2020-01-22T14:23:17",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:23:27",
     "PHENOMENONSTART": "2020-01-22T14:23:27",
-    "RESULTNUMBER": 50.2,
-    "RESULTSTRING": 50.2,
+    "RESULTNUMBER": "50.2",
+    "RESULTSTRING": "50.2",
     "RESULTTIME": "2020-01-22T14:23:27",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:23:37",
     "PHENOMENONSTART": "2020-01-22T14:23:37",
-    "RESULTNUMBER": 50.8,
-    "RESULTSTRING": 50.8,
+    "RESULTNUMBER": "50.8",
+    "RESULTSTRING": "50.8",
     "RESULTTIME": "2020-01-22T14:23:37",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:23:48",
     "PHENOMENONSTART": "2020-01-22T14:23:48",
-    "RESULTNUMBER": 50.8,
-    "RESULTSTRING": 50.8,
+    "RESULTNUMBER": "50.8",
+    "RESULTSTRING": "50.8",
     "RESULTTIME": "2020-01-22T14:23:48",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:23:58",
     "PHENOMENONSTART": "2020-01-22T14:23:58",
-    "RESULTNUMBER": 51,
-    "RESULTSTRING": 51,
+    "RESULTNUMBER": "51.0",
+    "RESULTSTRING": "51",
     "RESULTTIME": "2020-01-22T14:23:58",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:24:08",
     "PHENOMENONSTART": "2020-01-22T14:24:08",
-    "RESULTNUMBER": 49.9,
-    "RESULTSTRING": 49.9,
+    "RESULTNUMBER": "49.9",
+    "RESULTSTRING": "49.9",
     "RESULTTIME": "2020-01-22T14:24:08",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:24:18",
     "PHENOMENONSTART": "2020-01-22T14:24:18",
-    "RESULTNUMBER": 50.2,
-    "RESULTSTRING": 50.2,
+    "RESULTNUMBER": "50.2",
+    "RESULTSTRING": "50.2",
     "RESULTTIME": "2020-01-22T14:24:18",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:24:28",
     "PHENOMENONSTART": "2020-01-22T14:24:28",
-    "RESULTNUMBER": 49.8,
-    "RESULTSTRING": 49.8,
+    "RESULTNUMBER": "49.8",
+    "RESULTSTRING": "49.8",
     "RESULTTIME": "2020-01-22T14:24:28",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:24:38",
     "PHENOMENONSTART": "2020-01-22T14:24:38",
-    "RESULTNUMBER": 50.1,
-    "RESULTSTRING": 50.1,
+    "RESULTNUMBER": "50.1",
+    "RESULTSTRING": "50.1",
     "RESULTTIME": "2020-01-22T14:24:38",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:24:48",
     "PHENOMENONSTART": "2020-01-22T14:24:48",
-    "RESULTNUMBER": 49.5,
-    "RESULTSTRING": 49.5,
+    "RESULTNUMBER": "49.5",
+    "RESULTSTRING": "49.5",
     "RESULTTIME": "2020-01-22T14:24:48",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:24:58",
     "PHENOMENONSTART": "2020-01-22T14:24:58",
-    "RESULTNUMBER": 49.9,
-    "RESULTSTRING": 49.9,
+    "RESULTNUMBER": "49.9",
+    "RESULTSTRING": "49.9",
     "RESULTTIME": "2020-01-22T14:24:58",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:25:08",
     "PHENOMENONSTART": "2020-01-22T14:25:08",
-    "RESULTNUMBER": 50.3,
-    "RESULTSTRING": 50.3,
+    "RESULTNUMBER": "50.3",
+    "RESULTSTRING": "50.3",
     "RESULTTIME": "2020-01-22T14:25:08",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:25:18",
     "PHENOMENONSTART": "2020-01-22T14:25:18",
-    "RESULTNUMBER": 51,
-    "RESULTSTRING": 51,
+    "RESULTNUMBER": "51.0",
+    "RESULTSTRING": "51",
     "RESULTTIME": "2020-01-22T14:25:18",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:d98d0a2",
     "FEATUREID": "ac1f4032-1c37-11ea-b2b8-f75e175e6959",
     "PHENOMENONEND": "2020-01-22T14:25:28",
     "PHENOMENONSTART": "2020-01-22T14:25:28",
-    "RESULTNUMBER": 50.8,
-    "RESULTSTRING": 50.8,
+    "RESULTNUMBER": "50.8",
+    "RESULTSTRING": "50.8",
     "RESULTTIME": "2020-01-22T14:25:28",
-    "TYPE": 0
+    "TYPE": "0"
   }
 ]
 
@@ -316,7 +316,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-09T02:29:55",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -326,7 +326,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-09T22:39:57",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -336,7 +336,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-09T23:04:57",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -346,7 +346,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-10T03:19:56",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -356,7 +356,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-10T23:04:59",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -366,7 +366,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-11T23:04:57",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -376,7 +376,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-12T05:24:57",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -386,7 +386,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-12T22:39:58",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -396,7 +396,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-12T23:04:58",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -406,7 +406,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-13T23:04:55",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -416,7 +416,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-14T03:04:55",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -426,7 +426,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-14T23:04:54",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -436,7 +436,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-15T03:14:54",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -446,7 +446,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-15T22:39:56",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -456,7 +456,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-15T23:04:59",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -466,7 +466,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-16T23:04:58",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -476,7 +476,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-17T05:29:57",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -486,7 +486,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-17T23:04:55",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -496,7 +496,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-18T07:39:55",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -506,7 +506,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-18T23:04:57",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -516,7 +516,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-19T23:04:58",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -526,7 +526,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-20T23:04:56",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -536,7 +536,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-21T22:39:55",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -546,7 +546,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-21T23:04:59",
-    "TYPE": 2
+    "TYPE": "2"
   },
   {
     "DATASTREAMID": "saqn:ds:ffc6f61",
@@ -556,7 +556,7 @@ export const sensor2Datastream1Json = [
     "RESULTNUMBER": "",
     "RESULTSTRING": "",
     "RESULTTIME": "2020-01-22T23:04:58",
-    "TYPE": 2
+    "TYPE": "2"
   }
 ]
 
@@ -593,249 +593,249 @@ export const sensor3Datastream1Json = [
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-14T09:00",
     "PHENOMENONSTART": "2019-01-14T08:00",
-    "RESULTNUMBER": 7,
-    "RESULTSTRING": 7,
+    "RESULTNUMBER": "7.0",
+    "RESULTSTRING": "7.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-14T12:00",
     "PHENOMENONSTART": "2019-01-14T11:00",
-    "RESULTNUMBER": 8,
-    "RESULTSTRING": 8,
+    "RESULTNUMBER": "8.0",
+    "RESULTSTRING": "8.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-14T16:00",
     "PHENOMENONSTART": "2019-01-14T15:00",
-    "RESULTNUMBER": 5,
-    "RESULTSTRING": 5,
+    "RESULTNUMBER": "5.0",
+    "RESULTSTRING": "5.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-14T17:00",
     "PHENOMENONSTART": "2019-01-14T16:00",
-    "RESULTNUMBER": 9,
-    "RESULTSTRING": 9,
+    "RESULTNUMBER": "9.0",
+    "RESULTSTRING": "9.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-15T20:00",
     "PHENOMENONSTART": "2019-01-15T19:00",
-    "RESULTNUMBER": 12,
-    "RESULTSTRING": 12,
+    "RESULTNUMBER": "12.0",
+    "RESULTSTRING": "12.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T02:00",
     "PHENOMENONSTART": "2019-01-16T01:00",
-    "RESULTNUMBER": 19,
-    "RESULTSTRING": 19,
+    "RESULTNUMBER": "19.0",
+    "RESULTSTRING": "19.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T03:00",
     "PHENOMENONSTART": "2019-01-16T02:00",
-    "RESULTNUMBER": 18,
-    "RESULTSTRING": 18,
+    "RESULTNUMBER": "18.0",
+    "RESULTSTRING": "18.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T16:00",
     "PHENOMENONSTART": "2019-01-16T15:00",
-    "RESULTNUMBER": 10,
-    "RESULTSTRING": 10,
+    "RESULTNUMBER": "10.0",
+    "RESULTSTRING": "10.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T17:00",
     "PHENOMENONSTART": "2019-01-16T16:00",
-    "RESULTNUMBER": 10,
-    "RESULTSTRING": 10,
+    "RESULTNUMBER": "10.0",
+    "RESULTSTRING": "10.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T19:00",
     "PHENOMENONSTART": "2019-01-16T18:00",
-    "RESULTNUMBER": 15,
-    "RESULTSTRING": 15,
+    "RESULTNUMBER": "15.0",
+    "RESULTSTRING": "15.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-17T02:00",
     "PHENOMENONSTART": "2019-01-17T01:00",
-    "RESULTNUMBER": 8,
-    "RESULTSTRING": 8,
+    "RESULTNUMBER": "8.0",
+    "RESULTSTRING": "8.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-17T03:00",
     "PHENOMENONSTART": "2019-01-17T02:00",
-    "RESULTNUMBER": 12,
-    "RESULTSTRING": 12,
+    "RESULTNUMBER": "12.0",
+    "RESULTSTRING": "12.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-17T21:00",
     "PHENOMENONSTART": "2019-01-17T20:00",
-    "RESULTNUMBER": 6,
-    "RESULTSTRING": 6,
+    "RESULTNUMBER": "6.0",
+    "RESULTSTRING": "6.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-18T03:00",
     "PHENOMENONSTART": "2019-01-18T02:00",
-    "RESULTNUMBER": 4,
-    "RESULTSTRING": 4,
+    "RESULTNUMBER": "4.0",
+    "RESULTSTRING": "4.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-20T01:00",
     "PHENOMENONSTART": "2019-01-20T00:00",
-    "RESULTNUMBER": 66,
-    "RESULTSTRING": 66,
+    "RESULTNUMBER": "66.0",
+    "RESULTSTRING": "66.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-21T02:00",
     "PHENOMENONSTART": "2019-01-21T01:00",
-    "RESULTNUMBER": 49,
-    "RESULTSTRING": 49,
+    "RESULTNUMBER": "49.0",
+    "RESULTSTRING": "49.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-21T04:00",
     "PHENOMENONSTART": "2019-01-21T03:00",
-    "RESULTNUMBER": 51,
-    "RESULTSTRING": 51,
+    "RESULTNUMBER": "51.0",
+    "RESULTSTRING": "51.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-21T05:00",
     "PHENOMENONSTART": "2019-01-21T04:00",
-    "RESULTNUMBER": 54,
-    "RESULTSTRING": 54,
+    "RESULTNUMBER": "54.0",
+    "RESULTSTRING": "54.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-15T03:00",
     "PHENOMENONSTART": "2019-01-15T02:00",
-    "RESULTNUMBER": 10,
-    "RESULTSTRING": 10,
+    "RESULTNUMBER": "10.0",
+    "RESULTSTRING": "10.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T10:00",
     "PHENOMENONSTART": "2019-01-16T09:00",
-    "RESULTNUMBER": 11,
-    "RESULTSTRING": 11,
+    "RESULTNUMBER": "11.0",
+    "RESULTSTRING": "11.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T14:00",
     "PHENOMENONSTART": "2019-01-16T13:00",
-    "RESULTNUMBER": 12,
-    "RESULTSTRING": 12,
+    "RESULTNUMBER": "12.0",
+    "RESULTSTRING": "12.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T18:00",
     "PHENOMENONSTART": "2019-01-16T17:00",
-    "RESULTNUMBER": 12,
-    "RESULTSTRING": 12,
+    "RESULTNUMBER": "12.0",
+    "RESULTSTRING": "12.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T20:00",
     "PHENOMENONSTART": "2019-01-16T19:00",
-    "RESULTNUMBER": 14,
-    "RESULTSTRING": 14,
+    "RESULTNUMBER": "14.0",
+    "RESULTSTRING": "14.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-16T23:00",
     "PHENOMENONSTART": "2019-01-16T22:00",
-    "RESULTNUMBER": 8,
-    "RESULTSTRING": 8,
+    "RESULTNUMBER": "8.0",
+    "RESULTSTRING": "8.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   },
   {
     "DATASTREAMID": "saqn:ds:b88cfcb",
     "FEATUREID": "f832296e-a3e5-11e9-b2c0-f3f0362af6f7",
     "PHENOMENONEND": "2019-01-17T08:00",
     "PHENOMENONSTART": "2019-01-17T07:00",
-    "RESULTNUMBER": 19,
-    "RESULTSTRING": 19,
+    "RESULTNUMBER": "19.0",
+    "RESULTSTRING": "19.0",
     "RESULTTIME": "",
-    "TYPE": 0
+    "TYPE": "0"
   }
 ]
