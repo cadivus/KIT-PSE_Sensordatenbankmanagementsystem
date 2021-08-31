@@ -67,20 +67,6 @@ public class Controller {
         this.sensorDAO = new SensorDAO(backendUrl, restTemplate);
     }
 
-    /**
-     * Only for testing purposes.
-     * @param port smtp server port.
-     * @param host smtp server host.
-
-    public void setMailData(String port, String host) {
-        this.port = port;
-        this. host = host;
-    }*/
-
-    /**
-     * Only for testing purposes.
-     * @param sensorDAO new sensorDAO.
-     */
     public void setSensorDAO(SensorDAO sensorDAO) {
         this.sensorDAO = sensorDAO;
     }
