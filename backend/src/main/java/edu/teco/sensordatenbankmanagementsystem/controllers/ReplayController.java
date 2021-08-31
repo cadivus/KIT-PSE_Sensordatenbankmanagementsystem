@@ -57,7 +57,7 @@ public class ReplayController {
       data.setSpeed(1);
     }
     log.info("received Datastream request");
-    return replayService.createNewDataStream(data).toString();
+    return replayService.createNewReplay(data).toString();
   }
 
   /**
@@ -71,7 +71,7 @@ public class ReplayController {
   public SseEmitter streamSseMvc(@PathVariable String id) {
     log.info("request for outgoing stream for id: " + id);
     UUID uuid = UUID.fromString(id);
-    return replayService.getDataStream(uuid);
+    return replayService.getReplay(uuid);
   }
 
 }
