@@ -2,6 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -40,9 +41,9 @@ class ObservationControllerTest {
         createURLWithPort("/observation/getAllObs"), HttpMethod.GET, entity,
         String.class);
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("saqn:op:"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:op:"));
     }
   }
 
@@ -55,25 +56,25 @@ class ObservationControllerTest {
         createURLWithPort("/observation/observations/saqn:t:43ae704/?frameStart=2019-01-01&frameEnd=2021-01-01"), HttpMethod.GET, entity,
         String.class);
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("30e29778-0cf8-11ea-83d0-9311961f"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("30e29778-0cf8-11ea-83d0-9311961f"));
     }
     response = testRestTemplate.exchange(
         createURLWithPort("/observation/observations/saqn:t:43ae704/?limit=10000&sort=date-asc"), HttpMethod.GET, entity,
         String.class);
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("30e29778-0cf8-11ea-83d0-9311961f"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("30e29778-0cf8-11ea-83d0-9311961f"));
     }
     response = testRestTemplate.exchange(
         createURLWithPort("/observation/observations/saqn:t:43ae704/?frameStart=2019-01-01&frameEnd=2021-01-01&obsIds=xyz"), HttpMethod.GET, entity,
         String.class);
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().contains("[]"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("[]"));
     }
   }
   @Test
@@ -116,9 +117,9 @@ class ObservationControllerTest {
         HttpMethod.GET, entity,
         String.class);
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().startsWith(
+      assertTrue(Objects.requireNonNull(response.getBody()).startsWith(
           "DATASTREAMID,FEATUREID,PHENOMENONEND,PHENOMENONSTART,RESULTNUMBER,RESULTSTRING,RESULTTIME,TYPE"));
     }
     response = testRestTemplate.exchange(
@@ -127,11 +128,16 @@ class ObservationControllerTest {
         HttpMethod.GET, entity,
         String.class);
     if (response.getStatusCode().is5xxServerError()) {
-      assertTrue(response.getBody().contains("Connection to the database failed"));
+      assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
-      assertTrue(response.getBody().startsWith(
+      assertTrue(Objects.requireNonNull(response.getBody()).startsWith(
           "DATASTREAMID,FEATUREID,PHENOMENONEND,PHENOMENONSTART,RESULTNUMBER,RESULTSTRING,RESULTTIME,TYPE"));
     }
+  }
+
+  @Test
+  void exportToCSVInvalid() {
+
   }
   private String createURLWithPort(String uri) {
     return "http://localhost:" + port + uri;

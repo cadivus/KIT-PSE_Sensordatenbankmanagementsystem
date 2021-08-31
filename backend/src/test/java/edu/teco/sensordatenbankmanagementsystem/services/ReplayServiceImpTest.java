@@ -13,10 +13,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -24,7 +20,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @SpringBootTest
 @ActiveProfiles("test")
@@ -47,7 +42,7 @@ class ReplayServiceImpTest {
     requests.setStart(LocalDateTime.now());
     requests.setEnd(requests.getStart());
     IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () ->
-        replayServiceImp.createNewDataStream(requests));
+        replayServiceImp.createNewReplay(requests));
 
     if(!e.getMessage().contains("Connection to the database failed"))
       assertEquals("Neither information, nor start, nor end, nor sensors can be empty",
@@ -55,11 +50,11 @@ class ReplayServiceImpTest {
     requests.setSensors(List.of("test"));
     if(!e.getMessage().contains("Connection to the database failed"))
       e = Assertions.assertThrows(IllegalArgumentException.class, () ->
-          replayServiceImp.createNewDataStream(requests));
+          replayServiceImp.createNewReplay(requests));
     assertEquals("Start and end can not be the same time", e.getMessage());
     Mockito.doCallRealMethod().when(proxyHelper).sseHelper(null, requests, new SseEmitter());
     requests.setEnd(LocalDateTime.now());
-    replayServiceImp.createNewDataStream(requests);
+    replayServiceImp.createNewReplay(requests);
   }
 
   @Test
@@ -68,7 +63,7 @@ class ReplayServiceImpTest {
     requests.setStart(LocalDateTime.now());
     requests.setEnd(requests.getStart());
     IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () ->
-        replayServiceImp.createNewDataStream(requests));
+        replayServiceImp.createNewReplay(requests));
 
     if(!e.getMessage().contains("Connection to the database failed"))
       assertEquals("Neither information, nor start, nor end, nor sensors can be empty",
@@ -76,13 +71,13 @@ class ReplayServiceImpTest {
     requests.setSensors(List.of("test"));
     if(!e.getMessage().contains("Connection to the database failed"))
       e = Assertions.assertThrows(IllegalArgumentException.class, () ->
-          replayServiceImp.createNewDataStream(requests));
+          replayServiceImp.createNewReplay(requests));
     assertEquals("Start and end can not be the same time", e.getMessage());
     Mockito.doCallRealMethod().when(proxyHelper).sseHelper(null, requests, new SseEmitter());
     requests.setEnd(LocalDateTime.now());
-    var id = replayServiceImp.createNewDataStream(requests);
+    var id = replayServiceImp.createNewReplay(requests);
 
-    assertNotNull(replayServiceImp.getDataStream(id));
+    assertNotNull(replayServiceImp.getReplay(id));
   }
 
   @Test
@@ -91,7 +86,7 @@ class ReplayServiceImpTest {
     requests.setStart(LocalDateTime.now().minusMinutes(1));
     requests.setEnd(requests.getStart());
     IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () ->
-        replayServiceImp.createNewDataStream(requests));
+        replayServiceImp.createNewReplay(requests));
 
     if(!e.getMessage().contains("Connection to the database failed"))
       assertEquals("Neither information, nor start, nor end, nor sensors can be empty",
@@ -99,14 +94,14 @@ class ReplayServiceImpTest {
     requests.setSensors(List.of("test"));
     if(!e.getMessage().contains("Connection to the database failed"))
       e = Assertions.assertThrows(IllegalArgumentException.class, () ->
-          replayServiceImp.createNewDataStream(requests));
+          replayServiceImp.createNewReplay(requests));
     assertEquals("Start and end can not be the same time", e.getMessage());
     Mockito.doCallRealMethod().when(proxyHelper).sseHelper(null, requests, new SseEmitter());
     requests.setEnd(LocalDateTime.now());
-    var id = replayServiceImp.createNewDataStream(requests);
+    var id = replayServiceImp.createNewReplay(requests);
 
-    replayServiceImp.destroyDataStream(id);
-    assertNull(replayServiceImp.getDataStream(id));
+    replayServiceImp.destroyReplay(id);
+    assertNull(replayServiceImp.getReplay(id));
 
   }
   @Configuration
