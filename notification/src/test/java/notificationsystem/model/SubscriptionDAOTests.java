@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -123,25 +124,20 @@ public class SubscriptionDAOTests {
     @Test
     public void testSave() {
         Subscription subscription = getTestSub();
-        //TODO: How to test
         Mockito.when(subscriptionRepository.save(subscription)).thenReturn(subscription);
 
         subscriptionDAO.save(subscription);
 
-        assertEquals(subscription, subscriptionDAO.get(subscription.getSubscriberAddress(), subscription.getSensorId()));
-
-        subscriptionDAO.delete(subscription);
+        verify(subscriptionRepository).save(subscription);
     }
 
-    //TODO: How to test
     @Test
     public void testDelete() {
         Subscription subscription = getTestSub();
-        subscriptionDAO.save(subscription);
 
         subscriptionDAO.delete(subscription);
 
-        assertNull(subscriptionDAO.get(subscription.getSubscriberAddress(), subscription.getSensorId()));
+        verify(subscriptionRepository).delete(subscription);
     }
 
     @Configuration
