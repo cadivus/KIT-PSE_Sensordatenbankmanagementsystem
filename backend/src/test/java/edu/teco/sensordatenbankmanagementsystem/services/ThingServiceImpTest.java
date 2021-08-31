@@ -1,10 +1,13 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
+import edu.teco.sensordatenbankmanagementsystem.models.Location;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
@@ -44,7 +47,14 @@ public class ThingServiceImpTest {
 
   @Test
   public void getListOfClosestSensors() {
-    assert new ArrayList<>().equals(thingServiceImp.getListOfClosestSensors(0, 0, 0));
+    List<Thing> lt = new ArrayList<Thing>();
+    lt.add(new Thing());
+    Thing t = new Thing();
+    Location l = new Location();
+    l.setLocation("{\"type\":\"Point\",\"coordinates\":[10.900552582855438,48.33333001444559,6.6]}");
+    t.setLocations(List.of(l));
+    Mockito.when(thingRepository.getAllBy()).thenReturn(List.of(t));
+    assertArrayEquals(lt.toArray(),(thingServiceImp.getListOfClosestSensors(0, 0, 0)).toArray());
   }
 
 
