@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Sensor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">KIT-PSE_Sensordatenbankmanagementsystem</a> &gt; <a href="index.source.html" class="el_package">notificationsystem.model</a> &gt; <span class="el_source">Sensor.java</span></div><h1>Sensor.java</h1><pre class="source lang-java linenums">package notificationsystem.model;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.LinkedList;
+
+/**
+ * The Sensor class represents the air-quality sensors stationed in Augsburg (Called 'Things' in the Sensorthings database).
+ * Each sensor collects data, has a failure rate, a location, and is part of one, none or multiple categories.
+ * The Sensor class also provides access to these data points.
+ * In the E-Mail-Notification System, this class is mainly used organize and transport data collected by and about
+ * sensors. This information is then needed for report- and alert-mails.
+ * The Sensor class does not hold information about the subscribers to a sensor, as the subscriptions are handled in
+ * a distinct Subscription class.
+ */
+public class Sensor {
+
+    private final static int COORDINATES_IN_LOCATION = 0;
+    private final static String COORDINATES_KEY = &quot;id&quot;;
+
+    String id;
+    String name;
+    String description;
+    String properties;
+    String location;
+    double activeRate;
+    LinkedList&lt;ObservationStats&gt; stats;
+
+    /**
+     * Constructs a new instance of the sensor class.
+     * @param id id of the sensor.
+     * @param name name of the sensor.
+     * @param description a short description of the sensor.
+     * @param properties a short description of some properties of the sensor.
+     * @param location a JSONArray containing information about the location of the sensor.
+     * @throws JSONException throws this exception if the conversion from JSONArray to JSONObject of the parameter
+     * location fails.
+     */
+<span class="fc" id="L40">    public Sensor(String id, String name, String description, String properties, JSONArray location) throws JSONException {</span>
+<span class="fc" id="L41">        this.id = id;</span>
+<span class="fc" id="L42">        this.name = name;</span>
+<span class="fc" id="L43">        this.description = description;</span>
+<span class="fc" id="L44">        this.properties = properties;</span>
+<span class="fc" id="L45">        this.location = location.getJSONObject(COORDINATES_IN_LOCATION).getString(COORDINATES_KEY);</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Gets unique id of the sensor.
+     * @return id of the sensor.
+     */
+    public String getId() {
+<span class="fc" id="L53">        return id;</span>
+    }
+
+    /**
+     * Gets the name of the sensor.
+     * @return name of the sensor.
+     */
+    public String getName() {
+<span class="fc" id="L61">        return name;</span>
+    }
+
+    public String getDescription() {
+<span class="fc" id="L65">        return description;</span>
+    }
+
+    public String getProperties() {
+<span class="nc" id="L69">        return properties;</span>
+    }
+
+    /**
+     * Gets the coordinates of the sensor.
+     * @return coordinates of the sensor.
+     */
+    public String getLocation() {
+<span class="fc" id="L77">        return location;</span>
+    }
+
+    /**
+     * Gets the average times a sensor is active a day.
+     * @return active rate of the sensor.
+     */
+    public double getActiveRate() {
+<span class="fc" id="L85">        return activeRate;</span>
+    }
+
+    /**
+     * Gets a list of stats about the data observed by the sensor.
+     * @return List of stats about the observed data.
+     */
+    public LinkedList&lt;ObservationStats&gt; getStats() {
+<span class="fc" id="L93">        return stats;</span>
+    }
+
+    /**
+     * Sets the id of a sensor.
+     * @param id new id of the sensor.
+     */
+    public void setId(String id) {
+<span class="nc" id="L101">        this.id = id;</span>
+<span class="nc" id="L102">    }</span>
+
+    /**
+     * Sets the active rate of a sensor.
+     * @param activeRate new active rate of the sensor.
+     */
+    public void setActiveRate(double activeRate) {
+<span class="fc" id="L109">        this.activeRate = activeRate;</span>
+<span class="fc" id="L110">    }</span>
+
+    /**
+     * Sets a new list of stats for the sensor.
+     * @param stats new list of stats.
+     */
+    public void setStats(LinkedList&lt;ObservationStats&gt; stats) {
+<span class="fc" id="L117">        this.stats = stats;</span>
+<span class="fc" id="L118">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
