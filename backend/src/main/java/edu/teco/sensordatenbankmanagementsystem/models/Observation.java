@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.time.LocalDateTime;
 
+import com.opencsv.bean.CsvIgnore;
 import lombok.Data;
 import org.glassfish.jersey.internal.guava.Maps;
 import org.springframework.data.domain.Sort;
@@ -35,9 +36,11 @@ public class Observation {
     @JsonIgnore
     @Transient
     String propertyType;
+    @CsvIgnore
     @JsonIgnore
     @Transient
     public double value;
+    @CsvIgnore
     @JsonIgnore
     @Transient
     public LocalDate date;
@@ -45,6 +48,7 @@ public class Observation {
     @Column(name = "\"DATASTREAM_ID\"")
     private String datastreamId;
 
+    @CsvIgnore
     @Column(name = "\"ID\"")
     @Id
     String id;
@@ -70,27 +74,34 @@ public class Observation {
     @Column(name = "\"RESULT_STRING\"")
     String resultString;
 
+    @CsvIgnore
     @Column(name = "\"RESULT_JSON\"")
     String resultJson;
 
+    @CsvIgnore
     @Column(name = "\"RESULT_BOOLEAN\"")
     Boolean resultBool;
 
+    @CsvIgnore
     @Column(name = "\"RESULT_QUALITY\"")
     String resultQuality;
 
+    @CsvIgnore
     @Column(name = "\"VALID_TIME_START\"")
     LocalDateTime validTimeStart;
 
+    @CsvIgnore
     @Column(name = "\"VALID_TIME_END\"")
     LocalDateTime validTimeEnd;
 
+    @CsvIgnore
     @Column(name = "\"PARAMETERS\"")
     String params;
 
     @Column(name = "\"FEATURE_ID\"")
     String featureID;
 
+    @CsvIgnore
     @Column(name = "\"MULTI_DATASTREAM_ID\"")
     String mDataStreamID;
 

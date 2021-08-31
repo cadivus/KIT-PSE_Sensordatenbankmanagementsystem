@@ -93,11 +93,11 @@ public class ThingServiceImp implements ThingService {
       List<String> obsIds,
       LocalDateTime frameStart, LocalDateTime frameEnd) {
     return thingsIds.stream()
-        .map(thongId -> {
-          if(!thingRepository.existsById(thongId)) return null;
+        .map(thingId -> {
+          if(!thingRepository.existsById(thingId)) return null;
           ObservationStats r = new ObservationStats();
           for (String obsId : obsIds) {
-            r.addObservedProperty(obsId, observationService.getObservationsByThingId(thongId,
+            r.addObservedProperty(obsId, observationService.getObservationsByThingId(thingId,
                 Integer.MAX_VALUE, Sort.unsorted(), List.of(obsId), frameStart, frameEnd).stream()
                 .map(Observation::getResultNumber).collect(Collectors.toList()));
           }
