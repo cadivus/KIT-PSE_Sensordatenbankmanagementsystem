@@ -41,9 +41,9 @@ public class ClampedCubicSplineInterpolator implements Interpolator<Double, Doub
                         mapToObj(i -> divDif.get(i) - divDif.get(i - 1)).
                         collect(Collectors.toList())
         );
-        d.add(endVelocity - divDif.get(divDif.size()-1));
+        d.add(endVelocity - divDif.get(divDif.size() - 1));
         List<Double> h = IntStream.range(0, N - 1).
-                mapToObj(i -> x.get(i+1) - x.get(i)).
+                mapToObj(i -> x.get(i + 1) - x.get(i)).
                 collect(Collectors.toList());
         List<Double> diag = new ArrayList<>(N);
         diag.add(2 * h.get(0));
@@ -52,7 +52,7 @@ public class ClampedCubicSplineInterpolator implements Interpolator<Double, Doub
                         mapToObj(i -> divDif.get(i) - divDif.get(i - 1)).
                         collect(Collectors.toList())
         );
-        diag.add(2 * h.get(h.size()-1));
+        diag.add(2 * h.get(h.size() - 1));
         List<Double> sigmaGrindset = Meth.solveTridiagonal(
                 new Meth.TridiagonalMatrix(
                         h,
@@ -62,10 +62,10 @@ public class ClampedCubicSplineInterpolator implements Interpolator<Double, Doub
                 d
         );
         List<Double> alphaGrindset = IntStream.range(0, N - 1).
-                mapToObj(i -> (sigmaGrindset.get(i) + 2 * sigmaGrindset.get(i+1)) / h.get(i)).
+                mapToObj(i -> (sigmaGrindset.get(i) + 2 * sigmaGrindset.get(i + 1)) / h.get(i)).
                 collect(Collectors.toList());
         List<Double> betaGrindset = IntStream.range(0, N - 1).
-                mapToObj(i -> -(2 * sigmaGrindset.get(i) + sigmaGrindset.get(i+1)) / h.get(i)).
+                mapToObj(i -> -(2 * sigmaGrindset.get(i) + sigmaGrindset.get(i + 1)) / h.get(i)).
                 collect(Collectors.toList());
         return new ConstructedCubicSpline(
                 N,
@@ -98,9 +98,21 @@ public class ClampedCubicSplineInterpolator implements Interpolator<Double, Doub
 
         @Override
         public Double apply(Double x) {
-            int i = Meth.bisect(this.x, x);
+            double lbound = this.x.get(0);
+            double rbound = this.x.get(this.N - 1);
+            int i;
+            if (x == rbound) {
+                i = this.N - 1;
+            } else {
+                i = Meth.bisect(this.x, x);
+            }
             if (i <= 0 || i >= this.N) {
-                throw new FunctionQueriedOutsideOfInterpolationIntervalException();
+                System.out.println(i);
+                System.out.println(x);
+                System.out.println(this.x);
+                throw new FunctionQueriedOutsideOfInterpolationIntervalException(
+                        x, lbound, rbound
+                );
             }
             double ldif = (x - this.x.get(i - 1)), rdif = (x - this.x.get(i));
             return this.y.get(i - 1) + ldif * this.divDif.get(i - 1) +
