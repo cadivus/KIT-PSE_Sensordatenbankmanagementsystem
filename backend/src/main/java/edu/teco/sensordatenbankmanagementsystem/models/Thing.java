@@ -44,4 +44,14 @@ public class Thing {
   @OneToMany(mappedBy = "thing", fetch = FetchType.EAGER)
   List<Datastream> datastreams;
 
+  @Override
+  public boolean equals(Object a) {
+    boolean result = false;
+    if (a == null || !a.getClass().equals(Thing.class))
+      result = false;
+    else if (((Thing) a).getId() == this.id && ((Thing) a).getName() == this.name && ((Thing) a).getProperties() == this.properties && ((Thing) a).getDescription() == this.description)
+      result = true;
+    return result;
+  }
+
 }

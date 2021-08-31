@@ -4,7 +4,7 @@ import edu.teco.sensordatenbankmanagementsystem.exceptions.BadSortingTypeStringE
 import edu.teco.sensordatenbankmanagementsystem.exceptions.NoSuchSortException;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.ObservedProperty;
-import edu.teco.sensordatenbankmanagementsystem.models.Requests;
+import edu.teco.sensordatenbankmanagementsystem.services.DatastreamService;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import edu.teco.sensordatenbankmanagementsystem.util.WriteCsvToResponse;
@@ -17,13 +17,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +27,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * The ObservationController is the entry point for http requests for {@link Observation}s. Methods
@@ -54,18 +49,21 @@ public class ObservationController {
     public final ObservationService observationService;
     @Autowired
     SensorService sensorService;
+    private final DatastreamService datastreamService;
 
     /**
      * Instantiates a new Observation controller.
-     *
-     * @param observationService the observation service which handles the underlying business logic
+     *  @param observationService the observation service which handles the underlying business logic
      *                           The Autowired Annotation automatically injects a Spring bean
      * @param sensorService
+     * @param datastreamService
      */
     @Autowired
     public ObservationController(ObservationService observationService,
-                                 SensorService sensorService) {
+        SensorService sensorService,
+        DatastreamService datastreamService) {
         this.observationService = observationService;
+        this.datastreamService = datastreamService;
     }
 
 
@@ -130,7 +128,7 @@ public class ObservationController {
         response.setHeader(headerKey, headerValue);
 
         Stream<Observation> list = observationService
-                .getObservationByDatastream(sensorService.getDatastreams(List.of(thingId), start, end), start, end);
+                .getObservationByDatastream(datastreamService.getDatastreams(List.of(thingId), start, end), start, end);
 
         WriteCsvToResponse.writeObservation(response.getWriter(), list);
 

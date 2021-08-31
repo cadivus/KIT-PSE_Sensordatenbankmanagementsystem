@@ -25,17 +25,7 @@ import java.util.stream.Collectors;
 public interface ObservationService {
 
 
-
-    /**
-     * This returns a single Observation Model from the Repository
-     *
-     * @param id The ID of the Observation
-     * @return
-     */
-    @Deprecated
-    Observation getObservation(String id);
-
-    /**
+  /**
      * This will take a stream of datastreams and try to find all Observations between the start
      * and end date which are in these datastreams and will return them as a Stream
      * @param datastreams A datastream is part of the Frost Database by Teco. This receives a stream
