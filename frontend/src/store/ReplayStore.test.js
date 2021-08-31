@@ -7,7 +7,7 @@ import {
 import ReplayStore from './ReplayStore'
 import ThingStore from './ThingStore'
 import ReplaySpeed from '../material/ReplaySpeed'
-import {sensor1, sensor1Id} from '../test/mock/store/communication/mockData/backend/getJson'
+import {sensor1Id} from '../test/mock/store/communication/mockData/backend/getJson'
 import Id from '../material/Id'
 import DatastreamStore from './DatastreamStore'
 import {thing1Replay} from '../test/mock/store/communication/mockData/backend/postJsonGetText'
