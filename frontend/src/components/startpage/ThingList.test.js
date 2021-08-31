@@ -13,9 +13,6 @@ import {Checkbox} from '@material-ui/core'
 import {sensor1, sensor2, sensor3} from '../../test/mock/store/communication/mockData/backend/getJson'
 
 jest.mock('../../store/communication/restClient')
-getJson.mockImplementation(getJsonMock)
-getText.mockImplementation(getTextMock)
-postJsonGetText.mockImplementation(postJsonGetTextMock)
 
 beforeEach(() => {
   getJson.mockImplementation(getJsonMock)
@@ -23,10 +20,7 @@ beforeEach(() => {
   postJsonGetText.mockImplementation(postJsonGetTextMock)
 })
 
-test('check for sensors', async () => {
-  getJson.mockImplementation(getJsonMock)
-  getText.mockImplementation(getTextMock)
-  postJsonGetText.mockImplementation(postJsonGetTextMock)
+test('check for things', async () => {
   const wrapper = mount(<Providers><ThingList selectedThings={new Set()} searchExpression={new RegExp('^.*$', 'i')} /></Providers>)
 
   // Loading detection
