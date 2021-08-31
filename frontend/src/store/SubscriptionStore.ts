@@ -4,12 +4,8 @@ import ThingStore from './ThingStore'
 import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
 import Thing from '../material/Thing'
-import {getJson, postJsonAsURLGetText} from './communication/restClient'
-import {
-  getSubscriptionsUrl,
-  POST_SUBSCRIPTION_PATH,
-  POST_UBSUBSCRIBE_PATH,
-} from './communication/notificationUrlCreator'
+import {getJson, postJsonGetText} from './communication/restClient'
+import {getPostSubscriptionPath, getSubscriptionsUrl, getUnsubscribePath} from './communication/notificationUrlCreator'
 
 /**
  * This is the storage for subscriptions.
@@ -133,18 +129,19 @@ class SubscriptionStore {
     })(id, thing, directNotification, notificationLevel, _user)
     subscriptions.set(id.toString(), result)
     const setting = {
-      mailAddress: _user.email.toString(),
-      sensorID: thing.id.toString(),
+      mailAddress: _user.email,
+      sensorID: thing.id,
       reportInterval: notificationLevel.days,
       directNotification: directNotification.valueOf(),
     }
-    postJsonAsURLGetText(
-      this.getSubscriptionPath(
+    postJsonGetText(
+      getPostSubscriptionPath(
         setting.mailAddress,
         setting.sensorID,
         setting.reportInterval,
         setting.directNotification,
       ),
+      {},
     )
     return result
   }
@@ -153,22 +150,9 @@ class SubscriptionStore {
     const {subscriptions} = this
     if (!subscriptions.has(id.toString())) return false
     if (!this._user) return false
-    const path = this.getUnsubscriptionPath(this._user?.email.toString(), id.toString())
-    postJsonAsURLGetText(path)
+    const path = getUnsubscribePath(this._user.email, id)
+    postJsonGetText(path, {})
     return subscriptions.delete(id.toString())
-  }
-
-  getUnsubscriptionPath = (mailAddress: string, thingID: string): string => {
-    return `${POST_UBSUBSCRIBE_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}`
-  }
-
-  getSubscriptionPath = (
-    mailAddress: string,
-    thingID: string,
-    notificationLevel: number,
-    directNotification: boolean,
-  ): string => {
-    return `${POST_SUBSCRIPTION_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}&toggleAlert=${directNotification}`
   }
 }
 
