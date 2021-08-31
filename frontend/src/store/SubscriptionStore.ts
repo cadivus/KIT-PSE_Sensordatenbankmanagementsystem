@@ -123,7 +123,7 @@ class SubscriptionStore {
     if (!_user) return null
 
     const result = new (class extends Subscription {
-      unsubscribe(): boolean {
+      unsubscribe(): Promise<boolean> {
         return unsubscribeById(id)
       }
     })(id, thing, directNotification, notificationLevel, _user)
@@ -146,13 +146,17 @@ class SubscriptionStore {
     return result
   }
 
-  private unsubscribe = (id: Id): boolean => {
-    const {subscriptions} = this
-    if (!subscriptions.has(id.toString())) return false
-    if (!this._user) return false
-    const path = getUnsubscribePath(this._user.email, id)
-    postJsonGetText(path, {})
-    return subscriptions.delete(id.toString())
+  private unsubscribe = (id: Id): Promise<boolean> => {
+    const resultPromise = new Promise<boolean>(async (resolve, reject) => {
+      const {subscriptions} = this
+      if (!subscriptions.has(id.toString())) return false
+      if (!this._user) return false
+      const path = getUnsubscribePath(this._user.email, id)
+      await postJsonGetText(path, {})
+      resolve(subscriptions.delete(id.toString()))
+    })
+
+    return resultPromise
   }
 }
 
