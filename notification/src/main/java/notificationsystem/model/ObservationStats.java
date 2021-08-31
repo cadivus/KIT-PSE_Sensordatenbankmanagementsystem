@@ -1,5 +1,8 @@
 package notificationsystem.model;
 
+/**
+ * The ObservationStats class represents and stores calculated stats about an observation (eg. humidity).
+ */
 public class ObservationStats {
 
     private final String obsId;

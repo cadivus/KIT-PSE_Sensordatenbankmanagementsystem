@@ -23,7 +23,7 @@ public class MailSender {
     private Session session;
 
     /**
-     *
+     * Constructs a new MailSender instance.
      */
     public MailSender() {
     }

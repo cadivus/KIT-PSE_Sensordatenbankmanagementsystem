@@ -1,19 +1,11 @@
 package notificationsystem.controller;
 
-import com.icegreen.greenmail.util.GreenMail;
-import com.icegreen.greenmail.util.GreenMailUtil;
-import com.icegreen.greenmail.util.ServerSetup;
 import notificationsystem.model.*;
-import notificationsystem.view.MailBuilder;
-import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,18 +16,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.ws.rs.core.Link;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
@@ -85,8 +70,7 @@ public class MailIntegrationTests {
 
         Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
 
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
-        controller.setSensorDAO(sensorDAO);
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
         String sensorId = "test-id";
@@ -131,8 +115,7 @@ public class MailIntegrationTests {
         SystemLogin systemLogin = getTestLogin();
 
         Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
-        controller.setSensorDAO(sensorDAO);
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
 

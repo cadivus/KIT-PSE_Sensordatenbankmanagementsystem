@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -30,7 +29,7 @@ public class CheckerUtil {
     private final static String LOG_ALERT = "Checking for sensor-failure";
     private final static String LOG_REPORT = "Checking for reports";
     private final static String LOG_ERROR = "Failed to get data from backend API";
-    private String checkActiveUrl;
+    private final String checkActiveUrl;
     //Sends alert if a sensor has been inactive for three days.
     private final static int INACTIVE_DAYS_THRESHOLD = 3;
     private final static int SENSOR_ACTIVE = 1;

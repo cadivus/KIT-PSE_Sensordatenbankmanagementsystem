@@ -78,6 +78,9 @@ public class Subscription {
         this.toggleAlert = toggleAlert;
     }
 
+    /**
+     * Constructs new Subscription.
+     */
     public Subscription() {
     }
 
