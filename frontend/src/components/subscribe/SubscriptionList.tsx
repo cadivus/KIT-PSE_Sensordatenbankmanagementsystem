@@ -97,6 +97,9 @@ const SubscriptionList: FC = () => {
 
   const handleDelete = () => {
     if (clickedSubscription) clickedSubscription.unsubscribe()
+    subscriptionStore.getSubscriptions().then(newSubscriptionList => {
+      setSubscriptionList(newSubscriptionList)
+    })
     setClickedSubscription(null)
     setOpen(false)
   }
