@@ -18,6 +18,6 @@ public class AppConfig {
     //TODO: Fix (application.properties)
     @Bean
     public String backendURL() {
-        return "http://localhost:8080";
+        return "http://backend:8081";
     }
 }

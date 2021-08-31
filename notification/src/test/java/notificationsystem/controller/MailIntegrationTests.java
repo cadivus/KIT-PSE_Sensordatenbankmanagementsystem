@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -86,15 +87,26 @@ public class MailIntegrationTests {
 
         Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
         controller.setSensorDAO(sensorDAO);
+        CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
+
         String sensorId = "test-id";
         LinkedList<Subscription> subscribers = new LinkedList<>();
         subscribers.add(getTestSubscription());
+        LinkedList<Sensor> sensors = new LinkedList<>();
+        sensors.add(getTestSensor());
+        LinkedList<String> sensorIds = new LinkedList<>();
+        sensorIds.add(getTestSensor().getId());
+        Integer[] response = {-1};
 
+        Mockito.when(sensorDAO.getAll()).thenReturn(sensors);
+        Mockito.when(restTemplate.getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3))
+                        .thenReturn(response);
         Mockito.when(sensorDAO.get(sensorId)).thenReturn(getTestSensor());
         Mockito.when(subscriptionRepository.findAll()).thenReturn(subscribers);
 
-        controller.sendAlert(sensorId);
+        checkerUtil.checkForSensorFailure();
 
+        verify(restTemplate).getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3);
         verify(mailSender).login(systemLogin.getUsername(), systemLogin.getPassword());
         verify(subscriptionRepository, times(2)).findAll();
     }
