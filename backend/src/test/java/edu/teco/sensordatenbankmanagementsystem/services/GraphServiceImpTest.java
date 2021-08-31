@@ -8,6 +8,7 @@ import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservedPropertyRepository;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.NewtonInterpolator;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,28 @@ import static org.mockito.Mockito.mock;
 @DataJpaTest
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
 class GraphServiceImpTest {
+
+
+    static int intervalDayWidth = 50;
+    static int obsN = 5;
+    static Datastream mr = new Datastream();
+    static List<Observation> obs = new ArrayList<>();
+    static LocalDateTime now = LocalDateTime.now();
+    @BeforeAll
+    public static void setup()
+    {
+        mr.setId("c");
+        mr.setObsId("b");
+        mr.setPhenomenonStart(now.minusDays(intervalDayWidth));
+        mr.setPhenomenonEnd(now);
+
+        for(int i=0; i<obsN; i++){
+            Observation toAdd = new Observation();
+            toAdd.setResultTime(now.minusDays(intervalDayWidth).plusDays((long) i * intervalDayWidth / obsN));
+            toAdd.setResultNumber((double)i*i);
+            obs.add(toAdd);
+        }
+    }
 
     @Autowired
     GraphServiceImp graphServiceImp;
@@ -84,6 +107,12 @@ class GraphServiceImpTest {
     @Test
     void getGraphImageOfThing() {
         Dimension dim = new Dimension(69, 69);
+        Mockito.when(datastreamRepository.findDatastreamsByThing_IdAndObsIdIn("a", List.of(mr.getObsId()))).thenReturn(List.of(mr));
+        Mockito.when(observationRepository.findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(
+                eq(mr.getId()),
+                any(), any(),
+                any()
+        )).thenReturn(obs.stream());
         RenderedImage graphImage = graphServiceImp.getGraphImageOfThing(
                 "a",
                 "b",
@@ -106,25 +135,6 @@ class GraphServiceImpTest {
         @Autowired
         EntityManager entityManager;
 
-        int intervalDayWidth = 50;
-        int obsN = 5;
-        Datastream mr = new Datastream();
-        List<Observation> obs = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
-        {
-            mr.setId("c");
-            mr.setObsId("b");
-            mr.setPhenomenonStart(now.minusDays(intervalDayWidth));
-            mr.setPhenomenonEnd(now);
-
-            for(int i=0; i<obsN; i++){
-                Observation toAdd = new Observation();
-                toAdd.setResultTime(now.minusDays(intervalDayWidth).plusDays((long) i * intervalDayWidth / obsN));
-                toAdd.setResultNumber((double)i*i);
-                obs.add(toAdd);
-            }
-        }
-
         @Bean
         ObservationService observationService() {
             ObservationService observationService = mock(ObservationService.class);
@@ -134,18 +144,12 @@ class GraphServiceImpTest {
         @Bean
         ObservationRepository observationRepository() {
             ObservationRepository observationRepository = mock(ObservationRepository.class);
-            Mockito.when(observationRepository.findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(
-                    eq(mr.getId()),
-                    any(), any(),
-                    any()
-            )).thenReturn(obs.stream());
             return observationRepository;
         }
 
         @Bean
         DatastreamRepository datastreamRepository() {
             DatastreamRepository datastreamRepository = mock(DatastreamRepository.class);
-            Mockito.when(datastreamRepository.findDatastreamsByThing_IdAndObsIdIn("a", List.of(mr.getObsId()))).thenReturn(List.of(mr));
             return datastreamRepository;
         }
 
