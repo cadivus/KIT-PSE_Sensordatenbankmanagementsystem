@@ -26,7 +26,7 @@ const getNewSseResponse = input => {
   return elseReplay
 }
 
-const getResponse = (path, input) => {
+export const getResponse = (path, input) => {
   if (path === CREATE_REPLAY) return getNewSseResponse(input)
 
   return undefined
