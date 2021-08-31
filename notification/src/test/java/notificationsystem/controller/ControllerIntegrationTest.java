@@ -12,11 +12,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -26,10 +28,11 @@ import javax.mail.Message;
 import java.time.LocalDate;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration
-@ComponentScan(basePackages = {"notification"})
+//@EnableAutoConfiguration
+//@ComponentScan(basePackages = {"notification"})
 @RunWith(SpringRunner.class)
 public class ControllerIntegrationTest {
 
@@ -41,6 +44,8 @@ public class ControllerIntegrationTest {
     private TestRestTemplate testRestTemplate;
     @Autowired
     private SubscriptionDAO subscriptionDAO;
+    @MockBean
+    SubscriptionRepository subscriptionRepository;
     @Autowired
     private Controller controller;
     private GreenMail greenMail;
@@ -142,10 +147,16 @@ public class ControllerIntegrationTest {
     }
 
     @Configuration
-    public class testconfig {
+    @Import(SubscriptionDAO.class)
+    static class TestConfig {
+        @Bean
+        SubscriptionRepository subscriptionRepository() {
+            return mock(SubscriptionRepository.class);
+        }
         @Bean
         public TestRestTemplate testRestTemplate(){
             return new TestRestTemplate();
         }
     }
+
 }

@@ -43,15 +43,6 @@ public class SensorDAO {
         this.restTemplate = restTemplate;
     }
 
-    /*public Optional<Sensor> get(Sensor sensor) throws Exception {
-        Sensor fetchedSensor = restTemplate.getForObject(getThingApi + sensor.getId(), Sensor.class);
-        if (fetchedSensor != null) {
-            return Optional.of(fetchedSensor);
-        } else {
-            throw new Exception(ERROR_GET);
-        }
-    }*/
-
     /**
      * Gets a sensor specified by its unique ID from the database.
      * @param sensorID ID of the sensor to be fetched.
