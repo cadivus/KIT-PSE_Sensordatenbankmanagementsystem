@@ -6,7 +6,6 @@ import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
@@ -63,7 +62,7 @@ public class ProxyHelper {
             datastreams.remove(d);
           } */
           try (Stream<Observation> observations = observationRepository
-              .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
+              .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(
                   d.getId(), information.getStart(),
                   information.getEnd())) {
             observations.filter(Objects::nonNull).reduce((current, next) -> {

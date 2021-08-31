@@ -3,21 +3,28 @@ package edu.teco.sensordatenbankmanagementsystem.util;
 import static edu.teco.sensordatenbankmanagementsystem.util.Meth.round;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.CantInterpolateWithNoSamplesException;
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
+import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.Interpolator;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -27,10 +34,12 @@ import org.springframework.stereotype.Service;
 public class GraphHelper {
 
   private final ObservationService observationService;
+  private final DatastreamRepository datastreamRepository;
 
-  GraphHelper(ObservationService observationService) {
+  GraphHelper(ObservationService observationService, DatastreamRepository datastreamRepository) {
 
     this.observationService = observationService;
+    this.datastreamRepository = datastreamRepository;
   }
 
   private ZoneId ZONE_ID ;
@@ -43,51 +52,91 @@ public class GraphHelper {
   }
 
 
-  public RenderedImage getGraphImageOfThing(String id, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
+  public RenderedImage getGraphImageOfThing(String thingId, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
       int maxInterPoints, Dimension imageDimension, int granularity,
       Interpolator<Double, Double> interpolator) {
+
     if(maxInterPoints == 0) {
       throw new CantInterpolateWithNoSamplesException();
     }
 
+    //the spring framework sort for the x-axis of the interpolation
+    final Sort xSort = Observation.Order.DATE.toSort();
+
+    if(frameStart == null || frameEnd == null) {
+      Datastream datastream =
+              datastreamRepository.findDatastreamsByThing_IdAndObsIdIn(thingId, List.of(obsId)).
+                      stream().findFirst().orElseThrow(CantInterpolateWithNoSamplesException::new);
+      //gets the earliest value as frame start if not specified
+      if (frameStart == null) {
+        frameStart = datastream.getPhenomenonStart();
+      }
+      //gets the latest value as frame end if not specified
+      if (frameEnd == null) {
+        frameEnd = datastream.getPhenomenonEnd();
+      }
+    }
+    LocalDateTime finalFrameStart = frameStart;
+
     BufferedImage r = new BufferedImage(imageDimension.width, imageDimension.height, BufferedImage.TYPE_INT_ARGB);
 
-    List<Observation> all = observationService.getObservationsByThingId(
-        id,
-        Integer.MAX_VALUE,
-        Sort.unsorted(),
-        List.of(obsId),
-        frameStart, frameEnd
-    );
-
-    int interPoints = Math.min(maxInterPoints, all.size() / 2);
-
-    double intervalStart = frameStart.atZone(ZONE_ID).toEpochSecond();
-    double intervalEnd = frameEnd.atZone(ZONE_ID).toEpochSecond();
+    //calculates various stats required for drawing and normalizing the x axis
+    double unnormalizedIntervalStart = frameStart.atZone(ZONE_ID).toEpochSecond();
+    double unnormalizedIntervalEnd = frameEnd.atZone(ZONE_ID).toEpochSecond();
 
     //attempt at normalizing massive x values generating by epoch seconds for smaller interpolation error
-    double normalizingShift = (intervalEnd + intervalStart) / 2;
-    double normalizingScale = (intervalEnd - intervalStart) / 2;
+    double normalizingShift = (unnormalizedIntervalEnd + unnormalizedIntervalStart) / 2;
+    double normalizingScale = (unnormalizedIntervalEnd - unnormalizedIntervalStart) / 2;
 //    double normalizingShift = 0;
 //    double normalizingScale = 1;
     Function<Double, Double> normalizer = a -> (a - normalizingShift) / normalizingScale;
-    intervalStart = normalizer.apply(intervalStart);
-    intervalEnd = normalizer.apply(intervalEnd);
+    double intervalStart = normalizer.apply(unnormalizedIntervalStart);
+    double intervalEnd = normalizer.apply(unnormalizedIntervalEnd);
 
+    Function<Observation, Double> unnormalizedXExtractor = o->(double)o.getResultTime().atZone(ZONE_ID).toEpochSecond();
     Function<Observation, Double> xExtractor =
-        o->normalizer.apply((double)o.getResultTime().atZone(ZONE_ID).toEpochSecond());
+            o->normalizer.apply(unnormalizedXExtractor.apply(o));
     Function<Observation, Double> fExtractor = Observation::getResultNumber;
 
+    BiFunction<Double, List<Observation>, Observation> sampleGetter = (Double a, List<Observation> o) -> {
+      System.out.printf("date: %s, already found %s samples\n", LocalDateTime.ofEpochSecond((long)(double)a, 0,
+              ZonedDateTime.now(ZONE_ID).getOffset()), o.size());
+      Observation rr = observationService.getObservationsByThingId(
+              thingId,
+              o.size() + 1,
+              xSort.descending(),
+              List.of(obsId),
+              finalFrameStart,
+              LocalDateTime.ofEpochSecond((long)(double)a, 0, ZonedDateTime.now(ZONE_ID).getOffset())
+      ).stream().filter(oo->!o.contains(oo)).findFirst().orElse(null);
+      if(rr!=null) {
+        System.out.printf("found one at time: %s\n", rr.getResultTime());
+      }else{
+        System.out.println("didn't find one");
+      }
+      return rr;
+    };
+
     List<Observation> sample = getApproximateTschebyscheffSamplingPoints(
-        all,
-        xExtractor,
-        interPoints,
-        intervalStart, intervalEnd
+        sampleGetter,
+        unnormalizedXExtractor,
+        maxInterPoints,
+        unnormalizedIntervalStart, unnormalizedIntervalEnd
     );
-    //assert that sample is of correct size
-    if(sample.size() != interPoints) {
-      throw new RuntimeException("sample list returned is not the correct size");
+
+    //if there are no samples, return empty image? perhaps an exception could be more fitting
+    if(sample.isEmpty()) {
+      throw new CantInterpolateWithNoSamplesException();
     }
+
+    //copies sample points to file (debug code)
+    StringBuilder c = new StringBuilder();
+    for(Observation o : sample) {
+      c.append(xExtractor.apply(o)).append("\t").append(fExtractor.apply(o)).append("\n");
+    }
+    try (BufferedWriter w = new BufferedWriter(new FileWriter("sample_points.txt"))) {
+      w.write(c.toString());
+    }catch (Exception e){}
 
     //that is technically not how things work, but make a rough guess that the function is smooth enough that the
     // minima & maxima of the sample are lower and upper bounds of the interpolation function as well
@@ -101,26 +150,30 @@ public class GraphHelper {
     sample.sort(Comparator.comparing(xExtractor));
     Function<Double, Double> interpolFunc = interpolator.interpolate(sample, xExtractor, fExtractor);
 
+
+    //various stats about the graph (debug code)
     int alertus = 0;
     double lastX = 0;
     for(Observation g : sample){
-      double x = xExtractor.apply(g), y = interpolFunc.apply(x), knotdiff = y - g.getResultNumber();
+      double x = xExtractor.apply(g), y = interpolFunc.apply(x), knotdiff = y - fExtractor.apply(g);
       System.out.printf("x: %s, y: %s, diff: %s, distance to last knot: %s\n", x, y, knotdiff, x - lastX);
-      x = (x+lastX) / 2; y = interpolFunc.apply(x);
-      System.out.printf("| x: %s, y: %s\n", x, y);
+      double interX = (x+lastX) / 2; double interY = interpolFunc.apply(interX);
+      System.out.printf("extra| x: %s, y: %s\n", x, y);
       if(knotdiff != 0) {
         alertus += 1;
       }
       lastX = x;
     }
-//    System.out.printf("%s knots out of %s done goofed!\n", alertus, interPoints);
+//    System.out.printf("%s knots out of %s done goofed!\n", alertus, sample.size());
 //
 //    System.out.printf("interpolator: %s\n", interpolFunc);
 //    System.out.printf("function: %s\n", ((LagrangeInterpolator.LagrangePolynomial)interpolFunc).toMathString());
 //    System.out.println(sample.stream().map(Observation::getResultNumber).collect(Collectors.toList()));
 //    System.out.println(sample.stream().map(o->(double)o.getResultTime().atZone(ZONE_ID).toEpochSecond()).collect(Collectors.toList()));
-    //System.out.printf("lowx: %s, highx: %s\n", intervalStart, intervalEnd);
+//    System.out.printf("lowx: %s, highx: %s\n", intervalStart, intervalEnd);
 //    System.out.printf("min: %s, max: %s, interPoints: %s\n", min, max, interPoints);
+
+
 
     final double borderScale = .1;
 
@@ -193,32 +246,21 @@ public class GraphHelper {
     }
   }
 
-  private <T> List<T> getApproximateTschebyscheffSamplingPoints(List<T> elements, Function<T, Double> xExtractor,
-      int interPoints,
+  private <T> List<T> getApproximateTschebyscheffSamplingPoints(
+          BiFunction<Double, List<T>, T> sampleGetterWithExcluded, Function<T, Double> xExtractor,
+      int maxInterPoints,
       double intervalStart, double intervalEnd)
   {
     List<T> r = new ArrayList<>();
-    //sorts the elements according to x to find the approximate sampling points faster
-    elements.sort(Comparator.comparing(xExtractor));
 
-    for(int i=0; i<interPoints; i++){
+    for(int i=0; i<maxInterPoints; i++){
       //calculates the i-th Tschebyscheff sampling point transformed onto the given interval
       double samplingPoint =
-          intervalStart + (Math.cos((double)(2 * i + 1) / (2 * interPoints) * Math.PI) + 1) / 2 * (intervalEnd - intervalStart);
-      //i-th sampling point to add
-      T toAdd = elements.get(elements.size() - 1);
-      T last = toAdd;
-      for(T t : elements) {
-        if(xExtractor.apply(t) > samplingPoint){
-          double tX = xExtractor.apply(t);
-          double lastX = xExtractor.apply(last);
-          toAdd = samplingPoint + samplingPoint - lastX - tX < 0 ? last : t;
-          break;
-        }
-        last = t;
+          intervalStart + (Math.cos((double)(2 * i + 1) / (2 * maxInterPoints) * Math.PI) + 1) / 2 * (intervalEnd - intervalStart);
+      T toAdd = sampleGetterWithExcluded.apply(samplingPoint, r);
+      if(toAdd != null){
+        r.add(toAdd);
       }
-      r.add(toAdd);
-      elements.remove(toAdd);
     }
 
     return r;
