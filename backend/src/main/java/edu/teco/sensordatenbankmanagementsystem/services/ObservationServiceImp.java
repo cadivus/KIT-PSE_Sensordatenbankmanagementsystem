@@ -84,7 +84,7 @@ public class ObservationServiceImp implements ObservationService{
     LocalDateTime finalFrameEnd = frameEnd;
     return associatedStreams.stream()
             .flatMap(a-> this.observationRepository
-                    .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(a.getId(),
+                    .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(a.getId(),
                             finalFrameStart, finalFrameEnd, PageRequest.of(0, limit).withSort(sort)))
             .limit(limit)
             .collect(Collectors.toList());
