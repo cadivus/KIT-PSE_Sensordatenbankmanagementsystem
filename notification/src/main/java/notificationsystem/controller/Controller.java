@@ -43,11 +43,9 @@ public class Controller {
     private SensorDAO sensorDAO;
     private final static long SYSTEMLOGIN_ID = 1;
     private final RestTemplate restTemplate;
-    private String port = "587";
-    private String host = "smtp.gmail.com";
 
     @Autowired
-    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate) throws Exception {
+    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate, MailSender mailSender) throws Exception {
         this.mailBuilder = new MailBuilder();
 
         Optional<SystemLogin> loginOptional = systemLoginDAO.getLogin(SYSTEMLOGIN_ID);
@@ -58,7 +56,8 @@ public class Controller {
             throw new Exception(CONSTRUCTOR_ERROR);
         }
 
-        this.mailSender = new MailSender(login.getUsername(), login.getPassword(), port, host);
+        this.mailSender = mailSender;
+        mailSender.login(login.getUsername(), login.getPassword());
         this.subscriptionDAO = subscriptionDAO;
         this.restTemplate = restTemplate;
     }
@@ -72,10 +71,18 @@ public class Controller {
      * Only for testing purposes.
      * @param port smtp server port.
      * @param host smtp server host.
-     */
+
     public void setMailData(String port, String host) {
         this.port = port;
         this. host = host;
+    }*/
+
+    /**
+     * Only for testing purposes.
+     * @param sensorDAO new sensorDAO.
+     */
+    public void setSensorDAO(SensorDAO sensorDAO) {
+        this.sensorDAO = sensorDAO;
     }
 
     /**

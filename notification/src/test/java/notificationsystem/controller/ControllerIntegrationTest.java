@@ -31,8 +31,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@EnableAutoConfiguration
-//@ComponentScan(basePackages = {"notification"})
 @RunWith(SpringRunner.class)
 public class ControllerIntegrationTest {
 
@@ -46,22 +44,6 @@ public class ControllerIntegrationTest {
     private SubscriptionDAO subscriptionDAO;
     @MockBean
     SubscriptionRepository subscriptionRepository;
-    @Autowired
-    private Controller controller;
-    private GreenMail greenMail;
-
-    @BeforeAll
-    public void setup() {
-        greenMail = new GreenMail(ServerSetup.ALL);
-        greenMail.start();
-        controller.setMailData("3025", "localhost");
-    }
-
-    @AfterAll
-    public void cleanup() {
-        greenMail.stop();
-        controller.setMailData("587", "smtp.gmail.com");
-    }
 
     @Test
     public void testGetConfirmCode() throws Exception {
@@ -78,10 +60,6 @@ public class ControllerIntegrationTest {
 
         //Result (confirmation code) is semi-random complicating exact testing
         assertNotNull(response);
-        assertTrue(greenMail.waitForIncomingEmail(50000, 1));
-        Message[] messages = greenMail.getReceivedMessages();
-        assertEquals(1, messages.length);
-        assertEquals("Log-in attempt", messages[0].getSubject());
     }
 
     @Test

@@ -1,8 +1,11 @@
 package notificationsystem.controller;
 
 import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetup;
 import notificationsystem.model.*;
+import notificationsystem.view.MailBuilder;
+import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,14 +25,17 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.ws.rs.core.Link;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,45 +51,12 @@ public class MailIntegrationTests {
     SensorDAO sensorDAO;
     @MockBean
     SystemLoginRepository systemLoginRepository;
-    @Autowired
-    CheckerUtil checkerUtil;
-    GreenMail greenMail;
-    @Autowired
-    Controller controller;
+    @MockBean
+    RestTemplate restTemplate;
+    @MockBean
+    MailSender mailSender;
 
-    @Before
-    public void setup() {
-    greenMail = new GreenMail(ServerSetup.ALL);
-    greenMail.start();
-    controller.setMailData("3025", "localhost");
-    }
-
-    @After
-    public void cleanup() {
-        greenMail.stop();
-        controller.setMailData("587", "smtp.gmail.com");
-    }
-
-    @Test
-    public void testSendAlert() throws MessagingException {
-        String sensorId = "test-id";
-
-        controller.sendAlert(sensorId);
-
-        assertTrue(greenMail.waitForIncomingEmail(50000, 1));
-        Message[] messages = greenMail.getReceivedMessages();
-        assertEquals(1, messages.length);
-        assertEquals("Alert for sensor malfunction", messages[0].getSubject());
-    }
-
-    @Test
-    public void testSendReport() throws JSONException, MessagingException {
-        String mailAddress = "test";
-        String sensorId = "saqn:t:7bd2cd3";
-        Subscription subscription = new Subscription(mailAddress, sensorId, LocalDate.now().minusDays(8), 7, true);
-        LinkedList<Subscription> subs = new LinkedList<>();
-        subs.add(subscription);
-
+    private Sensor getTestSensor() throws JSONException {
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("id", "value1");
         JSONObject jsonObject2 = new JSONObject();
@@ -91,7 +64,50 @@ public class MailIntegrationTests {
         JSONArray jsonArray = new JSONArray();
         jsonArray.put(jsonObject1);
         jsonArray.put(jsonObject2);
-        Sensor sensor = new Sensor("test-id", "test-name", "test-desc", "test-prop", jsonArray);
+        return new Sensor("test-id", "test-name", "test-desc", "test-prop", jsonArray);
+    }
+
+    private Subscription getTestSubscription() {
+        return new Subscription("test", "test-id", LocalDate.now(), 7, true);
+    }
+
+    private SystemLogin getTestLogin() {
+        SystemLogin systemLogin = new SystemLogin();
+        systemLogin.setUsername("sensornotificationsystemPSE@gmail.com");
+        systemLogin.setPassword("cKqp4Wa83pLddBv");
+        return systemLogin;
+    }
+
+    @Test
+    public void testSendAlert() throws Exception {
+        SystemLogin systemLogin = getTestLogin();
+
+        Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
+
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
+        controller.setSensorDAO(sensorDAO);
+        String sensorId = "test-id";
+        LinkedList<Subscription> subscribers = new LinkedList<>();
+        subscribers.add(getTestSubscription());
+
+        Mockito.when(sensorDAO.get(sensorId)).thenReturn(getTestSensor());
+        Mockito.when(subscriptionRepository.findAll()).thenReturn(subscribers);
+
+        controller.sendAlert(sensorId);
+
+        verify(mailSender).login(systemLogin.getUsername(), systemLogin.getPassword());
+        verify(subscriptionRepository, times(2)).findAll();
+    }
+
+    @Test
+    public void testSendReport() throws Exception {
+        Subscription subscription = getTestSubscription();
+        subscription.setSubTime(LocalDate.now().minusDays(10));
+        LinkedList<Subscription> subs = new LinkedList<>();
+        subs.add(subscription);
+
+        Sensor sensor = getTestSensor();
+        String sensorId = sensor.getId();
         sensor.setActiveRate(0.5);
         LinkedList<ObservationStats> stats = new LinkedList<>();
         ObservationStats stats1 = new ObservationStats("id1", "name1", 3, 4, 5, 2);
@@ -99,25 +115,25 @@ public class MailIntegrationTests {
         stats.add(stats1);
         stats.add(stats2);
         sensor.setStats(stats);
-        SystemLogin systemLogin = new SystemLogin();
-        systemLogin.setUsername("sensornotificationsystemPSE@gmail.com");
-        systemLogin.setPassword("cKqp4Wa83pLddBv");
+
+        SystemLogin systemLogin = getTestLogin();
+
+        Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
+        controller.setSensorDAO(sensorDAO);
+        CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
+
 
         Mockito.when(subscriptionRepository.findAll()).thenReturn(subs);
         Mockito.when(sensorDAO.get(sensorId)).thenReturn(sensor);
-        Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
-        //Mockito.when(sensorDAO.setStats(sensor, LocalDate.now().minusDays(7)));
 
         checkerUtil.checkForReports();
 
-        assertTrue(greenMail.waitForIncomingEmail(50000, 1));
-        Message[] messages = greenMail.getReceivedMessages();
-        assertEquals(1, messages.length);
-        assertEquals("Report for Sensorthings sensor: Crowdsensing Node (SDS011, 179552)", messages[0].getSubject());
+        verify(sensorDAO).setStats(sensor, LocalDate.now().minusDays(subscription.getReportInterval()));
     }
 
     @Configuration
-    @Import({SubscriptionDAO.class, SystemLoginDAO.class, CheckerUtil.class, Controller.class})
+    @Import({SubscriptionDAO.class, SystemLoginDAO.class})
     static class TestConfig {
         @Bean
         SubscriptionRepository subscriptionRepository() {
@@ -134,6 +150,10 @@ public class MailIntegrationTests {
         @Bean
         RestTemplate restTemplate() {
             return mock(RestTemplate.class);
+        }
+        @Bean
+        MailSender mailSender() {
+            return mock(MailSender.class);
         }
     }
 
