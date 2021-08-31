@@ -28,13 +28,18 @@ class UserStore extends EventEmitter {
    * @param email Email address to send the code to
    * @return True on success, false otherwise
    */
-  requestStep1 = (email: EMail): void => {
-    const path = getConfirmCodeUrl(email)
-    getText(path).then(loginCode => {
-      // eslint-disable-next-line no-console
-      console.log(loginCode)
-      this.code = new LoginCode(loginCode)
+  requestStep1 = (email: EMail): Promise<void> => {
+    const resultPromise = new Promise<void>((resolve, reject) => {
+      const path = getConfirmCodeUrl(email)
+      getText(path).then(loginCode => {
+        // eslint-disable-next-line no-console
+        console.log(loginCode)
+        this.code = new LoginCode(loginCode)
+        resolve()
+      })
     })
+
+    return resultPromise
   }
 
   /**
