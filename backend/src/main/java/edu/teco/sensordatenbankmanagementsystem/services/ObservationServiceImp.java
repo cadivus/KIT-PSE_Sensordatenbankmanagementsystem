@@ -46,14 +46,6 @@ public class ObservationServiceImp implements ObservationService{
     this.observedPropertyRepository = observedPropertyRepository;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public Observation getObservation(String id) {
-    return null;
-  }
-
   @Transactional
   @Override
   public List<Observation> getObservationsByThingId(
