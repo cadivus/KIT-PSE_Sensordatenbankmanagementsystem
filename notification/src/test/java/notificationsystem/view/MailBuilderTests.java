@@ -1,7 +1,6 @@
 package notificationsystem.view;
 
-import notificationsystem.model.ObservationStats;
-import notificationsystem.model.Sensor;
+import notificationsystem.model.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,20 +8,27 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 
-@ComponentScan(basePackages = {"notificationsystem"})
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class MailBuilderTests {
 
-    MailBuilder mailBuilder = new MailBuilder();
+    @Autowired
+    MailBuilder mailBuilder;
+    @MockBean
+    SubscriptionRepository subscriptionRepository;
 
     private Sensor getTestSensor() throws JSONException {
         JSONObject jsonObject1 = new JSONObject();
@@ -67,7 +73,7 @@ public class MailBuilderTests {
         Report report = mailBuilder.buildReport(mailAddress, sensor);
 
         assertEquals("test", report.getReceiverMail());
-        assertEquals("Report for Sensorthings sensor: test-name", report.getSubject());
+        assertEquals("Report for Sensorthings sensor: test-name. /n", report.getSubject());
         //assertEquals("", report.getMessage());
         //TODO: ??
         System.out.println(report.getMessage());
@@ -89,5 +95,18 @@ public class MailBuilderTests {
         String message = body + "/n" + "This E-Mail was sent automatically by the E-Mail Notification System" +
                 " of the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' Project.";
         assertEquals(message, confirmationMail.getMessage());
+    }
+
+    @Configuration
+    @Import(SubscriptionDAO.class)
+    static class TestConfig {
+        @Bean
+        SubscriptionRepository subscriptionRepository() {
+            return mock(SubscriptionRepository.class);
+        }
+        @Bean
+        MailBuilder mailBuilder() {
+            return new MailBuilder();
+        }
     }
 }

@@ -28,6 +28,8 @@ public class SystemLogin {
     )
     private String username;
 
+    public SystemLogin() {}
+
     /**
      * Gets id of the login credentials.
      * @return id of the login credentials.

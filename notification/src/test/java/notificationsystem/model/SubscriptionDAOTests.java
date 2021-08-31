@@ -71,50 +71,25 @@ public class SubscriptionDAOTests {
         return subs;
     }
 
-    private void cleanupAll(List<Subscription> subs) {
-        for (Subscription sub : subs) {
-            subscriptionDAO.delete(sub);
-        }
-    }
-
-    /*@Test
-    void testGetBySubscription() {
-        Subscription subscription = getTestSub();
-        subscriptionDAO.save(subscription);
-
-        Optional<Subscription> toTest = subscriptionDAO.get(subscription);
-
-        assertNotNull(toTest.get());
-        assertEquals(subscription.getSubscriberAddress(), toTest.get().getSubscriberAddress());
-        assertEquals(subscription.getSensorId(), toTest.get().getSensorId());
-        assertEquals(subscription.getSubTime(), toTest.get().getSubTime());
-        assertEquals(subscription.getReportInterval(), toTest.get().getReportInterval());
-        assertEquals(subscription.isToggleAlert(), toTest.get().isToggleAlert());
-
-        subscriptionDAO.delete(subscription);
-    }*/
-
     @Test
     public void testGetByMailAndId() {
-        Subscription subscription = getTestSub();
-        subscriptionDAO.save(subscription);
+        List<Subscription> subscriptions = setupAll();
+        Mockito.when(subscriptionRepository.findAll()).thenReturn(subscriptions);
 
-        Subscription toTest = subscriptionDAO.get(subscription.getSubscriberAddress(), subscription.getSensorId());
+        Subscription toTest = subscriptionDAO.get(subscriptions.get(0).getSubscriberAddress(), subscriptions.get(0).getSensorId());
 
         assertNotNull(toTest);
-        assertEquals(subscription.getSubscriberAddress(), toTest.getSubscriberAddress());
-        assertEquals(subscription.getSensorId(), toTest.getSensorId());
-        assertEquals(subscription.getSubTime(), toTest.getSubTime());
-        assertEquals(subscription.getReportInterval(), toTest.getReportInterval());
-        assertEquals(subscription.isToggleAlert(), toTest.isToggleAlert());
-
-        subscriptionDAO.delete(subscription);
-
+        assertEquals(subscriptions.get(0).getSubscriberAddress(), toTest.getSubscriberAddress());
+        assertEquals(subscriptions.get(0).getSensorId(), toTest.getSensorId());
+        assertEquals(subscriptions.get(0).getSubTime(), toTest.getSubTime());
+        assertEquals(subscriptions.get(0).getReportInterval(), toTest.getReportInterval());
+        assertEquals(subscriptions.get(0).isToggleAlert(), toTest.isToggleAlert());
     }
 
     @Test
     public void testGetAll() {
         List<Subscription> subscriptions = setupAll();
+        Mockito.when(subscriptionRepository.findAll()).thenReturn(subscriptions);
 
         List<Subscription> subs = subscriptionDAO.getAll();
 
@@ -122,21 +97,17 @@ public class SubscriptionDAOTests {
         assertEquals(subscriptions.get(1), subs.get(1));
         assertEquals(subscriptions.get(2), subs.get(2));
         assertEquals(3, subs.size());
-
-        cleanupAll(subscriptions);
     }
 
     @Test
     public void testGetAllSubscribers() {
         List<Subscription> subscriptions = setupAll();
+        Mockito.when(subscriptionRepository.findAll()).thenReturn(subscriptions);
 
         List<String> allSubs = (subscriptionDAO.getAllSubscribers(subscriptions.get(0).getSensorId()));
 
         assertEquals(subscriptions.get(0).getSubscriberAddress(), allSubs.get(0));
-        assertNotEquals(subscriptions.get(1).getSubscriberAddress(), allSubs.get(1));
-        assertEquals(subscriptions.get(2).getSubscriberAddress(), allSubs.get(2));
-
-        cleanupAll(subscriptions);
+        assertEquals(subscriptions.get(2).getSubscriberAddress(), allSubs.get(1));
     }
 
     @Test
@@ -152,6 +123,8 @@ public class SubscriptionDAOTests {
     @Test
     public void testSave() {
         Subscription subscription = getTestSub();
+        //TODO: How to test
+        Mockito.when(subscriptionRepository.save(subscription)).thenReturn(subscription);
 
         subscriptionDAO.save(subscription);
 
@@ -160,6 +133,7 @@ public class SubscriptionDAOTests {
         subscriptionDAO.delete(subscription);
     }
 
+    //TODO: How to test
     @Test
     public void testDelete() {
         Subscription subscription = getTestSub();
