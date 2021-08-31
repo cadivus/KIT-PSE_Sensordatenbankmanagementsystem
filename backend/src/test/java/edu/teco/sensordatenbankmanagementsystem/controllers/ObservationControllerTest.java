@@ -81,14 +81,27 @@ class ObservationControllerTest {
     headers.setContentType(MediaType.APPLICATION_JSON);
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
+
     ResponseEntity<String> response = testRestTemplate.exchange(
         createURLWithPort("/observation/observations/saqn:t:43ae704/?frameStart=2019-01-01&frameEnd=2021-01-01&sort=xyz"), HttpMethod.GET, entity,
         String.class);
-    assertTrue(response.getBody().contains("Unknown error"));
+    if (response.getStatusCode().is5xxServerError()) {
+      assertTrue(response.getBody().contains("Connection to the database failed") | response.getBody().contains("Unknown error"));
+    } else fail();
+    response = testRestTemplate.exchange(
+            createURLWithPort("/observation/observations/xyz/?frameStart=2019-01-01&frameEnd=2021-01-01"), HttpMethod.GET, entity,
+            String.class);
+    if (response.getStatusCode().is5xxServerError()) {
+      assertTrue(response.getBody().contains("Connection to the database failed"));
+    } else {
+
+    }
     response = testRestTemplate.exchange(
         createURLWithPort("/observation/observations/saqn:t:43ae704/?frameStart=2019-0111-01&frameEnd=2021-01-01&obsIds=xyz"), HttpMethod.GET, entity,
         String.class);
-    assertTrue(response.getBody().contains("'2019-0111-01'"));
+    if (response.getStatusCode().is5xxServerError()) {
+      assertTrue(response.getBody().contains("Connection to the database failed") | response.getBody().contains("'2019-0111-01'"));
+    }
 
   }
 
