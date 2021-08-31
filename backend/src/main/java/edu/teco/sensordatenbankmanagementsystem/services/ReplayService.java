@@ -13,7 +13,7 @@ public interface ReplayService {
    * @param id The UUID of the Datastream
    * @return An {@link org.springframework.web.servlet.mvc.method.annotation.SseEmitter}
    */
-  SseEmitter getDataStream(UUID id);
+  SseEmitter getReplay(UUID id);
 
   /**
    * This will delete the Datastream from the database and will make it send its closing message
@@ -21,7 +21,7 @@ public interface ReplayService {
    * @param id The UUID of the Datastream
    */
   @Deprecated
-  void destroyDataStream(UUID id);
+  void destroyReplay(UUID id);
 
   /**
    * This method creates a new SSEEmitter DataStream using the information provided in the parameter
@@ -31,5 +31,5 @@ public interface ReplayService {
    *                    At least sensor(s), speed and start date need to be in here
    * @return The UUID of the newly created Datastream
    */
-  UUID createNewDataStream(Requests information);
+  UUID createNewReplay(Requests information);
 }

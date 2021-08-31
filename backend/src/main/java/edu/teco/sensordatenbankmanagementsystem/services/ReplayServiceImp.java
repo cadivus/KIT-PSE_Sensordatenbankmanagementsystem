@@ -38,7 +38,7 @@ public class ReplayServiceImp implements ReplayService {
    * {@inheritDoc}
    */
   @Transactional()
-  public UUID createNewDataStream(Requests information) {
+  public UUID createNewReplay(Requests information) {
     if (information == null || information.getStart() == null || information.getEnd() == null
         || information.getSensors() == null || information.getSensors().isEmpty()) {
       throw new IllegalArgumentException(
@@ -83,14 +83,14 @@ public class ReplayServiceImp implements ReplayService {
   /**
    * {@inheritDoc}
    */
-  public SseEmitter getDataStream(UUID id) {
+  public SseEmitter getReplay(UUID id) {
     return sseStreams.get(id);
   }
 
   /**
    * {@inheritDoc}
    */
-  public void destroyDataStream(UUID id) {
+  public void destroyReplay(UUID id) {
     sseStreams.remove(id);
   }
 
