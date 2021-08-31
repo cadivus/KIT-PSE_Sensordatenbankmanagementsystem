@@ -6,7 +6,7 @@ import Id from '../material/Id'
 import Thing from '../material/Thing'
 import {getJson, postJsonAsURLGetText} from './communication/restClient'
 import {
-  GET_SUBSCRIPTION_PATH,
+  getSubscriptionsUrl,
   POST_SUBSCRIPTION_PATH,
   POST_UBSUBSCRIBE_PATH,
 } from './communication/notificationUrlCreator'
@@ -40,7 +40,8 @@ class SubscriptionStore {
   private getSubscriptionsFromBackend = (): void => {
     const {subscriptions, _thingStore, _user, unsubscribe: unsubscribeById} = this
     if (_user) {
-      const path = `${GET_SUBSCRIPTION_PATH}/${_user?.email.toString()}`
+      const {email} = _user
+      const path = getSubscriptionsUrl(email)
       getJson(path).then(subscriptionJSON => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         subscriptionJSON.forEach((element: any) => {

@@ -1,6 +1,10 @@
 import DatastreamStore from './DatastreamStore'
-import {getJson, getText} from './communication/restClient'
-import {getJson as getJsonMock, getText as getTextMock} from '../test/mock/store/communication/restClientMock'
+import {getJson, getText, postJsonGetText} from './communication/restClient'
+import {
+  getJson as getJsonMock,
+  getText as getTextMock,
+  postJsonGetText as postJsonGetTextMock
+} from '../test/mock/store/communication/restClientMock'
 import {
   datastreamSensor1Id,
   datastreamSensor2Id,
@@ -25,6 +29,7 @@ jest.mock('./communication/restClient')
 const initValue = () => {
   getJson.mockImplementation(getJsonMock)
   getText.mockImplementation(getTextMock)
+  postJsonGetText.mockImplementation(postJsonGetTextMock)
 
   const datastreamStore = new DatastreamStore()
 
@@ -76,7 +81,6 @@ describe('get datastreams for thing', () => {
     datastreamCollectionMatches(datastreams3, sensor3Datastreams)
   })
 })
-
 
 describe('test datastream implementation', () => {
   it('get datastreams of first sensor', async () => {
