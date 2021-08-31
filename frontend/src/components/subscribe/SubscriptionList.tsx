@@ -99,8 +99,13 @@ const SubscriptionList: FC = () => {
     if (clickedSubscription) {
       clickedSubscription.unsubscribe()
       const index = subscriptionList.indexOf(clickedSubscription)
-      console.log(index)
-      setSubscriptionList(subscriptionList.splice(0, index).concat(subscriptionList.splice(index)))
+      const newArray = new Array<Subscription>()
+      for (let i = 0; i < subscriptionList.length; i += 1) {
+        if (i !== index) {
+          newArray.push(subscriptionList[i])
+        }
+      }
+      setSubscriptionList(newArray)
     }
     setClickedSubscription(null)
     setOpen(false)
