@@ -67,7 +67,7 @@ public class ProxyHelper {
             datastreams.remove(d);
           } */
           try (Stream<Observation> observations = observationRepository
-              .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
+              .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(
                   d.getId(), information.getStart(),
                   information.getEnd())) {
             observations.filter(Objects::nonNull).reduce((current, next) -> {
