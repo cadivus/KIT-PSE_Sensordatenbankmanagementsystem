@@ -153,9 +153,9 @@ class SubscriptionStore {
     const {subscriptions} = this
     if (!subscriptions.has(id.toString())) return false
     if (!this._user) return false
-    subscriptions.delete(id.toString())
     const path = this.getUnsubscriptionPath(this._user?.email.toString(), id.toString())
     postJsonAsURLGetText(path)
+    return subscriptions.delete(id.toString())
   }
 
   getUnsubscriptionPath = (mailAddress: string, thingID: string): string => {

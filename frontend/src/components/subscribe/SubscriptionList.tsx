@@ -96,10 +96,12 @@ const SubscriptionList: FC = () => {
   }
 
   const handleDelete = () => {
-    if (clickedSubscription) clickedSubscription.unsubscribe()
-    subscriptionStore.getSubscriptions().then(newSubscriptionList => {
-      setSubscriptionList(newSubscriptionList)
-    })
+    if (clickedSubscription) {
+      clickedSubscription.unsubscribe()
+      const index = subscriptionList.indexOf(clickedSubscription)
+      console.log(index)
+      setSubscriptionList(subscriptionList.splice(0, index).concat(subscriptionList.splice(index)))
+    }
     setClickedSubscription(null)
     setOpen(false)
   }
