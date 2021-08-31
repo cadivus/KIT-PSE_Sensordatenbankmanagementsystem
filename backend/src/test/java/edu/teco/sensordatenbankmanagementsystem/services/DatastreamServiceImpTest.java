@@ -1,13 +1,17 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +52,22 @@ class DatastreamServiceImpTest {
         java.util.Optional.of(t));
     assertNull(datastreamServiceImp.getDatastream("ds"));
 
+  }
+
+  @Test
+  void getDatastreansTest(){
+    LocalDateTime start = LocalDateTime.now().minusMinutes(10);
+    LocalDateTime end = LocalDateTime.now();
+    Thing t = new Thing();
+    Datastream ds = new Datastream();
+    List<String> list = List.of("things)");
+    ds.setPhenomenonStart(start.plusMinutes(1));
+    ds.setPhenomenonEnd(end.minusMinutes(1));
+    Mockito.when(datastreamRepository.findDatastreamsByThing_IdInOrderByPhenomenonStartDesc(list)).thenReturn(
+        Stream.of(ds));
+    List<Datastream> datastreamList = datastreamServiceImp.getDatastreams(list, start, end).collect(
+        Collectors.toList());
+    assertTrue(datastreamList.contains(ds));
   }
 
   @Configuration

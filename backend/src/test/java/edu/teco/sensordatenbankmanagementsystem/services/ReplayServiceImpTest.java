@@ -74,7 +74,7 @@ class ReplayServiceImpTest {
           replayServiceImp.createNewReplay(requests));
     assertEquals("Start and end can not be the same time", e.getMessage());
     Mockito.doCallRealMethod().when(proxyHelper).sseHelper(null, requests, new SseEmitter());
-    requests.setEnd(LocalDateTime.now());
+    requests.setEnd(LocalDateTime.now().plusMinutes(1));
     var id = replayServiceImp.createNewReplay(requests);
 
     assertNotNull(replayServiceImp.getReplay(id));
