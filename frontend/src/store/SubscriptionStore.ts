@@ -147,6 +147,7 @@ class SubscriptionStore {
   }
 
   private unsubscribe = (id: Id): Promise<boolean> => {
+    // eslint-disable-next-line
     const resultPromise = new Promise<boolean>(async (resolve, reject) => {
       const {subscriptions} = this
       if (!subscriptions.has(id.toString())) return false
