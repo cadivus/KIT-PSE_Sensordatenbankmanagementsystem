@@ -112,7 +112,7 @@ class GraphServiceImpTest {
     void getGraphImageOfThing() {
         Dimension dim = new Dimension(69, 6988);
         Mockito.when(datastreamRepository.findDatastreamsByThing_IdAndObsIdIn("a", List.of(mr.getObsId()))).thenReturn(List.of(mr));
-        Mockito.when(observationRepository.findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(
+        Mockito.when(observationRepository.findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
                 eq(mr.getId()),
                 any(), any(),
                 any()
