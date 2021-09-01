@@ -2,6 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static testutil.TestUtils.createURLWithPort;
 
 import java.util.Objects;
 import org.junit.jupiter.api.Disabled;
@@ -40,7 +41,7 @@ class SensorControllerTest {
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort("/sensor/getAllSensors"), HttpMethod.GET, entity,
+        createURLWithPort(port, "/sensor/getAllSensors"), HttpMethod.GET, entity,
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
@@ -57,7 +58,7 @@ class SensorControllerTest {
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort("/sensor/getAllThings"), HttpMethod.GET, entity,
+        createURLWithPort(port, "/sensor/getAllThings"), HttpMethod.GET, entity,
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
@@ -74,7 +75,7 @@ class SensorControllerTest {
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort("/sensor/sensor/saqn:s:9682e37"), HttpMethod.GET, entity,
+        createURLWithPort(port, "/sensor/sensor/saqn:s:9682e37"), HttpMethod.GET, entity,
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
@@ -91,7 +92,7 @@ class SensorControllerTest {
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort("/sensor/sensor/xyz"), HttpMethod.GET, entity,
+        createURLWithPort(port, "/sensor/sensor/xyz"), HttpMethod.GET, entity,
         String.class);
 
     if (response.getStatusCode().is5xxServerError()) {
@@ -109,8 +110,8 @@ class SensorControllerTest {
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/sensor/active/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&days=10000"),
+        createURLWithPort(port,
+                "/sensor/active/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&days=10000"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -121,7 +122,7 @@ class SensorControllerTest {
       assertEquals("[1]", response.getBody());
     }
     response = testRestTemplate.exchange(
-        createURLWithPort("/sensor/active/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&days=0"),
+        createURLWithPort(port, "/sensor/active/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&days=0"),
         HttpMethod.GET, entity,
         String.class);
     if (response.getStatusCode().is5xxServerError()) {
@@ -139,7 +140,8 @@ class SensorControllerTest {
 
     ResponseEntity<String> response = testRestTemplate.exchange(
         createURLWithPort(
-            "/sensor/active/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&days=-1"),
+                port,
+                "/sensor/active/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&days=-1"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -151,8 +153,8 @@ class SensorControllerTest {
     }
 
     response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/sensor/active/?ids=xyz&days=10"),
+        createURLWithPort(port,
+                "/sensor/active/?ids=xyz&days=10"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -171,7 +173,8 @@ class SensorControllerTest {
 
     ResponseEntity<String> response = testRestTemplate.exchange(
         createURLWithPort(
-            "/sensor/active_rate/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001"),
+                port,
+                "/sensor/active_rate/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -182,8 +185,8 @@ class SensorControllerTest {
       assertTrue(Objects.requireNonNull(response.getBody()).matches("\\[-?\\d+(\\.\\d+)?]"));
     }
     response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/sensor/active_rate/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-30"),
+        createURLWithPort(port,
+                "/sensor/active_rate/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-30"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -201,7 +204,8 @@ class SensorControllerTest {
 
     ResponseEntity<String> response = testRestTemplate.exchange(
         createURLWithPort(
-            "/sensor/active_rate/?ids=xyz"),
+                port,
+                "/sensor/active_rate/?ids=xyz"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -213,8 +217,8 @@ class SensorControllerTest {
     }
 
     response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/sensor/active_rate/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-35"),
+        createURLWithPort(port,
+                "/sensor/active_rate/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-35"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -225,8 +229,8 @@ class SensorControllerTest {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("could not be parsed"));
     }
     response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/sensor/active_rate/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-30&frameEnd=2019-01-01"),
+        createURLWithPort(port,
+                "/sensor/active_rate/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-30&frameEnd=2019-01-01"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -244,8 +248,8 @@ class SensorControllerTest {
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/sensor/stats/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-30&obsIds=saqn:o:PM10"),
+        createURLWithPort(port,
+                "/sensor/stats/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-30&obsIds=saqn:o:PM10"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -256,8 +260,8 @@ class SensorControllerTest {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:o:PM10"));
     }
     response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/sensor/stats/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&obsIds=saqn:o:PM10"),
+        createURLWithPort(port,
+                "/sensor/stats/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&obsIds=saqn:o:PM10"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -268,8 +272,8 @@ class SensorControllerTest {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("saqn:o:PM10"));
     }
     response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/sensor/stats/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2017-12-30&frameEnd=2021-08-30&obsIds=saqn:o:PM10"),
+        createURLWithPort(port,
+                "/sensor/stats/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2017-12-30&frameEnd=2021-08-30&obsIds=saqn:o:PM10"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -288,7 +292,8 @@ class SensorControllerTest {
 
     ResponseEntity<String> response = testRestTemplate.exchange(
         createURLWithPort(
-            "/sensor/stats/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-30&obsIds=xyz"),
+                port,
+                "/sensor/stats/?ids=saqn:t:grimm-aerosol.com:edm80opc:sn19001&frameStart=2020-12-30&obsIds=xyz"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -299,8 +304,8 @@ class SensorControllerTest {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("xyz"));
     }
     response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/sensor/stats/?ids=xyz&frameStart=2020-12-30&obsIds=xyz"),
+        createURLWithPort(port,
+                "/sensor/stats/?ids=xyz&frameStart=2020-12-30&obsIds=xyz"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -319,7 +324,8 @@ class SensorControllerTest {
 
     ResponseEntity<String> response = testRestTemplate.exchange(
         createURLWithPort(
-            "/sensor/thing/saqn:t:grimm-aerosol.com:edm80opc:sn19001"),
+                port,
+                "/sensor/thing/saqn:t:grimm-aerosol.com:edm80opc:sn19001"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -339,7 +345,8 @@ class SensorControllerTest {
 
     ResponseEntity<String> response = testRestTemplate.exchange(
         createURLWithPort(
-            "/sensor/thing/xyz"),
+                port,
+                "/sensor/thing/xyz"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -359,7 +366,8 @@ class SensorControllerTest {
 
     ResponseEntity<String> response = testRestTemplate.exchange(
         createURLWithPort(
-            "/sensor/allThings"),
+                port,
+                "/sensor/allThings"),
         HttpMethod.GET, entity,
         String.class);
 
@@ -369,10 +377,6 @@ class SensorControllerTest {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("\"id\"") && response.getBody()
           .contains("saqn:t"));
     }
-  }
-
-  private String createURLWithPort(String uri) {
-    return "http://localhost:" + port + uri;
   }
 
 }

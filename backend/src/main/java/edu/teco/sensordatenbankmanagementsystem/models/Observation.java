@@ -33,6 +33,7 @@ import java.util.Optional;
 public class Observation {
 
 
+    @CsvIgnore
     @JsonIgnore
     @Transient
     String propertyType;
