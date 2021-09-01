@@ -1,20 +1,23 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {render, waitFor} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import Properties from '../thingInformation/Properties'
-import ThingStore from '../../store/ThingStore'
-import {datastreamSensor1Id, sensor1Datastream1} from "../../test/mock/store/communication/mockData/backend/getJson";
-import {sensor1, sensor1Id} from "../../test/mock/store/communication/mockData/backend/getJson";
+import {datastreamSensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 import Data from './Data'
-import Providers from "../Providers";
+import Providers from '../Providers'
+import Id from '../../material/Id'
 
 jest.mock('../../store/communication/restClient')
+
+const getDatastream = datastreamId => {
+  const datastreamStore = new DatastreamStore()
+  return datastreamStore.getDatastream(new Id(datastreamId))
+}
 
 beforeEach(() => {
   getJson.mockImplementation(getJsonMock)
@@ -22,17 +25,21 @@ beforeEach(() => {
   postJsonGetText.mockImplementation(postJsonGetTextMock)
 })
 
-test('check for informations', async () => {
-  const datastreamStore = new DatastreamStore()
-  const thingStore = new ThingStore(datastreamStore)
-  const thing = await thingStore.getThing(sensor1Id)
-  const datastream = await datastreamStore.getDatastream(datastreamSensor1Id)
+test('check for data', async () => {
+  const datastream = await getDatastream(datastreamSensor1Id)
+  const {container, getAllByTestId} = render(<Providers><Data datastream={datastream} /></Providers>)
 
-  const wrapper = mount(<Providers>
-    <Data datastream={datastream}/></Providers>)
+  // Loading detection
+  await waitFor(() => {
+    expect(getAllByTestId(/tableRow/)[0]).toBeInTheDocument()
+  })
 
-  expect(wrapper.html().includes("Time")).toBe(true)
-  expect(wrapper.html().includes("Data")).toBe(true)
-
-
+  const values = await datastream.getAllValues(25)
+  values.forEach(row => {
+    expect(container.innerHTML.includes(row.value.valueToString())).toBe(true)
+    expect(container.innerHTML.includes(row.value.unit.toString())).toBe(true)
+    expect(container.innerHTML.includes(row.date.getDay())).toBe(true)
+    expect(container.innerHTML.includes(row.date.getHours())).toBe(true)
+    expect(container.innerHTML.includes(row.date.getMinutes())).toBe(true)
+  })
 })
