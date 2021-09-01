@@ -16,7 +16,7 @@ import java.util.Optional;
  * the direct management of subscriptions for the website.
  */
 @Service
-public class SubscriptionDAO implements DAO<Subscription>{
+public class SubscriptionDAO {
 
     private final SubscriptionRepository subscriptionRepository;
 
@@ -26,10 +26,9 @@ public class SubscriptionDAO implements DAO<Subscription>{
     }
 
 
-    @Override
-    public Optional<Subscription> get(Subscription subscription) {
+    /*public Optional<Subscription> get(Subscription subscription) {
         return subscriptionRepository.findById(subscription.getId());
-    }
+    }*/
 
     /**
      * Gets a subscription from the database based of a specified e-mail and sensor ID.
@@ -48,7 +47,6 @@ public class SubscriptionDAO implements DAO<Subscription>{
         return null;
     }
 
-    @Override
     public List<Subscription> getAll() {
         return new ArrayList<>(subscriptionRepository.findAll());
     }

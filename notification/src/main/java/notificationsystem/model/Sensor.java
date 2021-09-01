@@ -61,6 +61,14 @@ public class Sensor {
         return name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getProperties() {
+        return properties;
+    }
+
     /**
      * Gets the coordinates of the sensor.
      * @return coordinates of the sensor.

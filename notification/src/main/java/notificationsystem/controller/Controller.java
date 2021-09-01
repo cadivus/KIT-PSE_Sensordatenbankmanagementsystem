@@ -45,7 +45,7 @@ public class Controller {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate) throws Exception {
+    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate, MailSender mailSender) throws Exception {
         this.mailBuilder = new MailBuilder();
 
         Optional<SystemLogin> loginOptional = systemLoginDAO.getLogin(SYSTEMLOGIN_ID);
@@ -56,7 +56,8 @@ public class Controller {
             throw new Exception(CONSTRUCTOR_ERROR);
         }
 
-        this.mailSender = new MailSender(login.getUsername(), login.getPassword());
+        this.mailSender = mailSender;
+        mailSender.login(login.getUsername(), login.getPassword());
         this.subscriptionDAO = subscriptionDAO;
         this.restTemplate = restTemplate;
     }
@@ -64,6 +65,10 @@ public class Controller {
     @PostConstruct
     public void postConstruct() {
         this.sensorDAO = new SensorDAO(backendUrl, restTemplate);
+    }
+
+    public void setSensorDAO(SensorDAO sensorDAO) {
+        this.sensorDAO = sensorDAO;
     }
 
     /**

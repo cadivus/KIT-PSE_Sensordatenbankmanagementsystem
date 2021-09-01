@@ -16,7 +16,7 @@ import java.util.*;
  * access point to all sensor related data and information.
  */
 @Service
-public class SensorDAO implements DAO<Sensor> {
+public class SensorDAO {
     private final String getThingApi;
     private final String getAllSensorsApi;
     private final String getActiveRateApi;
@@ -43,16 +43,6 @@ public class SensorDAO implements DAO<Sensor> {
         this.restTemplate = restTemplate;
     }
 
-    @Override
-    public Optional<Sensor> get(Sensor sensor) throws Exception {
-        Sensor fetchedSensor = restTemplate.getForObject(getThingApi + sensor.getId(), Sensor.class);
-        if (fetchedSensor != null) {
-            return Optional.of(fetchedSensor);
-        } else {
-            throw new Exception(ERROR_GET);
-        }
-    }
-
     /**
      * Gets a sensor specified by its unique ID from the database.
      * @param sensorID ID of the sensor to be fetched.
@@ -62,7 +52,6 @@ public class SensorDAO implements DAO<Sensor> {
         return restTemplate.getForObject(getThingApi + sensorID, Sensor.class);
     }
 
-    @Override
     public List<Sensor> getAll() {
         Sensor[] sensors = restTemplate.getForObject(getAllSensorsApi, Sensor[].class);
         if (sensors != null) {

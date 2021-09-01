@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -29,7 +30,7 @@ public class CheckerUtil {
     private final static String LOG_ALERT = "Checking for sensor-failure";
     private final static String LOG_REPORT = "Checking for reports";
     private final static String LOG_ERROR = "Failed to get data from backend API";
-    private final String checkActiveUrl;
+    private String checkActiveUrl;
     //Sends alert if a sensor has been inactive for three days.
     private final static int INACTIVE_DAYS_THRESHOLD = 3;
     private final static int SENSOR_ACTIVE = 1;
@@ -48,7 +49,7 @@ public class CheckerUtil {
         this.sensorDAO = sensorDAO;
         this.restTemplate = restTemplate;
         this.sensorActiveDict = new HashMap<>();
-        this.checkActiveUrl = backendUrl + "/active";
+        this.checkActiveUrl = "http://backend:8081/active";
     }
 
     /**
@@ -78,10 +79,12 @@ public class CheckerUtil {
         }
         Map<String, Integer> sensorCurrentlyActiveDict = new HashMap<>();
 
+        boolean wasEmpty = false;
         if(sensorActiveDict.isEmpty()) {
         for(int i = 0; i < sensorIds.size(); i++) {
             sensorActiveDict.put(sensorIds.get(i), sensorStatus.get(i));
             }
+        wasEmpty = true;
         }
         for(int i = 0; i < sensorIds.size(); i++) {
             sensorCurrentlyActiveDict.put(sensorIds.get(i), sensorStatus.get(i));
@@ -89,7 +92,8 @@ public class CheckerUtil {
 
         //Check which sensors which were active are currently inactive
         for(String id : sensorIds) {
-            if (sensorActiveDict.get(id).equals(SENSOR_ACTIVE) && sensorCurrentlyActiveDict.get(id).equals(SENSOR_INACTIVE)) {
+            if ((sensorActiveDict.get(id).equals(SENSOR_ACTIVE) && sensorCurrentlyActiveDict.get(id).equals(SENSOR_INACTIVE))
+            || wasEmpty && sensorActiveDict.get(id).equals(SENSOR_INACTIVE)) {
                 controller.sendAlert(id);
             }
         }

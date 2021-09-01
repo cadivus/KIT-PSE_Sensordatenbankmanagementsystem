@@ -1,6 +1,7 @@
 package notificationsystem.controller;
 
 import notificationsystem.view.EMail;
+import org.springframework.stereotype.Component;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -14,6 +15,7 @@ import java.util.Properties;
  * e-mails to the recipients. The e-mails are sent via a normal gmail account. For this end, the class contains methods
  * for a login procedure and the sending of the finished e-mails.
  */
+@Component
 public class MailSender {
 
     private final static String SEND_STATE_ERROR = "Has to be logged in to send e-mails.";
@@ -21,13 +23,9 @@ public class MailSender {
     private Session session;
 
     /**
-     * Calling the constructor of the MailSender class constructs a new instance of the class and performs a log-in
-     * with the given log-in data.
-     * @param username e-mail with which to log-in.
-     * @param password password for the given e-mail.
+     *
      */
-    public MailSender(String username, String password) {
-        login(username, password);
+    public MailSender() {
     }
 
     /**
@@ -36,7 +34,7 @@ public class MailSender {
      * @param username username used for authentication purposes.
      * @param password password used for authentication purposes.
      */
-    private void login(String username, String password) {
+    public void login(String username, String password) {
         Properties properties = new Properties();
 
         properties.put("mail.smtp.auth", "true");
@@ -77,7 +75,7 @@ public class MailSender {
         message.setText(mail.getMessage(), "UTF-8");
         message.setSentDate(new Date());
 
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getReceiverMails(), false));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getReceiverMail(), false));
 
         Transport.send(message);
     }
