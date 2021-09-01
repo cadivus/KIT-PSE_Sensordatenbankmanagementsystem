@@ -1,5 +1,5 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {render} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
@@ -7,7 +7,7 @@ import {
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
 import Providers from '../Providers'
-import LoginView from "./LoginView";
+import LoginView from './LoginView'
 
 jest.mock('../../store/communication/restClient')
 
@@ -17,9 +17,13 @@ beforeEach(() => {
   postJsonGetText.mockImplementation(postJsonGetTextMock)
 })
 
-test('check for things', async () => {
-  const wrapper = mount(<Providers><LoginView /></Providers>)
+test('check for elements of step 1', async () => {
+  const {getByTestId} = render(
+    <Providers>
+      <LoginView />
+    </Providers>
+  )
 
-  expect(wrapper.html().includes("Sign in")).toBe(true)
-
+  expect(getByTestId(/first-login-button/)).toBeInTheDocument()
+  expect(getByTestId(/login-email-field/)).toBeInTheDocument()
 })
