@@ -42,7 +42,7 @@ const Loading = () => {
           <Grid container spacing={3} className={classes.grid}>
             <Grid item xs={12} className={classes.grid} />
             <Grid item xs={12} className={classes.grid}>
-              <CircularProgress className={classes.progress} />
+              <CircularProgress stillLoading="true" className={classes.progress} />
             </Grid>
             <Grid item xs={12} className={classes.grid}>
               <p>Loading...</p>
