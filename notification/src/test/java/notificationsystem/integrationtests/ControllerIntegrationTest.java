@@ -150,7 +150,7 @@ public class ControllerIntegrationTest {
             systemLogin.setUsername("sensornotificationsystemPSE@gmail.com");
             systemLogin.setPassword("cKqp4Wa83pLddBv");
             Mockito.when(systemLoginRepository().findById((long)1)).thenReturn(Optional.of(systemLogin));
-            return new Controller(systemLoginDAO(), subscriptionDAO(), restTemplate(), mailSender());
+            return new Controller(systemLoginDAO(), subscriptionDAO(), restTemplate(), mailSender(), sensorDAO());
         }
         @Bean
         SystemLoginDAO systemLoginDAO() {
