@@ -7,7 +7,6 @@ import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservedPropertyRepository;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
-import edu.teco.sensordatenbankmanagementsystem.util.interpolation.NewtonInterpolator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,9 +17,11 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Sort;
 
 import javax.persistence.EntityManager;
 import java.awt.*;
@@ -28,7 +29,6 @@ import java.awt.image.RenderedImage;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,6 +46,7 @@ class GraphServiceImpTest {
     static Datastream mr = new Datastream();
     static List<Observation> obs = new ArrayList<>();
     static LocalDateTime now = LocalDateTime.now();
+
     @BeforeAll
     public static void setup()
     {
@@ -63,14 +64,17 @@ class GraphServiceImpTest {
     }
 
     @Autowired
-    GraphServiceImp graphServiceImp;
+    GraphService graphServiceImp;
 
-    @MockBean
-    private ObservationService observationService;
+    @Autowired
+    @SpyBean
+    private ObservationServiceImp observationService;
     @MockBean
     private ObservationRepository observationRepository;
     @MockBean
     private DatastreamRepository datastreamRepository;
+    @MockBean
+    private ObservedPropertyRepository observedPropertyRepository;
 
     @Test
     void getGraphImageOfThingNoInterpolationPoints() {
@@ -112,7 +116,7 @@ class GraphServiceImpTest {
                 eq(mr.getId()),
                 any(), any(),
                 any()
-        )).thenReturn(obs.stream());
+        )).thenAnswer(a->obs.stream());
         RenderedImage graphImage = graphServiceImp.getGraphImageOfThing(
                 "a",
                 "b",
@@ -124,7 +128,6 @@ class GraphServiceImpTest {
                 3,
                 LagrangeInterpolator.getInstance()
         );
-
         assertEquals(dim.getWidth(), graphImage.getWidth());
         assertEquals(dim.getHeight(), graphImage.getHeight());
     }
@@ -136,12 +139,6 @@ class GraphServiceImpTest {
         EntityManager entityManager;
 
         @Bean
-        ObservationService observationService() {
-            ObservationService observationService = mock(ObservationService.class);
-            return observationService;
-        }
-
-        @Bean
         ObservationRepository observationRepository() {
             ObservationRepository observationRepository = mock(ObservationRepository.class);
             return observationRepository;
@@ -151,6 +148,12 @@ class GraphServiceImpTest {
         DatastreamRepository datastreamRepository() {
             DatastreamRepository datastreamRepository = mock(DatastreamRepository.class);
             return datastreamRepository;
+        }
+
+        @Bean
+        ObservedPropertyRepository observedPropertyRepository() {
+            ObservedPropertyRepository observedPropertyRepository = mock(ObservedPropertyRepository.class);
+            return observedPropertyRepository;
         }
 
     }

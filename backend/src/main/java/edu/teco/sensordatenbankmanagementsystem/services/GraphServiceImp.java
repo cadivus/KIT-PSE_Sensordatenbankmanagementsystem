@@ -94,14 +94,15 @@ public class GraphServiceImp implements GraphService {
             o->normalizer.apply(unnormalizedXExtractor.apply(o));
     Function<Observation, Double> fExtractor = Observation::getResultNumber;
 
-    BiFunction<Double, List<Observation>, Observation> sampleGetter = (Double a, List<Observation> o) -> observationService.getObservationsByThingId(
-            thingId,
-            o.size() + 1,
-            xSort.descending(),
-            List.of(obsId),
-            finalFrameStart,
-            LocalDateTime.ofEpochSecond((long)(double)a, 0, ZonedDateTime.now(ZONE_ID).getOffset())
-    ).stream().filter(oo->!o.contains(oo)).findFirst().orElse(null);
+    BiFunction<Double, List<Observation>, Observation> sampleGetter =
+            (Double a, List<Observation> o) -> observationService.getObservationsByThingId(
+                    thingId,
+                    o.size() + 1,
+                    xSort.descending(),
+                    List.of(obsId),
+                    finalFrameStart,
+                    LocalDateTime.ofEpochSecond((long) (double) a, 0, ZonedDateTime.now(ZONE_ID).getOffset())
+            ).stream().filter(oo -> !o.contains(oo)).findFirst().orElse(null);
 
     List<Observation> sample = getApproximateTschebyscheffSamplingPoints(
         sampleGetter,
