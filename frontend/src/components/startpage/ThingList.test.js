@@ -24,7 +24,7 @@ test('check for things', async () => {
 
   // Loading detection
   await waitFor(() => {
-    expect(wrapper.html().includes('stillLoading="true"')).toBe(false)
+    expect(wrapper.html().includes('data-testid="loadingSpinner"')).toBe(false)
   })
 
   expect(wrapper.html().includes(sensor1.name)).toBe(true)
