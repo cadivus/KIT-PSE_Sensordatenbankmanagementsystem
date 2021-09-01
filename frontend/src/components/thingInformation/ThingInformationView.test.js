@@ -24,7 +24,7 @@ beforeEach(() => {
   reactRouterDom.useHistory = jest.fn().mockReturnValue({push: pushMock})
 })
 
-describe('test with thing 1', async () => {
+describe('test with thing 1', () => {
   beforeEach(() => {
     reactRouterDom.useParams = jest.fn().mockReturnValue({thingId: sensor1Id})
   })
