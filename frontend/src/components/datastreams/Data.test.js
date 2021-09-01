@@ -27,7 +27,11 @@ beforeEach(() => {
 
 test('check for data', async () => {
   const datastream = await getDatastream(datastreamSensor1Id)
-  const {container, getAllByTestId} = render(<Providers><Data datastream={datastream} /></Providers>)
+  const {container, getAllByTestId} = render(
+    <Providers>
+      <Data datastream={datastream} />
+    </Providers>
+  )
 
   // Loading detection
   await waitFor(() => {
