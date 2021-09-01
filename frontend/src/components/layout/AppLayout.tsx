@@ -59,14 +59,24 @@ const AppLayout: FC = ({children}) => {
             <Typography variant="h6">{language}</Typography>
           </Button>
           {!userStore?.user && (
-            <Button className={classes.loginButton} color="inherit" onClick={() => history.push('/login')}>
+            <Button
+              data-testid="appbar-login-button"
+              className={classes.loginButton}
+              color="inherit"
+              onClick={() => history.push('/login')}
+            >
               <Typography variant="h6">
                 <FormattedMessage id="appbar.login" />
               </Typography>
             </Button>
           )}
           {userStore?.user && (
-            <Button className={classes.loginButton} color="inherit" onClick={logout}>
+            <Button
+              data-testid="appbar-logout-button"
+              className={classes.loginButton}
+              color="inherit"
+              onClick={logout}
+            >
               <Typography variant="h6">
                 <FormattedMessage id="appbar.logout" />
               </Typography>

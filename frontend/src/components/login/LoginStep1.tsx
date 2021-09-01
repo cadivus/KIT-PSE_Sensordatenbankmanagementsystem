@@ -59,7 +59,7 @@ const LoginStep1 = ({setMailAddress}: {setMailAddress: (mailString: string) => v
             autoComplete="email"
             autoFocus
             onInput={e => setMailString((e.target as HTMLTextAreaElement).value)}
-            data-testid="login-email-field"
+            inputProps={{'data-testid': 'login-email-field'}}
           />
           <Button
             data-testid="first-login-button"

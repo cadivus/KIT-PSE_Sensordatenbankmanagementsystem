@@ -59,7 +59,7 @@ const LoginStep2 = ({setAuthCode}: {setAuthCode: (authCode: string) => void}) =>
             id="password"
             autoComplete="current-password"
             onInput={e => setCodeString((e.target as HTMLTextAreaElement).value)}
-            data-testid="login-code-field"
+            inputProps={{'data-testid': 'login-code-field'}}
           />
           <Button
             data-testid="second-login-button"
