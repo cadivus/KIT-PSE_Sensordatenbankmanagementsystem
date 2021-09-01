@@ -99,7 +99,7 @@ abstract class Subscription extends EventEmitter {
    *
    * @return True on success
    */
-  public abstract unsubscribe(): boolean
+  public abstract unsubscribe(): Promise<boolean>
 }
 
 export default Subscription

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 
 import javax.servlet.MultipartConfigElement;
 
@@ -53,6 +52,7 @@ public class WebConfig implements WebMvcConfigurer {
      *
      * E.g. /home could be directed to /WEB-INF/home.jsp if the prefix is /WEB-INF/views and the suffix is .jsp
      */
+
     public ViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();
         bean.setPrefix("/WEB-INF/");

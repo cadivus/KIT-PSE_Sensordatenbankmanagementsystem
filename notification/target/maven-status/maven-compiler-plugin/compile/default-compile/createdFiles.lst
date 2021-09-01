@@ -12,7 +12,6 @@ notificationsystem/view/ConfirmationMail.class
 notificationsystem/Application.class
 notificationsystem/model/SubscriptionRepository.class
 notificationsystem/controller/MailSender.class
-notificationsystem/model/DAO.class
 notificationsystem/controller/Controller.class
 notificationsystem/model/SystemLoginRepository.class
 notificationsystem/model/Sensor.class

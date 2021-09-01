@@ -62,7 +62,7 @@ abstract class Thing {
    *
    * @return true, when the thing is active. false otherwise
    */
-  public abstract isActive(): ThingState
+  public abstract isActive(): Promise<ThingState>
 
   public abstract getDatastreams(): Promise<Array<Datastream>>
 }

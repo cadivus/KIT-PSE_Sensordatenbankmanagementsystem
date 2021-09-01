@@ -1,5 +1,4 @@
 import Thing, {ThingState} from '../material/Thing'
-import SensorValue from '../material/SensorValue'
 import ThingName from '../material/ThingName'
 import Id from '../material/Id'
 import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
@@ -7,7 +6,6 @@ import {getJson} from './communication/restClient'
 import ThingProperty from '../material/ThingProperty'
 import Location from '../material/Location'
 import LocationWithAddress from '../material/LocationWithAddress'
-import Unit from '../material/Unit'
 import DatastreamStore from './DatastreamStore'
 import Datastream from '../material/Datastream'
 
@@ -22,8 +20,6 @@ class ThingStore {
    */
   private _things: Map<string, Thing>
 
-  private _lastUpdate = 0
-
   private _datastreamStore: DatastreamStore
 
   constructor(datastreamStore: DatastreamStore) {
@@ -33,10 +29,25 @@ class ThingStore {
     getThingsFromBackend()
   }
 
-  get things(): Array<Thing> {
+  get things(): Promise<Array<Thing>> {
     const {getThingsFromBackend} = this
-    getThingsFromBackend()
 
+    const resultPromise = new Promise<Array<Thing>>((resolve, reject) => {
+      getThingsFromBackend().then(things => {
+        const result = new Array<Thing>()
+
+        things.forEach(e => {
+          result.push(e)
+        })
+
+        resolve(result)
+      })
+    })
+
+    return resultPromise
+  }
+
+  get cachedThings(): Array<Thing> {
     const {_things} = this
     const result = new Array<Thing>()
 
@@ -50,35 +61,40 @@ class ThingStore {
   /**
    * Gets things from the backend.
    */
-  private getThingsFromBackend = (): void => {
+  private getThingsFromBackend = (): Promise<Map<string, Thing>> => {
     const {_things, createThing, applyProperties, parseLocation} = this
-    getJson(ALL_THINGS).then(thingJSON => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      thingJSON.forEach((element: any) => {
-        const id = new Id(element.id)
-        const name = new ThingName(element.name)
 
-        let existingThing = _things.get(id.toString())
-        if (!existingThing) {
-          let location = new Location(0, 0)
-          if (element.locations && element.locations[0]) {
-            const {name: address} = element.locations[0]
-            const jsonString = element.locations[0].location
-            location = parseLocation(jsonString, address)
+    const resultPromise = new Promise<Map<string, Thing>>((resolve, reject) => {
+      getJson(ALL_THINGS).then(thingJSON => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        thingJSON.forEach((element: any) => {
+          const id = new Id(element.id)
+          const name = new ThingName(element.name)
+
+          let existingThing = _things.get(id.toString())
+          if (!existingThing) {
+            let location = new Location(0, 0)
+            if (element.locations && element.locations[0]) {
+              const {name: address} = element.locations[0]
+              const jsonString = element.locations[0].location
+              location = parseLocation(jsonString, address)
+            }
+            existingThing = createThing(id, name, location)
+            _things.set(id.toString(), existingThing)
+          } else {
+            existingThing.name = name
           }
-          existingThing = createThing(id, name, location)
-          _things.set(id.toString(), existingThing)
-        } else {
-          existingThing.name = name
-        }
-        if (element.properties !== null && element.properties !== 'null') {
-          applyProperties(existingThing, element.properties)
-        }
-        existingThing.description = element.description ? element.description : ''
-      })
+          if (element.properties !== null && element.properties !== 'null') {
+            applyProperties(existingThing, element.properties)
+          }
+          existingThing.description = element.description ? element.description : ''
+        })
 
-      this._lastUpdate = Date.now()
+        resolve(_things)
+      })
     })
+
+    return resultPromise
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -106,21 +122,21 @@ class ThingStore {
     const {_datastreamStore} = this
 
     const result = new (class extends Thing {
-      private activeState = ThingState.Unknown
+      isActive(): Promise<ThingState> {
+        const resultPromise = new Promise<ThingState>((resolve, reject) => {
+          getJson(getActiveStateUrl(id))
+            .then(thingJSON => {
+              const jsonState = thingJSON[0]
+              const activeState =
+                jsonState === true ? ThingState.Online : jsonState === false ? ThingState.Offline : ThingState.Unknown
+              resolve(activeState)
+            })
+            .catch(() => {
+              resolve(ThingState.Unknown)
+            })
+        })
 
-      isActive(): ThingState {
-        try {
-          getJson(getActiveStateUrl(id)).then(thingJSON => {
-            const jsonState = thingJSON[0]
-            this.activeState =
-              jsonState === true ? ThingState.Online : jsonState === false ? ThingState.Offline : ThingState.Unknown
-          })
-        } catch (e) {
-          this.activeState = ThingState.Unknown
-        }
-
-        const {activeState} = this
-        return activeState
+        return resultPromise
       }
 
       getDatastreams(): Promise<Array<Datastream>> {
@@ -128,20 +144,24 @@ class ThingStore {
       }
     })(name, id, location)
 
-    result.isActive()
-
     return result
   }
 
-  getThing = (id: Id): Thing | undefined => {
-    const {_things} = this
+  getThing = (id: Id): Promise<Thing> => {
+    const {things} = this
 
-    return _things.get(id.toString())
-  }
+    const resultPromise = new Promise<Thing>((resolve, reject) => {
+      things.then(thingsList => {
+        const {_things} = this
+        const result = _things.get(id.toString())
+        if (result) {
+          resolve(result)
+        }
+        reject()
+      })
+    })
 
-  get lastUpdate(): number {
-    const {_lastUpdate} = this
-    return _lastUpdate
+    return resultPromise
   }
 }
 

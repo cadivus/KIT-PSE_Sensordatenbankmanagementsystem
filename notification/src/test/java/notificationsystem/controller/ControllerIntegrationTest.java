@@ -1,6 +1,7 @@
 package notificationsystem.controller;
 
 
+import com.icegreen.greenmail.user.UserImpl;
 import notificationsystem.model.*;
 import org.junit.Test;
 
@@ -13,11 +14,13 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.client.RestTemplate;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -58,7 +61,8 @@ public class ControllerIntegrationTest {
     public void testGetConfirmCode() throws Exception {
 
         MvcResult result = mockMvc.perform( MockMvcRequestBuilders.get("http://localhost:8082/getConfirmCode/test")
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                        .with(user("frontend").password("frontend").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -68,7 +72,9 @@ public class ControllerIntegrationTest {
     @Test
     public void testPostSubscription() throws Exception {
         mockMvc.perform( MockMvcRequestBuilders.post("http://localhost:8082/postSubscription?mailAddress=test&sensorID=test-id&reportInterval=7&toggleAlert=true")
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                        .with(user("frontend").password("frontend").roles("ADMIN"))
+                        .with(csrf()))
                 .andExpect(status().isOk());
     }
 
@@ -83,7 +89,9 @@ public class ControllerIntegrationTest {
         Mockito.when(subscriptionRepository.findAll()).thenReturn(subs);
 
         mockMvc.perform( MockMvcRequestBuilders.post("http://localhost:8082/postUnsubscribe?mailAddress=test&sensorID=test-id")
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                        .with(user("frontend").password("frontend").roles("ADMIN"))
+                        .with(csrf()))
                 .andExpect(status().isOk());
 
         verify(subscriptionRepository).delete(subscription);
@@ -102,7 +110,8 @@ public class ControllerIntegrationTest {
         Mockito.when(subscriptionRepository.findAll()).thenReturn(subs);
 
         mockMvc.perform( MockMvcRequestBuilders.get("http://localhost:8082/getSubscriptions/test")
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                        .with(user("frontend").password("frontend").roles("ADMIN")))
                 .andExpect(status().isOk());
     }
 

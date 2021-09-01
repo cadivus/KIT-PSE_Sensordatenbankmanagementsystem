@@ -3,7 +3,7 @@ import DatastreamRow from '../material/DatastreamRow'
 import Id from '../material/Id'
 import Unit from '../material/Unit'
 import {getJson, getText} from './communication/restClient'
-import {getAllThingDatastreamsUrl, getExportDatastreamUrl} from './communication/backendUrlCreator'
+import {getAllThingDatastreamsUrl, getDatastreamUrl, getExportDatastreamUrl} from './communication/backendUrlCreator'
 import DatastreamName from '../material/DatastreamName'
 import SensorValue from '../material/SensorValue'
 
@@ -18,7 +18,7 @@ class DatastreamStore {
   }
 
   public getDatastreams = (thingId: Id): Promise<Array<Datastream>> => {
-    const {_datastreams, implementDatastream} = this
+    const {_datastreams, implementDatastream, parseDatastream} = this
     const url = getAllThingDatastreamsUrl(thingId)
 
     const resultPromise = new Promise<Array<Datastream>>((resolve, reject) => {
@@ -29,16 +29,8 @@ class DatastreamStore {
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           datastreamJSON.forEach((element: any) => {
-            const id = new Id(element.id)
-            const unit = new Unit(element.unit)
-            const name = new DatastreamName(element.name)
-
-            let existingDatastream = _datastreams.get(id.toString())
-            if (!existingDatastream) {
-              existingDatastream = implementDatastream(id, unit, name)
-              _datastreams.set(id.toString(), existingDatastream)
-            }
-            result.push(existingDatastream)
+            const datastream = parseDatastream(element)
+            result.push(datastream)
           })
 
           return result
@@ -51,9 +43,43 @@ class DatastreamStore {
     return resultPromise
   }
 
-  getDatastream = (id: Id): Datastream | undefined => {
-    const {_datastreams} = this
-    return _datastreams.get(id.toString())
+  getDatastream = (id: Id): Promise<Datastream> => {
+    const {_datastreams, parseDatastream} = this
+
+    const resultPromise = new Promise<Datastream>((resolve, reject) => {
+      const datastream = _datastreams.get(id.toString())
+      if (datastream) {
+        resolve(datastream)
+      } else {
+        const url = getDatastreamUrl(id)
+        getJson(url)
+          .then(json => {
+            const result = parseDatastream(json)
+            resolve(result)
+          })
+          .catch(() => {
+            reject()
+          })
+      }
+    })
+
+    return resultPromise
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private parseDatastream = (element: any): Datastream => {
+    const {_datastreams, implementDatastream} = this
+    const id = new Id(element.id)
+    const unit = new Unit(element.unit)
+    const name = new DatastreamName(element.name)
+
+    let existingDatastream = _datastreams.get(id.toString())
+    if (!existingDatastream) {
+      existingDatastream = implementDatastream(id, unit, name)
+      _datastreams.set(id.toString(), existingDatastream)
+    }
+
+    return existingDatastream
   }
 
   private implementDatastream = (id: Id, unit: Unit, name: DatastreamName): Datastream => {
@@ -70,7 +96,10 @@ class DatastreamStore {
               const json = csvToJson.fieldDelimiter(',').csvStringToJson(csv)
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               json.forEach((row: any) => {
-                const date = new Date(row.RESULTTIME)
+                let dateString = row.RESULTTIME
+                if (dateString === '') dateString = row.PHENOMENONEND
+
+                const date = new Date(dateString)
                 const value = new SensorValue(row.RESULTNUMBER, unit)
 
                 const datastreamRow: DatastreamRow = {value, date}

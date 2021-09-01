@@ -4,12 +4,8 @@ import ThingStore from './ThingStore'
 import NotificationLevel from '../material/NotificationLevel'
 import Id from '../material/Id'
 import Thing from '../material/Thing'
-import {getJson, postJsonAsURLGetText} from './communication/restClient'
-import {
-  GET_SUBSCRIPTION_PATH,
-  POST_SUBSCRIPTION_PATH,
-  POST_UBSUBSCRIBE_PATH,
-} from './communication/notificationUrlCreator'
+import {getJson, postJsonGetText} from './communication/restClient'
+import {getPostSubscriptionPath, getSubscriptionsUrl, getUnsubscribePath} from './communication/notificationUrlCreator'
 
 /**
  * This is the storage for subscriptions.
@@ -37,19 +33,22 @@ class SubscriptionStore {
   /**
    * Gets the subscriptions from the backend.
    */
-  private getSubscriptionsFromBackend = (): void => {
+  private getSubscriptionsFromBackend = (): Promise<void> => {
     const {subscriptions, _thingStore, _user, unsubscribe: unsubscribeById} = this
-    if (_user) {
-      const path = `${GET_SUBSCRIPTION_PATH}/${_user?.email.toString()}`
-      getJson(path).then(subscriptionJSON => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        subscriptionJSON.forEach((element: any) => {
-          const directNotification = element.toggleAlert
-          const notifcationLevel = new NotificationLevel(element.reportInterval)
-          const id = new Id(`${element.sensorId}`)
-          const idStr = id.toString()
-          const thing = _thingStore.getThing(id)
-          if (thing) {
+
+    const resultPromise = new Promise<void>((resolve, reject) => {
+      if (_user) {
+        const {email} = _user
+        const path = getSubscriptionsUrl(email)
+        getJson(path).then(async subscriptionJSON => {
+          // eslint-disable-next-line
+          for (const element of subscriptionJSON) {
+            const directNotification = element.toggleAlert
+            const notifcationLevel = new NotificationLevel(element.reportInterval)
+            const id = new Id(`${element.sensorId}`)
+            const idStr = id.toString()
+            // eslint-disable-next-line no-await-in-loop
+            const thing = await _thingStore.getThing(id)
             const subs = new (class extends Subscription {
               unsubscribe(): boolean {
                 return unsubscribeById(id)
@@ -57,26 +56,12 @@ class SubscriptionStore {
             })(id, thing, directNotification, notifcationLevel, _user)
             subscriptions.set(idStr, subs)
           }
+          resolve()
         })
-      })
-    }
-    /*
-    if (_user && (subscriptions.size === 0 || subscriptions.values().next().value.owner !== this._user)) {
-      subscriptions.clear()
-      for (let i = 1; i <= _thingStore.things.length; i += 1) {
-        const thingList = _thingStore.things.slice(0, i).reverse()
-        const directNotification = i % 2 === 1
-        const id = new Id(`${_user.email.email}-0-${i}`)
-        const idStr = id.toString()
-        const subs = new (class extends Subscription {
-          unsubscribe(): boolean {
-            return unsubscribeById(id)
-          }
-        })(id, thingList, directNotification, new NotificationLevel(i), _user)
-        subscriptions.set(idStr, subs)
       }
-    }
-     */
+    })
+
+    return resultPromise
   }
 
   /**
@@ -84,20 +69,28 @@ class SubscriptionStore {
    *
    * @return List with the subscriptions.
    */
-  getSubscriptions = (): Array<Subscription> => {
+  getSubscriptions = (): Promise<Array<Subscription>> => {
     const {getSubscriptionsFromBackend} = this
 
-    if (!this._user) return []
+    const resultPromise = new Promise<void>((resolve, reject) => {
+      if (!this._user) {
+        resolve([])
+        return
+      }
 
-    getSubscriptionsFromBackend()
-    const {subscriptions} = this
-    const result = new Array<Subscription>()
+      getSubscriptionsFromBackend().then(() => {
+        const {subscriptions} = this
+        const result = new Array<Subscription>()
 
-    subscriptions.forEach(e => {
-      result.push(e)
+        subscriptions.forEach(e => {
+          result.push(e)
+        })
+
+        resolve(result)
+      })
     })
 
-    return result
+    return resultPromise
   }
 
   getSubscription = (id: Id): Subscription | undefined => {
@@ -130,48 +123,41 @@ class SubscriptionStore {
     if (!_user) return null
 
     const result = new (class extends Subscription {
-      unsubscribe(): boolean {
+      unsubscribe(): Promise<boolean> {
         return unsubscribeById(id)
       }
     })(id, thing, directNotification, notificationLevel, _user)
     subscriptions.set(id.toString(), result)
     const setting = {
-      mailAddress: _user.email.toString(),
-      sensorID: thing.id.toString(),
+      mailAddress: _user.email,
+      sensorID: thing.id,
       reportInterval: notificationLevel.days,
       directNotification: directNotification.valueOf(),
     }
-    postJsonAsURLGetText(
-      this.getSubscriptionPath(
+    postJsonGetText(
+      getPostSubscriptionPath(
         setting.mailAddress,
         setting.sensorID,
         setting.reportInterval,
         setting.directNotification,
       ),
+      {},
     )
     return result
   }
 
-  private unsubscribe = (id: Id): boolean => {
-    const {subscriptions} = this
-    if (!subscriptions.has(id.toString())) return false
-    if (!this._user) return false
-    const path = this.getUnsubscriptionPath(this._user?.email.toString(), id.toString())
-    postJsonAsURLGetText(path)
-    return subscriptions.delete(id.toString())
-  }
+  private unsubscribe = (id: Id): Promise<boolean> => {
+    // eslint-disable-next-line
+    const resultPromise = new Promise<boolean>(async (resolve, reject) => {
+      const {subscriptions} = this
+      if (!subscriptions.has(id.toString())) return false
+      if (!this._user) return false
+      const path = getUnsubscribePath(this._user.email, id)
+      await postJsonGetText(path, {})
+      resolve(subscriptions.delete(id.toString()))
+    })
 
-  getUnsubscriptionPath = (mailAddress: string, thingID: string): string => {
-    return `${POST_UBSUBSCRIBE_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}`
-  }
-
-  getSubscriptionPath = (
-    mailAddress: string,
-    thingID: string,
-    notificationLevel: number,
-    directNotification: boolean,
-  ): string => {
-    return `${POST_SUBSCRIPTION_PATH}?mailAddress=${mailAddress}&sensorID=${thingID}&reportInterval=${notificationLevel}&toggleAlert=${directNotification}`
+    return resultPromise
   }
 }
 

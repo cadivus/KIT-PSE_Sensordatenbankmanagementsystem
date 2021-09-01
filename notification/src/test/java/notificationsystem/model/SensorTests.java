@@ -41,5 +41,4 @@ public class SensorTests {
             return mock(SubscriptionRepository.class);
         }
     }
-
 }
