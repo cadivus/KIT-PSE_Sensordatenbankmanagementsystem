@@ -79,7 +79,7 @@ const ThingInformationView: FC = () => {
     })
   }
 
-  if (loading) return <Loading />
+  if (loading) return <Loading data-testid="loadingPage" />
   if (!thing) return <ErrorHandling />
 
   return (

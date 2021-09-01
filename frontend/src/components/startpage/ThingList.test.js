@@ -9,7 +9,6 @@ import {
 import Providers from '../Providers'
 import ThingList from './ThingList'
 import {waitFor} from '@testing-library/react'
-import {Checkbox} from '@material-ui/core'
 import {sensor1, sensor2, sensor3} from '../../test/mock/store/communication/mockData/backend/getJson'
 
 jest.mock('../../store/communication/restClient')
@@ -25,7 +24,7 @@ test('check for things', async () => {
 
   // Loading detection
   await waitFor(() => {
-    wrapper.containsMatchingElement(<Checkbox />)
+    expect(wrapper.html().includes('data-testid="loadingSpinner"')).toBe(false)
   })
 
   expect(wrapper.html().includes(sensor1.name)).toBe(true)
