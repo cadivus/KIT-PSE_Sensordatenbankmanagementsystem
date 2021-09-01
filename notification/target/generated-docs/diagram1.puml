@@ -46,14 +46,8 @@ class notificationsystem.controller.Controller {
 class notificationsystem.controller.MailSender {
 	{field} {static} -SEND_STATE_ERROR : String
 	{field} -session : javax.mail.Session
-	{method} -login ( paramString1 : String , paramString2 : String ) : void
+	{method} +login ( paramString1 : String , paramString2 : String ) : void
 	{method} +send ( paramEMail1 : notificationsystem.view.EMail ) : void
-}
-
-
-interface notificationsystem.model.DAO {
-	{method}  {abstract} +get ( paramObject1 : Object ) : java.util.Optional
-	{method}  {abstract} +getAll () : java.util.List
 }
 
 
@@ -82,7 +76,8 @@ class notificationsystem.model.Sensor {
 
 class notificationsystem.model.SensorDAO {
 	{field} {static} -DEFAULT_ACTIVE_RATE : int
-	{field} {static} -ERROR_GET : String
+	{field} {static} -ERROR_ALLSTATS : String
+	{field} {static} -ERROR_OBSIDS : String
 	{field} {static} -FIRST_ACTIVE_RATE : int
 	{field} {static} -KEY_AVG : String
 	{field} {static} -KEY_ID : String
@@ -95,10 +90,9 @@ class notificationsystem.model.SensorDAO {
 	{field} -getAllSensorsApi : String
 	{field} -getStatsApi : String
 	{field} -getThingApi : String
+	{field} {static} -log : org.apache.commons.logging.Log
 	{field} -restTemplate : org.springframework.web.client.RestTemplate
-	{method} +get ( paramObject1 : Object ) : java.util.Optional
 	{method} +get ( paramString1 : String ) : notificationsystem.model.Sensor
-	{method} +get ( paramSensor1 : notificationsystem.model.Sensor ) : java.util.Optional
 	{method} +getAll () : java.util.List
 	{method} +setStats ( paramSensor1 : notificationsystem.model.Sensor , paramLocalDate2 : java.time.LocalDate ) : void
 }
@@ -117,8 +111,6 @@ class notificationsystem.model.Subscription {
 
 class notificationsystem.model.SubscriptionDAO {
 	{method} +delete ( paramSubscription1 : notificationsystem.model.Subscription ) : void
-	{method} +get ( paramObject1 : Object ) : java.util.Optional
-	{method} +get ( paramSubscription1 : notificationsystem.model.Subscription ) : java.util.Optional
 	{method} +get ( paramString1 : String , paramString2 : String ) : notificationsystem.model.Subscription
 	{method} +getAll () : java.util.List
 	{method} +getAllSensors ( paramString1 : String ) : java.util.List
@@ -133,8 +125,8 @@ interface notificationsystem.model.SubscriptionRepository {
 
 class notificationsystem.model.SystemLogin {
 	{field} -id : long
-	{field} -password : String
-	{field} -username : String
+	{field} +password : String
+	{field} +username : String
 }
 
 
@@ -166,7 +158,6 @@ abstract class notificationsystem.view.EMail {
 	{field} -senderMail : String
 	{field} -senderName : String
 	{field} -subject : String
-	{method} +getReceiverMails () : String
 }
 
 
@@ -193,9 +184,7 @@ notificationsystem.controller.Controller -->  notificationsystem.controller.Mail
 notificationsystem.controller.Controller -->  notificationsystem.model.SensorDAO : sensorDAO
 notificationsystem.controller.Controller -->  notificationsystem.model.SubscriptionDAO : subscriptionDAO
 notificationsystem.controller.Controller -->  notificationsystem.view.MailBuilder : mailBuilder
-notificationsystem.model.SensorDAO ..|>  notificationsystem.model.DAO
 notificationsystem.model.SubscriptionDAO -->  notificationsystem.model.SubscriptionRepository : subscriptionRepository
-notificationsystem.model.SubscriptionDAO ..|>  notificationsystem.model.DAO
 notificationsystem.model.SystemLoginDAO -->  notificationsystem.model.SystemLoginRepository : systemLoginRepository
 notificationsystem.view.Alert --|>  notificationsystem.view.EMail
 notificationsystem.view.ConfirmationMail --|>  notificationsystem.view.EMail
