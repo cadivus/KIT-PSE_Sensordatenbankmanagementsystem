@@ -1,7 +1,6 @@
 package notificationsystem.controller;
 
 
-import com.icegreen.greenmail.user.UserImpl;
 import notificationsystem.model.*;
 import org.junit.Test;
 
@@ -14,7 +13,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.*;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
