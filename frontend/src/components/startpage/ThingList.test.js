@@ -24,7 +24,6 @@ test('check for things', async () => {
 
   // Loading detection
   await waitFor(() => {
-    // wrapper.containsMatchingElement(<Checkbox />)
     expect(wrapper.html().includes('stillLoading="true"')).toBe(false)
   })
 
