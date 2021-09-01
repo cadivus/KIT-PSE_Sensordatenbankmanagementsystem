@@ -14,6 +14,11 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 @ComponentScan(basePackages = {"edu.teco.sensordatenbamkmanagementsystem"})
@@ -39,7 +44,16 @@ class GraphControllerTest {
                 entity,
                 byte[].class);
         if (!response.getStatusCode().is5xxServerError()) {
-            assertEquals(response.getBody().length, width * height);
+            BufferedImage reconstructedImage = null;
+            try {
+                reconstructedImage = ImageIO.read(new ByteArrayInputStream(response.getBody()));
+                assertEquals(
+                        width * height,
+                        reconstructedImage.getWidth() * reconstructedImage.getHeight()
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

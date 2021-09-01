@@ -98,7 +98,7 @@ public class GraphServiceImp implements GraphService {
             (Double a, List<Observation> o) -> observationService.getObservationsByThingId(
                     thingId,
                     o.size() + 1,
-                    xSort.descending(),
+                    Sort.unsorted(),//xSort.descending(),
                     List.of(obsId),
                     finalFrameStart,
                     LocalDateTime.ofEpochSecond((long) (double) a, 0, ZonedDateTime.now(ZONE_ID).getOffset())

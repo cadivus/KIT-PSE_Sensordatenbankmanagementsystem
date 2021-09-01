@@ -106,14 +106,12 @@ public class ClampedCubicSplineInterpolator implements Interpolator<Double, Doub
             } else {
                 i = Meth.bisect(this.x, x);
             }
-            if (i <= 0 || i >= this.N) {
-                System.out.println(i);
-                System.out.println(x);
-                System.out.println(this.x);
-                throw new FunctionQueriedOutsideOfInterpolationIntervalException(
-                        x, lbound, rbound
-                );
-            }
+//            if (i <= 0 || i >= this.N) {
+//                throw new FunctionQueriedOutsideOfInterpolationIntervalException(
+//                        x, lbound, rbound
+//                );
+//            }
+            i = i <= 0 ? 1 : i >= this.N ? this.N - 1 : i;
             double ldif = (x - this.x.get(i - 1)), rdif = (x - this.x.get(i));
             return this.y.get(i - 1) + ldif * this.divDif.get(i - 1) +
                     ldif * rdif * (this.alphas.get(i - 1) * ldif + this.betas.get(i - 1) * rdif);

@@ -86,7 +86,7 @@ public class ObservationServiceImp implements ObservationService{
 
     return associatedStreams.stream()
             .flatMap(a-> this.observationRepository
-                    .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(a.getId(),
+                    .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(a.getId(),
                             finalFrameStart, finalFrameEnd, PageRequest.of(0, limit).withSort(sort)))
             .limit(limit)
             .collect(Collectors.toList());
