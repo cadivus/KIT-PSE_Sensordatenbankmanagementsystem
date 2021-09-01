@@ -14,10 +14,14 @@ public class SystemLoginDAO {
 
     private final SystemLoginRepository systemLoginRepository;
 
+    /**
+     * Constructs a new SystemLoginDAO instance.
+     * @param systemLoginRepository systemLoginRepository used to access the database.
+     */
     @Autowired
-<span class="fc" id="L18">    public SystemLoginDAO(SystemLoginRepository systemLoginRepository) {</span>
-<span class="fc" id="L19">        this.systemLoginRepository = systemLoginRepository;</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L22">    public SystemLoginDAO(SystemLoginRepository systemLoginRepository) {</span>
+<span class="fc" id="L23">        this.systemLoginRepository = systemLoginRepository;</span>
+<span class="fc" id="L24">    }</span>
 
     /**
      * Gets login data saved under the given id from the database.
@@ -25,7 +29,7 @@ public class SystemLoginDAO {
      * @return id, username and password bundled in an instance of the SystemLogin class.
      */
     public Optional&lt;SystemLogin&gt; getLogin(Long id) {
-<span class="fc" id="L28">        return systemLoginRepository.findById(id);</span>
+<span class="fc" id="L32">        return systemLoginRepository.findById(id);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

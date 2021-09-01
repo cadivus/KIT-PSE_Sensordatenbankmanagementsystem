@@ -88,8 +88,7 @@ public class MailIntegrationTests {
 
         Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
 
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
-        controller.setSensorDAO(sensorDAO);
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
         String sensorId = "test-id";
@@ -120,8 +119,7 @@ public class MailIntegrationTests {
 
         Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
 
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
-        controller.setSensorDAO(sensorDAO);
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
         LinkedList<Sensor> sensors = new LinkedList<>();
@@ -160,8 +158,7 @@ public class MailIntegrationTests {
         SystemLogin systemLogin = getTestLogin();
 
         Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
-        controller.setSensorDAO(sensorDAO);
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
 

@@ -5,20 +5,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 
-//webconfig, restconfig, websecurityconfig, 'webinitializerconfig'
-
 @Configuration
-<span class="nc" id="L11">public class AppConfig {</span>
+<span class="nc" id="L9">public class AppConfig {</span>
 
     @Bean
     public RestTemplate restTemplate() {
-<span class="nc" id="L15">        return new RestTemplate();</span>
+<span class="nc" id="L13">        return new RestTemplate();</span>
     }
 
-    //TODO: Fix (application.properties)
     @Bean
     public String backendURL() {
-<span class="nc" id="L21">        return &quot;http://backend:8081&quot;;</span>
+<span class="nc" id="L18">        return &quot;http://backend:8081&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

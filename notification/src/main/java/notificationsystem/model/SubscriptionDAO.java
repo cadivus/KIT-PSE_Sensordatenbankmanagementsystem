@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The SubscriptionDAO class implements the DAO interface to handle database queries regarding subscriptions.
@@ -20,15 +19,14 @@ public class SubscriptionDAO {
 
     private final SubscriptionRepository subscriptionRepository;
 
+    /**
+     * Constructs new SubscriptionDAO.
+     * @param subscriptionRepository subscriptionRepository used to access the database.
+     */
     @Autowired
     public SubscriptionDAO(SubscriptionRepository subscriptionRepository) {
         this.subscriptionRepository = subscriptionRepository;
     }
-
-
-    /*public Optional<Subscription> get(Subscription subscription) {
-        return subscriptionRepository.findById(subscription.getId());
-    }*/
 
     /**
      * Gets a subscription from the database based of a specified e-mail and sensor ID.
@@ -47,6 +45,10 @@ public class SubscriptionDAO {
         return null;
     }
 
+    /**
+     * Gets all subscriptions.
+     * @return List of all subscriptions.
+     */
     public List<Subscription> getAll() {
         return new ArrayList<>(subscriptionRepository.findAll());
     }
@@ -85,10 +87,18 @@ public class SubscriptionDAO {
         return sensors;
     }
 
+    /**
+     * Saves a subscription in the database.
+     * @param subscription subscription to be saved.
+     */
     public void save(Subscription subscription) {
         subscriptionRepository.save(subscription);
     }
 
+    /**
+     * Deletes a subscription from the database.
+     * @param subscription subscription to be deleted.
+     */
     public void delete(Subscription subscription) {
         subscriptionRepository.delete(subscription);
     }

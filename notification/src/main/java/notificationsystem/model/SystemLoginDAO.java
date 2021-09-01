@@ -14,6 +14,10 @@ public class SystemLoginDAO {
 
     private final SystemLoginRepository systemLoginRepository;
 
+    /**
+     * Constructs a new SystemLoginDAO instance.
+     * @param systemLoginRepository systemLoginRepository used to access the database.
+     */
     @Autowired
     public SystemLoginDAO(SystemLoginRepository systemLoginRepository) {
         this.systemLoginRepository = systemLoginRepository;

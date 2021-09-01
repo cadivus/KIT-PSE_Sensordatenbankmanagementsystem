@@ -28,6 +28,9 @@ public class SystemLogin {
     )
     private String username;
 
+    /**
+     * Constructs a new SystemLogin instance.
+     */
     public SystemLogin() {}
 
     /**
@@ -54,10 +57,18 @@ public class SystemLogin {
         return username;
     }
 
+    /**
+     * Sets the password.
+     * @param password new password.
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Sets the username.
+     * @param username new username.
+     */
     public void setUsername(String username) {
         this.username = username;
     }

@@ -61,12 +61,12 @@ public class Sensor {
         return name;
     }
 
+    /**
+     * Gets the description of a sensor.
+     * @return description of a sensor.
+     */
     public String getDescription() {
         return description;
-    }
-
-    public String getProperties() {
-        return properties;
     }
 
     /**

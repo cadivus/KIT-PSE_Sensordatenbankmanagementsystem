@@ -1,5 +1,6 @@
 package notificationsystem.model;
 
+import lombok.extern.apachecommons.CommonsLog;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,10 +12,11 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * The SensorDAO class implements the DAO interface to handle database queries regarding sensors. For that end it
+ * The SensorDAO class implements the DAO interface to handle database queries regarding sensors (things). For that end it
  * provides get and getAll methods designed to hide the actual database queries, offering a single
  * access point to all sensor related data and information.
  */
+@CommonsLog
 @Service
 public class SensorDAO {
     private final String getThingApi;
@@ -31,8 +33,14 @@ public class SensorDAO {
     private final static String KEY_MED = "med";
     private final static String KEY_STDV = "stdv";
     private final static String KEY_MIN = "min";
-    private final static String ERROR_GET = "Found no such sensor.";
+    private final static String ERROR_OBSIDS = "Found no observation ids.";
+    private final static String ERROR_ALLSTATS = "Found no stats.";
 
+    /**
+     * Constructs a new SensorDAO instance.
+     * @param backendUrl dynamic url of the systems backend.
+     * @param restTemplate resttemplate used to access API-endpoints.
+     */
     @Autowired
     public SensorDAO(String backendUrl, RestTemplate restTemplate) {
         this.getThingApi = backendUrl + "/sensor/thing/";
@@ -52,6 +60,10 @@ public class SensorDAO {
         return restTemplate.getForObject(getThingApi + sensorID, Sensor.class);
     }
 
+    /**
+     * Gets all sensors.
+     * @return List of all sensors.
+     */
     public List<Sensor> getAll() {
         Sensor[] sensors = restTemplate.getForObject(getAllSensorsApi, Sensor[].class);
         if (sensors != null) {
@@ -61,6 +73,12 @@ public class SensorDAO {
         }
     }
 
+    /**
+     * Sets statistical stats for a sensor after getting them from the systems backend.
+     * @param sensor sensor whose stats are to be set.
+     * @param timeframe timeframe from which the stats are calculated.
+     * @throws JSONException when failing to format the information from the backend.
+     */
     public void setStats(Sensor sensor, LocalDate timeframe) throws JSONException {
 
         //Get activeRate
@@ -75,26 +93,34 @@ public class SensorDAO {
         LinkedList<String> obsIds = new LinkedList<>();
         LinkedList<String> obsNames = new LinkedList<>();
         JSONArray observationIds = restTemplate.getForObject(getAllObsApi, JSONArray.class);
-        for (int i = 0; i < observationIds.length(); i++) {
-            JSONObject entry = observationIds.getJSONObject(i);
-            String obsId = entry.getString(KEY_ID);
-            String name = entry.getString(KEY_NAME);
-            obsIds.add(obsId);
-            obsNames.add(name);
+        if (observationIds != null) {
+            for (int i = 0; i < observationIds.length(); i++) {
+                JSONObject entry = observationIds.getJSONObject(i);
+                String obsId = entry.getString(KEY_ID);
+                String name = entry.getString(KEY_NAME);
+                obsIds.add(obsId);
+                obsNames.add(name);
+            }
+        } else {
+            log.info(ERROR_OBSIDS);
         }
 
         //Get stats for each observation type
         LinkedList<ObservationStats> observationStats = new LinkedList<>();
         JSONArray allStats = restTemplate.getForObject(getStatsApi, JSONArray.class, List.of(sensor.getId()), obsIds, timeframe);
-        for(int i  = 0; i < allStats.length(); i++) {
-            JSONObject entry = allStats.getJSONObject(i);
-            double avg = entry.getDouble(KEY_AVG);
-            double med = entry.getDouble(KEY_MED);
-            double stdv = entry.getDouble(KEY_STDV);
-            double min = entry.getDouble(KEY_MIN);
+        if (allStats != null) {
+            for(int i  = 0; i < allStats.length(); i++) {
+                JSONObject entry = allStats.getJSONObject(i);
+                double avg = entry.getDouble(KEY_AVG);
+                double med = entry.getDouble(KEY_MED);
+                double stdv = entry.getDouble(KEY_STDV);
+                double min = entry.getDouble(KEY_MIN);
 
-            ObservationStats obsStat = new ObservationStats(obsIds.get(i), obsNames.get(i), avg, med, stdv, min);
-            observationStats.add(obsStat);
+                ObservationStats obsStat = new ObservationStats(obsIds.get(i), obsNames.get(i), avg, med, stdv, min);
+                observationStats.add(obsStat);
+            }
+        } else {
+            log.info(ERROR_ALLSTATS);
         }
         sensor.setStats(observationStats);
     }
