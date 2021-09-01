@@ -1,7 +1,6 @@
 import React from 'react'
 import reactRouterDom from 'react-router-dom'
-import {render, waitFor} from '@testing-library/react'
-import {mount} from 'enzyme'
+import {render} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
@@ -11,9 +10,7 @@ import {
 import {sensor1, sensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import Providers from '../Providers'
 import ThingInformationView from './ThingInformationView'
-import Properties from './Properties'
-import ThingStore from '../../store/ThingStore'
-import DatastreamStore from '../../store/DatastreamStore'
+import {waitFor} from '@testing-library/react'
 
 jest.mock('../../store/communication/restClient')
 jest.mock('react-router-dom')
@@ -42,21 +39,4 @@ describe('test with thing 1', () => {
 
     expect(container.innerHTML.includes(sensor1.description)).toBe(true)
   })
-})
-
-test('check for information', async () => {
-  const thingStore = new ThingStore(new DatastreamStore())
-  const thing = await thingStore.getThing(sensor1Id)
-
-  const wrapper = mount(<Properties thing={thing} />)
-
-  expect(wrapper.html().includes("Description: ")).toBe(true)
-  expect(wrapper.html().includes("Location: ")).toBe(true)
-  expect(wrapper.html().includes("shortname: ")).toBe(true)
-  expect(wrapper.html().includes("hardware.id: ")).toBe(true)
-  expect(wrapper.html().includes("operator.domain: ")).toBe(true)
-  expect(wrapper.html().includes("Street:")).toBe(true)
-  expect(wrapper.html().includes("City:")).toBe(true)
-  expect(wrapper.html().includes("Coordinates:")).toBe(true)
-
 })
