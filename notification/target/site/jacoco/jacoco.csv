@@ -1,0 +1,19 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.controller,CheckerUtil,12,216,8,16,2,42,7,9,0,4
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.controller,Controller,14,193,2,6,7,48,2,11,0,9
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.controller,MailSender.new Authenticator() {...},0,20,0,0,0,2,0,2,0,2
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.controller,MailSender,5,111,1,1,1,25,1,3,0,3
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.configuration,AppConfig,9,0,0,0,3,0,3,0,3,0
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem,Application,8,0,0,0,3,0,2,0,2,0
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,Report,0,6,0,0,0,2,0,1,0,1
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,EMail,0,37,0,0,0,14,0,7,0,7
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,Alert,0,6,0,0,0,2,0,1,0,1
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,MailBuilder,0,99,0,2,0,25,0,5,0,4
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,ConfirmationMail,0,18,0,0,0,5,0,3,0,3
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,Sensor,7,48,0,0,3,17,2,9,2,9
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,SubscriptionDAO,3,112,4,10,2,26,4,10,0,7
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,SystemLoginDAO,0,11,0,0,0,4,0,2,0,2
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,ObservationStats,3,36,0,0,1,13,1,6,1,6
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,SystemLogin,4,17,0,0,1,7,1,5,1,5
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,SensorDAO,7,208,2,6,2,36,2,6,0,4
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,Subscription,3,40,0,0,2,15,1,8,1,8
