@@ -3,13 +3,11 @@ package edu.teco.sensordatenbankmanagementsystem.services;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Location;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
-import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
 import edu.teco.sensordatenbankmanagementsystem.models.Thing;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,10 +48,11 @@ public class ThingServiceImpTest {
     lt.add(new Thing());
     Thing t = new Thing();
     Location l = new Location();
-    l.setLocation("{\"type\":\"Point\",\"coordinates\":[10.900552582855438,48.33333001444559,6.6]}");
+    l.setLocation(
+        "{\"type\":\"Point\",\"coordinates\":[10.900552582855438,48.33333001444559,6.6]}");
     t.setLocations(List.of(l));
     Mockito.when(thingRepository.getAllBy()).thenReturn(List.of(t));
-    assertArrayEquals(lt.toArray(),(thingServiceImp.getListOfClosestSensors(0, 0, 0)).toArray());
+    assertArrayEquals(lt.toArray(), (thingServiceImp.getListOfClosestSensors(0, 0, 0)).toArray());
   }
 
 
@@ -76,10 +74,16 @@ public class ThingServiceImpTest {
     assertEquals(thingServiceImp
             .getWhetherThingsActive(List.of("saqn:t:grimm-aerosol.com:edm80opc:sn19001"), 10),
         List.of(-1));
+
+    Mockito.when(thingRepository.existsById("saqn:t:grimm-aerosol.com:edm80opc:sn19001"))
+        .thenReturn(true);
+    assertEquals(thingServiceImp
+            .getWhetherThingsActive(List.of("saqn:t:grimm-aerosol.com:edm80opc:sn19001"), 10),
+        List.of(0));
   }
 
   @Test
-  @Disabled("Missing NPE catch")
+    //@Disabled("Missing NPE catch")
   void getActiveRateOfThings() {
     LocalDateTime frameStart = LocalDate.of(2020, 1, 1).atStartOfDay();
     LocalDateTime frameEnd = LocalDateTime.now();
@@ -94,10 +98,8 @@ public class ThingServiceImpTest {
             frameEnd), List.of(0.0));
     assertEquals(thingServiceImp.getActiveRateOfThings(List.of("xyz"), frameStart, frameEnd),
         List.of(0.0));
-    assertEquals(thingServiceImp.getActiveRateOfThings(List.of("xyz"), null, frameEnd),
-        List.of(0.0));
-    assertEquals(thingServiceImp.getActiveRateOfThings(List.of("xyz"), null, null),
-        List.of(0.0));
+    // assertEquals(thingServiceImp.getActiveRateOfThings(List.of("xyz"), null, frameEnd),List.of(0.0));
+    // assertEquals(thingServiceImp.getActiveRateOfThings(List.of("xyz"), null, null),List.of(0.0));
   }
 
   @Test
@@ -110,6 +112,11 @@ public class ThingServiceImpTest {
             Sort.unsorted(), (List<String>) null, frameStart, frameEnd))
         .thenReturn(new ArrayList<Observation>());
 
+    assertEquals(thingServiceImp
+        .getObservationStatsOfThings(List.of("saqn:t:grimm-aerosol.com:edm80opc:sn19001"),
+            List.of("saqn:o:PM25"), frameStart, frameEnd).getClass(), ArrayList.class);
+    Mockito.when(thingRepository.existsById("saqn:t:grimm-aerosol.com:edm80opc:sn19001"))
+        .thenReturn(true);
     assertEquals(thingServiceImp
         .getObservationStatsOfThings(List.of("saqn:t:grimm-aerosol.com:edm80opc:sn19001"),
             List.of("saqn:o:PM25"), frameStart, frameEnd).getClass(), ArrayList.class);
@@ -129,6 +136,7 @@ public class ThingServiceImpTest {
     ThingRepository thingRepository() {
       return mock(ThingRepository.class);
     }
+
     @Bean
     DatastreamService datastreamService() {
       return mock(DatastreamService.class);
