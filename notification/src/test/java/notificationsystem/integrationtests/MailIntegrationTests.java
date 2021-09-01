@@ -1,8 +1,11 @@
-package notificationsystem.controller;
+package notificationsystem.integrationtests;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetup;
+import notificationsystem.controller.CheckerUtil;
+import notificationsystem.controller.Controller;
+import notificationsystem.controller.MailSender;
 import notificationsystem.model.*;
 import notificationsystem.view.MailBuilder;
 import org.checkerframework.checker.units.qual.C;
@@ -109,6 +112,32 @@ public class MailIntegrationTests {
         verify(restTemplate).getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3);
         verify(mailSender).login(systemLogin.getUsername(), systemLogin.getPassword());
         verify(subscriptionRepository, times(2)).findAll();
+    }
+
+    @Test
+    public void testSendNoAlert() throws Exception {
+        SystemLogin systemLogin = getTestLogin();
+
+        Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
+
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
+        controller.setSensorDAO(sensorDAO);
+        CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
+
+        LinkedList<Sensor> sensors = new LinkedList<>();
+        sensors.add(getTestSensor());
+        LinkedList<String> sensorIds = new LinkedList<>();
+        sensorIds.add(getTestSensor().getId());
+        Integer[] response = {1};
+
+        Mockito.when(sensorDAO.getAll()).thenReturn(sensors);
+        Mockito.when(restTemplate.getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3))
+                .thenReturn(response);
+
+        checkerUtil.checkForSensorFailure();
+
+        verify(restTemplate).getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3);
+        verify(mailSender).login(systemLogin.getUsername(), systemLogin.getPassword());
     }
 
     @Test

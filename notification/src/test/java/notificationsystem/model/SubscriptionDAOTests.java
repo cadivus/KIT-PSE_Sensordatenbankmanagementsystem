@@ -88,6 +88,19 @@ public class SubscriptionDAOTests {
     }
 
     @Test
+    public void testGetByMailAndIdReturnNull() {
+        Subscription subscription = getTestSub();
+        Subscription subscription2 = getTestSub2();
+        LinkedList<Subscription> subs = new LinkedList<>();
+        subs.add(subscription2);
+        Mockito.when(subscriptionRepository.findAll()).thenReturn(subs);
+
+        Subscription toTest = subscriptionDAO.get(subscription.getSubscriberAddress(), subscription.getSensorId());
+
+        assertNull(toTest);
+    }
+
+    @Test
     public void testGetAll() {
         List<Subscription> subscriptions = setupAll();
         Mockito.when(subscriptionRepository.findAll()).thenReturn(subscriptions);
