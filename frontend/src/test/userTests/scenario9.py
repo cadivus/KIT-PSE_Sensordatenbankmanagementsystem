@@ -3,8 +3,7 @@ from time import sleep
 from selenium import webdriver
 import pathlib
 
-path = pathlib.Path().resolve()
-driverpath = str(path) + '/chromedriver'
+driverpath = str(pathlib.Path().resolve()) + '/chromedriver'
 
 # opens the startpage
 def startpage(driver):
