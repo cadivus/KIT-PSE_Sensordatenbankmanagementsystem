@@ -71,12 +71,7 @@ const AppLayout: FC = ({children}) => {
             </Button>
           )}
           {userStore?.user && (
-            <Button
-              data-testid="appbar-logout-button"
-              className={classes.loginButton}
-              color="inherit"
-              onClick={logout}
-            >
+            <Button data-testid="appbar-logout-button" className={classes.loginButton} color="inherit" onClick={logout}>
               <Typography variant="h6">
                 <FormattedMessage id="appbar.logout" />
               </Typography>
