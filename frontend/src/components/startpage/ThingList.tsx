@@ -71,31 +71,17 @@ const ThingList = ({selectedThings, searchExpression}: {selectedThings: Set<Thin
   const classes = useStyles()
   const thingStore = useThingStore()
 
-  const [thingList, setThingList] = useState(new Array<Thing>())
-  const [lastUpdate, setLastUpdate] = useState(0)
+  const [thingList, setThingList] = useState(thingStore ? thingStore.cachedThings : new Array<Thing>())
 
   const [selectedThingsState, setSelectedThingsState] = useState(new Set<Thing>())
 
   useEffect(() => {
     if (thingStore) {
-      const newList = JSON.stringify(thingList) !== JSON.stringify(thingStore.things)
-
-      if (newList) setThingList(thingStore.things)
-      if (lastUpdate !== thingStore.lastUpdate) setLastUpdate(thingStore.lastUpdate)
+      thingStore.things.then(newThingsList => {
+        setThingList(newThingsList)
+      })
     }
-  }, [thingStore, lastUpdate, thingList])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (thingStore) {
-        if (lastUpdate !== thingStore.lastUpdate) setLastUpdate(thingStore.lastUpdate)
-      }
-    }, 1000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  })
+  }, [thingStore, setThingList])
 
   return (
     <TableContainer component={Paper} className={classes.container}>
@@ -121,7 +107,7 @@ const ThingList = ({selectedThings, searchExpression}: {selectedThings: Set<Thin
               <TableCell />
             </TableRow>
           )}
-          {thingStore?.things.map(thing => {
+          {thingList.map(thing => {
             const checkChanged = (chk: boolean) => {
               if (chk && !selectedThingsState.has(thing)) {
                 selectedThings.add(thing)

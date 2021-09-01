@@ -88,7 +88,12 @@ public class SensorController {
         return thingService.getAllThings();
     }
 
-
+    @GetMapping("getThingsObsIds")
+    public List<List<String>> getThingsObsIds(
+            @RequestParam("ids")List<String> ids
+    ){
+        return thingService.getThingsObsIds(ids);
+    }
 
     /**
      * Maps a get request for getting a sensors metadata by UUID.
@@ -101,7 +106,7 @@ public class SensorController {
 
         try {
             return sensorService.getSensor(id);
-        } catch (EntityNotFoundException ex) {
+        } catch (EntityNotFoundException | NullPointerException ex) {
             throw new ObjectNotFoundException();
         }
     }
@@ -130,7 +135,7 @@ public class SensorController {
     @GetMapping("active_rate")
     public List<Double> getActiveRateOfThings(
             @RequestParam(name="ids")List<String> ids,
-            @RequestParam(name = "frameStart", defaultValue = "0001-01-01") String frameStart,
+            @RequestParam(name = "frameStart", defaultValue = "2010-01-01") String frameStart,
             @RequestParam(name = "frameEnd", required = false) String frameEnd
     ){
         return thingService.getActiveRateOfThings(
@@ -178,7 +183,7 @@ public class SensorController {
      * @return The Sensor model that contains the information
      */
     @GetMapping(value = {"/thing/{id}"})
-    public Thing getThings(@PathVariable String id) {
+    public Thing getThing(@PathVariable String id) {
         return thingService.getThing(id);
     }
 
@@ -192,7 +197,7 @@ public class SensorController {
      * @return A list of 'Things'
      */
     @GetMapping(value = {"/allThings"})
-    public List<Thing> getThings(@RequestParam(value = "lon",required = false) String lon,
+    public List<Thing> getThing(@RequestParam(value = "lon",required = false) String lon,
         @RequestParam(value = "lat",required = false) String lat, @RequestParam(value = "el",required = false) String el) {
 
         //These are the coordinates of the city center of Augsburg, as this program focuses on Augsburg

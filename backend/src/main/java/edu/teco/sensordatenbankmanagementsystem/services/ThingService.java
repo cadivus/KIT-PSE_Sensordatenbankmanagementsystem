@@ -26,8 +26,6 @@ public interface ThingService {
     @Transactional
     public Thing getThing(String id);
 
-    public Datastream getDatastream(String id);
-
     /**
      * Gets whether the given things were active in the last X days
      * @param thingIds of things to check activity of
@@ -66,4 +64,6 @@ public interface ThingService {
      * @return all things in the entire universe
      */
     public List<Thing> getAllThings();
+
+    List<List<String>> getThingsObsIds(List<String> thingIds);
 }

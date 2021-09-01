@@ -24,26 +24,8 @@ import java.util.stream.Collectors;
  */
 public interface ObservationService {
 
-    /**
-     * This method creates a new SSEEmitter DataStream using the information provided in the parameter
-     * The emitter will be put in an asynchronous executor and put into a Bidirectional Hashmap
-     * for storage
-     * @param information This should contain the specific information about the Datastream that is to be created.
-     *                    At least sensor(s), speed and start date need to be in here
-     * @return The UUID of the newly created Datastream
-     */
-    UUID createNewDataStream(Requests information);
 
-    /**
-     * This returns a single Observation Model from the Repository
-     *
-     * @param id The ID of the Observation
-     * @return
-     */
-    @Deprecated
-    Observation getObservation(String id);
-
-    /**
+  /**
      * This will take a stream of datastreams and try to find all Observations between the start
      * and end date which are in these datastreams and will return them as a Stream
      * @param datastreams A datastream is part of the Frost Database by Teco. This receives a stream
@@ -54,36 +36,33 @@ public interface ObservationService {
      */
     Stream<Observation> getObservationByDatastream(Stream<Datastream> datastreams, LocalDateTime start, LocalDateTime end);
 
-    /**
-     * This will create a replay of one or more Sensors. It will work akin to the {@link #createNewDataStream(Requests)} but with
-     * live data opposed to using already existing data
-     *
-     * @param information This should contain the Sensor Information for the replay
-     * @return The UUID under which the Replay is to be reached
-     */
-    UUID createReplay(Requests information);
 
     /**
-     * This will return a previously created Datastream from its specified UUID.
-     * If there is no DataStream under the given UUID, none will be created
-     *
-     * @param id The UUID of the Datastream
-     * @return An {@link org.springframework.web.servlet.mvc.method.annotation.SseEmitter}
+     * This tries to return a List of all Observations belonging to a specific Thing
+     * There are various limitations that can be turned on to reduce processing time.
+     * In 1 month there can be easily more than 100 000 results.
+     * @param thingId The 'things' unique identifier
+     * @param limit The maximum amount of results to be returned
+     * @param sort The sorting function in which the results are to be sorted
+     * @param filter
+     * @param frameStart The start time
+     * @param frameEnd The end time
+     * @return A list of observations
      */
-    SseEmitter getDataStream(UUID id);
-
-    /**
-     * This will delete the Datastream from the database and will make it send its closing message
-     *
-     * @param id The UUID of the Datastream
-     */
-    @Deprecated
-    void destroyDataStream(UUID id);
-
     List<Observation> getObservationsByThingId(String thingId, int limit, Sort sort, List<String> filter, LocalDateTime frameStart, LocalDateTime frameEnd);
 
+    /**
+     *
+     * @return the list of all Observer properties in the database
+     */
     List<ObservedProperty> getAllObservedProperties();
 
+    /**
+     * Gets all observations belonging to a specific Datastream
+     * @param datastreamId The datastreams unique identifier
+     * @param page A Pageable limits the amount of results to a specific amount of pages
+     * @return A Stream of Observations
+     */
     Stream<Observation> getObservationByDatastreamId(String datastreamId, Pageable page);
 
 }

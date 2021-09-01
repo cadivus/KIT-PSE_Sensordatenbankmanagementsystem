@@ -56,59 +56,20 @@ public class SensorServiceImp implements SensorService {
   }
 
   private final SensorRepository repository;
-  private final DatastreamRepository datastreamRepository;
 
   @Autowired
-  public SensorServiceImp(SensorRepository repository, DatastreamRepository datastreamRepository) {
+  public SensorServiceImp(SensorRepository repository) {
     this.repository = repository;
-    this.datastreamRepository = datastreamRepository;
-  }
-
-  /**
-   * {@inheritDoc} Here the new Meta Data will include frequency and realiability calculations
-   */
-  public void createNewMetaData() {
-
   }
 
   /**
    * {@inheritDoc}
    */
   public Sensor getSensor(String id) {
-    return repository.getById(id);
+    return repository.findById(id).get();
   }
 
-  @Transactional
-  public Stream<Datastream> getDatastreams(List<String> thingIds, LocalDateTime start, LocalDateTime end) {
 
-    if (start == null)
-      start = LocalDateTime.of(1900,1,1,0,0);
-    if (end == null)
-      end = LocalDateTime.now();
-    LocalDateTime finalStart = start;
-    LocalDateTime finalEnd = end;
-
-
-      return datastreamRepository
-          .findDatastreamsByThing_IdInOrderByPhenomenonStartDesc(thingIds).filter(e -> e.getPhenomenonStart() != null && e.getPhenomenonEnd() != null)
-          .filter(e -> (e.getPhenomenonStart().isBefore(finalStart) && e.getPhenomenonEnd().isAfter(finalStart))|| (e.getPhenomenonEnd().isAfter(
-              finalEnd) && e.getPhenomenonStart().isBefore(finalEnd)) || (e.getPhenomenonStart().isAfter(finalStart) && e.getPhenomenonEnd().isBefore(finalEnd)));
-
-
-
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public Sensor getSensorMetaData(String id) {
-    return repository.getById(id);
-  }
-
-  @Override
-  public Datastream getDatastream(String sensor_id) {
-    return datastreamRepository.getById(sensor_id);
-  }
 
 
   public List<Sensor> getAllSensors() {

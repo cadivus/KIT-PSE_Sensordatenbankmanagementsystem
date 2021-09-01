@@ -4,9 +4,9 @@ import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.repository.ObservationRepository;
+import edu.teco.sensordatenbankmanagementsystem.services.DatastreamService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -29,13 +30,16 @@ public class ProxyHelper {
 
   final ObservationRepository observationRepository;
   final EntityManager em;
-  final SensorService sensorService;
 
+  private final DatastreamService datastreamService;
+
+  @Autowired
   public ProxyHelper(ObservationRepository observationRepository, EntityManager em,
-      SensorService sensorService) {
+      DatastreamService datastreamService) {
     this.observationRepository = observationRepository;
     this.em = em;
-    this.sensorService = sensorService;
+
+    this.datastreamService = datastreamService;
   }
 
   /**
@@ -63,7 +67,7 @@ public class ProxyHelper {
             datastreams.remove(d);
           } */
           try (Stream<Observation> observations = observationRepository
-              .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
+              .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartDesc(
                   d.getId(), information.getStart(),
                   information.getEnd())) {
             observations.filter(Objects::nonNull).reduce((current, next) -> {
@@ -92,7 +96,7 @@ public class ProxyHelper {
           }
         }
       Thread.sleep(10000);
-        datastreams = sensorService
+        datastreams = datastreamService
             .getDatastreams(information.getSensors(), information.getStart(),
                 information.getEnd()).collect(Collectors.toList());
       }
