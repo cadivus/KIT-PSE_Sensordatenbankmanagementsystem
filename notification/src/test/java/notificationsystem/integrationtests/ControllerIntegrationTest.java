@@ -1,7 +1,9 @@
-package notificationsystem.controller;
+package notificationsystem.integrationtests;
 
 
 import com.icegreen.greenmail.user.UserImpl;
+import notificationsystem.controller.Controller;
+import notificationsystem.controller.MailSender;
 import notificationsystem.model.*;
 import org.junit.Test;
 
