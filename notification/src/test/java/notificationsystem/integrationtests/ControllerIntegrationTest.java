@@ -1,22 +1,36 @@
-package notificationsystem.controller;
+package notificationsystem.integrationtests;
 
 
+import com.icegreen.greenmail.user.UserImpl;
+import notificationsystem.controller.Controller;
+import notificationsystem.controller.MailSender;
 import notificationsystem.model.*;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestTemplate;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
@@ -29,9 +43,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+//@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 @WebMvcTest
 @RunWith(SpringRunner.class)
 public class ControllerIntegrationTest {
+
+    /*@LocalServerPort
+    private Integer port;
+    HttpHeaders headers = new HttpHeaders();*/
 
     @Autowired
     private MockMvc mockMvc;
@@ -113,7 +133,12 @@ public class ControllerIntegrationTest {
                 .andExpect(status().isOk());
     }
 
+    /*private String createURLWithPort(String uri) {
+        return "http://localhost:" + port + uri;
+    }*/
+
     @Configuration
+    //@Import(SubscriptionDAO.class)
     static class TestConfig {
         @Bean
         public TestRestTemplate testRestTemplate(){
@@ -125,7 +150,7 @@ public class ControllerIntegrationTest {
             systemLogin.setUsername("sensornotificationsystemPSE@gmail.com");
             systemLogin.setPassword("cKqp4Wa83pLddBv");
             Mockito.when(systemLoginRepository().findById((long)1)).thenReturn(Optional.of(systemLogin));
-            return new Controller(systemLoginDAO(), subscriptionDAO(), restTemplate(), mailSender(), sensorDAO());
+            return new Controller(systemLoginDAO(), subscriptionDAO(), restTemplate(), mailSender());
         }
         @Bean
         SystemLoginDAO systemLoginDAO() {

@@ -1,11 +1,22 @@
-package notificationsystem.controller;
+package notificationsystem.integrationtests;
 
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.GreenMailUtil;
+import com.icegreen.greenmail.util.ServerSetup;
+import notificationsystem.controller.CheckerUtil;
+import notificationsystem.controller.Controller;
+import notificationsystem.controller.MailSender;
 import notificationsystem.model.*;
+import notificationsystem.view.MailBuilder;
+import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,11 +27,18 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.ws.rs.core.Link;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
@@ -70,7 +88,8 @@ public class MailIntegrationTests {
 
         Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
 
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
+        controller.setSensorDAO(sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
         String sensorId = "test-id";
@@ -96,6 +115,32 @@ public class MailIntegrationTests {
     }
 
     @Test
+    public void testSendNoAlert() throws Exception {
+        SystemLogin systemLogin = getTestLogin();
+
+        Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
+
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
+        controller.setSensorDAO(sensorDAO);
+        CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
+
+        LinkedList<Sensor> sensors = new LinkedList<>();
+        sensors.add(getTestSensor());
+        LinkedList<String> sensorIds = new LinkedList<>();
+        sensorIds.add(getTestSensor().getId());
+        Integer[] response = {1};
+
+        Mockito.when(sensorDAO.getAll()).thenReturn(sensors);
+        Mockito.when(restTemplate.getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3))
+                .thenReturn(response);
+
+        checkerUtil.checkForSensorFailure();
+
+        verify(restTemplate).getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3);
+        verify(mailSender).login(systemLogin.getUsername(), systemLogin.getPassword());
+    }
+
+    @Test
     public void testSendReport() throws Exception {
         Subscription subscription = getTestSubscription();
         subscription.setSubTime(LocalDate.now().minusDays(10));
@@ -115,7 +160,8 @@ public class MailIntegrationTests {
         SystemLogin systemLogin = getTestLogin();
 
         Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
+        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender);
+        controller.setSensorDAO(sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
 
