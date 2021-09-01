@@ -45,7 +45,7 @@ public class Controller {
     private final RestTemplate restTemplate;
 
     @Autowired
-<span class="fc" id="L48">    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate, MailSender mailSender) throws Exception {</span>
+<span class="fc" id="L48">    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate, MailSender mailSender, SensorDAO sensorDAO) throws Exception {</span>
 <span class="fc" id="L49">        this.mailBuilder = new MailBuilder();</span>
 
 <span class="fc" id="L51">        Optional&lt;SystemLogin&gt; loginOptional = systemLoginDAO.getLogin(SYSTEMLOGIN_ID);</span>
@@ -56,20 +56,17 @@ public class Controller {
 <span class="nc" id="L56">            throw new Exception(CONSTRUCTOR_ERROR);</span>
         }
 
-<span class="fc" id="L59">        this.mailSender = mailSender;</span>
-<span class="fc" id="L60">        mailSender.login(login.getUsername(), login.getPassword());</span>
-<span class="fc" id="L61">        this.subscriptionDAO = subscriptionDAO;</span>
-<span class="fc" id="L62">        this.restTemplate = restTemplate;</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L59">        this.sensorDAO = sensorDAO;</span>
+<span class="fc" id="L60">        this.mailSender = mailSender;</span>
+<span class="fc" id="L61">        mailSender.login(login.getUsername(), login.getPassword());</span>
+<span class="fc" id="L62">        this.subscriptionDAO = subscriptionDAO;</span>
+<span class="fc" id="L63">        this.restTemplate = restTemplate;</span>
+<span class="fc" id="L64">    }</span>
 
     @PostConstruct
     public void postConstruct() {
-<span class="fc" id="L67">        this.sensorDAO = new SensorDAO(backendUrl, restTemplate);</span>
-<span class="fc" id="L68">    }</span>
-
-    public void setSensorDAO(SensorDAO sensorDAO) {
-<span class="fc" id="L71">        this.sensorDAO = sensorDAO;</span>
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L68">        this.sensorDAO = new SensorDAO(backendUrl, restTemplate);</span>
+<span class="fc" id="L69">    }</span>
 
     /**
      * Sends a confirmation mail to a user.
@@ -80,13 +77,13 @@ public class Controller {
      */
     @GetMapping(&quot;/getConfirmCode/{mailAddress}&quot;)
     public String getConfirmCode(@PathVariable String mailAddress) {
-<span class="fc" id="L83">        ConfirmationMail confirmationMail = mailBuilder.buildConfirmationMail(mailAddress);</span>
+<span class="fc" id="L80">        ConfirmationMail confirmationMail = mailBuilder.buildConfirmationMail(mailAddress);</span>
         try {
-<span class="fc" id="L85">            mailSender.send(confirmationMail);</span>
-<span class="nc" id="L86">        } catch (MessagingException | UnsupportedEncodingException e) {</span>
-<span class="nc" id="L87">            e.printStackTrace();</span>
-<span class="fc" id="L88">        }</span>
-<span class="fc" id="L89">        return confirmationMail.getConfirmCode();</span>
+<span class="fc" id="L82">            mailSender.send(confirmationMail);</span>
+<span class="nc" id="L83">        } catch (MessagingException | UnsupportedEncodingException e) {</span>
+<span class="nc" id="L84">            e.printStackTrace();</span>
+<span class="fc" id="L85">        }</span>
+<span class="fc" id="L86">        return confirmationMail.getConfirmCode();</span>
     }
 
     /**
@@ -101,9 +98,9 @@ public class Controller {
     @PostMapping(value = &quot;/postSubscription&quot;, consumes = &quot;application/json&quot;)
     public void postSubscription(@RequestParam(&quot;mailAddress&quot;) String mailAddress, @RequestParam(&quot;sensorID&quot;) String sensorID,
                                  @RequestParam(&quot;reportInterval&quot;) long reportInterval, @RequestParam(&quot;toggleAlert&quot;) boolean toggleAlert) {
-<span class="fc" id="L104">        Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval, toggleAlert);</span>
-<span class="fc" id="L105">        subscriptionDAO.save(subscription);</span>
-<span class="fc" id="L106">    }</span>
+<span class="fc" id="L101">        Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval, toggleAlert);</span>
+<span class="fc" id="L102">        subscriptionDAO.save(subscription);</span>
+<span class="fc" id="L103">    }</span>
 
     /**
      * The postUnsubscribe method allows the project website to delete a subscription from the database.
@@ -112,9 +109,9 @@ public class Controller {
      */
     @PostMapping(value = &quot;/postUnsubscribe&quot;, consumes = &quot;application/json&quot;)
     public void postUnsubscribe(@RequestParam(&quot;mailAddress&quot;) String mailAddress, @RequestParam(&quot;sensorID&quot;) String sensorID) {
-<span class="fc" id="L115">        Subscription toDelete = subscriptionDAO.get(mailAddress, sensorID);</span>
-<span class="fc" id="L116">        subscriptionDAO.delete(toDelete);</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L112">        Subscription toDelete = subscriptionDAO.get(mailAddress, sensorID);</span>
+<span class="fc" id="L113">        subscriptionDAO.delete(toDelete);</span>
+<span class="fc" id="L114">    }</span>
 
     /**
      * The getSubscription method allows the project website to inquire about the subscriptions in the database.
@@ -123,12 +120,12 @@ public class Controller {
      */
     @GetMapping(&quot;/getSubscriptions/{mailAddress}&quot;)
     public List&lt;Subscription&gt; getSubscriptions(@PathVariable String mailAddress) {
-<span class="fc" id="L126">        List&lt;String&gt; sensorIds = subscriptionDAO.getAllSensors(mailAddress);</span>
-<span class="fc" id="L127">        LinkedList&lt;Subscription&gt; subs = new LinkedList&lt;&gt;();</span>
-<span class="fc bfc" id="L128" title="All 2 branches covered.">        for (String id : sensorIds) {</span>
-<span class="fc" id="L129">            subs.add(subscriptionDAO.get(mailAddress, id));</span>
-<span class="fc" id="L130">        }</span>
-<span class="fc" id="L131">        return subs;</span>
+<span class="fc" id="L123">        List&lt;String&gt; sensorIds = subscriptionDAO.getAllSensors(mailAddress);</span>
+<span class="fc" id="L124">        LinkedList&lt;Subscription&gt; subs = new LinkedList&lt;&gt;();</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        for (String id : sensorIds) {</span>
+<span class="fc" id="L126">            subs.add(subscriptionDAO.get(mailAddress, id));</span>
+<span class="fc" id="L127">        }</span>
+<span class="fc" id="L128">        return subs;</span>
     }
 
     /**
@@ -139,19 +136,19 @@ public class Controller {
      * @param sensorID ID of the sensor malfunctioning.
      */
     public void sendAlert(String sensorID) {
-<span class="fc" id="L142">        Sensor sensor = sensorDAO.get(sensorID);</span>
-<span class="fc" id="L143">        List&lt;String&gt; subscribers = subscriptionDAO.getAllSubscribers(sensorID);</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">        for (String subscriber : subscribers) {</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">            if (subscriptionDAO.get(subscriber, sensorID).isToggleAlert()) {</span>
-<span class="fc" id="L146">            Alert alert = mailBuilder.buildAlert(subscriber, sensor);</span>
+<span class="fc" id="L139">        Sensor sensor = sensorDAO.get(sensorID);</span>
+<span class="fc" id="L140">        List&lt;String&gt; subscribers = subscriptionDAO.getAllSubscribers(sensorID);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (String subscriber : subscribers) {</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">            if (subscriptionDAO.get(subscriber, sensorID).isToggleAlert()) {</span>
+<span class="fc" id="L143">            Alert alert = mailBuilder.buildAlert(subscriber, sensor);</span>
             try {
-<span class="fc" id="L148">                mailSender.send(alert);</span>
-<span class="nc" id="L149">            } catch (MessagingException | UnsupportedEncodingException e) {</span>
-<span class="nc" id="L150">                e.printStackTrace();</span>
-<span class="fc" id="L151">            }</span>
+<span class="fc" id="L145">                mailSender.send(alert);</span>
+<span class="nc" id="L146">            } catch (MessagingException | UnsupportedEncodingException e) {</span>
+<span class="nc" id="L147">                e.printStackTrace();</span>
+<span class="fc" id="L148">            }</span>
             }
-<span class="fc" id="L153">        }</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L150">        }</span>
+<span class="fc" id="L151">    }</span>
 
     /**
      * The getReport method is used to sent report e-mails to a subscriber of the given sensor. Reports contain
@@ -164,22 +161,22 @@ public class Controller {
      */
     public void sendReport(String mailAddress, String sensorID) throws JSONException {
 
-<span class="fc" id="L167">        Sensor sensor = sensorDAO.get(sensorID);</span>
-<span class="fc" id="L168">        Subscription subscription = subscriptionDAO.get(mailAddress, sensorID);</span>
+<span class="fc" id="L164">        Sensor sensor = sensorDAO.get(sensorID);</span>
+<span class="fc" id="L165">        Subscription subscription = subscriptionDAO.get(mailAddress, sensorID);</span>
 
-<span class="fc" id="L170">        long reportInterval = subscription.getReportInterval();</span>
-<span class="fc" id="L171">        LocalDate timeframeStart = LocalDate.now().minusDays(reportInterval);</span>
-<span class="fc" id="L172">        sensorDAO.setStats(sensor, timeframeStart);</span>
+<span class="fc" id="L167">        long reportInterval = subscription.getReportInterval();</span>
+<span class="fc" id="L168">        LocalDate timeframeStart = LocalDate.now().minusDays(reportInterval);</span>
+<span class="fc" id="L169">        sensorDAO.setStats(sensor, timeframeStart);</span>
 
 
         //Build and send mail
-<span class="fc" id="L176">        Report report = mailBuilder.buildReport(mailAddress, sensor);</span>
+<span class="fc" id="L173">        Report report = mailBuilder.buildReport(mailAddress, sensor);</span>
         try {
-<span class="fc" id="L178">            mailSender.send(report);</span>
-<span class="nc" id="L179">        } catch (MessagingException | UnsupportedEncodingException e) {</span>
-<span class="nc" id="L180">            e.printStackTrace();</span>
-<span class="fc" id="L181">        }</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L175">            mailSender.send(report);</span>
+<span class="nc" id="L176">        } catch (MessagingException | UnsupportedEncodingException e) {</span>
+<span class="nc" id="L177">            e.printStackTrace();</span>
+<span class="fc" id="L178">        }</span>
+<span class="fc" id="L179">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

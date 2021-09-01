@@ -78,15 +78,18 @@ public class Subscription {
 <span class="fc" id="L78">        this.toggleAlert = toggleAlert;</span>
 <span class="fc" id="L79">    }</span>
 
-<span class="nc" id="L81">    public Subscription() {</span>
-<span class="nc" id="L82">    }</span>
+    /**
+     * Constructs new Subscription.
+     */
+<span class="nc" id="L84">    public Subscription() {</span>
+<span class="nc" id="L85">    }</span>
 
     /**
      * Gets the e-mail address of the subscriber.
      * @return e-mail address of the subscriber.
      */
     public String getSubscriberAddress() {
-<span class="fc" id="L89">        return subscriberAddress;</span>
+<span class="fc" id="L92">        return subscriberAddress;</span>
     }
 
     /**
@@ -94,7 +97,7 @@ public class Subscription {
      * @return the sensor the user is subscribed to.
      */
     public String getSensorId() {
-<span class="fc" id="L97">        return sensorId;</span>
+<span class="fc" id="L100">        return sensorId;</span>
     }
 
     /**
@@ -102,7 +105,7 @@ public class Subscription {
      * @return time of the subscription.
      */
     public LocalDate getSubTime() {
-<span class="fc" id="L105">        return subTime;</span>
+<span class="fc" id="L108">        return subTime;</span>
     }
 
     /**
@@ -110,15 +113,15 @@ public class Subscription {
      * @param subTime time of the subscription.
      */
     public void setSubTime(LocalDate subTime) {
-<span class="fc" id="L113">        this.subTime = subTime;</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L116">        this.subTime = subTime;</span>
+<span class="fc" id="L117">    }</span>
 
     /**
      * Gets the time period between reports.
      * @return the time period between two reports.
      */
     public long getReportInterval() {
-<span class="fc" id="L121">        return reportInterval;</span>
+<span class="fc" id="L124">        return reportInterval;</span>
     }
 
     /**
@@ -126,7 +129,7 @@ public class Subscription {
      * @return id of the subscription.
      */
     public long getId() {
-<span class="fc" id="L129">        return id;</span>
+<span class="fc" id="L132">        return id;</span>
     }
 
     /**
@@ -134,7 +137,7 @@ public class Subscription {
      * @return status of toggleAlert
      */
     public boolean isToggleAlert() {
-<span class="fc" id="L137">        return toggleAlert;</span>
+<span class="fc" id="L140">        return toggleAlert;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
