@@ -92,8 +92,8 @@ public class CheckerUtil {
 
         //Check which sensors which were active are currently inactive
 <span class="fc bfc" id="L94" title="All 2 branches covered.">        for(String id : sensorIds) {</span>
-<span class="pc bpc" id="L95" title="4 of 6 branches missed.">            if ((sensorActiveDict.get(id).equals(SENSOR_ACTIVE) &amp;&amp; sensorCurrentlyActiveDict.get(id).equals(SENSOR_INACTIVE))</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">            || wasEmpty &amp;&amp; sensorActiveDict.get(id).equals(SENSOR_INACTIVE)) {</span>
+<span class="pc bpc" id="L95" title="2 of 6 branches missed.">            if ((sensorActiveDict.get(id).equals(SENSOR_ACTIVE) &amp;&amp; sensorCurrentlyActiveDict.get(id).equals(SENSOR_INACTIVE))</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            || wasEmpty &amp;&amp; sensorActiveDict.get(id).equals(SENSOR_INACTIVE)) {</span>
 <span class="fc" id="L97">                controller.sendAlert(id);</span>
             }
 <span class="fc" id="L99">        }</span>
