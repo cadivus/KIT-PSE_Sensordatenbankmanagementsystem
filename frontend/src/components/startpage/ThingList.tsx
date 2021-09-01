@@ -101,7 +101,7 @@ const ThingList = ({selectedThings, searchExpression}: {selectedThings: Set<Thin
           {thingList.length < 1 && (
             <TableRow>
               <TableCell align="center">
-                <CircularProgress className={classes.root} />
+                <CircularProgress stillLoading="true" className={classes.root} />
               </TableCell>
               <TableCell />
               <TableCell />
