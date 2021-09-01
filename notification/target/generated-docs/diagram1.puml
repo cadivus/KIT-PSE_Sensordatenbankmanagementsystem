@@ -84,7 +84,8 @@ class notificationsystem.model.Sensor {
 
 class notificationsystem.model.SensorDAO {
 	{field} {static} -DEFAULT_ACTIVE_RATE : int
-	{field} {static} -ERROR_GET : String
+	{field} {static} -ERROR_ALLSTATS : String
+	{field} {static} -ERROR_OBSIDS : String
 	{field} {static} -FIRST_ACTIVE_RATE : int
 	{field} {static} -KEY_AVG : String
 	{field} {static} -KEY_ID : String
@@ -97,6 +98,7 @@ class notificationsystem.model.SensorDAO {
 	{field} -getAllSensorsApi : String
 	{field} -getStatsApi : String
 	{field} -getThingApi : String
+	{field} {static} -log : org.apache.commons.logging.Log
 	{field} -restTemplate : org.springframework.web.client.RestTemplate
 	{method} +get ( paramString1 : String ) : notificationsystem.model.Sensor
 	{method} +getAll () : java.util.List
