@@ -40,35 +40,9 @@ test('check for elements of step 2', async () => {
   )
   const {getByTestId} = render(<LoginView />, {wrapper})
 
+  // Simulate step 1
   const firstButton = getByTestId(/first-login-button/)
   const emailField = getByTestId(/login-email-field/)
-  expect(firstButton).toBeInTheDocument()
-  expect(emailField).toBeInTheDocument()
-
-  emailField.value = email1.toString()
-  fireEvent.input(emailField, {target: {value: email1.toString()}})
-  firstButton.click()
-
-  // A bit hacky, but gives enough time for the mock to send the confirmation code
-  await new Promise(r => setTimeout(r, 1000))
-
-  const secondButton = getByTestId(/second-login-button/)
-  expect(secondButton).toBeInTheDocument()
-})
-
-test('test login and logout', async () => {
-  const wrapper = ({children}) => (
-    <Providers>
-      {children}
-    </Providers>
-  )
-  const {getByTestId} = render(<LoginView />, {wrapper})
-
-  const firstButton = getByTestId(/first-login-button/)
-  const emailField = getByTestId(/login-email-field/)
-  expect(firstButton).toBeInTheDocument()
-  expect(emailField).toBeInTheDocument()
-
   emailField.value = email1.toString()
   fireEvent.input(emailField, {target: {value: email1.toString()}})
   firstButton.click()
@@ -79,6 +53,30 @@ test('test login and logout', async () => {
   const secondButton = getByTestId(/second-login-button/)
   const codeField = getByTestId(/login-code-field/)
   expect(secondButton).toBeInTheDocument()
+  expect(codeField).toBeInTheDocument()
+})
+
+test('test login and logout', async () => {
+  const wrapper = ({children}) => (
+    <Providers>
+      {children}
+    </Providers>
+  )
+  const {getByTestId} = render(<LoginView />, {wrapper})
+
+  // Simulate step 1
+  const firstButton = getByTestId(/first-login-button/)
+  const emailField = getByTestId(/login-email-field/)
+  emailField.value = email1.toString()
+  fireEvent.input(emailField, {target: {value: email1.toString()}})
+  firstButton.click()
+
+  // A bit hacky, but gives enough time for the mock to send the confirmation code
+  await new Promise(r => setTimeout(r, 1000))
+
+  // Simulate step 2
+  const secondButton = getByTestId(/second-login-button/)
+  const codeField = getByTestId(/login-code-field/)
   codeField.value = email1.toString()
   fireEvent.input(codeField, {target: {value: email1.toString()}})
   secondButton.click()
