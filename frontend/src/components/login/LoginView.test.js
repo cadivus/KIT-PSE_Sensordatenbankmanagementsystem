@@ -1,27 +1,18 @@
 import React from 'react'
 import reactRouterDom from 'react-router-dom'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent} from '@testing-library/react'
+import {renderWithProviders} from '../../test/jestHelper/customRender'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import Providers from '../Providers'
 import LoginView from './LoginView'
 import {confirm1, email1} from '../../test/mock/store/communication/mockData/notification/getText'
 
 jest.mock('../../store/communication/restClient')
 jest.mock('react-router-dom')
-
-const customRender = ui => {
-  const wrapper = ({children}) => (
-    <Providers>
-      {children}
-    </Providers>
-  )
-  return render(ui, {wrapper})
-}
 
 beforeEach(() => {
   getJson.mockImplementation(getJsonMock)
@@ -33,7 +24,7 @@ beforeEach(() => {
 })
 
 test('check for elements of step 1', async () => {
-  const {getByTestId} = customRender(<LoginView />)
+  const {getByTestId} = renderWithProviders(<LoginView />)
 
   const firstButton = getByTestId(/first-login-button/)
   const emailField = getByTestId(/login-email-field/)
@@ -42,7 +33,7 @@ test('check for elements of step 1', async () => {
 })
 
 test('check for elements of step 2', async () => {
-  const {getByTestId} = customRender(<LoginView />)
+  const {getByTestId} = renderWithProviders(<LoginView />)
 
   // Simulate step 1
   const firstButton = getByTestId(/first-login-button/)
@@ -61,7 +52,7 @@ test('check for elements of step 2', async () => {
 })
 
 test('test login and logout', async () => {
-  const {getByTestId} = customRender(<LoginView />)
+  const {getByTestId} = renderWithProviders(<LoginView />)
 
   expect(getByTestId(/not-logged-in/)).toBeInTheDocument()
 
