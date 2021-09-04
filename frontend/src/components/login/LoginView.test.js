@@ -19,11 +19,12 @@ beforeEach(() => {
 })
 
 test('check for elements of step 1', async () => {
-  const {getByTestId} = render(
+  const wrapper = ({children}) => (
     <Providers>
-      <LoginView />
-    </Providers>,
+      {children}
+    </Providers>
   )
+  const {getByTestId} = render(<LoginView />, {wrapper})
 
   const firstButton = getByTestId(/first-login-button/)
   const emailField = getByTestId(/login-email-field/)
@@ -32,11 +33,12 @@ test('check for elements of step 1', async () => {
 })
 
 test('check for elements of step 2', async () => {
-  const {getByTestId} = render(
+  const wrapper = ({children}) => (
     <Providers>
-      <LoginView />
-    </Providers>,
+      {children}
+    </Providers>
   )
+  const {getByTestId} = render(<LoginView />, {wrapper})
 
   const firstButton = getByTestId(/first-login-button/)
   const emailField = getByTestId(/login-email-field/)
@@ -52,11 +54,12 @@ test('check for elements of step 2', async () => {
 })
 
 test('test login and logout', async () => {
-  const {getByTestId} = render(
+  const wrapper = ({children}) => (
     <Providers>
-      <LoginView />
-    </Providers>,
+      {children}
+    </Providers>
   )
+  const {getByTestId} = render(<LoginView />, {wrapper})
 
   const firstButton = getByTestId(/first-login-button/)
   const emailField = getByTestId(/login-email-field/)
