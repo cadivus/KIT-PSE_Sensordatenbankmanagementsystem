@@ -12,6 +12,15 @@ import {email1} from '../../test/mock/store/communication/mockData/notification/
 
 jest.mock('../../store/communication/restClient')
 
+const customRender = ui => {
+  const wrapper = ({children}) => (
+    <Providers>
+      {children}
+    </Providers>
+  )
+  return render(ui, {wrapper})
+}
+
 beforeEach(() => {
   getJson.mockImplementation(getJsonMock)
   getText.mockImplementation(getTextMock)
@@ -19,12 +28,7 @@ beforeEach(() => {
 })
 
 test('check for elements of step 1', async () => {
-  const wrapper = ({children}) => (
-    <Providers>
-      {children}
-    </Providers>
-  )
-  const {getByTestId} = render(<LoginView />, {wrapper})
+  const {getByTestId} = customRender(<LoginView />)
 
   const firstButton = getByTestId(/first-login-button/)
   const emailField = getByTestId(/login-email-field/)
@@ -33,12 +37,7 @@ test('check for elements of step 1', async () => {
 })
 
 test('check for elements of step 2', async () => {
-  const wrapper = ({children}) => (
-    <Providers>
-      {children}
-    </Providers>
-  )
-  const {getByTestId} = render(<LoginView />, {wrapper})
+  const {getByTestId} = customRender(<LoginView />)
 
   // Simulate step 1
   const firstButton = getByTestId(/first-login-button/)
@@ -48,7 +47,7 @@ test('check for elements of step 2', async () => {
   firstButton.click()
 
   // A bit hacky, but gives enough time for the mock to send the confirmation code
-  await new Promise(r => setTimeout(r, 1000))
+  await new Promise(r => setTimeout(r, 500))
 
   const secondButton = getByTestId(/second-login-button/)
   const codeField = getByTestId(/login-code-field/)
@@ -57,12 +56,7 @@ test('check for elements of step 2', async () => {
 })
 
 test('test login and logout', async () => {
-  const wrapper = ({children}) => (
-    <Providers>
-      {children}
-    </Providers>
-  )
-  const {getByTestId} = render(<LoginView />, {wrapper})
+  const {getByTestId} = customRender(<LoginView />)
 
   // Simulate step 1
   const firstButton = getByTestId(/first-login-button/)
@@ -72,7 +66,7 @@ test('test login and logout', async () => {
   firstButton.click()
 
   // A bit hacky, but gives enough time for the mock to send the confirmation code
-  await new Promise(r => setTimeout(r, 1000))
+  await new Promise(r => setTimeout(r, 500))
 
   // Simulate step 2
   const secondButton = getByTestId(/second-login-button/)
