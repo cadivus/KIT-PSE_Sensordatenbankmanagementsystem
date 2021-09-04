@@ -44,15 +44,16 @@ const AppLayout: FC = ({children}) => {
     <>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => history.push('/')}>
+          <IconButton data-testid="home-button" edge="start" color="inherit" aria-label="menu" onClick={() => history.push('/')}>
             <HomeIcon />
           </IconButton>
-          <Button color="inherit" onClick={() => history.push('/subscriptions')}>
+          <Button data-testid="subscription-button" color="inherit" onClick={() => history.push('/subscriptions')}>
             <Typography variant="h6">
               <FormattedMessage id="appbar.subscription" />
             </Typography>
           </Button>
           <Button
+            data-testid="language-button"
             color="inherit"
             onClick={() => setLanguage(state.locale === LOCALES.ENGLISH ? LOCALES.GERMAN : LOCALES.ENGLISH)}
           >
@@ -60,7 +61,7 @@ const AppLayout: FC = ({children}) => {
           </Button>
           {!userStore?.user && (
             <Button
-              data-testid="appbar-login-button"
+              data-testid="login-button"
               className={classes.loginButton}
               color="inherit"
               onClick={() => history.push('/login')}
@@ -71,7 +72,7 @@ const AppLayout: FC = ({children}) => {
             </Button>
           )}
           {userStore?.user && (
-            <Button data-testid="appbar-logout-button" className={classes.loginButton} color="inherit" onClick={logout}>
+            <Button data-testid="logout-button" className={classes.loginButton} color="inherit" onClick={logout}>
               <Typography variant="h6">
                 <FormattedMessage id="appbar.logout" />
               </Typography>

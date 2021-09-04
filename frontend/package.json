@@ -40,8 +40,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "NODE_OPTIONS=\"--no-warnings\" react-scripts test --watchAll=false",
-    "test:coverage": "NODE_OPTIONS=\"--no-warnings\" react-scripts test --watchAll=false --coverage",
+    "test": "react-scripts test --watchAll=false",
+    "test:coverage": "react-scripts test --watchAll=false --coverage",
     "test:badges": "npm run test:coverage && jest-coverage-badges",
     "eject": "react-scripts eject"
   },

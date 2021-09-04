@@ -30,7 +30,7 @@ test('check for data', async () => {
   const {container, getAllByTestId} = render(
     <Providers>
       <Data datastream={datastream} />
-    </Providers>
+    </Providers>,
   )
 
   // Loading detection

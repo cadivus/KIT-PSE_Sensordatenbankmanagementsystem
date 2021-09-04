@@ -1,24 +1,24 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {fireEvent, render} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import Properties from '../thingInformation/Properties'
-import ThingStore from '../../store/ThingStore'
-import {
-  datastreamSensor1Id,
-  sensor1Datastream1,
-  sensor1Datastream1Start
-} from "../../test/mock/store/communication/mockData/backend/getJson";
-import {sensor1, sensor1Id} from "../../test/mock/store/communication/mockData/backend/getJson";
+import {datastreamSensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+
 import DatastreamStore from '../../store/DatastreamStore'
 import Export from './Export'
-import Providers from "../Providers";
+import Providers from '../Providers'
+import Id from '../../material/Id'
 
 jest.mock('../../store/communication/restClient')
+
+const getDatastream = datastreamId => {
+  const datastreamStore = new DatastreamStore()
+  return datastreamStore.getDatastream(new Id(datastreamId))
+}
 
 beforeEach(() => {
   getJson.mockImplementation(getJsonMock)
@@ -26,16 +26,19 @@ beforeEach(() => {
   postJsonGetText.mockImplementation(postJsonGetTextMock)
 })
 
-test('check for export', async () => {
-  const datastreamStore = new DatastreamStore()
-  const thingStore = new ThingStore(datastreamStore)
-  const thing = await thingStore.getThing(sensor1Id)
-  const datastream = await datastreamStore.getDatastream(datastreamSensor1Id)
+test('check for elements', async () => {
+  const datastream = await getDatastream(datastreamSensor1Id)
 
-  const wrapper = mount(<Providers>
-    <Export datastream={datastream}/></Providers>)
+  const {getByTestId} = render(
+    <Providers>
+      <Export datastream={datastream} />
+    </Providers>,
+  )
 
-  expect(wrapper.html().includes("Export")).toBe(true)
-
-
+  const exportButton = getByTestId(/export-button/)
+  const startField = getByTestId(/start-field/)
+  const endField = getByTestId(/end-field/)
+  expect(exportButton).toBeInTheDocument()
+  expect(startField).toBeInTheDocument()
+  expect(endField).toBeInTheDocument()
 })

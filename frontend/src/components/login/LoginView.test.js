@@ -22,7 +22,7 @@ test('check for elements of step 1', async () => {
   const {getByTestId} = render(
     <Providers>
       <LoginView />
-    </Providers>
+    </Providers>,
   )
 
   const firstButton = getByTestId(/first-login-button/)
@@ -35,7 +35,7 @@ test('check for elements of step 2', async () => {
   const {getByTestId} = render(
     <Providers>
       <LoginView />
-    </Providers>
+    </Providers>,
   )
 
   const firstButton = getByTestId(/first-login-button/)
@@ -55,7 +55,7 @@ test('test login and logout', async () => {
   const {getByTestId} = render(
     <Providers>
       <LoginView />
-    </Providers>
+    </Providers>,
   )
 
   const firstButton = getByTestId(/first-login-button/)
