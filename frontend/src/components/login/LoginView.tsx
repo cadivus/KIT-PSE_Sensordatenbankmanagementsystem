@@ -15,6 +15,7 @@ import LoginCode from '../../material/LoginCode'
 const LoginView = () => {
   const history = useHistory()
   const userStore = useUserStore()
+  const [status, setStatus] = useState(userStore?.user ? 'logged-in' : 'not-logged-in')
 
   const [secondStep, setSecondStep] = useState(false)
   const [mailString, setMailString] = useState('')
@@ -27,11 +28,17 @@ const LoginView = () => {
 
   const requestUser = (code: string) => {
     if (userStore?.requestUser(new EMail(mailString), new LoginCode(code))) {
+      setStatus('logged-in')
       history.push('/')
     }
   }
 
-  return <>{!secondStep ? <LoginStep1 setMailAddress={setMail} /> : <LoginStep2 setAuthCode={requestUser} />}</>
+  return (
+    <>
+      {!secondStep ? <LoginStep1 setMailAddress={setMail} /> : <LoginStep2 setAuthCode={requestUser} />}
+      <div data-testid={status} />
+    </>
+  )
 }
 
 export default LoginView
