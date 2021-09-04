@@ -1,4 +1,5 @@
 import React from 'react'
+import reactRouterDom from 'react-router-dom'
 import {fireEvent, render} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
@@ -8,9 +9,10 @@ import {
 } from '../../test/mock/store/communication/restClientMock'
 import Providers from '../Providers'
 import LoginView from './LoginView'
-import {email1} from '../../test/mock/store/communication/mockData/notification/getText'
+import {confirm1, email1} from '../../test/mock/store/communication/mockData/notification/getText'
 
 jest.mock('../../store/communication/restClient')
+jest.mock('react-router-dom')
 
 const customRender = ui => {
   const wrapper = ({children}) => (
@@ -25,6 +27,9 @@ beforeEach(() => {
   getJson.mockImplementation(getJsonMock)
   getText.mockImplementation(getTextMock)
   postJsonGetText.mockImplementation(postJsonGetTextMock)
+
+  const pushMock = jest.fn()
+  reactRouterDom.useHistory = jest.fn().mockReturnValue({push: pushMock})
 })
 
 test('check for elements of step 1', async () => {
@@ -47,7 +52,7 @@ test('check for elements of step 2', async () => {
   firstButton.click()
 
   // A bit hacky, but gives enough time for the mock to send the confirmation code
-  await new Promise(r => setTimeout(r, 500))
+  await new Promise(r => setTimeout(r, 300))
 
   const secondButton = getByTestId(/second-login-button/)
   const codeField = getByTestId(/login-code-field/)
@@ -58,6 +63,8 @@ test('check for elements of step 2', async () => {
 test('test login and logout', async () => {
   const {getByTestId} = customRender(<LoginView />)
 
+  expect(getByTestId(/not-logged-in/)).toBeInTheDocument()
+
   // Simulate step 1
   const firstButton = getByTestId(/first-login-button/)
   const emailField = getByTestId(/login-email-field/)
@@ -66,12 +73,14 @@ test('test login and logout', async () => {
   firstButton.click()
 
   // A bit hacky, but gives enough time for the mock to send the confirmation code
-  await new Promise(r => setTimeout(r, 500))
+  await new Promise(r => setTimeout(r, 300))
 
   // Simulate step 2
   const secondButton = getByTestId(/second-login-button/)
   const codeField = getByTestId(/login-code-field/)
-  codeField.value = email1.toString()
-  fireEvent.input(codeField, {target: {value: email1.toString()}})
+  emailField.value = confirm1
+  fireEvent.input(codeField, {target: {value: confirm1}})
   secondButton.click()
+
+  expect(getByTestId(/logged-in/)).toBeInTheDocument()
 })
