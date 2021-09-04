@@ -49,6 +49,9 @@ test('check for elements of step 2', async () => {
   fireEvent.input(emailField, {target: {value: email1.toString()}})
   firstButton.click()
 
+  // A bit hacky, but gives enough time for the mock to send the confirmation code
+  await new Promise(r => setTimeout(r, 1000))
+
   const secondButton = getByTestId(/second-login-button/)
   expect(secondButton).toBeInTheDocument()
 })
@@ -69,6 +72,9 @@ test('test login and logout', async () => {
   emailField.value = email1.toString()
   fireEvent.input(emailField, {target: {value: email1.toString()}})
   firstButton.click()
+
+  // A bit hacky, but gives enough time for the mock to send the confirmation code
+  await new Promise(r => setTimeout(r, 1000))
 
   const secondButton = getByTestId(/second-login-button/)
   const codeField = getByTestId(/login-code-field/)
