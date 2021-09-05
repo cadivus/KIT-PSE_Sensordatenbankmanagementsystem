@@ -5,9 +5,9 @@ import {
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import ReplayThingList from './ReplayThingList'
+import ReplayView from './ReplayView'
 import {renderWithProviders} from '../../test/jestHelper/customRender'
-import {sensor1, sensor2, sensor3} from "../../test/mock/store/communication/mockData/backend/getJson";
+import {sensor1, sensor2, sensor3} from '../../test/mock/store/communication/mockData/backend/getJson'
 
 jest.mock('../../store/communication/restClient')
 
@@ -18,12 +18,9 @@ beforeEach(() => {
 })
 
 test('check for elements', async () => {
-  const {getByTestId} = renderWithProviders(
-    <ReplayThingList things={{sensor1, sensor2, sensor3}} />,
-  )
+  const selectedThings = {sensor1, sensor2, sensor3}
+  const {getByTestId} = renderWithProviders(<ReplayView state={selectedThings} />)
 
-  const valueText = getByTestId(/value-text/)
-  const thingText = getByTestId(/thing-text/)
-  expect(valueText).toBeInTheDocument()
-  expect(thingText).toBeInTheDocument()
+  const replayViewContainer = getByTestId(/replayView-container/)
+  expect(replayViewContainer).toBeInTheDocument()
 })

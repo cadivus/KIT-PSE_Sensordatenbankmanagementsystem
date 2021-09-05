@@ -5,9 +5,8 @@ import {
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import ReplayThingList from './ReplayThingList'
+import ReplayHelp from './ReplayHelp'
 import {renderWithProviders} from '../../test/jestHelper/customRender'
-import {sensor1, sensor2, sensor3} from "../../test/mock/store/communication/mockData/backend/getJson";
 
 jest.mock('../../store/communication/restClient')
 
@@ -18,12 +17,20 @@ beforeEach(() => {
 })
 
 test('check for elements', async () => {
-  const {getByTestId} = renderWithProviders(
-    <ReplayThingList things={{sensor1, sensor2, sensor3}} />,
-  )
+  const {getByTestId} = renderWithProviders(<ReplayHelp />)
 
-  const valueText = getByTestId(/value-text/)
-  const thingText = getByTestId(/thing-text/)
-  expect(valueText).toBeInTheDocument()
-  expect(thingText).toBeInTheDocument()
+  const helpButton = getByTestId(/help-button/)
+  expect(helpButton).toBeInTheDocument()
+})
+
+test('checking if the Message is displayed', async () => {
+  const {getByTestId} = renderWithProviders(<ReplayHelp />)
+
+  const helpButton = getByTestId(/help-button/)
+  expect(helpButton).toBeInTheDocument()
+
+  helpButton.click()
+
+  const helpMessage = getByTestId(/help-message/)
+  expect(helpMessage).toBeInTheDocument()
 })

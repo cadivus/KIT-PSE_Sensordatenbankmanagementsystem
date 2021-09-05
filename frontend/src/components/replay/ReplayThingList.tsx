@@ -58,13 +58,13 @@ const ReplayThingList = ({things}: {things: Set<Thing>}) => {
         <TableHead>
           <TableRow>
             <StyledTableCell className={classes.thingCell}>
-              <Typography variant="h5">
+              <Typography data-testid="thing-text" variant="h5">
                 <ArrowDropDownIcon />
                 <FormattedMessage id="replaypage.thing" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
-              <Typography variant="h5">
+              <Typography data-testid="value-text" variant="h5">
                 <ArrowDropDownIcon />
                 <FormattedMessage id="replaypage.value" />
               </Typography>
