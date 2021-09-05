@@ -76,7 +76,7 @@ const Export = ({datastream}: {datastream: Datastream}) => {
           <Grid item xs={4}>
             <Container className={classes.paper}>
               <TextField
-                data-testid="start-field"
+                inputProps={{'data-testid': 'start-field'}}
                 id="datetime-start"
                 label="Start point"
                 type="datetime-local"
@@ -92,7 +92,7 @@ const Export = ({datastream}: {datastream: Datastream}) => {
           <Grid item xs={4}>
             <Container className={classes.paper}>
               <TextField
-                data-testid="end-field"
+                inputProps={{'data-testid': 'end-field'}}
                 id="datetime-end"
                 label="End point"
                 type="datetime-local"

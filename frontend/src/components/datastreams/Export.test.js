@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
@@ -10,10 +10,8 @@ import {datastreamSensor1Id} from '../../test/mock/store/communication/mockData/
 
 import DatastreamStore from '../../store/DatastreamStore'
 import Export from './Export'
-import Providers from '../Providers'
 import Id from '../../material/Id'
-import {renderWithProviders} from "../../test/jestHelper/customRender";
-import Data from "./Data";
+import {renderWithProviders} from '../../test/jestHelper/customRender'
 
 jest.mock('../../store/communication/restClient')
 
@@ -51,6 +49,6 @@ test('change settings', async () => {
   expect(startField).toBeInTheDocument()
   expect(endField).toBeInTheDocument()
 
-  fireEvent.input(startField, '2021-01-01T10:00')
-  fireEvent.input(endField, '2021-02-01T10:00')
+  fireEvent.input(startField, {target: {value: '2021-01-01T10:00'}})
+  fireEvent.input(endField, {target: {value: '2021-02-01T10:00'}})
 })
