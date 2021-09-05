@@ -40,3 +40,17 @@ test('check for elements', async () => {
   expect(startField).toBeInTheDocument()
   expect(endField).toBeInTheDocument()
 })
+
+test('change settings', async () => {
+  const datastream = await getDatastream(datastreamSensor1Id)
+
+  const {getByTestId} = renderWithProviders(<Export datastream={datastream} />)
+
+  const startField = getByTestId(/start-field/)
+  const endField = getByTestId(/end-field/)
+  expect(startField).toBeInTheDocument()
+  expect(endField).toBeInTheDocument()
+
+  fireEvent.input(startField, '2021-01-01T10:00')
+  fireEvent.input(endField, '2021-02-01T10:00')
+})

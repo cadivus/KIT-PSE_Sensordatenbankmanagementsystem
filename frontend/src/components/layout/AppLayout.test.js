@@ -1,12 +1,11 @@
 import React from 'react'
-import {render, wait, waitFor} from '@testing-library/react'
+import {waitFor} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import Providers from '../Providers'
 import AppLayout from './AppLayout'
 import UserStore from '../../store/UserStore'
 import {confirm1, email1} from '../../test/mock/store/communication/mockData/notification/getText'

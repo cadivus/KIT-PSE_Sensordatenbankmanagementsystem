@@ -37,13 +37,6 @@ const StyledTableCell = withStyles((theme: Theme) =>
   }),
 )(TableCell)
 
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: theme.palette.common.white,
-    },
-  }),
-)(TableRow)
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -148,7 +141,7 @@ const SubscriptionList: FC = () => {
           </TableHead>
           <TableBody>
             {subscriptionList.map(subscription => (
-              <StyledTableRow hover key={subscription.thing.name.toString()}>
+              <TableRow hover key={subscription.thing.name.toString()}>
                 <StyledTableCell component="th" scope="row">
                   <Typography variant="h5">{subscription.thing.name.toString()}</Typography>
                 </StyledTableCell>
@@ -181,7 +174,7 @@ const SubscriptionList: FC = () => {
                     <FormattedMessage id="subscriptionpage.deleteButton" />
                   </Button>
                 </StyledTableCell>
-              </StyledTableRow>
+              </TableRow>
             ))}
           </TableBody>
         </Table>

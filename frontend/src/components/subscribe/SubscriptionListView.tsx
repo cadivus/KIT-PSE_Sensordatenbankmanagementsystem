@@ -15,27 +15,6 @@ import {useHistory} from 'react-router-dom'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 import SubscriptionList from './SubscriptionList'
 
-const StyledTableCell = withStyles((theme: Theme) =>
-  createStyles({
-    head: {
-      backgroundColor: theme.palette.common.white,
-      color: theme.palette.common.black,
-      fontSize: 17,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }),
-)(TableCell)
-
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: theme.palette.common.white,
-    },
-  }),
-)(TableRow)
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -62,7 +41,7 @@ const SubscriptionListView: FC = () => {
 
   return (
     <div className={classes.root}>
-      <Container maxWidth="lg" className={classes.container}>
+      <Container data-testid="subscriptionListView-Container" maxWidth="lg" className={classes.container}>
         <SubscriptionList />
       </Container>
     </div>

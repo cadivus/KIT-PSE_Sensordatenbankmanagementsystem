@@ -30,14 +30,6 @@ const StyledTableCell = withStyles((theme: Theme) =>
   }),
 )(TableCell)
 
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: theme.palette.common.white,
-    },
-  }),
-)(TableRow)
-
 const useStyles = makeStyles({
   thingCell: {
     width: '70%',
@@ -73,14 +65,14 @@ const ReplayThingList = ({things}: {things: Set<Thing>}) => {
         </TableHead>
         <TableBody>
           {Array.from(things).map(thing => (
-            <StyledTableRow hover key={thing.name.name}>
+            <TableRow hover key={thing.name.name}>
               <StyledTableCell component="th" scope="row">
                 <Typography variant="body1">{thing.name.toString()}</Typography>
               </StyledTableCell>
               <StyledTableCell>
                 <Typography variant="body1">{thing.id.toString()}</Typography>
               </StyledTableCell>
-            </StyledTableRow>
+            </TableRow>
           ))}
         </TableBody>
       </Table>
