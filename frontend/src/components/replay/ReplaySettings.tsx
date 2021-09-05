@@ -108,7 +108,7 @@ const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>
               </StyledTableCell>
               <StyledTableCell>
                 <TextField
-                  data-testid="startDate-Field"
+                  inputProps={{'data-testid': 'startDate-field'}}
                   id="datetime-start"
                   label="Next appointment"
                   type="datetime-local"
@@ -129,7 +129,7 @@ const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>
               </StyledTableCell>
               <StyledTableCell>
                 <TextField
-                  data-testid="stopDate-Field"
+                  inputProps={{'data-testid': 'stopDate-field'}}
                   id="datetime-end"
                   label="Next appointment"
                   type="datetime-local"
@@ -150,7 +150,7 @@ const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>
               </StyledTableCell>
               <StyledTableCell>
                 <Slider
-                  data-testid="speed-slider"
+                  inputProps={{'data-testid': 'speed-slider'}}
                   defaultValue={replaySpeed.toNumber()}
                   min={1}
                   max={1000}

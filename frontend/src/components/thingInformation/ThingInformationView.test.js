@@ -1,6 +1,6 @@
 import React from 'react'
 import reactRouterDom from 'react-router-dom'
-import {render} from '@testing-library/react'
+import {render, waitFor} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
@@ -10,7 +10,6 @@ import {
 import {sensor1, sensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import Providers from '../Providers'
 import ThingInformationView from './ThingInformationView'
-import {waitFor} from '@testing-library/react'
 
 jest.mock('../../store/communication/restClient')
 jest.mock('react-router-dom')
@@ -30,7 +29,11 @@ describe('test with thing 1', () => {
   })
 
   test('check for description', async () => {
-    const {container, getByTestId} = render(<Providers><ThingInformationView /></Providers>)
+    const {container, getByTestId} = render(
+      <Providers>
+        <ThingInformationView />
+      </Providers>,
+    )
 
     // Loading detection
     await waitFor(() => {

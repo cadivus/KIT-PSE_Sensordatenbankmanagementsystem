@@ -8,7 +8,6 @@ import {
 } from '../../test/mock/store/communication/restClientMock'
 import ReplaySettings from './ReplaySettings'
 import {renderWithProviders} from '../../test/jestHelper/customRender'
-import {email1} from '../../test/mock/store/communication/mockData/notification/getText'
 
 jest.mock('../../store/communication/restClient')
 
@@ -22,9 +21,9 @@ test('check for elements', async () => {
   const {getByTestId} = renderWithProviders(<ReplaySettings />)
 
   const startText = getByTestId(/start-text/)
-  const startDateField = getByTestId(/startDate-Field/)
+  const startDateField = getByTestId(/startDate-field/)
   const stopText = getByTestId(/stop-text/)
-  const stopDateField = getByTestId(/stopDate-Field/)
+  const stopDateField = getByTestId(/stopDate-field/)
   const speedText = getByTestId(/speed-text/)
   const speedValue = getByTestId(/speed-value/)
   const playButton = getByTestId(/play-button/)
@@ -40,16 +39,13 @@ test('check for elements', async () => {
 test('change settings', async () => {
   const {getByTestId} = renderWithProviders(<ReplaySettings />)
 
-  const startDateField = getByTestId(/startDate-Field/)
-  const stopDateField = getByTestId(/stopDate-Field/)
-  const speedValue = getByTestId(/speed-value/)
+  const startDateField = getByTestId(/startDate-field/)
+  const stopDateField = getByTestId(/stopDate-field/)
   expect(startDateField).toBeInTheDocument()
   expect(stopDateField).toBeInTheDocument()
-  expect(speedValue).toBeInTheDocument()
 
-  fireEvent.input(startDateField, '2020-01-01T10:00')
-  fireEvent.input(stopDateField, '2020-02-02T10:00')
-  fireEvent.input(speedValue, '50')
+  fireEvent.input(startDateField, {target: {value: '2021-01-01T10:00'}})
+  fireEvent.input(stopDateField, {target: {value: '2021-01-01T10:00'}})
 })
 
 test('start replay', async () => {
