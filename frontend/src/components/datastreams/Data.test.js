@@ -11,6 +11,8 @@ import DatastreamStore from '../../store/DatastreamStore'
 import Data from './Data'
 import Providers from '../Providers'
 import Id from '../../material/Id'
+import {renderWithProviders} from "../../test/jestHelper/customRender";
+import StartpageView from "../startpage/StartpageView";
 
 jest.mock('../../store/communication/restClient')
 
@@ -27,11 +29,7 @@ beforeEach(() => {
 
 test('check for data', async () => {
   const datastream = await getDatastream(datastreamSensor1Id)
-  const {container, getAllByTestId} = render(
-    <Providers>
-      <Data datastream={datastream} />
-    </Providers>,
-  )
+  const {container, getAllByTestId} = renderWithProviders(<Data datastream={datastream} />)
 
   // Loading detection
   await waitFor(() => {

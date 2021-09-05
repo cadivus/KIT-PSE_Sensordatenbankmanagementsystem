@@ -1,4 +1,5 @@
 import React from 'react'
+import {render, wait, waitFor} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
@@ -7,9 +8,9 @@ import {
 } from '../../test/mock/store/communication/restClientMock'
 import Providers from '../Providers'
 import AppLayout from './AppLayout'
-import {render, wait, waitFor} from "@testing-library/react";
-import UserStore from "../../store/UserStore";
-import {confirm1, email1} from "../../test/mock/store/communication/mockData/notification/getText";
+import UserStore from '../../store/UserStore'
+import {confirm1, email1} from '../../test/mock/store/communication/mockData/notification/getText'
+import {renderWithProviders} from '../../test/jestHelper/customRender'
 
 jest.mock('../../store/communication/restClient')
 
@@ -20,11 +21,7 @@ beforeEach(() => {
 })
 
 test('check for elements', async () => {
-  const {getByTestId} = render(
-    <Providers>
-      <AppLayout />
-    </Providers>,
-  )
+  const {getByTestId} = renderWithProviders(<AppLayout />)
 
   const homeButton = getByTestId(/home-button/)
   const subscriptionField = getByTestId(/subscription-button/)
@@ -37,12 +34,7 @@ test('check for elements', async () => {
 })
 
 test('change language', async () => {
-  const {container, getByTestId} = render(
-    <Providers>
-      <AppLayout />
-    </Providers>,
-  )
-
+  const {container, getByTestId} = renderWithProviders(<AppLayout />)
 
   const languageButton = getByTestId(/language-button/)
   expect(languageButton).toBeInTheDocument()
@@ -60,17 +52,13 @@ test('change language', async () => {
 })
 
 test('logout', async () => {
-  const {container, getByTestId} = render(
-    <Providers>
-      <AppLayout />
-    </Providers>,
-  )
+  const {getByTestId} = renderWithProviders(<AppLayout />)
 
   const userStore = new UserStore()
-  await waitFor( () => {console.log(userStore.requestUser(email1.toString(), confirm1))
+  await waitFor(() => {
+    console.log(userStore.requestUser(email1.toString(), confirm1))
   })
 
   const loginButton = getByTestId(/login-button/)
   expect(loginButton).toBeInTheDocument()
-
 })

@@ -32,7 +32,7 @@ const Search = ({setSearchExpression}: {setSearchExpression: any}) => {
     setSearchExpression(new RegExp(`^.*${value}.*$`, 'i'))
   }
 
-  return <SearchBar value={searchString} onChange={updateSearch} onCancelSearch={() => updateSearch('')} />
+  return <SearchBar data-testid="searchBar" value={searchString} onChange={updateSearch} onCancelSearch={() => updateSearch('')} />
 }
 
 export default Search

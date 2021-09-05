@@ -1,6 +1,5 @@
 import React from 'react'
-import {mount} from 'enzyme'
-import {waitFor} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
@@ -8,8 +7,9 @@ import {
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
 import Providers from '../Providers'
-import StartpageView from "./StartpageView";
-import {sensor1, sensor2, sensor3} from '../../test/mock/store/communication/mockData/backend/getJson'
+import StartpageView from './StartpageView'
+import {renderWithProviders} from "../../test/jestHelper/customRender";
+import AppLayout from "../layout/AppLayout";
 
 jest.mock('../../store/communication/restClient')
 
@@ -19,15 +19,29 @@ beforeEach(() => {
   postJsonGetText.mockImplementation(postJsonGetTextMock)
 })
 
-test('check for things', async () => {
-  const wrapper = mount(
-    <Providers>
-      <StartpageView />
-    </Providers>,
-  )
+test('check for elements', async () => {
+  const {getByTestId} = renderWithProviders(<StartpageView />)
 
-  expect(wrapper.html().includes("Startpage")).toBe(true)
-  expect(wrapper.html().includes("Subscribe")).toBe(true)
-  expect(wrapper.html().includes("Replay")).toBe(true)
-  expect(wrapper.html().includes("Thing")).toBe(true)
+  const startpageText = getByTestId(/startpage-text/)
+  const subscribeButton = getByTestId(/subscribe-button/)
+  const replayButton = getByTestId(/replay-button/)
+  expect(startpageText).toBeInTheDocument()
+  expect(subscribeButton).toBeInTheDocument()
+  expect(replayButton).toBeInTheDocument()
+})
+
+test('test search', async () => {
+  const {getByTestId} = renderWithProviders(<StartpageView />)
+
+  const startpageText = getByTestId(/startpage-text/)
+  const subscribeButton = getByTestId(/subscribe-button/)
+  const replayButton = getByTestId(/replay-button/)
+  const searchBar = getByTestId(/searchBar/)
+  expect(startpageText).toBeInTheDocument()
+  expect(subscribeButton).toBeInTheDocument()
+  expect(replayButton).toBeInTheDocument()
+  expect(searchBar).toBeInTheDocument()
+
+  fireEvent.input(searchBar, 'Node')
+  fireEvent.input(searchBar, KeyboardEvent.ENTER)
 })

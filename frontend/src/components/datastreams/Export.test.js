@@ -12,6 +12,8 @@ import DatastreamStore from '../../store/DatastreamStore'
 import Export from './Export'
 import Providers from '../Providers'
 import Id from '../../material/Id'
+import {renderWithProviders} from "../../test/jestHelper/customRender";
+import Data from "./Data";
 
 jest.mock('../../store/communication/restClient')
 
@@ -29,11 +31,7 @@ beforeEach(() => {
 test('check for elements', async () => {
   const datastream = await getDatastream(datastreamSensor1Id)
 
-  const {getByTestId} = render(
-    <Providers>
-      <Export datastream={datastream} />
-    </Providers>,
-  )
+  const {getByTestId} = renderWithProviders(<Export datastream={datastream} />)
 
   const exportButton = getByTestId(/export-button/)
   const startField = getByTestId(/start-field/)
