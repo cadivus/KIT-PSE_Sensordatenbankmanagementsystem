@@ -52,14 +52,14 @@ describe('cache', () => {
     const store = initValue()
 
     await store.things
-    const cachedThings = store.cachedThings
+    const {cachedThings} = store
     expect(cachedThings.length).toBe(3)
   })
 
   it('check cache data match', async () => {
     const store = initValue()
     await store.things
-    const cachedThings = store.cachedThings
+    const {cachedThings} = store
 
     thingCollectionMatches(cachedThings, allThings)
   })

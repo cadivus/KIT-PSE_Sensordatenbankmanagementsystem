@@ -7,12 +7,12 @@ import {
 } from '../../test/mock/store/communication/restClientMock'
 import ReplayRequest from './ReplayRequest'
 import {renderWithProviders} from '../../test/jestHelper/customRender'
-import Replay from "../../material/Replay";
+import Replay from '../../material/Replay'
 import {
   sensor1,
   sensor1Datastream1End,
   sensor1Datastream1Start,
-} from "../../test/mock/store/communication/mockData/backend/getJson";
+} from '../../test/mock/store/communication/mockData/backend/getJson'
 
 jest.mock('../../store/communication/restClient')
 
@@ -30,7 +30,7 @@ test('check for elements with valid replay', async () => {
   expect(replayText).toBeInTheDocument()
 })
 
-//there are no elements which could be tested
+// there are no elements which could be tested
 test('check for elements with invalid replay', async () => {
   renderWithProviders(<ReplayRequest replay={null} />)
 })

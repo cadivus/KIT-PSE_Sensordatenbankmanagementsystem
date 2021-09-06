@@ -19,7 +19,7 @@ test('translated values', () => {
     'kilometer per hour': 'km/h',
   }
 
-  for (var key in translated) {
+  for (const key in translated) {
     const value = translated[key]
 
     const unit = new Unit(key)

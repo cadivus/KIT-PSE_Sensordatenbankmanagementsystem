@@ -11,8 +11,8 @@ import DatastreamStore from '../../store/DatastreamStore'
 import Data from './Data'
 import Providers from '../Providers'
 import Id from '../../material/Id'
-import {renderWithProviders} from "../../test/jestHelper/customRender";
-import StartpageView from "../startpage/StartpageView";
+import {renderWithProviders} from '../../test/jestHelper/customRender'
+import StartpageView from '../startpage/StartpageView'
 
 jest.mock('../../store/communication/restClient')
 

@@ -22,9 +22,7 @@ test('check for elements', async () => {
   const thingStore = new ThingStore(new DatastreamStore())
   const allThings = await thingStore.things
 
-  const {getByTestId} = renderWithProviders(
-    <ReplayThingList things={new Set(allThings)} />,
-  )
+  const {getByTestId} = renderWithProviders(<ReplayThingList things={new Set(allThings)} />)
 
   const valueText = getByTestId(/value-text/)
   const thingText = getByTestId(/thing-text/)

@@ -20,7 +20,11 @@ beforeEach(() => {
 })
 
 test('check for things', async () => {
-  const wrapper = mount(<Providers><ThingList selectedThings={new Set()} searchExpression={new RegExp('^.*$', 'i')} /></Providers>)
+  const wrapper = mount(
+    <Providers>
+      <ThingList selectedThings={new Set()} searchExpression={new RegExp('^.*$', 'i')} />
+    </Providers>,
+  )
 
   // Loading detection
   await waitFor(() => {

@@ -7,13 +7,13 @@ export const datastreamRowValuesMatches = (datastreamRow, datastreamRowJson) => 
   const jsonDate = new Date(dateString)
   expect(date.getTime()).toBe(jsonDate.getTime())
 
-  let jsonValue = `${datastreamRowJson.RESULTNUMBER}`
+  const jsonValue = `${datastreamRowJson.RESULTNUMBER}`
   expect(value).toBe(jsonValue)
 }
 
 export const datastreamRowListValuesMatches = (datastreamRowList, datastreamRowJsonList) => {
   let i = 0
-  for (let datastreamRow of datastreamRowList) {
+  for (const datastreamRow of datastreamRowList) {
     datastreamRowValuesMatches(datastreamRow, datastreamRowJsonList[i])
     i += 1
   }
