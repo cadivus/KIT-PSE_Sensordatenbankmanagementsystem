@@ -6,10 +6,8 @@ import {
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import Providers from '../Providers'
 import StartpageView from './StartpageView'
-import {renderWithProviders} from "../../test/jestHelper/customRender";
-import AppLayout from "../layout/AppLayout";
+import {renderWithProviders} from '../../test/jestHelper/customRender'
 
 jest.mock('../../store/communication/restClient')
 

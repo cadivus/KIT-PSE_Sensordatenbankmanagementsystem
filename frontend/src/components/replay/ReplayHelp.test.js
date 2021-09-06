@@ -26,6 +26,9 @@ test('check for elements', async () => {
 test('checking if the Message is displayed', async () => {
   const {getByTestId} = renderWithProviders(<ReplayHelp />)
 
+  // Shouldn't exist initially
+  expect(() => getByTestId(/help-message/)).toThrow()
+
   const helpButton = getByTestId(/help-button/)
   expect(helpButton).toBeInTheDocument()
 

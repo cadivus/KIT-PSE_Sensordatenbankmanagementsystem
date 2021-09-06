@@ -10,7 +10,7 @@ import Properties from './Properties'
 import ThingStore from '../../store/ThingStore'
 import {sensor1, sensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
-import ThingTitle from "./ThingTitle";
+import ThingTitle from './ThingTitle'
 
 jest.mock('../../store/communication/restClient')
 

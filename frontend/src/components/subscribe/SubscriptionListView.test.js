@@ -17,38 +17,7 @@ beforeEach(() => {
 })
 
 test('check for elements', async () => {
-  const props = {
-    history: {
-      length: 4,
-      action: 'PUSH',
-      location: {
-        pathname: '/subscriptions/subscriptionCreate',
-        state: {
-          selectedThings: {},
-        },
-        search: '',
-        hash: '',
-        key: 'r6c784',
-      },
-    },
-    location: {
-      pathname: '/subscriptions/subscriptionCreate',
-      state: {
-        selectedThings: {},
-      },
-      search: '',
-      hash: '',
-      key: 'r6c784',
-    },
-    match: {
-      path: '/subscriptions/subscriptionCreate',
-      url: '/subscriptions/subscriptionCreate',
-      isExact: true,
-      params: {},
-    },
-  }
-
-  const {getByTestId} = renderWithProviders(<SubscriptionListView props={props} />)
+  const {getByTestId} = renderWithProviders(<SubscriptionListView />)
 
   const subscriptionListViewContainer = getByTestId(/subscriptionListView-Container/)
   expect(subscriptionListViewContainer).toBeInTheDocument()
