@@ -98,6 +98,11 @@ public class Controller {
     @PostMapping(value = "/postSubscription", consumes = "application/json")
     public void postSubscription(@RequestParam("mailAddress") String mailAddress, @RequestParam("sensorID") String sensorID,
                                  @RequestParam("reportInterval") long reportInterval, @RequestParam("toggleAlert") boolean toggleAlert) {
+
+        if (subscriptionDAO.get(mailAddress, sensorID) != null) {
+            return;
+        }
+
         Subscription subscription = new Subscription(mailAddress, sensorID, LocalDate.now(), reportInterval, toggleAlert);
         subscriptionDAO.save(subscription);
     }
