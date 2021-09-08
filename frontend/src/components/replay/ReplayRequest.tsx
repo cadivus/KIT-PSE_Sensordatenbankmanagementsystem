@@ -21,7 +21,7 @@ const ReplayRequest = ({replay}: {replay: Replay | null}) => {
   if (replay) {
     return (
       <div>
-        <Typography variant="h5" className={classes.Margins}>
+        <Typography data-testid="replay-text" variant="h5" className={classes.Margins}>
           <FormattedMessage id="replaypage.request" />
         </Typography>
         <Typography variant="body1">{replay.id.toString()}</Typography>

@@ -10,6 +10,7 @@ import Properties from './Properties'
 import ThingStore from '../../store/ThingStore'
 import {sensor1, sensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
+import ThingTitle from './ThingTitle'
 
 jest.mock('../../store/communication/restClient')
 
@@ -23,15 +24,7 @@ test('check for sensors', async () => {
   const thingStore = new ThingStore(new DatastreamStore())
   const thing = await thingStore.getThing(sensor1Id)
 
-  const wrapper = mount(<Properties thing={thing} />)
+  const wrapper = mount(<ThingTitle thing={thing} />)
 
-  expect(wrapper.html().includes(sensor1.description)).toBe(true)
-  expect(wrapper.html().includes('Description: ')).toBe(true)
-  expect(wrapper.html().includes('Location: ')).toBe(true)
-  expect(wrapper.html().includes('shortname: ')).toBe(true)
-  expect(wrapper.html().includes('hardware.id: ')).toBe(true)
-  expect(wrapper.html().includes('operator.domain: ')).toBe(true)
-  expect(wrapper.html().includes('Street:')).toBe(true)
-  expect(wrapper.html().includes('City:')).toBe(true)
-  expect(wrapper.html().includes('Coordinates:')).toBe(true)
+  expect(wrapper.html().includes(sensor1.name)).toBe(true)
 })

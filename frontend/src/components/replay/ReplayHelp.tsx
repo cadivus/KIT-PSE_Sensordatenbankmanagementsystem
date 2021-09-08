@@ -28,10 +28,11 @@ const ReplayHelp = () => {
 
   return (
     <div className={classes.Margins}>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button data-testid="help-button" variant="outlined" color="primary" onClick={handleClickOpen}>
         <FormattedMessage id="replaypage.help" />
       </Button>
       <Dialog
+        data-testid="help-message"
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"

@@ -97,7 +97,7 @@ const Data = ({datastream}: {datastream: Datastream}) => {
         </TableHead>
         <TableBody>
           {dataList.map(dataRow => (
-            <StyledTableRow hover key={dataRow.date.toString()}>
+            <StyledTableRow data-testid="tableRow" hover key={dataRow.date.toString()}>
               <StyledTableCell component="th" scope="row">
                 <Date date={dataRow.date} />
               </StyledTableCell>

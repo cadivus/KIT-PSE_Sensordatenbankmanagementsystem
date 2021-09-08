@@ -102,12 +102,13 @@ const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>
           <TableBody>
             <StyledTableRow>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="body1">
+                <Typography data-testid="start-text" variant="body1">
                   <FormattedMessage id="replaypage.start" />
                 </Typography>
               </StyledTableCell>
               <StyledTableCell>
                 <TextField
+                  inputProps={{'data-testid': 'startDate-field'}}
                   id="datetime-start"
                   label="Next appointment"
                   type="datetime-local"
@@ -122,12 +123,13 @@ const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>
             </StyledTableRow>
             <StyledTableRow>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="body1">
+                <Typography data-testid="stop-text" variant="body1">
                   <FormattedMessage id="replaypage.stop" />
                 </Typography>
               </StyledTableCell>
               <StyledTableCell>
                 <TextField
+                  inputProps={{'data-testid': 'stopDate-field'}}
                   id="datetime-end"
                   label="Next appointment"
                   type="datetime-local"
@@ -142,21 +144,27 @@ const ReplaySettings = ({setReplay, things}: {setReplay: any; things: Set<Thing>
             </StyledTableRow>
             <StyledTableRow>
               <StyledTableCell component="th" scope="row">
-                <Typography variant="body1">
+                <Typography data-testid="speed-text" variant="body1">
                   <FormattedMessage id="replaypage.speed" />
                 </Typography>
               </StyledTableCell>
               <StyledTableCell>
-                <Slider defaultValue={replaySpeed.toNumber()} min={1} max={1000} onChange={setReplaySpeed} />
+                <Slider
+                  inputProps={{'data-testid': 'speed-slider'}}
+                  defaultValue={replaySpeed.toNumber()}
+                  min={1}
+                  max={1000}
+                  onChange={setReplaySpeed}
+                />
               </StyledTableCell>
               <StyledTableCell>
-                <Typography variant="body1">{`${replaySpeed.toString()}x`}</Typography>
+                <Typography data-testid="speed-value" variant="body1">{`${replaySpeed.toString()}x`}</Typography>
               </StyledTableCell>
             </StyledTableRow>
           </TableBody>
         </Table>
       </TableContainer>
-      <Button variant="outlined" className={classes.Margins} onClick={createReplay}>
+      <Button data-testid="play-button" variant="outlined" className={classes.Margins} onClick={createReplay}>
         <FormattedMessage id="replaypage.play" />
       </Button>
     </div>

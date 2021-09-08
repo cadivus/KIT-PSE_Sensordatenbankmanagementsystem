@@ -98,12 +98,12 @@ const DatastreamView: FC = () => {
     loadDatastream(datastreamStore, setDatastream, setDatastreamLoading, datastreamId, datastream)
   }, [datastreamStore, setDatastream, setDatastreamLoading, datastreamId, datastream])
 
-  if (thingLoading || datastreamLoading) return <Loading />
+  if (thingLoading || datastreamLoading) return <Loading data-testid="loadingPage" />
   if (!thing || !datastream) return <ErrorHandling />
 
   return (
     <div>
-      <Container maxWidth="lg" className={classes.container}>
+      <Container data-testid="datastreamDataTableContainer" maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <ThingTitle thing={thing} />

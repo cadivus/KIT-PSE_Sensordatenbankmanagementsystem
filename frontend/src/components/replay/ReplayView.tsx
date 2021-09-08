@@ -38,7 +38,7 @@ const ReplayView = (props: any) => {
 
   return (
     <div>
-      <Container maxWidth="lg" className={classes.container}>
+      <Container data-testid="replayView-container" maxWidth="lg" className={classes.container}>
         <Grid container spacing={4}>
           <Grid item xs={7}>
             <ReplayThingList things={things} />

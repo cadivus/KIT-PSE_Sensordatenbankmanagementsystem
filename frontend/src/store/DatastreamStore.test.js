@@ -3,7 +3,7 @@ import {getJson, getText, postJsonGetText} from './communication/restClient'
 import {
   getJson as getJsonMock,
   getText as getTextMock,
-  postJsonGetText as postJsonGetTextMock
+  postJsonGetText as postJsonGetTextMock,
 } from '../test/mock/store/communication/restClientMock'
 import {
   datastreamSensor1Id,

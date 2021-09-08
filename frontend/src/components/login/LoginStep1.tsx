@@ -59,8 +59,16 @@ const LoginStep1 = ({setMailAddress}: {setMailAddress: (mailString: string) => v
             autoComplete="email"
             autoFocus
             onInput={e => setMailString((e.target as HTMLTextAreaElement).value)}
+            inputProps={{'data-testid': 'login-email-field'}}
           />
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+          <Button
+            data-testid="first-login-button"
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
             <FormattedMessage id="loginpage.signInButton" />
           </Button>
         </form>
