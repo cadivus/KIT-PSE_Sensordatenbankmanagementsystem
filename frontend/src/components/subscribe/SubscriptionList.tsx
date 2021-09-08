@@ -37,7 +37,6 @@ const StyledTableCell = withStyles((theme: Theme) =>
   }),
 )(TableCell)
 
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
