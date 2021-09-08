@@ -1,18 +1,6 @@
 import React, {FC} from 'react'
-import {
-  Button,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  TableCell,
-  TableRow,
-  Theme,
-  withStyles,
-} from '@material-ui/core'
+import {Container, Theme} from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
-import {useHistory} from 'react-router-dom'
-import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 import SubscriptionList from './SubscriptionList'
 
 const useStyles = makeStyles((theme: Theme) =>
