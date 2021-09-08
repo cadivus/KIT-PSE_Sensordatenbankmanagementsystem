@@ -103,7 +103,7 @@ const DatastreamView: FC = () => {
 
   return (
     <div>
-      <Container data-testid="datastreamListView-Container" maxWidth="lg" className={classes.container}>
+      <Container data-testid="datastreamDataTableContainer" maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <ThingTitle thing={thing} />

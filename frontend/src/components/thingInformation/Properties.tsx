@@ -100,7 +100,7 @@ const Properties = ({thing}: {thing: Thing}) => {
   const classes = useStyles()
 
   return (
-    <TableContainer component={Paper} className={classes.table}>
+    <TableContainer component={Paper} className={classes.table} data-testid="thingPropertiesPanel">
       <Table>
         <TableBody>
           <StyledTableRow>

@@ -59,7 +59,7 @@ const Export = ({datastream}: {datastream: Datastream}) => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} data-testid="exportPanel">
       <Paper>
         <Grid container spacing={3}>
           <Grid item xs={4}>

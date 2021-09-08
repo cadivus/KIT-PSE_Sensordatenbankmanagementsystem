@@ -28,7 +28,7 @@ const ThingTitle = ({thing}: {thing: Thing}) => {
   }, [thing])
 
   return (
-    <Typography variant="h3" align="center" gutterBottom>
+    <Typography variant="h3" align="center" gutterBottom data-testid="thingTitle">
       {thing.name.toString()}
       {activeState === ThingState.Online ? (
         <FiberManualRecordIcon style={{color: green[500]}} fontSize="large" />
