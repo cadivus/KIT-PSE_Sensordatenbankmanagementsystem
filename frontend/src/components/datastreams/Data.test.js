@@ -1,5 +1,6 @@
 import React from 'react'
-import {render, waitFor} from '@testing-library/react'
+import {waitFor} from '@testing-library/react'
+import {renderWithProviders} from '../../test/jestHelper/customRender'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
@@ -9,10 +10,7 @@ import {
 import {datastreamSensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 import Data from './Data'
-import Providers from '../Providers'
 import Id from '../../material/Id'
-import {renderWithProviders} from '../../test/jestHelper/customRender'
-import StartpageView from '../startpage/StartpageView'
 
 jest.mock('../../store/communication/restClient')
 
