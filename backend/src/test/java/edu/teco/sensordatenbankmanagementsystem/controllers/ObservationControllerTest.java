@@ -1,6 +1,7 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static testutil.TestUtils.createURLWithPort;
 
 import java.util.Objects;
 import org.junit.jupiter.api.Test;
@@ -38,8 +39,8 @@ class ObservationControllerTest {
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort("/observation/getAllObs"), HttpMethod.GET, entity,
-        String.class);
+            createURLWithPort(port,"/observation/getAllObs"), HttpMethod.GET, entity,
+            String.class);
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
@@ -53,24 +54,27 @@ class ObservationControllerTest {
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort("/observation/observations/saqn:t:43ae704/?frameStart=2019-01-01&frameEnd=2021-01-01"), HttpMethod.GET, entity,
-        String.class);
+            createURLWithPort(port, "/observation/observations/saqn:t:43ae704/?frameStart=2019-01-01&frameEnd=2021-01" +
+                    "-01"), HttpMethod.GET, entity,
+            String.class);
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("30e29778-0cf8-11ea-83d0-9311961f"));
     }
     response = testRestTemplate.exchange(
-        createURLWithPort("/observation/observations/saqn:t:43ae704/?limit=10000&sort=date-asc"), HttpMethod.GET, entity,
-        String.class);
+            createURLWithPort(port, "/observation/observations/saqn:t:43ae704/?limit=10000&sort=date-asc"),
+            HttpMethod.GET, entity,
+            String.class);
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("30e29778-0cf8-11ea-83d0-9311961f"));
     }
     response = testRestTemplate.exchange(
-        createURLWithPort("/observation/observations/saqn:t:43ae704/?frameStart=2019-01-01&frameEnd=2021-01-01&obsIds=xyz"), HttpMethod.GET, entity,
-        String.class);
+            createURLWithPort(port, "/observation/observations/saqn:t:43ae704/?frameStart=2019-01-01&frameEnd=2021-01" +
+                    "-01&obsIds=xyz"), HttpMethod.GET, entity,
+            String.class);
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
@@ -84,13 +88,15 @@ class ObservationControllerTest {
 
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort("/observation/observations/saqn:t:43ae704/?frameStart=2019-01-01&frameEnd=2021-01-01&sort=xyz"), HttpMethod.GET, entity,
-        String.class);
+            createURLWithPort(port, "/observation/observations/saqn:t:43ae704/?frameStart=2019-01-01&frameEnd=2021-01" +
+                    "-01&sort=xyz"), HttpMethod.GET, entity,
+            String.class);
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(response.getBody().contains("Connection to the database failed") | response.getBody().contains("Unknown error"));
     } else fail();
     response = testRestTemplate.exchange(
-            createURLWithPort("/observation/observations/xyz/?frameStart=2019-01-01&frameEnd=2021-01-01"), HttpMethod.GET, entity,
+            createURLWithPort(port, "/observation/observations/xyz/?frameStart=2019-01-01&frameEnd=2021-01-01"),
+            HttpMethod.GET, entity,
             String.class);
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(response.getBody().contains("Connection to the database failed"));
@@ -98,8 +104,9 @@ class ObservationControllerTest {
 
     }
     response = testRestTemplate.exchange(
-        createURLWithPort("/observation/observations/saqn:t:43ae704/?frameStart=2019-0111-01&frameEnd=2021-01-01&obsIds=xyz"), HttpMethod.GET, entity,
-        String.class);
+            createURLWithPort(port, "/observation/observations/saqn:t:43ae704/?frameStart=2019-0111-01&frameEnd=2021" +
+                    "-01-01&obsIds=xyz"), HttpMethod.GET, entity,
+            String.class);
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(response.getBody().contains("Connection to the database failed") | response.getBody().contains("'2019-0111-01'"));
     }
@@ -112,34 +119,31 @@ class ObservationControllerTest {
     HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
     ResponseEntity<String> response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/observation/Export/saqn:t:43ae704/2019-12-29:01-00-00/2020-01-01:01-00-00"),
-        HttpMethod.GET, entity,
-        String.class);
+            createURLWithPort(port,
+                    "/observation/Export/saqn:t:43ae704/2019-12-29:01-00-00/2020-01-01:01-00-00"),
+            HttpMethod.GET, entity,
+            String.class);
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
       assertTrue(Objects.requireNonNull(response.getBody()).startsWith(
-          "DATASTREAMID,FEATUREID,PHENOMENONEND,PHENOMENONSTART,RESULTNUMBER,RESULTSTRING,RESULTTIME,TYPE"));
+              "DATASTREAMID,FEATUREID,PHENOMENONEND,PHENOMENONSTART,RESULTNUMBER,RESULTSTRING,RESULTTIME,TYPE"));
     }
     response = testRestTemplate.exchange(
-        createURLWithPort(
-            "/observation/Export/saqn:t:43ae704/2020-01-26:01-00-00"),
-        HttpMethod.GET, entity,
-        String.class);
+            createURLWithPort(port,
+                    "/observation/Export/saqn:t:43ae704/2020-01-26:01-00-00"),
+            HttpMethod.GET, entity,
+            String.class);
     if (response.getStatusCode().is5xxServerError()) {
       assertTrue(Objects.requireNonNull(response.getBody()).contains("Connection to the database failed"));
     } else {
       assertTrue(Objects.requireNonNull(response.getBody()).startsWith(
-          "DATASTREAMID,FEATUREID,PHENOMENONEND,PHENOMENONSTART,RESULTNUMBER,RESULTSTRING,RESULTTIME,TYPE"));
+              "DATASTREAMID,FEATUREID,PHENOMENONEND,PHENOMENONSTART,RESULTNUMBER,RESULTSTRING,RESULTTIME,TYPE"));
     }
   }
 
   @Test
   void exportToCSVInvalid() {
 
-  }
-  private String createURLWithPort(String uri) {
-    return "http://localhost:" + port + uri;
   }
 }

@@ -47,7 +47,6 @@ public class ObservationServiceImpTest {
   @Autowired
   ObservationServiceImp observationServiceImp;
 
-
   @MockBean
   DatastreamService datastreamService;
   @MockBean
@@ -68,7 +67,7 @@ public class ObservationServiceImpTest {
     LocalDateTime frameStart = LocalDate.of(2018,1,1).atStartOfDay();
     LocalDateTime frameEnd = LocalDateTime.now();
     Mockito.when(datastreamRepository.findDatastreamsByThing_Id(thingId)).thenReturn(
-        new ArrayList<Datastream>());
+            new ArrayList<Datastream>());
     Mockito.when(datastreamRepository.findDatastreamsByThing_IdAndObsIdIn(thingId, filter)).thenReturn(new ArrayList<Datastream>());
     assertEquals(new ArrayList<Observation>(),observationServiceImp.getObservationsByThingId(thingId, limit, sort.ascending(), filter, frameStart, frameEnd));
     assertEquals(new ArrayList<Observation>(),observationServiceImp.getObservationsByThingId(thingId, limit, sort.ascending(), filter, null, frameEnd));
@@ -89,29 +88,29 @@ public class ObservationServiceImpTest {
     Stream<Datastream> datastreams2 = Stream.of(new Datastream());
     Stream<Datastream> datastreams3 = Stream.of(new Datastream());
     Mockito.when(observationRepository.findObservationsByDatastreamId("test"))
-        .thenReturn(Stream.of(new Observation()));
+            .thenReturn(Stream.of(new Observation()));
     try {
       Stream<Observation> streamNullNull = observationServiceImp
-          .getObservationByDatastream(datastreams1, start, end);
+              .getObservationByDatastream(datastreams1, start, end);
       Stream<?> emptyStream1 = Stream.empty();
       checkIfTwoStreamsAreTheSame(streamNullNull, emptyStream1);
       start = LocalDateTime.now();
       Mockito.when(
-          observationRepository
-              .findObservationsByDatastreamIdAndPhenomenonStartAfter("test", start))
-          .thenReturn(Stream.of(new Observation()));
+              observationRepository
+                      .findObservationsByDatastreamIdAndPhenomenonStartAfter("test", start))
+              .thenReturn(Stream.of(new Observation()));
       Stream<?> emptyStream2 = Stream.empty();
       Stream<?> streamDateNull = observationServiceImp
-          .getObservationByDatastream(datastreams2, start, end);
+              .getObservationByDatastream(datastreams2, start, end);
       checkIfTwoStreamsAreTheSame(streamDateNull, emptyStream2);
 
       end = LocalDateTime.now();
       Mockito.when(observationRepository
-          .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
-              "test", start, end)).thenReturn(Stream.of(new Observation()));
+              .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(
+                      "test", start, end)).thenReturn(Stream.of(new Observation()));
       Stream<?> emptyStream3 = Stream.empty();
       Stream<?> streamDateDate = observationServiceImp
-          .getObservationByDatastream(datastreams3, start, end);
+              .getObservationByDatastream(datastreams3, start, end);
       checkIfTwoStreamsAreTheSame(streamDateDate, emptyStream3);
     } catch (CannotCreateTransactionException ex) {
 

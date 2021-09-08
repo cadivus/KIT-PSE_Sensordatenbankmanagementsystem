@@ -47,7 +47,6 @@ public class ObservationController {
 
 
     public final ObservationService observationService;
-    @Autowired
     SensorService sensorService;
     private final DatastreamService datastreamService;
 
@@ -63,6 +62,7 @@ public class ObservationController {
         SensorService sensorService,
         DatastreamService datastreamService) {
         this.observationService = observationService;
+        this.sensorService = sensorService;
         this.datastreamService = datastreamService;
     }
 

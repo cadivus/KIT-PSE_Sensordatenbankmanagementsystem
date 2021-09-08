@@ -2,7 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ImageCantBeGeneratedException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.UnknownInterpolationMethodException;
-import edu.teco.sensordatenbankmanagementsystem.util.GraphHelper;
+import edu.teco.sensordatenbankmanagementsystem.services.GraphService;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.ClampedCubicSplineInterpolator;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.NewtonInterpolator;
@@ -35,11 +35,11 @@ public class GraphController {
     DATE_FORMAT = DateTimeFormatter.ofPattern(pattern);
   }
 
-  private final GraphHelper graphService;
+  private final GraphService graphService;
 
   @Autowired
   public GraphController(
-      GraphHelper graphService) {
+          GraphService graphService) {
     this.graphService = graphService;
   }
 

@@ -1,4 +1,4 @@
-package edu.teco.sensordatenbankmanagementsystem.util;
+package edu.teco.sensordatenbankmanagementsystem.services;
 
 import static edu.teco.sensordatenbankmanagementsystem.util.Meth.round;
 
@@ -6,14 +6,11 @@ import edu.teco.sensordatenbankmanagementsystem.exceptions.CantInterpolateWithNo
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
-import edu.teco.sensordatenbankmanagementsystem.services.ObservationService;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.Interpolator;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -22,21 +19,20 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Component
-public class GraphHelper {
+@Service
+public class GraphServiceImp implements GraphService {
 
   private final ObservationService observationService;
   private final DatastreamRepository datastreamRepository;
 
-  GraphHelper(ObservationService observationService, DatastreamRepository datastreamRepository) {
+  @Autowired
+  GraphServiceImp(ObservationService observationService, DatastreamRepository datastreamRepository) {
 
     this.observationService = observationService;
     this.datastreamRepository = datastreamRepository;
@@ -51,7 +47,7 @@ public class GraphHelper {
     };
   }
 
-
+  @Override
   public RenderedImage getGraphImageOfThing(String thingId, String obsId, LocalDateTime frameStart, LocalDateTime frameEnd,
       int maxInterPoints, Dimension imageDimension, int granularity,
       Interpolator<Double, Double> interpolator) {
@@ -98,29 +94,19 @@ public class GraphHelper {
             o->normalizer.apply(unnormalizedXExtractor.apply(o));
     Function<Observation, Double> fExtractor = Observation::getResultNumber;
 
-    BiFunction<Double, List<Observation>, Observation> sampleGetter = (Double a, List<Observation> o) -> {
-      System.out.printf("date: %s, already found %s samples\n", LocalDateTime.ofEpochSecond((long)(double)a, 0,
-              ZonedDateTime.now(ZONE_ID).getOffset()), o.size());
-      Observation rr = observationService.getObservationsByThingId(
-              thingId,
-              o.size() + 1,
-              xSort.descending(),
-              List.of(obsId),
-              finalFrameStart,
-              LocalDateTime.ofEpochSecond((long)(double)a, 0, ZonedDateTime.now(ZONE_ID).getOffset())
-      ).stream().filter(oo->!o.contains(oo)).findFirst().orElse(null);
-      if(rr!=null) {
-        System.out.printf("found one at time: %s\n", rr.getResultTime());
-      }else{
-        System.out.println("didn't find one");
-      }
-      return rr;
-    };
+    BiFunction<Double, List<Observation>, Observation> sampleGetter =
+            (Double a, List<Observation> o) -> observationService.getObservationsByThingId(
+                    thingId,
+                    o.size() + 1,
+                    Sort.unsorted(),//xSort.descending(),
+                    List.of(obsId),
+                    finalFrameStart,
+                    LocalDateTime.ofEpochSecond((long) (double) a, 0, ZonedDateTime.now(ZONE_ID).getOffset())
+            ).stream().filter(oo -> !o.contains(oo)).findFirst().orElse(null);
 
     List<Observation> sample = getApproximateTschebyscheffSamplingPoints(
         sampleGetter,
-        unnormalizedXExtractor,
-        maxInterPoints,
+            maxInterPoints,
         unnormalizedIntervalStart, unnormalizedIntervalEnd
     );
 
@@ -130,19 +116,21 @@ public class GraphHelper {
     }
 
     //copies sample points to file (debug code)
-    StringBuilder c = new StringBuilder();
-    for(Observation o : sample) {
-      c.append(xExtractor.apply(o)).append("\t").append(fExtractor.apply(o)).append("\n");
-    }
-    try (BufferedWriter w = new BufferedWriter(new FileWriter("sample_points.txt"))) {
-      w.write(c.toString());
-    }catch (Exception e){}
+//    StringBuilder c = new StringBuilder();
+//    for(Observation o : sample) {
+//      c.append(xExtractor.apply(o)).append("\t").append(fExtractor.apply(o)).append("\n");
+//    }
+//    try (BufferedWriter w = new BufferedWriter(new FileWriter("sample_points.txt"))) {
+//      w.write(c.toString());
+//    }catch (Exception e){}
 
     //that is technically not how things work, but make a rough guess that the function is smooth enough that the
     // minima & maxima of the sample are lower and upper bounds of the interpolation function as well
     Comparator<Observation> fComp = Comparator.comparing(fExtractor);
     double min = sample.stream().min(fComp).get().getResultNumber();
     double max = sample.stream().max(fComp).get().getResultNumber();
+
+    //this would give more space to the lower and upper bounds to hopefully compensate for unsmoothness
 //    double mmdiff = max - min;
 //    min -= mmdiff;
 //    max += mmdiff;
@@ -152,18 +140,18 @@ public class GraphHelper {
 
 
     //various stats about the graph (debug code)
-    int alertus = 0;
-    double lastX = 0;
-    for(Observation g : sample){
-      double x = xExtractor.apply(g), y = interpolFunc.apply(x), knotdiff = y - fExtractor.apply(g);
-      System.out.printf("x: %s, y: %s, diff: %s, distance to last knot: %s\n", x, y, knotdiff, x - lastX);
-      double interX = (x+lastX) / 2; double interY = interpolFunc.apply(interX);
-      System.out.printf("extra| x: %s, y: %s\n", x, y);
-      if(knotdiff != 0) {
-        alertus += 1;
-      }
-      lastX = x;
-    }
+//    int alertus = 0;
+//    double lastX = 0;
+//    for(Observation g : sample){
+//      double x = xExtractor.apply(g), y = interpolFunc.apply(x), knotdiff = y - fExtractor.apply(g);
+//      System.out.printf("x: %s, y: %s, diff: %s, distance to last knot: %s\n", x, y, knotdiff, x - lastX);
+//      double interX = (x+lastX) / 2; double interY = interpolFunc.apply(interX);
+//      System.out.printf("extra| x: %s, y: %s\n", x, y);
+//      if(knotdiff != 0) {
+//        alertus += 1;
+//      }
+//      lastX = x;
+//    }
 //    System.out.printf("%s knots out of %s done goofed!\n", alertus, sample.size());
 //
 //    System.out.printf("interpolator: %s\n", interpolFunc);
@@ -247,9 +235,9 @@ public class GraphHelper {
   }
 
   private <T> List<T> getApproximateTschebyscheffSamplingPoints(
-          BiFunction<Double, List<T>, T> sampleGetterWithExcluded, Function<T, Double> xExtractor,
-      int maxInterPoints,
-      double intervalStart, double intervalEnd)
+          BiFunction<Double, List<T>, T> sampleGetterWithExcluded,
+          int maxInterPoints,
+          double intervalStart, double intervalEnd)
   {
     List<T> r = new ArrayList<>();
 

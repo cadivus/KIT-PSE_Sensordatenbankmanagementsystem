@@ -65,6 +65,7 @@ public class ObservationServiceImp implements ObservationService{
     //String orderBySQLString = sort.stream().map(Sort.Order::getProperty).collect(Collectors.joining(","));
     //return this.observationRepository.findObservationsInDatastreams(associatedStreams, "phenomenonStart", PageRequest.of(0, limit)).collect(Collectors.toList());
 
+
     List<Datastream> associatedStreams = Optional
             .ofNullable(filter).map(s -> this.datastreamRepository.findDatastreamsByThing_IdAndObsIdIn(thingId, s))
             .orElseGet(() -> this.datastreamRepository.findDatastreamsByThing_Id(thingId));
@@ -82,6 +83,7 @@ public class ObservationServiceImp implements ObservationService{
 
     LocalDateTime finalFrameStart = frameStart;
     LocalDateTime finalFrameEnd = frameEnd;
+
     return associatedStreams.stream()
             .flatMap(a-> this.observationRepository
                     .findObservationsByDatastreamIdAndPhenomenonStartAfterAndPhenomenonEndBeforeOrderByPhenomenonStartAsc(a.getId(),
