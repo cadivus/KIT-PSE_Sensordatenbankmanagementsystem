@@ -42,7 +42,7 @@ test('check for elements', async () => {
 test('change settings', async () => {
   const datastream = await getDatastream(datastreamSensor1Id)
 
-  const {container, getByTestId} = renderWithProviders(<Export datastream={datastream} />)
+  const {getByTestId} = renderWithProviders(<Export datastream={datastream} />)
 
   const startField = getByTestId(/start-field/)
   const endField = getByTestId(/end-field/)
