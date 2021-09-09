@@ -1,4 +1,4 @@
-import EMail from '../../../../../../material/EMail'
+import EMail from '../../../../../../types/EMail'
 import {getConfirmCodeUrl} from '../../../../../../store/communication/notificationUrlCreator'
 
 export const email1 = new EMail('test1@test.tld')

@@ -5,7 +5,7 @@ import {useHistory} from 'react-router-dom'
 import {FormattedMessage} from 'react-intl'
 import ThingList from './ThingList'
 import Search from './Search'
-import Thing from '../../material/Thing'
+import Thing from '../../types/Thing'
 
 const useStyles = makeStyles({
   container: {

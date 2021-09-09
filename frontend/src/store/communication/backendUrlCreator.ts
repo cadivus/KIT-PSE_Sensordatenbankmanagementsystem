@@ -1,4 +1,4 @@
-import Id from '../../material/Id'
+import Id from '../../types/Id'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFormat = require('dateformat')

@@ -21,7 +21,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Checkbox from '@material-ui/core/Checkbox'
 import {FormattedMessage} from 'react-intl'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
-import Subscription from '../../material/Subscription'
+import Subscription from '../../types/Subscription'
 import Loading from '../Loading'
 
 const StyledTableCell = withStyles((theme: Theme) =>

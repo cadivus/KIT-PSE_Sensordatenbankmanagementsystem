@@ -13,9 +13,9 @@ import {
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
 import {FormattedMessage} from 'react-intl'
-import Thing from '../../material/Thing'
-import Location from '../../material/Location'
-import LocationWithAddress from '../../material/LocationWithAddress'
+import Thing from '../../types/Thing'
+import Location from '../../types/Location'
+import LocationWithAddress from '../../types/LocationWithAddress'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({

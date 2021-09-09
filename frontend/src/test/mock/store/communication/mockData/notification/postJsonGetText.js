@@ -4,9 +4,9 @@ import {
   getSubscriptionsUrl,
   getUnsubscribePath,
 } from '../../../../../../store/communication/notificationUrlCreator'
-import EMail from '../../../../../../material/EMail'
+import EMail from '../../../../../../types/EMail'
 import getJsonMap, {user1SubscriptionsFirst, user1SubscriptionsSecond} from './getJson'
-import Id from '../../../../../../material/Id'
+import Id from '../../../../../../types/Id'
 import {sensor2Id} from '../backend/getJson'
 
 export const getResponse = (path, input) => {

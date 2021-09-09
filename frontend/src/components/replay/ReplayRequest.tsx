@@ -2,7 +2,7 @@ import React from 'react'
 import {Button, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import {FormattedMessage} from 'react-intl'
-import Replay from '../../material/Replay'
+import Replay from '../../types/Replay'
 import {getReplayStreamLink} from '../../store/communication/backendUrlCreator'
 
 const useStyles = makeStyles({

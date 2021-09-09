@@ -5,8 +5,8 @@ import ReplaySettings from './ReplaySettings'
 import ReplayRequest from './ReplayRequest'
 import ReplayHelp from './ReplayHelp'
 import ReplayThingList from './ReplayThingList'
-import Thing from '../../material/Thing'
-import Replay from '../../material/Replay'
+import Thing from '../../types/Thing'
+import Replay from '../../types/Replay'
 
 const useStyles = makeStyles({
   container: {

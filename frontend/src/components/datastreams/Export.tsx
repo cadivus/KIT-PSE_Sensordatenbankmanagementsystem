@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {createStyles} from '@material-ui/core/styles'
 import {Button, Container, Grid, makeStyles, Paper, TextField, Theme, Typography} from '@material-ui/core'
 import {FormattedMessage} from 'react-intl'
-import Datastream from '../../material/Datastream'
+import Datastream from '../../types/Datastream'
 import {getCsvDownloadUrl} from '../../store/communication/backendUrlCreator'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -14,8 +14,8 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import Datastream from '../../material/Datastream'
-import DatastreamRow from '../../material/DatastreamRow'
+import Datastream from '../../types/Datastream'
+import DatastreamRow from '../../types/DatastreamRow'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFormat = require('dateformat')

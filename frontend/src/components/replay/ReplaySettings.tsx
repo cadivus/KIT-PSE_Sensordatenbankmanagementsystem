@@ -15,8 +15,8 @@ import {
   withStyles,
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
-import ReplaySpeed from '../../material/ReplaySpeed'
-import Thing from '../../material/Thing'
+import ReplaySpeed from '../../types/ReplaySpeed'
+import Thing from '../../types/Thing'
 import useReplayStore from '../../hooks/UseReplayStore'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

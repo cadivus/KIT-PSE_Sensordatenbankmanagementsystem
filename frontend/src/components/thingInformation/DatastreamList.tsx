@@ -16,8 +16,8 @@ import {
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {FormattedMessage} from 'react-intl'
-import Thing from '../../material/Thing'
-import Datastream from '../../material/Datastream'
+import Thing from '../../types/Thing'
+import Datastream from '../../types/Datastream'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({

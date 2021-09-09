@@ -7,7 +7,7 @@ import {
 } from '../../test/mock/store/communication/restClientMock'
 import ReplayRequest from './ReplayRequest'
 import {renderWithProviders} from '../../test/jestHelper/customRender'
-import Replay from '../../material/Replay'
+import Replay from '../../types/Replay'
 import {
   sensor1,
   sensor1Datastream1End,

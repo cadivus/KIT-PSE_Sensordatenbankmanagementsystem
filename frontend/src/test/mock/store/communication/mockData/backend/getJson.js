@@ -5,7 +5,7 @@ import {
   getAllThingDatastreamsUrl,
   getDatastreamUrl,
 } from '../../../../../../store/communication/backendUrlCreator'
-import Id from '../../../../../../material/Id'
+import Id from '../../../../../../types/Id'
 
 export const sensor1Id = 'saqn:t:43ae704'
 export const sensor2Id = 'saqn:t:grimm-aerosol.com:EDM80NEPH:SN17001'

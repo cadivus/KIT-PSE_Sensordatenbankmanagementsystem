@@ -10,7 +10,7 @@ import {
 import {datastreamSensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 import Data from './Data'
-import Id from '../../material/Id'
+import Id from '../../types/Id'
 
 jest.mock('../../store/communication/restClient')
 

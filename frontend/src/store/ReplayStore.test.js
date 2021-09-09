@@ -6,9 +6,9 @@ import {
 } from '../test/mock/store/communication/restClientMock'
 import ReplayStore from './ReplayStore'
 import ThingStore from './ThingStore'
-import ReplaySpeed from '../material/ReplaySpeed'
+import ReplaySpeed from '../types/ReplaySpeed'
 import {sensor1Id} from '../test/mock/store/communication/mockData/backend/getJson'
-import Id from '../material/Id'
+import Id from '../types/Id'
 import DatastreamStore from './DatastreamStore'
 import {thing1Replay} from '../test/mock/store/communication/mockData/backend/postJsonGetText'
 
