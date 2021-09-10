@@ -11,7 +11,7 @@ import {
 import DatastreamView from './DatastreamView'
 import {datastreamSensor1Id, sensor1, sensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
-import Id from '../../material/Id'
+import Id from '../../types/Id'
 
 jest.mock('../../store/communication/restClient')
 jest.mock('react-router-dom')

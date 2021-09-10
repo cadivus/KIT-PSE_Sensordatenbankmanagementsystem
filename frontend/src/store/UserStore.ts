@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
-import User from '../material/User'
-import EMail from '../material/EMail'
-import LoginCode from '../material/LoginCode'
+import User from '../types/User'
+import EMail from '../types/EMail'
+import LoginCode from '../types/LoginCode'
 import {getText} from './communication/restClient'
 import {getConfirmCodeUrl} from './communication/notificationUrlCreator'
 

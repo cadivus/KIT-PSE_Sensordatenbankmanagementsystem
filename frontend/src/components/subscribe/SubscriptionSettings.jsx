@@ -3,7 +3,7 @@ import {Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typogr
 import Checkbox from '@material-ui/core/Checkbox'
 import {makeStyles} from '@material-ui/core/styles'
 // eslint-disable-next-line import/no-unresolved
-import NotificationLevel from '../../material/NotificationLevel'
+import NotificationLevel from '../../types/NotificationLevel'
 
 const useStyles = makeStyles({
   Numberfield: {

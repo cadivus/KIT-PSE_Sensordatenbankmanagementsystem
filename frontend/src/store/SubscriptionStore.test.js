@@ -6,7 +6,7 @@ import {
   postJsonGetText as postJsonGetTextMock,
 } from '../test/mock/store/communication/restClientMock'
 import {confirm1, confirm2, email1} from '../test/mock/store/communication/mockData/notification/getText'
-import LoginCode from '../material/LoginCode'
+import LoginCode from '../types/LoginCode'
 import SubscriptionStore from './SubscriptionStore'
 import DatastreamStore from './DatastreamStore'
 import ThingStore from './ThingStore'
@@ -16,7 +16,7 @@ import {
 } from '../test/mock/store/communication/mockData/notification/getJson'
 import subscriptionCollectionMatches from '../test/matchTest/material/SubscriptionMatch'
 import {sensor2Id} from '../test/mock/store/communication/mockData/backend/getJson'
-import NotificationLevel from '../material/NotificationLevel'
+import NotificationLevel from '../types/NotificationLevel'
 
 jest.mock('./communication/restClient')
 

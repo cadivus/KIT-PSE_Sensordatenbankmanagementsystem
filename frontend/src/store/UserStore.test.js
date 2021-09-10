@@ -6,7 +6,7 @@ import {
   postJsonGetText as postJsonGetTextMock,
 } from '../test/mock/store/communication/restClientMock'
 import {confirm1, confirm2, email1} from '../test/mock/store/communication/mockData/notification/getText'
-import LoginCode from '../material/LoginCode'
+import LoginCode from '../types/LoginCode'
 
 jest.mock('./communication/restClient')
 

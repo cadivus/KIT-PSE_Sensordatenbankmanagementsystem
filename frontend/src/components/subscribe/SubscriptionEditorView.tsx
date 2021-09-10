@@ -22,9 +22,9 @@ import {createStyles, makeStyles} from '@material-ui/core/styles'
 import {FormattedMessage} from 'react-intl'
 import SubscriptionSettings from './SubscriptionSettings'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
-import Id from '../../material/Id'
-import Thing from '../../material/Thing'
-import NotificationLevel from '../../material/NotificationLevel'
+import Id from '../../types/Id'
+import Thing from '../../types/Thing'
+import NotificationLevel from '../../types/NotificationLevel'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({

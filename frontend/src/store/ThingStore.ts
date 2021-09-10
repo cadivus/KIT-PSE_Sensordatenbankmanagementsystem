@@ -1,13 +1,13 @@
-import Thing, {ThingState} from '../material/Thing'
-import ThingName from '../material/ThingName'
-import Id from '../material/Id'
+import Thing, {ThingState} from '../types/Thing'
+import ThingName from '../types/ThingName'
+import Id from '../types/Id'
 import {ALL_THINGS, getActiveStateUrl} from './communication/backendUrlCreator'
 import {getJson} from './communication/restClient'
-import ThingProperty from '../material/ThingProperty'
-import Location from '../material/Location'
-import LocationWithAddress from '../material/LocationWithAddress'
+import ThingProperty from '../types/ThingProperty'
+import Location from '../types/Location'
+import LocationWithAddress from '../types/LocationWithAddress'
 import DatastreamStore from './DatastreamStore'
-import Datastream from '../material/Datastream'
+import Datastream from '../types/Datastream'
 
 /**
  * This is the storage for things.

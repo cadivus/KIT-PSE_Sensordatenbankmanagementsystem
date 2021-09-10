@@ -18,7 +18,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Checkbox from '@material-ui/core/Checkbox'
 import {useHistory} from 'react-router-dom'
 import useThingStore from '../../hooks/UseThingStore'
-import Thing from '../../material/Thing'
+import Thing from '../../types/Thing'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({

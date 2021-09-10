@@ -19,7 +19,7 @@ import {
   sensor3Datastreams,
   sensor3Id,
 } from '../test/mock/store/communication/mockData/backend/getJson'
-import Id from '../material/Id'
+import Id from '../types/Id'
 import datastreamMatches, {datastreamCollectionMatches} from '../test/matchTest/material/DatastreamMatch'
 import {datastreamRowListValuesMatches} from '../test/matchTest/material/DatastreamRowMatch'
 import {sensor1Datastream1Json} from '../test/mock/store/communication/mockData/backend/files/csvFiles'

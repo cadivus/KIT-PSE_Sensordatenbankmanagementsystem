@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import {green, grey, red} from '@material-ui/core/colors'
 import {Typography} from '@material-ui/core'
-import Thing, {ThingState} from '../../material/Thing'
+import Thing, {ThingState} from '../../types/Thing'
 
 const ACTIVE_STATE_REFRESH = 10000
 

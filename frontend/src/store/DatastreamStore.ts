@@ -1,11 +1,11 @@
-import Datastream from '../material/Datastream'
-import DatastreamRow from '../material/DatastreamRow'
-import Id from '../material/Id'
-import Unit from '../material/Unit'
+import Datastream from '../types/Datastream'
+import DatastreamRow from '../types/DatastreamRow'
+import Id from '../types/Id'
+import Unit from '../types/Unit'
 import {getJson, getText} from './communication/restClient'
 import {getAllThingDatastreamsUrl, getDatastreamUrl, getExportDatastreamUrl} from './communication/backendUrlCreator'
-import DatastreamName from '../material/DatastreamName'
-import SensorValue from '../material/SensorValue'
+import DatastreamName from '../types/DatastreamName'
+import SensorValue from '../types/SensorValue'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const csvToJson = require('convert-csv-to-json')

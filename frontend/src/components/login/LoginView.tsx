@@ -5,8 +5,8 @@ import {useHistory} from 'react-router-dom'
 import LoginStep1 from './LoginStep1'
 import LoginStep2 from './LoginStep2'
 import useUserStore from '../../hooks/UseUserStore'
-import EMail from '../../material/EMail'
-import LoginCode from '../../material/LoginCode'
+import EMail from '../../types/EMail'
+import LoginCode from '../../types/LoginCode'
 
 /**
  *  Displays the login page.

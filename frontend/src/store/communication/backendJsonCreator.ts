@@ -1,5 +1,5 @@
-import ReplaySpeed from '../../material/ReplaySpeed'
-import Thing from '../../material/Thing'
+import ReplaySpeed from '../../types/ReplaySpeed'
+import Thing from '../../types/Thing'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFormat = require('dateformat')

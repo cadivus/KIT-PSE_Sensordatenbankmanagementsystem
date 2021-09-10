@@ -16,8 +16,8 @@ import {
   sensor2Id,
   sensor3Id,
 } from '../test/mock/store/communication/mockData/backend/getJson'
-import Id from '../material/Id'
-import {ThingState} from '../material/Thing'
+import Id from '../types/Id'
+import {ThingState} from '../types/Thing'
 import {datastreamCollectionMatches} from '../test/matchTest/material/DatastreamMatch'
 
 jest.mock('./communication/restClient')
