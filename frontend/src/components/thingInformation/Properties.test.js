@@ -8,7 +8,7 @@ import {
 } from '../../test/mock/store/communication/restClientMock'
 import Properties from './Properties'
 import ThingStore from '../../store/ThingStore'
-import {sensor1, sensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+import {thing1, thing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 
 jest.mock('../../store/communication/restClient')
@@ -21,11 +21,11 @@ beforeEach(() => {
 
 test('check for sensors', async () => {
   const thingStore = new ThingStore(new DatastreamStore())
-  const thing = await thingStore.getThing(sensor1Id)
+  const thing = await thingStore.getThing(thing1Id)
 
   const wrapper = mount(<Properties thing={thing} />)
 
-  expect(wrapper.html().includes(sensor1.description)).toBe(true)
+  expect(wrapper.html().includes(thing1.description)).toBe(true)
   expect(wrapper.html().includes('Description: ')).toBe(true)
   expect(wrapper.html().includes('Location: ')).toBe(true)
   expect(wrapper.html().includes('shortname: ')).toBe(true)

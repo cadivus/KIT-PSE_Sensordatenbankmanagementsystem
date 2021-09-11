@@ -15,7 +15,7 @@ import {
   user1SubscriptionsSecond,
 } from '../test/mock/store/communication/mockData/notification/getJson'
 import subscriptionCollectionMatches from '../test/matchTest/material/SubscriptionMatch'
-import {sensor2Id} from '../test/mock/store/communication/mockData/backend/getJson'
+import {thing2Id} from '../test/mock/store/communication/mockData/backend/getJson'
 import NotificationLevel from '../types/NotificationLevel'
 
 jest.mock('./communication/restClient')
@@ -48,7 +48,7 @@ describe('logged in user', () => {
     const subscriptions = await subscriptionStore.getSubscriptions()
     subscriptionCollectionMatches(subscriptions, user1SubscriptionsFirst)
 
-    const newThing = await thingStore.getThing(sensor2Id)
+    const newThing = await thingStore.getThing(thing2Id)
     const directNotification = false
     const notificationLevel = new NotificationLevel(7, true)
     subscriptionStore.createSubscription(newThing, directNotification, notificationLevel)
@@ -60,7 +60,7 @@ describe('logged in user', () => {
     const subscriptions = await subscriptionStore.getSubscriptions()
     subscriptionCollectionMatches(subscriptions, user1SubscriptionsFirst)
 
-    const newThing = await thingStore.getThing(sensor2Id)
+    const newThing = await thingStore.getThing(thing2Id)
     const directNotification = false
     const notificationLevel = new NotificationLevel(7, true)
     const newSubscription = subscriptionStore.createSubscription(newThing, directNotification, notificationLevel)

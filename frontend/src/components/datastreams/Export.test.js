@@ -6,7 +6,7 @@ import {
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import {datastreamSensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+import {datastreamThing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 
 import DatastreamStore from '../../store/DatastreamStore'
 import Export from './Export'
@@ -27,7 +27,7 @@ beforeEach(() => {
 })
 
 test('check for elements', async () => {
-  const datastream = await getDatastream(datastreamSensor1Id)
+  const datastream = await getDatastream(datastreamThing1Id)
 
   const {getByTestId} = renderWithProviders(<Export datastream={datastream} />)
 
@@ -40,7 +40,7 @@ test('check for elements', async () => {
 })
 
 test('change settings', async () => {
-  const datastream = await getDatastream(datastreamSensor1Id)
+  const datastream = await getDatastream(datastreamThing1Id)
 
   const {getByTestId} = renderWithProviders(<Export datastream={datastream} />)
 
