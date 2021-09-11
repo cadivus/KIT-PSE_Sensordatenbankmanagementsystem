@@ -4,21 +4,46 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * {@link Meth} provides mathematical utilities
+ */
 public final class Meth {
 
     private Meth() {
     }
 
+    /**
+     * Rounds a number to the nearest integer and towards positive infinity when tied
+     *
+     * @param a number to round
+     * @return nearest integer
+     */
     static public int round(double a) {
         return (int) Math.round(a);
     }
 
+    /**
+     * Gets the bisection interval the given key would be in a given list of sorted interval boundary points
+     *
+     * @param list of boundary points
+     * @param key  to find the bisection interval of
+     * @param <T>  type of the key
+     * @return index of the bisection interval (0 indicates before the first boundary point)
+     */
     static public <T>
     int bisect(List<? extends Comparable<? super T>> list, T key) {
         int r = Collections.binarySearch(list, key) + 1;
         return r < 0 ? -r : r;
     }
 
+    /**
+     * Solves a linear equation with a tridiagonal matrix
+     * Tx = d
+     *
+     * @param t tridiagonal matrix T
+     * @param d coefficient vector d
+     * @return solution vector x
+     */
     static public List<Double> solveTridiagonal(TridiagonalMatrix t, List<Double> d) {
         int n = t.n;
         List<Double> a = t.a;
@@ -43,10 +68,20 @@ public final class Meth {
         return x;
     }
 
+    /**
+     * Calculates the dot product of a vector
+     *
+     * @param a vector to calculate dot product of
+     * @return dot product of vector <code>a</code>
+     */
     static public double dotProduct(List<Double> a) {
         return a.stream().reduce(0., (acc, v) -> acc + v * v);
     }
 
+    /**
+     * {@link TridiagonalMatrix} represents a tridiagonal matrix efficiently by only saving its sub-, super- and
+     * diagonal
+     */
     public static class TridiagonalMatrix {
 
         // subdiagonal

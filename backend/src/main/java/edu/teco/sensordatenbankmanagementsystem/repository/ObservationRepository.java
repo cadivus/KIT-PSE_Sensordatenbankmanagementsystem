@@ -17,7 +17,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
- * Provides abstraction to direct database queries towards {@link Observation} data
+ * {@link ObservationRepository} queries {@link Observation} information from the database
  */
 @Repository
 public interface ObservationRepository extends JpaRepository<Observation, String> {

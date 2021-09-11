@@ -10,7 +10,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * using cubic splines to interpolate
+ * {@link LagrangeInterpolator} interpolates (n+1) sample points using a cubic spline with clamped boundary
+ * conditions
+ * <p>
+ * Though this does not extrapolate beyond the boundaries, it results in a smooth graph despite a large number of
+ * interpolation points, if these interpolation points are relatively smooth themselves.
  */
 public class ClampedCubicSplineInterpolator implements Interpolator<Double, Double> {
 
@@ -77,6 +81,9 @@ public class ClampedCubicSplineInterpolator implements Interpolator<Double, Doub
         );
     }
 
+    /**
+     * {@link ConstructedCubicSpline} represents one cubic spline
+     */
     private static class ConstructedCubicSpline
             implements Function<Double, Double> {
 
@@ -106,12 +113,12 @@ public class ClampedCubicSplineInterpolator implements Interpolator<Double, Doub
             } else {
                 i = Meth.bisect(this.x, x);
             }
-//            if (i <= 0 || i >= this.N) {
-//                throw new FunctionQueriedOutsideOfInterpolationIntervalException(
-//                        x, lbound, rbound
-//                );
-//            }
-            i = i <= 0 ? 1 : i >= this.N ? this.N - 1 : i;
+            if (i <= 0 || i >= this.N) {
+                throw new FunctionQueriedOutsideOfInterpolationIntervalException(
+                        x, lbound, rbound
+                );
+            }
+            //i = i <= 0 ? 1 : i >= this.N ? this.N - 1 : i;
             double ldif = (x - this.x.get(i - 1)), rdif = (x - this.x.get(i));
             return this.y.get(i - 1) + ldif * this.divDif.get(i - 1) +
                     ldif * rdif * (this.alphas.get(i - 1) * ldif + this.betas.get(i - 1) * rdif);

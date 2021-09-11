@@ -27,7 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * This is the entry point for all datastream related API calls.
+ * {@link DatastreamController} is the entry point for http requests for {@link Datastream}s. Methods
+ * of this class map to different requests about {@link Datastream}s
  */
 @RestController
 @RequestMapping("/datastream")

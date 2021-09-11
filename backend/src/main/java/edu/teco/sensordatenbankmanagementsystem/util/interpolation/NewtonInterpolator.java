@@ -6,7 +6,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * interpolates expected numerical observation values on a given set of observation data
+ * {@link NewtonInterpolator} interpolates (n+1) sample points using a n-th degree polynomial represented by the
+ * Newton-basis
+ * <p>
+ * The error is cumulative from the left to the right interpolation points. This may result in massive compound
+ * errors at the right interpolation points when used with a large number of interpolation points.
  */
 public class NewtonInterpolator implements Interpolator<Double, Double> {
 
@@ -18,7 +22,7 @@ public class NewtonInterpolator implements Interpolator<Double, Double> {
 
     @Override
     public <X> Function<Double, Double> interpolate(List<X> samples, Function<X, Double> xExtractor,
-                                                Function<X, Double> fExtractor) {
+                                                    Function<X, Double> fExtractor) {
         final List<Double> f;
         final List<Double> x;
         int N = samples.size();

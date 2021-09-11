@@ -1,5 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.controllers;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import edu.teco.sensordatenbankmanagementsystem.services.ReplayService;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+/**
+ * {@link ReplayController} is the entry point for http requests regarding the replay functionality
+ */
 @RequestMapping("/observation")
 @EnableWebMvc
 @CommonsLog

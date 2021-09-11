@@ -1,9 +1,14 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Requests;
 import java.util.UUID;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+
+/**
+ * {@link ReplayService} provides services about the SSE-based replay on the service layer
+ */
 public interface ReplayService {
 
   /**
