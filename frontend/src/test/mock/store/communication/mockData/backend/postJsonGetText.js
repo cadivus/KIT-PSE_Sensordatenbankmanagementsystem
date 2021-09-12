@@ -1,5 +1,5 @@
 import {CREATE_REPLAY} from '../../../../../../store/communication/backendUrlCreator'
-import {sensor1Id, sensor2Id, sensor3Id} from './getJson'
+import {thing1Id, thing2Id, thing3Id} from './getJson'
 
 const dateRegex = new RegExp('^\\d\\d\\/\\d\\d\\/\\d\\d\\d\\d \\d\\d:\\d\\d:\\d\\d$', 'i')
 const numberRegex = new RegExp('^\\d*$|^\\d+\\.\\d+$', 'i')
@@ -18,9 +18,9 @@ const getNewSseResponse = input => {
 
   if (sensors.length === 1) {
     const onlySensor = sensors[0]
-    if (onlySensor === sensor1Id) return thing1Replay
-    if (onlySensor === sensor2Id) return thing2Replay
-    if (onlySensor === sensor3Id) return thing3Replay
+    if (onlySensor === thing1Id) return thing1Replay
+    if (onlySensor === thing2Id) return thing2Replay
+    if (onlySensor === thing3Id) return thing3Replay
   }
 
   return elseReplay

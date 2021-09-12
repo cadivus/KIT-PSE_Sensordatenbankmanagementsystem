@@ -1,12 +1,12 @@
 import {email1} from './getText'
-import {sensor1Id, sensor2Id} from '../backend/getJson'
+import {thing1Id, thing2Id} from '../backend/getJson'
 import {getSubscriptionsUrl} from '../../../../../../store/communication/notificationUrlCreator'
 
 export const user1SubscriptionsFirst = [
   {
     id: 19,
     subscriberAddress: email1.toString(),
-    sensorId: sensor1Id,
+    sensorId: thing1Id,
     subTime: '2021-08-31',
     reportInterval: 6,
     toggleAlert: true,
@@ -16,7 +16,7 @@ export const user1SubscriptionsSecond = [
   {
     id: 19,
     subscriberAddress: email1.toString(),
-    sensorId: sensor1Id,
+    sensorId: thing1Id,
     subTime: '2021-08-31',
     reportInterval: 6,
     toggleAlert: true,
@@ -24,7 +24,7 @@ export const user1SubscriptionsSecond = [
   {
     id: 20,
     subscriberAddress: email1.toString(),
-    sensorId: sensor2Id,
+    sensorId: thing2Id,
     subTime: '2021-08-31',
     reportInterval: 7,
     toggleAlert: false,

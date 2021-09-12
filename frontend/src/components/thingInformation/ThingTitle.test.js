@@ -8,7 +8,7 @@ import {
 } from '../../test/mock/store/communication/restClientMock'
 import Properties from './Properties'
 import ThingStore from '../../store/ThingStore'
-import {sensor1, sensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+import {thing1, thing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 import ThingTitle from './ThingTitle'
 
@@ -22,9 +22,9 @@ beforeEach(() => {
 
 test('check for sensors', async () => {
   const thingStore = new ThingStore(new DatastreamStore())
-  const thing = await thingStore.getThing(sensor1Id)
+  const thing = await thingStore.getThing(thing1Id)
 
   const wrapper = mount(<ThingTitle thing={thing} />)
 
-  expect(wrapper.html().includes(sensor1.name)).toBe(true)
+  expect(wrapper.html().includes(thing1.name)).toBe(true)
 })

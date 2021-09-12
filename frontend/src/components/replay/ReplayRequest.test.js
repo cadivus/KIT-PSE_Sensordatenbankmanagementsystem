@@ -9,9 +9,9 @@ import ReplayRequest from './ReplayRequest'
 import {renderWithProviders} from '../../test/jestHelper/customRender'
 import Replay from '../../types/Replay'
 import {
-  sensor1,
-  sensor1Datastream1End,
-  sensor1Datastream1Start,
+  thing1,
+  thing1Datastream1End,
+  thing1Datastream1Start,
 } from '../../test/mock/store/communication/mockData/backend/getJson'
 
 jest.mock('../../store/communication/restClient')
@@ -23,7 +23,7 @@ beforeEach(() => {
 })
 
 test('check for elements with valid replay', async () => {
-  const replay = new Replay(sensor1.id, sensor1Datastream1Start, sensor1Datastream1End, 10, {sensor1})
+  const replay = new Replay(thing1.id, thing1Datastream1Start, thing1Datastream1End, 10, {sensor1: thing1})
   const {getByTestId} = renderWithProviders(<ReplayRequest replay={replay} />)
 
   const replayText = getByTestId(/replay-text/)
