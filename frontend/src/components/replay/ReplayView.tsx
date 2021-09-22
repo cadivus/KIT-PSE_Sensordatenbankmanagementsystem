@@ -5,8 +5,8 @@ import ReplaySettings from './ReplaySettings'
 import ReplayRequest from './ReplayRequest'
 import ReplayHelp from './ReplayHelp'
 import ReplayThingList from './ReplayThingList'
-import Thing from '../../material/Thing'
-import Replay from '../../material/Replay'
+import Thing from '../../types/Thing'
+import Replay from '../../types/Replay'
 
 const useStyles = makeStyles({
   container: {
@@ -38,7 +38,7 @@ const ReplayView = (props: any) => {
 
   return (
     <div>
-      <Container maxWidth="lg" className={classes.container}>
+      <Container data-testid="replayView-container" maxWidth="lg" className={classes.container}>
         <Grid container spacing={4}>
           <Grid item xs={7}>
             <ReplayThingList things={things} />

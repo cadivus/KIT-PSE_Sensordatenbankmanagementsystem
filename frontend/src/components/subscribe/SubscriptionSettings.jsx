@@ -3,7 +3,7 @@ import {Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typogr
 import Checkbox from '@material-ui/core/Checkbox'
 import {makeStyles} from '@material-ui/core/styles'
 // eslint-disable-next-line import/no-unresolved
-import NotificationLevel from '../../material/NotificationLevel'
+import NotificationLevel from '../../types/NotificationLevel'
 
 const useStyles = makeStyles({
   Numberfield: {
@@ -25,7 +25,7 @@ const SubscriptionSettings = ({directNotification, setDirectNotification, notifi
       <TableContainer>
         <Table>
           <TableBody>
-            <TableRow>
+            <TableRow data-testid="directNotification-Row">
               <TableCell component="th" scope="row">
                 <Checkbox
                   checked={directNotification}
@@ -38,7 +38,7 @@ const SubscriptionSettings = ({directNotification, setDirectNotification, notifi
                 <Typography variant="body1">Direct notification on failures</Typography>
               </TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow data-testid="protocol-Row">
               <TableCell component="th" scope="row">
                 <Checkbox
                   checked={notificationLevel.active}

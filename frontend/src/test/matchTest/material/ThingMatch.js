@@ -9,12 +9,12 @@ const thingMatches = (thing, thingJson) => {
 
 export const thingCollectionMatches = (thingCollection, thingJsonCollection) => {
   const jsonMap = new Map()
-  for (let json of thingJsonCollection) {
+  for (const json of thingJsonCollection) {
     jsonMap.set(json.id, json)
   }
   expect(thingJsonCollection.length).toBe(jsonMap.size)
 
-  for (let thing of thingCollection) {
+  for (const thing of thingCollection) {
     const json = jsonMap.get(thing.id.toString())
     thingMatches(thing, json)
 

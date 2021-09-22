@@ -8,12 +8,12 @@ const datastreamMatches = (datastream, datastreamJson) => {
 
 export const datastreamCollectionMatches = (datastreamCollection, datastreamJsonCollection) => {
   const jsonMap = new Map()
-  for (let json of datastreamJsonCollection) {
+  for (const json of datastreamJsonCollection) {
     jsonMap.set(json.id, json)
   }
   expect(datastreamJsonCollection.length).toBe(jsonMap.size)
 
-  for (let datastream of datastreamCollection) {
+  for (const datastream of datastreamCollection) {
     const json = jsonMap.get(datastream.datastreamId.toString())
     datastreamMatches(datastream, json)
 

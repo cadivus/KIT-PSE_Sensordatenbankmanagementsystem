@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {createStyles} from '@material-ui/core/styles'
 import {Button, Container, Grid, makeStyles, Paper, TextField, Theme, Typography} from '@material-ui/core'
 import {FormattedMessage} from 'react-intl'
-import Datastream from '../../material/Datastream'
+import Datastream from '../../types/Datastream'
 import {getCsvDownloadUrl} from '../../store/communication/backendUrlCreator'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -59,13 +59,13 @@ const Export = ({datastream}: {datastream: Datastream}) => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} data-testid="exportPanel">
       <Paper>
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <Container className={classes.paper}>
               <a href={downloadLink} download={downloadName}>
-                <Button variant="outlined">
+                <Button data-testid="export-button" variant="outlined">
                   <Typography variant="h5">
                     <FormattedMessage id="infopage.export" />
                   </Typography>
@@ -76,6 +76,7 @@ const Export = ({datastream}: {datastream: Datastream}) => {
           <Grid item xs={4}>
             <Container className={classes.paper}>
               <TextField
+                inputProps={{'data-testid': 'start-field'}}
                 id="datetime-start"
                 label="Start point"
                 type="datetime-local"
@@ -91,6 +92,7 @@ const Export = ({datastream}: {datastream: Datastream}) => {
           <Grid item xs={4}>
             <Container className={classes.paper}>
               <TextField
+                inputProps={{'data-testid': 'end-field'}}
                 id="datetime-end"
                 label="End point"
                 type="datetime-local"

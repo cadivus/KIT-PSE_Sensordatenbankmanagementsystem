@@ -5,7 +5,7 @@ import {useHistory} from 'react-router-dom'
 import {FormattedMessage} from 'react-intl'
 import ThingList from './ThingList'
 import Search from './Search'
-import Thing from '../../material/Thing'
+import Thing from '../../types/Thing'
 
 const useStyles = makeStyles({
   container: {
@@ -46,7 +46,7 @@ const StartpageView: FC = () => {
   return (
     <div>
       <Container maxWidth="lg" className={classes.container}>
-        <Typography variant="h3" align="center" gutterBottom>
+        <Typography data-testid="startpage-text" variant="h3" align="center" gutterBottom>
           <FormattedMessage id="startpage.startpage" />
         </Typography>
         <Grid container spacing={3}>
@@ -55,14 +55,14 @@ const StartpageView: FC = () => {
           </Grid>
           <Grid item xs={2}>
             <Container className={classes.buttons}>
-              <Button variant="outlined" onClick={() => subscribeClicked()}>
+              <Button data-testid="subscribe-button" variant="outlined" onClick={() => subscribeClicked()}>
                 <FormattedMessage id="startpage.subscribe" />
               </Button>
             </Container>
           </Grid>
           <Grid item xs={2}>
             <Container className={classes.buttons}>
-              <Button variant="outlined" onClick={onReplayClick}>
+              <Button data-testid="replay-button" variant="outlined" onClick={onReplayClick}>
                 <FormattedMessage id="startpage.replay" />
               </Button>
             </Container>

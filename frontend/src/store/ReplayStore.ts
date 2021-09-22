@@ -1,10 +1,10 @@
-import Replay from '../material/Replay'
-import Thing from '../material/Thing'
-import ReplaySpeed from '../material/ReplaySpeed'
+import Replay from '../types/Replay'
+import Thing from '../types/Thing'
+import ReplaySpeed from '../types/ReplaySpeed'
 import {CREATE_REPLAY} from './communication/backendUrlCreator'
 import {createReplayRequestJson} from './communication/backendJsonCreator'
 import {postJsonGetText} from './communication/restClient'
-import Id from '../material/Id'
+import Id from '../types/Id'
 
 /**
  * This is the storage for replays.

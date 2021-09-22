@@ -15,7 +15,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import {FormattedMessage} from 'react-intl'
 import useThingStore from '../../hooks/UseThingStore'
-import Thing from '../../material/Thing'
+import Thing from '../../types/Thing'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -29,14 +29,6 @@ const StyledTableCell = withStyles((theme: Theme) =>
     },
   }),
 )(TableCell)
-
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: theme.palette.common.white,
-    },
-  }),
-)(TableRow)
 
 const useStyles = makeStyles({
   thingCell: {
@@ -58,13 +50,13 @@ const ReplayThingList = ({things}: {things: Set<Thing>}) => {
         <TableHead>
           <TableRow>
             <StyledTableCell className={classes.thingCell}>
-              <Typography variant="h5">
+              <Typography data-testid="thing-text" variant="h5">
                 <ArrowDropDownIcon />
                 <FormattedMessage id="replaypage.thing" />
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
-              <Typography variant="h5">
+              <Typography data-testid="value-text" variant="h5">
                 <ArrowDropDownIcon />
                 <FormattedMessage id="replaypage.value" />
               </Typography>
@@ -73,14 +65,14 @@ const ReplayThingList = ({things}: {things: Set<Thing>}) => {
         </TableHead>
         <TableBody>
           {Array.from(things).map(thing => (
-            <StyledTableRow hover key={thing.name.name}>
+            <TableRow hover key={thing.name.name}>
               <StyledTableCell component="th" scope="row">
                 <Typography variant="body1">{thing.name.toString()}</Typography>
               </StyledTableCell>
               <StyledTableCell>
                 <Typography variant="body1">{thing.id.toString()}</Typography>
               </StyledTableCell>
-            </StyledTableRow>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

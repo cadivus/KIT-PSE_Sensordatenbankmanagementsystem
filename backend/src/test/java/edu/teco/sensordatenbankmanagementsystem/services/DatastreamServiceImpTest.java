@@ -36,9 +36,9 @@ class DatastreamServiceImpTest {
   @Test
   void getDatastreamsByThingValid() {
     Mockito.when(thingServiceImp.getThing("saqn:t:grimm-aerosol.com:edm80opc:sn19001"))
-        .thenReturn(new Thing());
+            .thenReturn(new Thing());
     assertNull(
-        datastreamServiceImp.getDatastreamsByThing("saqn:t:grimm-aerosol.com:edm80opc:sn19001"));
+            datastreamServiceImp.getDatastreamsByThing("saqn:t:grimm-aerosol.com:edm80opc:sn19001"));
   }
 
 
@@ -49,7 +49,7 @@ class DatastreamServiceImpTest {
     ds.setId("");
     t.setDatastreams(List.of(ds));
     Mockito.when(thingRepository.findAllByDatastreams_Id("ds")).thenReturn(
-        java.util.Optional.of(t));
+            java.util.Optional.of(t));
     assertNull(datastreamServiceImp.getDatastream("ds"));
 
   }
@@ -64,9 +64,9 @@ class DatastreamServiceImpTest {
     ds.setPhenomenonStart(start.plusMinutes(1));
     ds.setPhenomenonEnd(end.minusMinutes(1));
     Mockito.when(datastreamRepository.findDatastreamsByThing_IdInOrderByPhenomenonStartDesc(list)).thenReturn(
-        Stream.of(ds));
+            Stream.of(ds));
     List<Datastream> datastreamList = datastreamServiceImp.getDatastreams(list, start, end).collect(
-        Collectors.toList());
+            Collectors.toList());
     assertTrue(datastreamList.contains(ds));
   }
 

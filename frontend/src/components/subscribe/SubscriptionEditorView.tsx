@@ -22,9 +22,9 @@ import {createStyles, makeStyles} from '@material-ui/core/styles'
 import {FormattedMessage} from 'react-intl'
 import SubscriptionSettings from './SubscriptionSettings'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
-import Id from '../../material/Id'
-import Thing from '../../material/Thing'
-import NotificationLevel from '../../material/NotificationLevel'
+import Id from '../../types/Id'
+import Thing from '../../types/Thing'
+import NotificationLevel from '../../types/NotificationLevel'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -39,14 +39,6 @@ const StyledTableCell = withStyles((theme: Theme) =>
   }),
 )(TableCell)
 
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: theme.palette.common.white,
-    },
-  }),
-)(TableRow)
-
 const useStyles = makeStyles({
   container: {
     marginTop: '2%',
@@ -59,7 +51,7 @@ const useStyles = makeStyles({
 const ThingsList = ({things}: {things: Array<Thing>}) => {
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table data-testid="thing-table">
         <TableHead>
           <TableRow>
             <StyledTableCell>
@@ -72,11 +64,11 @@ const ThingsList = ({things}: {things: Array<Thing>}) => {
         </TableHead>
         <TableBody>
           {things.map(thing => (
-            <StyledTableRow hover key={thing.name.name}>
+            <TableRow hover key={thing.name.name}>
               <StyledTableCell component="th" scope="row">
                 <Typography variant="h5">{thing.name.name}</Typography>
               </StyledTableCell>
-            </StyledTableRow>
+            </TableRow>
           ))}
         </TableBody>
       </Table>
@@ -161,7 +153,12 @@ const SubscriptionEditorView = (props: any) => {
             notificationLevel={notificationLevel}
             setNotificationLevel={setNotificationLevel}
           />
-          <Button variant="outlined" onClick={() => updateSubscription()} className={classes.marginTop}>
+          <Button
+            data-testid="subscribe-change-button"
+            variant="outlined"
+            onClick={() => updateSubscription()}
+            className={classes.marginTop}
+          >
             <Typography variant="body1">{createMode ? 'Subscribe' : 'Change'}</Typography>
           </Button>
         </Grid>

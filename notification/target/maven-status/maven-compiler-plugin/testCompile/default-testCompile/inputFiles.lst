@@ -1,8 +1,8 @@
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/controller/MailSenderTest.java
-/home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/integrationtests/ControllerIntegrationTest.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/model/SubscriptionDAOTests.java
+/home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/integrationtests/ControllerIntegrationTest.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/model/SensorTests.java
-/home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/integrationtests/MailIntegrationTests.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/model/SensorDAOTests.java
+/home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/integrationtests/MailIntegrationTests.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/model/SystemLoginDAOTests.java
 /home/runner/work/KIT-PSE_Sensordatenbankmanagementsystem/KIT-PSE_Sensordatenbankmanagementsystem/notification/src/test/java/notificationsystem/view/MailBuilderTests.java

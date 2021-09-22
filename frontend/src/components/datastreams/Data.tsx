@@ -14,8 +14,8 @@ import {
 } from '@material-ui/core'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import Datastream from '../../material/Datastream'
-import DatastreamRow from '../../material/DatastreamRow'
+import Datastream from '../../types/Datastream'
+import DatastreamRow from '../../types/DatastreamRow'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFormat = require('dateformat')
@@ -97,7 +97,7 @@ const Data = ({datastream}: {datastream: Datastream}) => {
         </TableHead>
         <TableBody>
           {dataList.map(dataRow => (
-            <StyledTableRow hover key={dataRow.date.toString()}>
+            <StyledTableRow data-testid="tableRow" hover key={dataRow.date.toString()}>
               <StyledTableCell component="th" scope="row">
                 <Date date={dataRow.date} />
               </StyledTableCell>

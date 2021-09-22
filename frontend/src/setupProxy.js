@@ -2,7 +2,7 @@ const {createProxyMiddleware} = require('http-proxy-middleware')
 
 const {env} = process
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
     '/api/backend',
     createProxyMiddleware({
@@ -11,7 +11,7 @@ module.exports = function(app) {
       pathRewrite: {
         '^/api/backend': '/',
       },
-    })
+    }),
   )
 
   app.use(
@@ -22,6 +22,6 @@ module.exports = function(app) {
       pathRewrite: {
         '^/api/notification': '/',
       },
-    })
+    }),
   )
 }

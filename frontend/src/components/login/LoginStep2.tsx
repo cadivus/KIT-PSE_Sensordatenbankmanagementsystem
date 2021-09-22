@@ -59,8 +59,16 @@ const LoginStep2 = ({setAuthCode}: {setAuthCode: (authCode: string) => void}) =>
             id="password"
             autoComplete="current-password"
             onInput={e => setCodeString((e.target as HTMLTextAreaElement).value)}
+            inputProps={{'data-testid': 'login-code-field'}}
           />
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+          <Button
+            data-testid="second-login-button"
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
             <FormattedMessage id="loginpage.signInButton" />
           </Button>
         </form>

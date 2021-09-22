@@ -6,9 +6,9 @@ import {
 } from '../test/mock/store/communication/restClientMock'
 import ReplayStore from './ReplayStore'
 import ThingStore from './ThingStore'
-import ReplaySpeed from '../material/ReplaySpeed'
-import {sensor1Id} from '../test/mock/store/communication/mockData/backend/getJson'
-import Id from '../material/Id'
+import ReplaySpeed from '../types/ReplaySpeed'
+import {thing1Id} from '../test/mock/store/communication/mockData/backend/getJson'
+import Id from '../types/Id'
 import DatastreamStore from './DatastreamStore'
 import {thing1Replay} from '../test/mock/store/communication/mockData/backend/postJsonGetText'
 
@@ -40,7 +40,7 @@ test('test creating replay', async () => {
   const endDate = new Date(1630372440)
   const replaySpeed = new ReplaySpeed(3)
 
-  const thing = await thingsStore.getThing(new Id(sensor1Id))
+  const thing = await thingsStore.getThing(new Id(thing1Id))
   const things = new Set([thing])
 
   const replay = await store.createReplay(startDate, endDate, replaySpeed, things)

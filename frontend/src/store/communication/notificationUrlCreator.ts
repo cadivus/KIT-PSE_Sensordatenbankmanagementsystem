@@ -1,5 +1,5 @@
-import type EMail from '../../material/EMail'
-import Id from '../../material/Id'
+import type EMail from '../../types/EMail'
+import Id from '../../types/Id'
 
 export const NOTIFICATION_PATH = `${window.location.protocol}//${window.location.host}/api/notification`
 
