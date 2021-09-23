@@ -8,6 +8,7 @@ import notificationsystem.view.MailBuilder;
 import notificationsystem.view.Report;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.mail.MessagingException;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
@@ -40,8 +42,10 @@ public class Controller {
 
     @Value("${sensors.backend.url}")
     private String backendUrl;
-    private HashMap<String, String> hashMap;
+    private final HashMap<String, String> hashMap;
     private final static String CONSTRUCTOR_ERROR = "No Email login data found.";
+    private final static String LOGIN_SUCCESS = "Cookie created";
+    private final static String LOGIN_FAILURE = "Wrong user input";
 
     private final MailBuilder mailBuilder;
     private final MailSender mailSender;
@@ -80,7 +84,6 @@ public class Controller {
      * The method first uses the MailBuilder class to build the e-mail and generate the confirmation code,
      * then the MailSender class to send it to its recipient.
      * @param mailAddress e-mail address the confirmation mail is sent to.
-     * @return String containing the confirmation code sent to the user.
      */
     @GetMapping("/getConfirmCode/{mailAddress}")
     public void getConfirmCode(@PathVariable String mailAddress) {
@@ -92,10 +95,16 @@ public class Controller {
         }
         String cookieMailAddress = mailAddress.replaceAll("[^0-9a-zA-Z]+", "");
         hashMap.put(cookieMailAddress, confirmationMail.getConfirmCode());
-        log.info(cookieMailAddress);
-        log.info(confirmationMail.getConfirmCode());
     }
 
+    /**
+     * Generates a cookie for authentication purposes. Only generates the cookie if the userInput equals the
+     * confirmation code sent to the given e-mail address mailAddress.
+     * @param httpServletResponse response containing the cookie.
+     * @param userInput input compared to the generated confirmation code.
+     * @param mailAddress e-mail address of the user.
+     * @return message indicating if the cookie was created.
+     */
     @GetMapping("/login/{userInput}&{mailAddress}")
     public String login(HttpServletResponse httpServletResponse, @PathVariable String userInput, @PathVariable String mailAddress) {
         String cookieMailAddress = mailAddress.replaceAll("[^0-9a-zA-Z]+", "");
@@ -103,15 +112,36 @@ public class Controller {
             Cookie cookie = new Cookie(cookieMailAddress, hashMap.get(cookieMailAddress));
             cookie.setPath("/");
             httpServletResponse.addCookie(cookie);
-            log.info(cookieMailAddress);
-            log.info(hashMap.get(cookieMailAddress));
-        return "Cookie created";
+        return LOGIN_SUCCESS;
         }
-        return "Wrong user input";
+        return LOGIN_FAILURE;
     }
 
+    /**
+     * Gets the HashMap containing the e-mail, confirmation code pairs.
+     * @return the HashMap.
+     */
     public HashMap<String, String> getHashMap() {
         return hashMap;
+    }
+
+    /**
+     * Allows others to check if they are logged in by checking if they possess a valid authentication cookie.
+     * @param httpServletRequest request of the caller.
+     * @return true if the caller is logged in, false if not.
+     */
+    @GetMapping("/checkIfLoggedIn")
+    public boolean checkIfLoggedIn(HttpServletRequest httpServletRequest) {
+        Cookie[] cookies = httpServletRequest.getCookies();
+        if (cookies == null) {
+            return false;
+        }
+        for (Cookie cookie : cookies) {
+            if (cookie.getValue().equals(hashMap.get(cookie.getName()))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -34,6 +34,7 @@ public class CheckerUtil {
     private final static int INACTIVE_DAYS_THRESHOLD = 3;
     private final static int SENSOR_ACTIVE = 1;
     private final static int SENSOR_INACTIVE = -1;
+    private final static String LOG_NO_SENSORS = "Found no sensors.";
 
     private final Controller controller;
     private final SubscriptionDAO subscriptionDAO;
@@ -62,17 +63,13 @@ public class CheckerUtil {
         log.info(LOG_ALERT);
         List<Sensor> sensors = sensorDAO.getAll();
         if (sensors.isEmpty()) {
-            log.info("Found no sensors.");
+            log.info(LOG_NO_SENSORS);
             return;
         }
         LinkedList<String> sensorIds = new LinkedList<>();
 
         for(Sensor sensor : sensors) {
             sensorIds.add(sensor.getId());
-        }
-        if (sensorIds.isEmpty()) {
-            log.info("Couldn't get sensor ids");
-            return;
         }
 
         //Get information about sensor activity and store it with the correlating sensor id
