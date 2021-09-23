@@ -3,7 +3,7 @@ import User from '../types/User'
 import EMail from '../types/EMail'
 import LoginCode from '../types/LoginCode'
 import {getText} from './communication/restClient'
-import {getConfirmCodeUrl} from './communication/notificationUrlCreator'
+import {getConfirmCodeUrl, getLoginUrl} from './communication/notificationUrlCreator'
 
 declare interface UserStore {
   on(event: 'login-change', listener: (name: string) => void): this
@@ -55,7 +55,14 @@ class UserStore extends EventEmitter {
       this.emit('login-change')
     }
 
-    if (this.code?.code === loginCode.code) {
+    const success = true
+
+    const path = getLoginUrl(email, loginCode)
+    getText(path).then(res => {
+      //
+    })
+
+    if (success) {
       this.user = new (class extends User {
         logout(): void {
           logoutUser()
