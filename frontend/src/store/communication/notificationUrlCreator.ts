@@ -4,6 +4,8 @@ import LoginCode from '../../types/LoginCode'
 
 export const NOTIFICATION_PATH = `${window.location.protocol}//${window.location.host}/api/notification`
 
+export const LOGIN_STATE_PATH = `${NOTIFICATION_PATH}/checkIfLoggedIn`
+
 export const getConfirmCodeUrl = (email: EMail) => {
   return `${NOTIFICATION_PATH}/getConfirmCode/${email.toString()}`
 }
