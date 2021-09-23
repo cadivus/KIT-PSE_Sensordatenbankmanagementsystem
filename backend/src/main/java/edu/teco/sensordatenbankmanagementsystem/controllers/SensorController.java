@@ -3,12 +3,9 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ImageCantBeGeneratedException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ObjectNotFoundException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.UnknownInterpolationMethodException;
-import edu.teco.sensordatenbankmanagementsystem.models.ObservationStats;
-import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
-import edu.teco.sensordatenbankmanagementsystem.models.Thing;
+import edu.teco.sensordatenbankmanagementsystem.models.*;
 import edu.teco.sensordatenbankmanagementsystem.repository.ThingRepository;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorService;
-import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.services.SensorServiceImp;
 import edu.teco.sensordatenbankmanagementsystem.services.ThingService;
 
@@ -44,8 +41,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The SensorController is the entry point for http requests for {@link Sensor}s.
- * Methods of this class map to different requests about Sensors
+ * {@link SensorController} is the entry point for http requests for {@link Sensor}s. Methods
+ * of this class map to different requests about {@link Sensor}s
  */
 @RestController
 @RequestMapping("/sensor")

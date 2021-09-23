@@ -2,6 +2,7 @@ package edu.teco.sensordatenbankmanagementsystem.controllers;
 
 import edu.teco.sensordatenbankmanagementsystem.exceptions.ImageCantBeGeneratedException;
 import edu.teco.sensordatenbankmanagementsystem.exceptions.UnknownInterpolationMethodException;
+import edu.teco.sensordatenbankmanagementsystem.models.Observation;
 import edu.teco.sensordatenbankmanagementsystem.services.GraphService;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.ClampedCubicSplineInterpolator;
 import edu.teco.sensordatenbankmanagementsystem.util.interpolation.LagrangeInterpolator;
@@ -25,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * {@link GraphController} is the entry point for http requests for drawing interpolation graphs
+ */
 @RestController
 @RequestMapping("graph")
 public class GraphController {

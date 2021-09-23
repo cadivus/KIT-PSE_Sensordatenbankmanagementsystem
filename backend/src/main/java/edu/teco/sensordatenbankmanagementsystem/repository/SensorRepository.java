@@ -1,5 +1,6 @@
 package edu.teco.sensordatenbankmanagementsystem.repository;
 
+import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
 import edu.teco.sensordatenbankmanagementsystem.models.Sensor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * Provides abstraction to direct database queries towards {@link Sensor} data
+ * {@link SensorRepository} queries {@link Sensor} information from the database
  */
 @Repository
 public interface SensorRepository extends JpaRepository<Sensor, String> {

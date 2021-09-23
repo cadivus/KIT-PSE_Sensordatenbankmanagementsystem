@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * The ObservationService provides more complex methods for functionality concerning the querying of {@link Observation} data based on the repositories.
+ * {@link ObservationService} provides more complex methods for functionality concerning the querying of
+ * {@link Observation} data based on the repositories.
  */
 public interface ObservationService {
 

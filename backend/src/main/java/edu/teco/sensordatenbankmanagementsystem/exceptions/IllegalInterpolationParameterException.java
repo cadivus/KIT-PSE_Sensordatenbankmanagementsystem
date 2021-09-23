@@ -1,7 +1,8 @@
 package edu.teco.sensordatenbankmanagementsystem.exceptions;
 
 /**
- * thrown when an illegal parameter for interpolation was entered
+ * {@link IllegalInterpolationParameterException} is thrown when an illegal interpolation parameter was provided to
+ * an interpolation method
  */
 public class IllegalInterpolationParameterException extends RuntimeException {
 

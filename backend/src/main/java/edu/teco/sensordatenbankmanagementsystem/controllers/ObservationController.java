@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
- * The ObservationController is the entry point for http requests for {@link Observation}s. Methods
- * of this class map to different requests about Observations
+ * {@link ObservationController} is the entry point for http requests for {@link Observation}s. Methods
+ * of this class map to different requests about {@link Observation}s
  */
 @RequestMapping("/observation")
 @EnableWebMvc

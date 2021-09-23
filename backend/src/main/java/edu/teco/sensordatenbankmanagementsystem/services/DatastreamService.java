@@ -1,10 +1,15 @@
 package edu.teco.sensordatenbankmanagementsystem.services;
 
 import edu.teco.sensordatenbankmanagementsystem.models.Datastream;
+import edu.teco.sensordatenbankmanagementsystem.repository.DatastreamRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * {@link DatastreamService} provides services about {@link Datastream} on the service layer
+ */
 public interface DatastreamService {
 
   /**
