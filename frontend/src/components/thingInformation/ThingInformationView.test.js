@@ -7,7 +7,7 @@ import {
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import {sensor1, sensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+import {thing1, thing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import Providers from '../Providers'
 import ThingInformationView from './ThingInformationView'
 
@@ -25,7 +25,7 @@ beforeEach(() => {
 
 describe('test with thing 1', () => {
   beforeEach(() => {
-    reactRouterDom.useParams = jest.fn().mockReturnValue({thingId: sensor1Id})
+    reactRouterDom.useParams = jest.fn().mockReturnValue({thingId: thing1Id})
   })
 
   test('check for description', async () => {
@@ -40,6 +40,6 @@ describe('test with thing 1', () => {
       expect(() => getByTestId(/loadingPage/)).toThrow()
     })
 
-    expect(container.innerHTML.includes(sensor1.description)).toBe(true)
+    expect(container.innerHTML.includes(thing1.description)).toBe(true)
   })
 })

@@ -9,7 +9,7 @@ import {
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
 import DatastreamView from './DatastreamView'
-import {datastreamSensor1Id, sensor1, sensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+import {datastreamThing1Id, thing1, thing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 import Id from '../../types/Id'
 
@@ -28,7 +28,7 @@ beforeEach(() => {
 })
 
 test('check for elements', async () => {
-  reactRouterDom.useParams = jest.fn().mockReturnValue({thingId: sensor1Id, datastreamId: datastreamSensor1Id})
+  reactRouterDom.useParams = jest.fn().mockReturnValue({thingId: thing1Id, datastreamId: datastreamThing1Id})
   const {getByTestId} = renderWithProviders(<DatastreamView />)
 
   // Loading detection
@@ -50,9 +50,9 @@ test('check for elements', async () => {
 })
 
 test('check for data', async () => {
-  const datastream = await getDatastream(datastreamSensor1Id)
+  const datastream = await getDatastream(datastreamThing1Id)
 
-  reactRouterDom.useParams = jest.fn().mockReturnValue({thingId: sensor1Id, datastreamId: datastreamSensor1Id})
+  reactRouterDom.useParams = jest.fn().mockReturnValue({thingId: thing1Id, datastreamId: datastreamThing1Id})
   const {getByTestId} = renderWithProviders(<DatastreamView />)
 
   // Loading detection
@@ -74,5 +74,5 @@ test('check for data', async () => {
 
   // Check whether thing title has been loaded
   const thingTitle = getByTestId(/thingTitle/)
-  expect(thingTitle.innerHTML.includes(sensor1.name)).toBe(true)
+  expect(thingTitle.innerHTML.includes(thing1.name)).toBe(true)
 })

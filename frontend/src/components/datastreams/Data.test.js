@@ -7,7 +7,7 @@ import {
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
 } from '../../test/mock/store/communication/restClientMock'
-import {datastreamSensor1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+import {datastreamThing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 import Data from './Data'
 import Id from '../../types/Id'
@@ -26,7 +26,7 @@ beforeEach(() => {
 })
 
 test('check for data', async () => {
-  const datastream = await getDatastream(datastreamSensor1Id)
+  const datastream = await getDatastream(datastreamThing1Id)
   const {container, getAllByTestId} = renderWithProviders(<Data datastream={datastream} />)
 
   // Loading detection
