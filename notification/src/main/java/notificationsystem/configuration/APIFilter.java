@@ -35,7 +35,7 @@ public class APIFilter implements Filter {
 
         if (!(httpServletRequest.getRequestURL().toString().endsWith("/postSubscription")
             || httpServletRequest.getRequestURL().toString().endsWith("/postUnsubscribe")
-            || httpServletRequest.getRequestURL().toString().endsWith("/getSubscriptions/**"))) {
+            || httpServletRequest.getRequestURL().toString().startsWith("http://localhost:8082/getSubscriptions"))) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -47,13 +47,16 @@ public class APIFilter implements Filter {
             return;
         }
         for (Cookie cookie : cookies) {
+            log.info(cookie.getName());
+            log.info(cookie.getValue());
+            log.info(controller.getHashMap().get(cookie.getName()));
             if (cookie.getValue().equals(controller.getHashMap().get(cookie.getName()))) {
                 log.info("Successful authentication");
                 filterChain.doFilter(servletRequest, servletResponse);
                 return;
             }
         }
-        log.info("No authentication cookie.");
+        log.info("Wrong authentication cookie.");
         httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
     }
 

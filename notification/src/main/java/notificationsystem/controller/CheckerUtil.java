@@ -70,6 +70,10 @@ public class CheckerUtil {
         for(Sensor sensor : sensors) {
             sensorIds.add(sensor.getId());
         }
+        if (sensorIds.isEmpty()) {
+            log.info("Couldn't get sensor ids");
+            return;
+        }
 
         //Get information about sensor activity and store it with the correlating sensor id
         Integer[] response = restTemplate.getForObject(checkActiveUrl, Integer[].class, sensorIds, INACTIVE_DAYS_THRESHOLD);

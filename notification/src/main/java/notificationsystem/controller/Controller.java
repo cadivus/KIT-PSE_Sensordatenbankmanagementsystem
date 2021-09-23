@@ -1,5 +1,6 @@
 package notificationsystem.controller;
 
+import lombok.extern.apachecommons.CommonsLog;
 import notificationsystem.model.*;
 import notificationsystem.view.Alert;
 import notificationsystem.view.ConfirmationMail;
@@ -33,6 +34,7 @@ import java.util.Optional;
  * Furthermore, the Controller allows the website to add, delete or get information about subscriptions.
  * The Controller class contains an instance of a MailBuilder, a MailSender, a SubscriptionDAO and a SensorDAO.
  */
+@CommonsLog
 @RestController
 public class Controller {
 
@@ -90,14 +92,19 @@ public class Controller {
         }
         String cookieMailAddress = mailAddress.replaceAll("[^0-9a-zA-Z]+", "");
         hashMap.put(cookieMailAddress, confirmationMail.getConfirmCode());
+        log.info(cookieMailAddress);
+        log.info(confirmationMail.getConfirmCode());
     }
 
-    @GetMapping("/setCookie/{userInput}&{mailAddress}")
-    public String setCookie(HttpServletResponse httpServletResponse, @PathVariable String userInput, @PathVariable String mailAddress) {
+    @GetMapping("/login/{userInput}&{mailAddress}")
+    public String login(HttpServletResponse httpServletResponse, @PathVariable String userInput, @PathVariable String mailAddress) {
         String cookieMailAddress = mailAddress.replaceAll("[^0-9a-zA-Z]+", "");
         if (hashMap.get(cookieMailAddress).equals(userInput)) {
-            Cookie cookie = new Cookie(cookieMailAddress, hashMap.get(mailAddress));
+            Cookie cookie = new Cookie(cookieMailAddress, hashMap.get(cookieMailAddress));
+            cookie.setPath("/");
             httpServletResponse.addCookie(cookie);
+            log.info(cookieMailAddress);
+            log.info(hashMap.get(cookieMailAddress));
         return "Cookie created";
         }
         return "Wrong user input";
