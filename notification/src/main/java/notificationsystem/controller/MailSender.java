@@ -1,6 +1,7 @@
 package notificationsystem.controller;
 
 import notificationsystem.view.EMail;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.mail.*;
@@ -21,6 +22,8 @@ public class MailSender {
     private final static String SEND_STATE_ERROR = "Has to be logged in to send e-mails.";
 
     private Session session;
+    @Value("${mail.password}")
+    private String password;
 
     /**
      * Constructs a new MailSender instance.
@@ -31,10 +34,8 @@ public class MailSender {
     /**
      * Log-in procedure needed for authentication before an e-mail can be sent. Also instantiates the session with
      * the smtp-server.
-     * @param username username used for authentication purposes.
-     * @param password password used for authentication purposes.
      */
-    public void login(String username, String password) {
+    public void login() {
         Properties properties = new Properties();
 
         properties.put("mail.smtp.auth", "true");
@@ -47,7 +48,7 @@ public class MailSender {
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
+                return new PasswordAuthentication("sensornotificationsystemPSE@gmail.com", password);
             }
         };
 

@@ -47,14 +47,10 @@ public class MailIntegrationTests {
 
     @Autowired
     SubscriptionDAO subscriptionDAO;
-    @Autowired
-    SystemLoginDAO systemLoginDAO;
     @MockBean
     SubscriptionRepository subscriptionRepository;
     @MockBean
     SensorDAO sensorDAO;
-    @MockBean
-    SystemLoginRepository systemLoginRepository;
     @MockBean
     RestTemplate restTemplate;
     @MockBean
@@ -75,20 +71,11 @@ public class MailIntegrationTests {
         return new Subscription("test", "test-id", LocalDate.now(), 7, true);
     }
 
-    private SystemLogin getTestLogin() {
-        SystemLogin systemLogin = new SystemLogin();
-        systemLogin.setUsername("sensornotificationsystemPSE@gmail.com");
-        systemLogin.setPassword("cKqp4Wa83pLddBv");
-        return systemLogin;
-    }
 
     @Test
     public void testSendAlert() throws Exception {
-        SystemLogin systemLogin = getTestLogin();
 
-        Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
-
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
+        Controller controller = new Controller(subscriptionDAO, restTemplate, mailSender, sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
         String sensorId = "test-id";
@@ -109,17 +96,14 @@ public class MailIntegrationTests {
         checkerUtil.checkForSensorFailure();
 
         verify(restTemplate).getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3);
-        verify(mailSender).login(systemLogin.getUsername(), systemLogin.getPassword());
+        verify(mailSender).login();
         verify(subscriptionRepository, times(2)).findAll();
     }
 
     @Test
     public void testSendNoAlert() throws Exception {
-        SystemLogin systemLogin = getTestLogin();
 
-        Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
-
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
+        Controller controller = new Controller(subscriptionDAO, restTemplate, mailSender, sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
         LinkedList<Sensor> sensors = new LinkedList<>();
@@ -135,7 +119,7 @@ public class MailIntegrationTests {
         checkerUtil.checkForSensorFailure();
 
         verify(restTemplate).getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3);
-        verify(mailSender).login(systemLogin.getUsername(), systemLogin.getPassword());
+        verify(mailSender).login();
     }
 
     @Test
@@ -155,10 +139,7 @@ public class MailIntegrationTests {
         stats.add(stats2);
         sensor.setStats(stats);
 
-        SystemLogin systemLogin = getTestLogin();
-
-        Mockito.when(systemLoginRepository.findById((long)1)).thenReturn(Optional.of(systemLogin));
-        Controller controller = new Controller(systemLoginDAO, subscriptionDAO, restTemplate, mailSender, sensorDAO);
+        Controller controller = new Controller(subscriptionDAO, restTemplate, mailSender, sensorDAO);
         CheckerUtil checkerUtil = new CheckerUtil(controller, subscriptionDAO, sensorDAO, restTemplate);
 
 
@@ -171,7 +152,7 @@ public class MailIntegrationTests {
     }
 
     @Configuration
-    @Import({SubscriptionDAO.class, SystemLoginDAO.class})
+    @Import({SubscriptionDAO.class})
     static class TestConfig {
         @Bean
         SubscriptionRepository subscriptionRepository() {
@@ -180,10 +161,6 @@ public class MailIntegrationTests {
         @Bean
         SensorDAO sensorDAO() {
             return mock(SensorDAO.class);
-        }
-        @Bean
-        SystemLoginRepository systemLoginRepository() {
-            return mock(SystemLoginRepository.class);
         }
         @Bean
         RestTemplate restTemplate() {
