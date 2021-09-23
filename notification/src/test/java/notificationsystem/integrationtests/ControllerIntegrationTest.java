@@ -85,7 +85,7 @@ public class ControllerIntegrationTest {
 
         String code = controller.getHashMap().get("test");
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8082/setCookie/" + code + "&test")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8082/login/" + code + "&test")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(user("frontend").password("frontend").roles("ADMIN")))
                 .andExpect(status().isOk())
