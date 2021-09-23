@@ -1,10 +1,15 @@
 import type EMail from '../../types/EMail'
 import Id from '../../types/Id'
+import LoginCode from '../../types/LoginCode'
 
 export const NOTIFICATION_PATH = `${window.location.protocol}//${window.location.host}/api/notification`
 
 export const getConfirmCodeUrl = (email: EMail) => {
   return `${NOTIFICATION_PATH}/getConfirmCode/${email.toString()}`
+}
+
+export const getLoginUrl = (email: EMail, code: LoginCode) => {
+  return `${NOTIFICATION_PATH}/login/${code.toString()}&${email.toString()}`
 }
 
 export const getSubscriptionsUrl = (email: EMail) => {
