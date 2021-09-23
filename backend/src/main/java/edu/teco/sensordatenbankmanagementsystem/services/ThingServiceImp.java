@@ -57,6 +57,9 @@ public class ThingServiceImp implements ThingService {
    */
   public List<Integer> getWhetherThingsActive(List<String> thingIds, int days) {
     LocalDateTime lowerBound = LocalDateTime.now().minusDays(days);
+    if(thingIds == null) {
+      thingIds = thingRepository.findAll().stream().map(Thing::getId).collect(Collectors.toList());
+    }
     return thingIds.stream()
         .map(id -> thingRepository.existsById(id) ?
             datastreamRepository.findDatastreamsByThing_Id(id).stream()
