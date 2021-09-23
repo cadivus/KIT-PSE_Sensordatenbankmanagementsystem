@@ -48,7 +48,7 @@ public class CheckerUtil {
         this.sensorDAO = sensorDAO;
         this.restTemplate = restTemplate;
         this.sensorActiveDict = new HashMap<>();
-        this.checkActiveUrl = "http://backend:8081/active";
+        this.checkActiveUrl = "http://backend:8081/sensor/active";
     }
 
     /**

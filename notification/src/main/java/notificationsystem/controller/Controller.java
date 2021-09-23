@@ -13,8 +13,11 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +38,7 @@ public class Controller {
 
     @Value("${sensors.backend.url}")
     private String backendUrl;
+    private HashMap<String, String> hashMap;
     private final static String CONSTRUCTOR_ERROR = "No Email login data found.";
 
     private final MailBuilder mailBuilder;
@@ -61,6 +65,7 @@ public class Controller {
         mailSender.login(login.getUsername(), login.getPassword());
         this.subscriptionDAO = subscriptionDAO;
         this.restTemplate = restTemplate;
+        this.hashMap = new HashMap<>();
     }
 
     @PostConstruct
@@ -76,14 +81,28 @@ public class Controller {
      * @return String containing the confirmation code sent to the user.
      */
     @GetMapping("/getConfirmCode/{mailAddress}")
-    public String getConfirmCode(@PathVariable String mailAddress) {
+    public void getConfirmCode(@PathVariable String mailAddress) {
         ConfirmationMail confirmationMail = mailBuilder.buildConfirmationMail(mailAddress);
         try {
             mailSender.send(confirmationMail);
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return confirmationMail.getConfirmCode();
+        hashMap.put(mailAddress, confirmationMail.getConfirmCode());
+    }
+
+    @GetMapping("/setCookie/{userInput}&{mailAddress}")
+    public String setCookie(HttpServletResponse httpServletResponse, @PathVariable String userInput, @PathVariable String mailAddress) {
+        if (hashMap.get(mailAddress).equals(userInput)) {
+            Cookie cookie = new Cookie(mailAddress, hashMap.get(mailAddress));
+            httpServletResponse.addCookie(cookie);
+        return "Cookie created";
+        }
+        return "Wrong user input";
+    }
+
+    public HashMap<String, String> getHashMap() {
+        return hashMap;
     }
 
     /**
