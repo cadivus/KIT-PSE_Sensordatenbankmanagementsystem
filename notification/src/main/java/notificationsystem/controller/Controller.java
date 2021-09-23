@@ -88,13 +88,15 @@ public class Controller {
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        hashMap.put(mailAddress, confirmationMail.getConfirmCode());
+        String cookieMailAddress = mailAddress.replaceAll("[^0-9a-zA-Z]+", "");
+        hashMap.put(cookieMailAddress, confirmationMail.getConfirmCode());
     }
 
     @GetMapping("/setCookie/{userInput}&{mailAddress}")
     public String setCookie(HttpServletResponse httpServletResponse, @PathVariable String userInput, @PathVariable String mailAddress) {
-        if (hashMap.get(mailAddress).equals(userInput)) {
-            Cookie cookie = new Cookie(mailAddress, hashMap.get(mailAddress));
+        String cookieMailAddress = mailAddress.replaceAll("[^0-9a-zA-Z]+", "");
+        if (hashMap.get(cookieMailAddress).equals(userInput)) {
+            Cookie cookie = new Cookie(cookieMailAddress, hashMap.get(mailAddress));
             httpServletResponse.addCookie(cookie);
         return "Cookie created";
         }

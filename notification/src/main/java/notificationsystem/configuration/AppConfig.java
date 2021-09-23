@@ -11,8 +11,6 @@ import notificationsystem.controller.Controller;
 @Configuration
 public class AppConfig {
 
-    @Autowired
-    Controller controller;
 
     @Bean
     public RestTemplate restTemplate() {

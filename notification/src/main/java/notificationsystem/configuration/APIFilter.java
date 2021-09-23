@@ -35,7 +35,7 @@ public class APIFilter implements Filter {
 
         if (!(httpServletRequest.getRequestURL().toString().endsWith("/postSubscription")
             || httpServletRequest.getRequestURL().toString().endsWith("/postUnsubscribe")
-            || httpServletRequest.getRequestURL().toString().endsWith("/getSubscriptions*"))) {
+            || httpServletRequest.getRequestURL().toString().endsWith("/getSubscriptions/**"))) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }

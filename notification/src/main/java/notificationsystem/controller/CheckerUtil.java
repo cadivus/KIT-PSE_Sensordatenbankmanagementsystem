@@ -61,6 +61,10 @@ public class CheckerUtil {
         //Prepare sensor ids
         log.info(LOG_ALERT);
         List<Sensor> sensors = sensorDAO.getAll();
+        if (sensors.isEmpty()) {
+            log.info("Found no sensors.");
+            return;
+        }
         LinkedList<String> sensorIds = new LinkedList<>();
 
         for(Sensor sensor : sensors) {
