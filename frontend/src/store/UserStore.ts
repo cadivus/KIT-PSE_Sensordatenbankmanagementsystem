@@ -3,7 +3,7 @@ import User from '../types/User'
 import EMail from '../types/EMail'
 import LoginCode from '../types/LoginCode'
 import {getText} from './communication/restClient'
-import {getConfirmCodeUrl, getLoginUrl} from './communication/notificationUrlCreator'
+import {getConfirmCodeUrl, getLoginUrl, LOGIN_STATE_PATH} from './communication/notificationUrlCreator'
 
 declare interface UserStore {
   on(event: 'login-change', listener: (name: string) => void): this
@@ -21,6 +21,20 @@ class UserStore extends EventEmitter {
   user: User | null = null
 
   code: LoginCode | undefined
+
+  constructor() {
+    super()
+
+    const {implementUser} = this
+    getText(LOGIN_STATE_PATH).then(loginState => {
+      if (loginState === 'false' || loginState === '') return
+
+      const email = new EMail(loginState)
+
+      this.user = implementUser(email)
+      this.emit('login-change')
+    })
+  }
 
   /**
    * Requests sending a login code to the specified email address.
@@ -50,6 +64,8 @@ class UserStore extends EventEmitter {
    * @return The user object on success, null otherwise
    */
   requestUser = (email: EMail, loginCode: LoginCode): User | null => {
+    const {implementUser} = this
+
     const logoutUser = () => {
       this.user = null
       this.emit('login-change')
@@ -63,11 +79,7 @@ class UserStore extends EventEmitter {
     })
 
     if (success) {
-      this.user = new (class extends User {
-        logout(): void {
-          logoutUser()
-        }
-      })(email)
+      this.user = implementUser(email)
     } else {
       this.user = null
     }
@@ -75,6 +87,21 @@ class UserStore extends EventEmitter {
     const {user} = this
     this.emit('login-change')
     return user
+  }
+
+  implementUser = (email: EMail): User => {
+    const logoutUser = () => {
+      this.user = null
+      this.emit('login-change')
+    }
+
+    const newUser = new (class extends User {
+      logout(): void {
+        logoutUser()
+      }
+    })(email)
+
+    return newUser
   }
 }
 
