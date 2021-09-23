@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: notificationsystem.controller.MailSenderTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.022 s - in notificationsystem.controller.MailSenderTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.349 s - in notificationsystem.controller.MailSenderTest

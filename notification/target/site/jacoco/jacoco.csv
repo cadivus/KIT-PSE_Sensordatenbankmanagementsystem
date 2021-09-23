@@ -6,6 +6,11 @@ KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.controller,MailSender
 KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.configuration,SecurityConfig,73,0,0,0,17,0,5,0,5,0
 KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.configuration,AppConfig,9,0,0,0,3,0,3,0,3,0
 KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem,Application,8,0,0,0,3,0,2,0,2,0
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,Report,0,6,0,0,0,2,0,1,0,1
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,EMail,0,37,0,0,0,14,0,7,0,7
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,Alert,0,6,0,0,0,2,0,1,0,1
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,MailBuilder,0,99,0,2,0,25,0,5,0,4
+KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,ConfirmationMail,0,18,0,0,0,5,0,3,0,3
 KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,Sensor,4,48,0,0,2,17,1,9,1,9
 KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,SubscriptionDAO,0,115,2,12,0,28,2,12,0,7
 KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,SystemLoginDAO,0,11,0,0,0,4,0,2,0,2
@@ -13,8 +18,3 @@ KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,ObservationStat
 KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,SystemLogin,4,17,0,0,1,7,1,5,1,5
 KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,SensorDAO,13,218,4,8,4,39,4,7,0,5
 KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.model,Subscription,3,40,0,0,2,15,1,8,1,8
-KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,Report,0,6,0,0,0,2,0,1,0,1
-KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,EMail,0,37,0,0,0,14,0,7,0,7
-KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,Alert,0,6,0,0,0,2,0,1,0,1
-KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,MailBuilder,0,99,0,2,0,25,0,5,0,4
-KIT-PSE_Sensordatenbankmanagementsystem,notificationsystem.view,ConfirmationMail,0,18,0,0,0,5,0,3,0,3
