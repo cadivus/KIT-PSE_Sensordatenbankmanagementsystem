@@ -58,7 +58,7 @@ public class SensorDAOTests {
     @Test
     public void testGetAll() throws JSONException {
         Sensor[] sensors = {getTestSensor()};
-        Mockito.when(restTemplate.getForObject("http://backend:8081/sensor/getAllSensors", Sensor[].class))
+        Mockito.when(restTemplate.getForObject("http://backend:8081/sensor/getAllThings", Sensor[].class))
               .thenReturn(sensors);
 
         List<Sensor> returnedSensors = sensorDAO.getAll();

@@ -1,15 +1,3 @@
-**/.idea
-**/node_modules
-**/*.swp
-**/*.pyc
-env
-/package-lock.json
-**/package-lock.json
-**/build
-**/dist
-**/class-visualizer
-**/target
-
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -33,3 +21,16 @@ target/
 *.iws
 *.iml
 *.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/

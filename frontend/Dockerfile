@@ -1,19 +1,15 @@
-FROM node:latest
+FROM tiangolo/node-frontend:10 as build-stage
+WORKDIR /app
+COPY package*.json /app/
+RUN npm install
+COPY ./ /app/
+RUN npm run build
 
-# Create app directory
-WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+FROM nginx:1-alpine
+COPY --from=build-stage /app/build/ /usr/share/nginx/html
+COPY --from=build-stage /app/deploy/run_nginx_config.sh /bin/run_nginx_config.sh
 
-RUN npm install --silent
-# If you are building your code for production
-# RUN npm ci --only=production
+RUN chmod +x /bin/run_nginx_config.sh
+CMD ["sh", "/bin/run_nginx_config.sh"]
 
-# Bundle app source
-COPY . .
-
-EXPOSE 3000
-CMD [ "npm", "start" ]

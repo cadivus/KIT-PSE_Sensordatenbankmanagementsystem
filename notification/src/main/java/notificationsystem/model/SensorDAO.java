@@ -44,7 +44,7 @@ public class SensorDAO {
     @Autowired
     public SensorDAO(String backendUrl, RestTemplate restTemplate) {
         this.getThingApi = backendUrl + "/sensor/thing/";
-        this.getAllSensorsApi = backendUrl + "/sensor/getAllSensors";
+        this.getAllSensorsApi = backendUrl + "/sensor/getAllThings";
         this.getActiveRateApi = backendUrl + "/sensor/active_rate";
         this.getAllObsApi = backendUrl + "/observation/getAllObs";
         this.getStatsApi = backendUrl + "/stats";

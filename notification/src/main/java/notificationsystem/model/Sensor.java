@@ -45,6 +45,8 @@ public class Sensor {
         this.location = location.getJSONObject(COORDINATES_IN_LOCATION).getString(COORDINATES_KEY);
     }
 
+    public Sensor() {}
+
     /**
      * Gets unique id of the sensor.
      * @return id of the sensor.
