@@ -10,6 +10,10 @@ class LoginCode {
   constructor(code: string) {
     this.code = code
   }
+
+  toString = (): string => {
+    return this.code
+  }
 }
 
 export default LoginCode
