@@ -43,6 +43,7 @@ public class Controller {
     @Value("${sensors.backend.url}")
     private String backendUrl;
     private final HashMap<String, String> hashMap;
+    private final HashMap<Cookie, String> completeMails;
     private final static String CONSTRUCTOR_ERROR = "No Email login data found.";
     private final static String LOGIN_SUCCESS = "Cookie created";
     private final static String LOGIN_FAILURE = "Wrong user input";
@@ -72,6 +73,7 @@ public class Controller {
         this.subscriptionDAO = subscriptionDAO;
         this.restTemplate = restTemplate;
         this.hashMap = new HashMap<>();
+        this.completeMails = new HashMap<>();
     }
 
     @PostConstruct
@@ -112,6 +114,7 @@ public class Controller {
             Cookie cookie = new Cookie(cookieMailAddress, hashMap.get(cookieMailAddress));
             cookie.setPath("/");
             httpServletResponse.addCookie(cookie);
+            completeMails.put(cookie, mailAddress);
         return LOGIN_SUCCESS;
         }
         return LOGIN_FAILURE;
@@ -131,17 +134,17 @@ public class Controller {
      * @return true if the caller is logged in, false if not.
      */
     @GetMapping("/checkIfLoggedIn")
-    public boolean checkIfLoggedIn(HttpServletRequest httpServletRequest) {
+    public String checkIfLoggedIn(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies == null) {
-            return false;
+            return "false";
         }
         for (Cookie cookie : cookies) {
             if (cookie.getValue().equals(hashMap.get(cookie.getName()))) {
-                return true;
+                return completeMails.get(cookie);
             }
         }
-        return false;
+        return "false";
     }
 
     /**
