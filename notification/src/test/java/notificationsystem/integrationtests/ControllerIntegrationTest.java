@@ -78,8 +78,15 @@ public class ControllerIntegrationTest {
     @Test
     public void testGetConfirmCode() throws Exception {
 
-        MvcResult result = mockMvc.perform( MockMvcRequestBuilders.get("http://localhost:8082/getConfirmCode/test")
+        mockMvc.perform( MockMvcRequestBuilders.get("http://localhost:8082/getConfirmCode/test")
                 .contentType(MediaType.APPLICATION_JSON)
+                        .with(user("frontend").password("frontend").roles("ADMIN")))
+                .andExpect(status().isOk());
+
+        String code = controller.getHashMap().get("test");
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8082/setCookie/" + code + "&test")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .with(user("frontend").password("frontend").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andReturn();
