@@ -43,7 +43,7 @@ public class Controller {
     @Value("${sensors.backend.url}")
     private String backendUrl;
     private final HashMap<String, String> hashMap;
-    private final HashMap<Cookie, String> completeMails;
+    private final HashMap<String, String> completeMails;
     private final static String CONSTRUCTOR_ERROR = "No Email login data found.";
     private final static String LOGIN_SUCCESS = "Cookie created";
     private final static String LOGIN_FAILURE = "Wrong user input";
@@ -114,7 +114,7 @@ public class Controller {
             Cookie cookie = new Cookie(cookieMailAddress, hashMap.get(cookieMailAddress));
             cookie.setPath("/");
             httpServletResponse.addCookie(cookie);
-            completeMails.put(cookie, mailAddress);
+            completeMails.put(cookie.getName() + "=" + cookie.getValue(), mailAddress);
         return LOGIN_SUCCESS;
         }
         return LOGIN_FAILURE;
@@ -141,7 +141,7 @@ public class Controller {
         }
         for (Cookie cookie : cookies) {
             if (cookie.getValue().equals(hashMap.get(cookie.getName()))) {
-                return completeMails.get(cookie);
+                return completeMails.get(cookie.getName() + "=" + cookie.getValue());
             }
         }
         return "false";
