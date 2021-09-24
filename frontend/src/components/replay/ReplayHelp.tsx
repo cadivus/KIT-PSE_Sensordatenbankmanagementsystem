@@ -37,13 +37,31 @@ const ReplayHelp = () => {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth="lg"
       >
         <DialogTitle id="alert-dialog-title">
           <FormattedMessage id="replaypage.helpTextHedding" />
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <FormattedMessage id="replaypage.helpText" />
+            <FormattedMessage id="replaypage.helpText1" />
+            <div />
+            <FormattedMessage id="replaypage.helpText2" />
+            <div />
+            <FormattedMessage id="replaypage.helpText3" />
+            <div />
+            <FormattedMessage id="replaypage.helpText4" />
+            <div />
+            <FormattedMessage id="replaypage.helpText5" />
+            <div />
+            <FormattedMessage id="replaypage.helpText6" />
+            <div />
+            <FormattedMessage id="replaypage.helpText7" />
+            <div />
+            <FormattedMessage id="replaypage.helpText8" />
+            <div />
+            <FormattedMessage id="replaypage.helpText9" />
+            <div />
           </DialogContentText>
         </DialogContent>
       </Dialog>
