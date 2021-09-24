@@ -34,6 +34,7 @@ public class CheckerUtil {
     private final static int INACTIVE_DAYS_THRESHOLD = 3;
     private final static int SENSOR_ACTIVE = 1;
     private final static int SENSOR_INACTIVE = -1;
+    private final static String LOG_NO_SENSORS = "Found no sensors.";
 
     private final Controller controller;
     private final SubscriptionDAO subscriptionDAO;
@@ -48,7 +49,7 @@ public class CheckerUtil {
         this.sensorDAO = sensorDAO;
         this.restTemplate = restTemplate;
         this.sensorActiveDict = new HashMap<>();
-        this.checkActiveUrl = "http://backend:8081/active";
+        this.checkActiveUrl = "http://backend:8081/sensor/active";
     }
 
     /**
@@ -61,6 +62,10 @@ public class CheckerUtil {
         //Prepare sensor ids
         log.info(LOG_ALERT);
         List<Sensor> sensors = sensorDAO.getAll();
+        if (sensors.isEmpty()) {
+            log.info(LOG_NO_SENSORS);
+            return;
+        }
         LinkedList<String> sensorIds = new LinkedList<>();
 
         for(Sensor sensor : sensors) {
