@@ -27,7 +27,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=docker
       - sensors.backend.url=http://backend:8081
       - MAIL_PASSWORD=cKqp4Wa83pLddBv
-      - MAIL_USERNAME=sensornotificationsystemPSE@gmail.com
+      - MAIL_USERNAME=tom.blankefort@gmx.de
 
   frontend:
     depends_on:
