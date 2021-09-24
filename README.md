@@ -10,6 +10,9 @@ Using the KIT-PSE_Sensor Ultra-lightweight Supervision is a six-step process:
 5. Run the docker-container with the command `docker-compose up`
 6. Access the webapp `http://localhost:3001/`
 
+There may be some issues with using Docker with Windows for deploying the system.
+It definitely works for Linux environments. We didn't experience problems with Intel Macs too.
+
 ## How to use the webseite
 To have the best user experience, it is important to **log in** first. For this you only need an email address. To access your account, you will receive a new login code for verification every time you log in.
 
