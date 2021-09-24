@@ -23,7 +23,7 @@ const AppLayout: FC = ({children}) => {
   const classes = useStyles()
   const {state, dispatch} = useContext(AppContext)
   const userStore = useUserStore()
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(!!userStore?.user)
 
   useEffect(() => {
     const updateLoggedIn = () => {
@@ -77,7 +77,7 @@ const AppLayout: FC = ({children}) => {
           >
             <Typography variant="h6">{language}</Typography>
           </Button>
-          {!loggedIn && (
+          {!loggedIn ? (
             <Button
               data-testid="login-button"
               className={classes.loginButton}
@@ -88,8 +88,7 @@ const AppLayout: FC = ({children}) => {
                 <FormattedMessage id="appbar.login" />
               </Typography>
             </Button>
-          )}
-          {userStore?.user && (
+          ) : (
             <Button data-testid="logout-button" className={classes.loginButton} color="inherit" onClick={logout}>
               <Typography variant="h6">
                 <FormattedMessage id="appbar.logout" />
