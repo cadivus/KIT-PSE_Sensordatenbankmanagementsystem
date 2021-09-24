@@ -51,8 +51,6 @@ class UserStore extends EventEmitter {
     const resultPromise = new Promise<void>((resolve, reject) => {
       const path = getConfirmCodeUrl(email)
       getText(path).then(loginCode => {
-        // eslint-disable-next-line no-console
-        console.log(loginCode)
         this.code = new LoginCode(loginCode)
         resolve()
       })
