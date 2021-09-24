@@ -2,8 +2,13 @@ import EventEmitter from 'events'
 import User from '../types/User'
 import EMail from '../types/EMail'
 import LoginCode from '../types/LoginCode'
-import {getText} from './communication/restClient'
-import {getConfirmCodeUrl} from './communication/notificationUrlCreator'
+import {getText, postJsonGetText} from './communication/restClient'
+import {
+  getConfirmCodeUrl,
+  getLoginUrl,
+  LOGIN_STATE_PATH,
+  LOGIN_SUCCESS_RESPONSE,
+} from './communication/notificationUrlCreator'
 
 declare interface UserStore {
   on(event: 'login-change', listener: (name: string) => void): this
@@ -22,6 +27,20 @@ class UserStore extends EventEmitter {
 
   code: LoginCode | undefined
 
+  constructor() {
+    super()
+
+    const {implementUser} = this
+    getText(LOGIN_STATE_PATH).then(loginState => {
+      if (loginState === 'false' || loginState === '') return
+
+      const email = new EMail(loginState)
+
+      this.user = implementUser(email)
+      this.emit('login-change')
+    })
+  }
+
   /**
    * Requests sending a login code to the specified email address.
    *
@@ -32,8 +51,6 @@ class UserStore extends EventEmitter {
     const resultPromise = new Promise<void>((resolve, reject) => {
       const path = getConfirmCodeUrl(email)
       getText(path).then(loginCode => {
-        // eslint-disable-next-line no-console
-        console.log(loginCode)
         this.code = new LoginCode(loginCode)
         resolve()
       })
@@ -49,25 +66,46 @@ class UserStore extends EventEmitter {
    * @param loginCode Login code of the user
    * @return The user object on success, null otherwise
    */
-  requestUser = (email: EMail, loginCode: LoginCode): User | null => {
+  requestUser = (email: EMail, loginCode: LoginCode): Promise<User | null> => {
+    const {implementUser} = this
+
     const logoutUser = () => {
       this.user = null
       this.emit('login-change')
     }
 
-    if (this.code?.code === loginCode.code) {
-      this.user = new (class extends User {
-        logout(): void {
-          logoutUser()
+    const path = getLoginUrl(email, loginCode)
+
+    const resultPromise = new Promise<User | null>((resolve, reject) => {
+      getText(path).then(res => {
+        if (res === LOGIN_SUCCESS_RESPONSE) {
+          this.user = implementUser(email)
+          this.emit('login-change')
+          resolve(this.user)
+        } else {
+          this.user = null
+          resolve(null)
         }
-      })(email)
-    } else {
+      })
+    })
+
+    return resultPromise
+  }
+
+  implementUser = (email: EMail): User => {
+    const logoutUser = () => {
+      document.cookie = `${email.toString().replace(/[^\w\s]/gi, '')}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
       this.user = null
+      this.emit('login-change')
     }
 
-    const {user} = this
-    this.emit('login-change')
-    return user
+    const newUser = new (class extends User {
+      logout(): void {
+        logoutUser()
+      }
+    })(email)
+
+    return newUser
   }
 }
 

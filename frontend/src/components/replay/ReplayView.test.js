@@ -5,9 +5,9 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
+} from '../../../test/mock/store/communication/restClientMock'
 import ReplayView from './ReplayView'
-import {renderWithProviders} from '../../test/jestHelper/customRender'
+import {renderWithProviders} from '../../../test/jestHelper/customRender'
 import ThingStore from '../../store/ThingStore'
 import DatastreamStore from '../../store/DatastreamStore'
 

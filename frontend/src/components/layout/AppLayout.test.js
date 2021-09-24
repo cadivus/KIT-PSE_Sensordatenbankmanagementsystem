@@ -5,11 +5,11 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
+} from '../../../test/mock/store/communication/restClientMock'
 import AppLayout from './AppLayout'
 import UserStore from '../../store/UserStore'
-import {confirm1, email1} from '../../test/mock/store/communication/mockData/notification/getText'
-import {renderWithProviders} from '../../test/jestHelper/customRender'
+import {confirm1, email1} from '../../../test/mock/store/communication/mockData/notification/getText'
+import {renderWithProviders} from '../../../test/jestHelper/customRender'
 
 jest.mock('../../store/communication/restClient')
 

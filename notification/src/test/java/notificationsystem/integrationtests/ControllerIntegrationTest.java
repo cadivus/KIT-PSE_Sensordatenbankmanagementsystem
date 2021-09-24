@@ -43,15 +43,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-//@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 @WebMvcTest
 @RunWith(SpringRunner.class)
 public class ControllerIntegrationTest {
 
-    /*@LocalServerPort
-    private Integer port;
-    HttpHeaders headers = new HttpHeaders();*/
 
     @Autowired
     private MockMvc mockMvc;
@@ -64,10 +59,6 @@ public class ControllerIntegrationTest {
     SubscriptionRepository subscriptionRepository;
     @MockBean
     SensorDAO sensorDAO;
-    @Autowired
-    SystemLoginDAO systemLoginDAO;
-    @MockBean
-    SystemLoginRepository systemLoginRepository;
     @MockBean
     MailSender mailSender;
     @MockBean
@@ -78,8 +69,15 @@ public class ControllerIntegrationTest {
     @Test
     public void testGetConfirmCode() throws Exception {
 
-        MvcResult result = mockMvc.perform( MockMvcRequestBuilders.get("http://localhost:8082/getConfirmCode/test")
+        mockMvc.perform( MockMvcRequestBuilders.get("http://localhost:8082/getConfirmCode/test")
                 .contentType(MediaType.APPLICATION_JSON)
+                        .with(user("frontend").password("frontend").roles("ADMIN")))
+                .andExpect(status().isOk());
+
+        String code = controller.getHashMap().get("test");
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8082/login/" + code + "&test")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .with(user("frontend").password("frontend").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -138,7 +136,6 @@ public class ControllerIntegrationTest {
     }*/
 
     @Configuration
-    //@Import(SubscriptionDAO.class)
     static class TestConfig {
         @Bean
         public TestRestTemplate testRestTemplate(){
@@ -146,19 +143,7 @@ public class ControllerIntegrationTest {
         }
         @Bean
         Controller controller() throws Exception {
-            SystemLogin systemLogin = new SystemLogin();
-            systemLogin.setUsername("sensornotificationsystemPSE@gmail.com");
-            systemLogin.setPassword("cKqp4Wa83pLddBv");
-            Mockito.when(systemLoginRepository().findById((long)1)).thenReturn(Optional.of(systemLogin));
-            return new Controller(systemLoginDAO(), subscriptionDAO(), restTemplate(), mailSender(), sensorDAO());
-        }
-        @Bean
-        SystemLoginDAO systemLoginDAO() {
-            return new SystemLoginDAO(systemLoginRepository());
-        }
-        @Bean
-        SystemLoginRepository systemLoginRepository() {
-            return mock(SystemLoginRepository.class);
+            return new Controller(subscriptionDAO(), restTemplate(), mailSender(), sensorDAO());
         }
         @Bean
         SubscriptionDAO subscriptionDAO() {

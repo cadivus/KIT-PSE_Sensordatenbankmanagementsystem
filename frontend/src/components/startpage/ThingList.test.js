@@ -6,8 +6,8 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
-import {thing1, thing2, thing3} from '../../test/mock/store/communication/mockData/backend/getJson'
+} from '../../../test/mock/store/communication/restClientMock'
+import {thing1, thing2, thing3} from '../../../test/mock/store/communication/mockData/backend/getJson'
 import Providers from '../Providers'
 import ThingList from './ThingList'
 

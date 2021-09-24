@@ -20,9 +20,6 @@ CREATE TABLE public.subscription
     toggle_alert boolean
 );
 
---TODO nur zum testen
-INSERT INTO public.systemlogin (username, password) VALUES ('sensornotificationsystemPSE@gmail.com', 'cKqp4Wa83pLddBv');
-
 COMMIT;
 
 ANALYZE public.systemlogin;

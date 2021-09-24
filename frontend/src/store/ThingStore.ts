@@ -66,29 +66,31 @@ class ThingStore {
 
     const resultPromise = new Promise<Map<string, Thing>>((resolve, reject) => {
       getJson(ALL_THINGS).then(thingJSON => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        thingJSON.forEach((element: any) => {
-          const id = new Id(element.id)
-          const name = new ThingName(element.name)
+        if (typeof thingJSON?.forEach === 'function') {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          thingJSON.forEach((element: any) => {
+            const id = new Id(element.id)
+            const name = new ThingName(element.name)
 
-          let existingThing = _things.get(id.toString())
-          if (!existingThing) {
-            let location = new Location(0, 0)
-            if (element.locations && element.locations[0]) {
-              const {name: address} = element.locations[0]
-              const jsonString = element.locations[0].location
-              location = parseLocation(jsonString, address)
+            let existingThing = _things.get(id.toString())
+            if (!existingThing) {
+              let location = new Location(0, 0)
+              if (element.locations && element.locations[0]) {
+                const {name: address} = element.locations[0]
+                const jsonString = element.locations[0].location
+                location = parseLocation(jsonString, address)
+              }
+              existingThing = createThing(id, name, location)
+              _things.set(id.toString(), existingThing)
+            } else {
+              existingThing.name = name
             }
-            existingThing = createThing(id, name, location)
-            _things.set(id.toString(), existingThing)
-          } else {
-            existingThing.name = name
-          }
-          if (element.properties !== null && element.properties !== 'null') {
-            applyProperties(existingThing, element.properties)
-          }
-          existingThing.description = element.description ? element.description : ''
-        })
+            if (element.properties !== null && element.properties !== 'null') {
+              applyProperties(existingThing, element.properties)
+            }
+            existingThing.description = element.description ? element.description : ''
+          })
+        }
 
         resolve(_things)
       })

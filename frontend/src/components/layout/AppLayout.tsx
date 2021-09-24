@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useContext} from 'react'
+import React, {FC, useCallback, useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Button, IconButton, AppBar, Toolbar, Typography} from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home'
@@ -23,6 +23,18 @@ const AppLayout: FC = ({children}) => {
   const classes = useStyles()
   const {state, dispatch} = useContext(AppContext)
   const userStore = useUserStore()
+  const [loggedIn, setLoggedIn] = useState(!!userStore?.user)
+
+  useEffect(() => {
+    const updateLoggedIn = () => {
+      setLoggedIn(!!userStore?.user)
+    }
+    userStore?.on('login-change', updateLoggedIn)
+
+    return () => {
+      userStore?.off('login-change', updateLoggedIn)
+    }
+  }, [userStore, setLoggedIn])
 
   const setLanguage = useCallback(
     locale => {
@@ -65,7 +77,7 @@ const AppLayout: FC = ({children}) => {
           >
             <Typography variant="h6">{language}</Typography>
           </Button>
-          {!userStore?.user && (
+          {!loggedIn ? (
             <Button
               data-testid="login-button"
               className={classes.loginButton}
@@ -76,8 +88,7 @@ const AppLayout: FC = ({children}) => {
                 <FormattedMessage id="appbar.login" />
               </Typography>
             </Button>
-          )}
-          {userStore?.user && (
+          ) : (
             <Button data-testid="logout-button" className={classes.loginButton} color="inherit" onClick={logout}>
               <Typography variant="h6">
                 <FormattedMessage id="appbar.logout" />

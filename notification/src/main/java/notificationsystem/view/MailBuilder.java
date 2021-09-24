@@ -28,7 +28,7 @@ public class MailBuilder {
     public Alert buildAlert(String mailAddress, Sensor sensor) {
         String body = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
                 "at the location: " + sensor.getLocation() + " has malfunctioned and is currently not collecting data.";
-        String message = body + "/n" + MAIL_SIGNING;
+        String message = body + "\n" + MAIL_SIGNING;
 
         return new Alert(mailAddress, SUBJECT_ALERT, message);
     }
@@ -41,23 +41,23 @@ public class MailBuilder {
      * @return The finished report e-mail for the subscriber with the given e-mail address about the given sensor.
      */
     public Report buildReport(String mailAddress, Sensor sensor) {
-        String subject = "Report for Sensorthings sensor: " + sensor.getName() + ". /n";
+        String subject = "Report for Sensorthings sensor: " + sensor.getName() + ". \n";
         String opener = "The following is the regular report for the the Sensorthings sensor: " + sensor.getId()
-                + "you are subscribed to. /n";
-        String active = "Since the last Report, the sensor was active "+ sensor.getActiveRate() + " times a day on average. /n";
+                + "you are subscribed to. \n";
+        String active = "Since the last Report, the sensor was active "+ sensor.getActiveRate() + " times a day on average. \n";
 
         StringBuilder allStatsText = new StringBuilder();
         for (int i = 0; i < sensor.getStats().size(); i++) {
             ObservationStats stat = sensor.getStats().get(i);
-            String statText = "/n The sensor collected data about " + stat.getObsName() + ": /n" +
-                    "The average value of the collected data was " + stat.getAvg() + ". /n" +
+            String statText = "\n The sensor collected data about " + stat.getObsName() + ": \n" +
+                    "The average value of the collected data was " + stat.getAvg() + ". \n" +
                     "The median of the collected data was " + stat.getMed() +
-                    "and the data has a standard deviation of " + stat.getStdv() + ". /n" +
-                    "The minimum recorded data point was " + stat.getMin() + ". /n";
+                    "and the data has a standard deviation of " + stat.getStdv() + ". \n" +
+                    "The minimum recorded data point was " + stat.getMin() + ". \n";
             allStatsText.append(statText);
         }
 
-        String message = opener + "/n" + active + "/n" + allStatsText + "/n" + MAIL_SIGNING;
+        String message = opener + "\n" + active + "\n" + allStatsText + "\n" + MAIL_SIGNING;
         return new Report(mailAddress, subject, message);
     }
 
@@ -74,7 +74,7 @@ public class MailBuilder {
         String body = "A log-in to the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' was attempted with this E-Mail." +
                 " Please enter the following code: " + confirmationMail.getConfirmCode()
                 + " to confirm that this is your E-Mail address and complete the log-in.";
-        String message = body + "/n" + MAIL_SIGNING;
+        String message = body + "\n" + MAIL_SIGNING;
         confirmationMail.setMessage(message);
         return confirmationMail;
     }

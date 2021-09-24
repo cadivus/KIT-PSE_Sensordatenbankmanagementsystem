@@ -4,8 +4,8 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../test/mock/store/communication/restClientMock'
-import {confirm1, confirm2, email1} from '../test/mock/store/communication/mockData/notification/getText'
+} from '../../test/mock/store/communication/restClientMock'
+import {confirm1, confirm2, email1} from '../../test/mock/store/communication/mockData/notification/getText'
 import LoginCode from '../types/LoginCode'
 import SubscriptionStore from './SubscriptionStore'
 import DatastreamStore from './DatastreamStore'
@@ -13,9 +13,9 @@ import ThingStore from './ThingStore'
 import {
   user1SubscriptionsFirst,
   user1SubscriptionsSecond,
-} from '../test/mock/store/communication/mockData/notification/getJson'
-import subscriptionCollectionMatches from '../test/matchTest/material/SubscriptionMatch'
-import {thing2Id} from '../test/mock/store/communication/mockData/backend/getJson'
+} from '../../test/mock/store/communication/mockData/notification/getJson'
+import subscriptionCollectionMatches from '../../test/matchTest/material/SubscriptionMatch'
+import {thing2Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import NotificationLevel from '../types/NotificationLevel'
 
 jest.mock('./communication/restClient')
@@ -27,7 +27,7 @@ const initLoggedInUser = async () => {
 
   const userStore = new UserStore()
   await userStore.requestStep1(email1)
-  const user = userStore.requestUser(email1, new LoginCode(confirm1))
+  const user = await userStore.requestUser(email1, new LoginCode(confirm1))
 
   const thingStore = new ThingStore(new DatastreamStore())
   const subscriptionStore = new SubscriptionStore(thingStore)
