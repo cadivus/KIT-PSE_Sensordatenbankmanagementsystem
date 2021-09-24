@@ -22,8 +22,10 @@ public class MailSender {
     private final static String SEND_STATE_ERROR = "Has to be logged in to send e-mails.";
 
     private Session session;
-    @Value("${mail.password}")
+    @Value("${MAIL_PASSWORD}")
     private String password;
+    @Value("${MAIL_USERNAME}")
+    private String username;
 
     /**
      * Constructs a new MailSender instance.
@@ -48,7 +50,7 @@ public class MailSender {
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("sensornotificationsystemPSE@gmail.com", password);
+                return new PasswordAuthentication(username, password);
             }
         };
 
