@@ -17,6 +17,21 @@ After you have logged in, you can either **subscribe** to one or more things. Th
 Alternatively you can **replay** one or more things. Using the replay page you can now decide about the time period and the speed with which the replay should be executed.\
 You can also **export** the data of a datastream over a period of time as a CSV file on the information page of a datastream.
 
+## How to use the Replay
+The replay page can be used to make the settings for the replay. After pressing Play you will see a link to the actual replay. 
+link to the actual replay will be displayed. As soon as you open this link for the first time, the replay will start.
+
+If you want to start the replay without the web page, you can also do this. For this you have to make a POST Http request
+to http://localhost:3001/api/backend/observation/newSSE. The content type is application/json. As JSON
+the settings will be passed manually. The JSON file has the format:
+{"start": "DD/MM/YYYY HH:MN:SS", "end": "DD/MM/YYYY HH:MN:SS", "speed":NUM, "sensors":["thingID"]}
+as an example with the dates: 
+Start: 21/09/2021 12:00:00 
+End: 23/09/2021 12:00:00 
+Speed: 100
+Sensors: saqn:t:43ae704
+{"start": "21/09/2021 12:00:00", "end": "23/09/2021 12:00:00", "speed":100, "sensors":["saqn:t:43ae704"]}
+
 ## Coverage
 Code coverage backend:              ![Coverage](.github/badges/jacoco1.svg) ![Branches](.github/badges/branches1.svg) \
 Code coverage notification system:  ![Coverage](.github/badges/jacoco2.svg) ![Branches](.github/badges/branches2.svg) \
