@@ -116,7 +116,7 @@ public class SensorController {
      */
     @GetMapping("active")
     public List<Integer> getWhetherThingsActive(
-            @RequestParam(name="ids")List<String> ids,
+            @RequestParam(name="ids", required = false)List<String> ids,
             @RequestParam(name="days", defaultValue = "10")int days
             ) {
         return thingService.getWhetherThingsActive(ids, days);

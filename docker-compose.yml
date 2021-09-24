@@ -6,6 +6,10 @@ services:
     ports:
       - 8081:8081
       - 8080:8080
+    environment:
+      - spring.datasource.url=jdbc:postgresql://smartaqnet-worker1-clone.dmz.teco.edu:5432/sensorthings?currentSchema=public
+      - spring.datasource.username=sensorthings
+      - spring.datasource.password=ChangeMe
 
   datenbank:
     build: notification/db-docker
