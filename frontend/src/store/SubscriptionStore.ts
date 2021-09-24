@@ -153,6 +153,9 @@ class SubscriptionStore {
   }
 
   private updateSubscription = (subscription: Subscription) => {
+    const path = getUnsubscribePath(subscription.owner.email, subscription.id)
+    postJsonGetText(path, {})
+
     postJsonGetText(
       getPostSubscriptionPath(
         subscription.owner.email,
