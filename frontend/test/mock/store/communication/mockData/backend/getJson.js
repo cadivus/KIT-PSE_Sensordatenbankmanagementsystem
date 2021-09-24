@@ -4,8 +4,8 @@ import {
   getActiveStateUrl,
   getAllThingDatastreamsUrl,
   getDatastreamUrl,
-} from '../../../../../../store/communication/backendUrlCreator'
-import Id from '../../../../../../types/Id'
+} from '../../../../../../src/store/communication/backendUrlCreator'
+import Id from '../../../../../../src/types/Id'
 
 export const thing1Id = 'saqn:t:43ae704'
 export const thing2Id = 'saqn:t:grimm-aerosol.com:EDM80NEPH:SN17001'

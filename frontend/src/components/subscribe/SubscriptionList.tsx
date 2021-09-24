@@ -23,6 +23,7 @@ import {FormattedMessage} from 'react-intl'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 import Subscription from '../../types/Subscription'
 import Loading from '../Loading'
+import useUserStore from '../../hooks/UseUserStore'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -62,6 +63,7 @@ const SubscriptionList: FC = () => {
   const classes = useStyles()
   const history = useHistory()
   const subscriptionStore = useSubscriptionStore()
+  const userStore = useUserStore()
 
   const [open, setOpen] = useState(false)
   const [clickedSubscription, setClickedSubscription] = useState<Subscription | null>(null)
@@ -77,6 +79,21 @@ const SubscriptionList: FC = () => {
       })
     }
   }, [subscriptionStore, setSubscriptionList, setLoading])
+
+  useEffect(() => {
+    const updateLoggedIn = () => {
+      setTimeout(() => {
+        subscriptionStore.getSubscriptions().then(newSubscriptionList2 => {
+          setSubscriptionList(newSubscriptionList2)
+        })
+      }, 500)
+    }
+    userStore?.on('login-change', updateLoggedIn)
+
+    return () => {
+      userStore?.off('login-change', updateLoggedIn)
+    }
+  }, [userStore, subscriptionStore, setSubscriptionList])
 
   const handleClickOpen = (subscription: Subscription) => {
     setClickedSubscription(subscription)

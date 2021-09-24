@@ -4,8 +4,8 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../test/mock/store/communication/restClientMock'
-import {confirm1, confirm2, email1} from '../test/mock/store/communication/mockData/notification/getText'
+} from '../../test/mock/store/communication/restClientMock'
+import {confirm1, confirm2, email1} from '../../test/mock/store/communication/mockData/notification/getText'
 import LoginCode from '../types/LoginCode'
 
 jest.mock('./communication/restClient')
@@ -24,7 +24,7 @@ test('test login 1', async () => {
   const store = initValue()
 
   await store.requestStep1(email1)
-  const user = store.requestUser(email1, new LoginCode(confirm1))
+  const user = await store.requestUser(email1, new LoginCode(confirm1))
   expect(user.email.toString()).toBe(email1.toString())
 })
 
@@ -32,7 +32,7 @@ test('test invalid login 1', async () => {
   const store = initValue()
 
   await store.requestStep1(email1)
-  const user = store.requestUser(email1, new LoginCode(confirm2))
+  const user = await store.requestUser(email1, new LoginCode(confirm2))
   expect(user).toBe(null)
 })
 
@@ -40,7 +40,7 @@ test('test logout user 1', async () => {
   const store = initValue()
 
   await store.requestStep1(email1)
-  const user = store.requestUser(email1, new LoginCode(confirm1))
+  const user = await store.requestUser(email1, new LoginCode(confirm1))
   expect(user.email.toString()).toBe(email1.toString())
   user.logout()
 

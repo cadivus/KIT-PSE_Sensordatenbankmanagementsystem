@@ -1,13 +1,13 @@
 import React from 'react'
 import {waitFor} from '@testing-library/react'
-import {renderWithProviders} from '../../test/jestHelper/customRender'
+import {renderWithProviders} from '../../../test/jestHelper/customRender'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
-import {datastreamThing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+} from '../../../test/mock/store/communication/restClientMock'
+import {datastreamThing1Id} from '../../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 import Data from './Data'
 import Id from '../../types/Id'

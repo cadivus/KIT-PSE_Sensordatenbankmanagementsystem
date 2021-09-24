@@ -3,14 +3,14 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../test/mock/store/communication/restClientMock'
+} from '../../test/mock/store/communication/restClientMock'
 import ReplayStore from './ReplayStore'
 import ThingStore from './ThingStore'
 import ReplaySpeed from '../types/ReplaySpeed'
-import {thing1Id} from '../test/mock/store/communication/mockData/backend/getJson'
+import {thing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
 import Id from '../types/Id'
 import DatastreamStore from './DatastreamStore'
-import {thing1Replay} from '../test/mock/store/communication/mockData/backend/postJsonGetText'
+import {thing1Replay} from '../../test/mock/store/communication/mockData/backend/postJsonGetText'
 
 jest.mock('./communication/restClient')
 

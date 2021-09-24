@@ -1,4 +1,4 @@
-import {CREATE_REPLAY} from '../../../../../../store/communication/backendUrlCreator'
+import {CREATE_REPLAY} from '../../../../../../src/store/communication/backendUrlCreator'
 import {thing1Id, thing2Id, thing3Id} from './getJson'
 
 const dateRegex = new RegExp('^\\d\\d\\/\\d\\d\\/\\d\\d\\d\\d \\d\\d:\\d\\d:\\d\\d$', 'i')
