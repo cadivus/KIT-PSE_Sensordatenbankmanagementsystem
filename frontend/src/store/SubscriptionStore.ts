@@ -34,7 +34,7 @@ class SubscriptionStore {
    * Gets the subscriptions from the backend.
    */
   private getSubscriptionsFromBackend = (): Promise<void> => {
-    const {subscriptions, _thingStore, _user, unsubscribe: unsubscribeById} = this
+    const {subscriptions, _thingStore, _user, unsubscribe: unsubscribeById, implementSubscription} = this
 
     const resultPromise = new Promise<void>((resolve, reject) => {
       if (_user) {
@@ -49,11 +49,7 @@ class SubscriptionStore {
             const idStr = id.toString()
             // eslint-disable-next-line no-await-in-loop
             const thing = await _thingStore.getThing(id)
-            const subs = new (class extends Subscription {
-              unsubscribe(): boolean {
-                return unsubscribeById(id)
-              }
-            })(id, thing, directNotification, notifcationLevel, _user)
+            const subs = implementSubscription(id, thing, directNotification, notifcationLevel, _user)
             subscriptions.set(idStr, subs)
           }
           resolve()
@@ -115,18 +111,14 @@ class SubscriptionStore {
     directNotification: boolean,
     notificationLevel: NotificationLevel,
   ): Subscription | null => {
-    const {unsubscribe: unsubscribeById} = this
+    const {unsubscribe: unsubscribeById, implementSubscription} = this
 
     const id = new Id(thing.id.toString())
     const {_user, subscriptions} = this
 
     if (!_user) return null
 
-    const result = new (class extends Subscription {
-      unsubscribe(): Promise<boolean> {
-        return unsubscribeById(id)
-      }
-    })(id, thing, directNotification, notificationLevel, _user)
+    const result = implementSubscription(id, thing, directNotification, notificationLevel, _user)
     subscriptions.set(id.toString(), result)
     const setting = {
       mailAddress: _user.email,
@@ -158,6 +150,24 @@ class SubscriptionStore {
     })
 
     return resultPromise
+  }
+
+  private implementSubscription = (
+    id: Id,
+    thing: Thing,
+    directNotification: boolean,
+    notificationLevel: NotificationLevel,
+    owner: User,
+  ): Subscription => {
+    const {unsubscribe: unsubscribeById} = this
+
+    const subscription = new (class extends Subscription {
+      unsubscribe(): boolean {
+        return unsubscribeById(id)
+      }
+    })(id, thing, directNotification, notificationLevel, owner)
+
+    return subscription
   }
 }
 
