@@ -1,6 +1,6 @@
 import {email1} from './getText'
 import {thing1Id, thing2Id} from '../backend/getJson'
-import {getSubscriptionsUrl} from '../../../../../../store/communication/notificationUrlCreator'
+import {getSubscriptionsUrl} from '../../../../../../src/store/communication/notificationUrlCreator'
 
 export const user1SubscriptionsFirst = [
   {

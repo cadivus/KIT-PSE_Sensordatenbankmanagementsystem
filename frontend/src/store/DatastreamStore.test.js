@@ -4,7 +4,7 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../test/mock/store/communication/restClientMock'
+} from '../../test/mock/store/communication/restClientMock'
 import {
   datastreamThing1Id,
   datastreamThing2Id,
@@ -18,11 +18,11 @@ import {
   thing3Datastream1,
   thing3Datastreams,
   thing3Id,
-} from '../test/mock/store/communication/mockData/backend/getJson'
+} from '../../test/mock/store/communication/mockData/backend/getJson'
 import Id from '../types/Id'
-import datastreamMatches, {datastreamCollectionMatches} from '../test/matchTest/material/DatastreamMatch'
-import {datastreamRowListValuesMatches} from '../test/matchTest/material/DatastreamRowMatch'
-import {thing1Datastream1Json} from '../test/mock/store/communication/mockData/backend/files/csvFiles'
+import datastreamMatches, {datastreamCollectionMatches} from '../../test/matchTest/material/DatastreamMatch'
+import {datastreamRowListValuesMatches} from '../../test/matchTest/material/DatastreamRowMatch'
+import {thing1Datastream1Json} from '../../test/mock/store/communication/mockData/backend/files/csvFiles'
 
 jest.mock('./communication/restClient')
 

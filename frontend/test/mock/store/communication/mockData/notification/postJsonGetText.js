@@ -3,10 +3,10 @@ import {
   getPostSubscriptionPath,
   getSubscriptionsUrl,
   getUnsubscribePath,
-} from '../../../../../../store/communication/notificationUrlCreator'
-import EMail from '../../../../../../types/EMail'
+} from '../../../../../../src/store/communication/notificationUrlCreator'
+import EMail from '../../../../../../src/types/EMail'
 import getJsonMap, {user1SubscriptionsFirst, user1SubscriptionsSecond} from './getJson'
-import Id from '../../../../../../types/Id'
+import Id from '../../../../../../src/types/Id'
 import {thing2Id} from '../backend/getJson'
 
 export const getResponse = (path, input) => {

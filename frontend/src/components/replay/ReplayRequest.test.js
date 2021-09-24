@@ -4,15 +4,15 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
+} from '../../../test/mock/store/communication/restClientMock'
 import ReplayRequest from './ReplayRequest'
-import {renderWithProviders} from '../../test/jestHelper/customRender'
+import {renderWithProviders} from '../../../test/jestHelper/customRender'
 import Replay from '../../types/Replay'
 import {
   thing1,
   thing1Datastream1End,
   thing1Datastream1Start,
-} from '../../test/mock/store/communication/mockData/backend/getJson'
+} from '../../../test/mock/store/communication/mockData/backend/getJson'
 
 jest.mock('../../store/communication/restClient')
 

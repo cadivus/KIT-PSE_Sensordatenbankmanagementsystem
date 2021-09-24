@@ -5,8 +5,8 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
-import {renderWithProviders} from '../../test/jestHelper/customRender'
+} from '../../../test/mock/store/communication/restClientMock'
+import {renderWithProviders} from '../../../test/jestHelper/customRender'
 import SubscriptionEditorView from './SubscriptionEditorView'
 import DatastreamStore from '../../store/DatastreamStore'
 import ThingStore from '../../store/ThingStore'

@@ -17,6 +17,7 @@ export const SubscriptionStoreProvider: FC = ({children}) => {
 
   useEffect(() => {
     if (subscriptionStore && userStore) {
+      subscriptionStore.user = userStore.user
       userStore.on('login-change', () => {
         subscriptionStore.user = userStore.user
       })

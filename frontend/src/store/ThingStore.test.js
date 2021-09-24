@@ -5,8 +5,8 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../test/mock/store/communication/restClientMock'
-import {thingCollectionMatches} from '../test/matchTest/material/ThingMatch'
+} from '../../test/mock/store/communication/restClientMock'
+import {thingCollectionMatches} from '../../test/matchTest/material/ThingMatch'
 import {
   allThings,
   thing1Datastreams,
@@ -15,10 +15,10 @@ import {
   thing1Id,
   thing2Id,
   thing3Id,
-} from '../test/mock/store/communication/mockData/backend/getJson'
+} from '../../test/mock/store/communication/mockData/backend/getJson'
 import Id from '../types/Id'
 import {ThingState} from '../types/Thing'
-import {datastreamCollectionMatches} from '../test/matchTest/material/DatastreamMatch'
+import {datastreamCollectionMatches} from '../../test/matchTest/material/DatastreamMatch'
 
 jest.mock('./communication/restClient')
 

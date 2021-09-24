@@ -88,14 +88,14 @@ public class MailIntegrationTests {
         Integer[] response = {-1};
 
         Mockito.when(sensorDAO.getAll()).thenReturn(sensors);
-        Mockito.when(restTemplate.getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3))
+        Mockito.when(restTemplate.getForObject("http://backend:8081/sensor/active", Integer[].class, sensorIds, 3))
                         .thenReturn(response);
         Mockito.when(sensorDAO.get(sensorId)).thenReturn(getTestSensor());
         Mockito.when(subscriptionRepository.findAll()).thenReturn(subscribers);
 
         checkerUtil.checkForSensorFailure();
 
-        verify(restTemplate).getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3);
+        verify(restTemplate).getForObject("http://backend:8081/sensor/active", Integer[].class, sensorIds, 3);
         verify(mailSender).login();
         verify(subscriptionRepository, times(2)).findAll();
     }
@@ -113,12 +113,12 @@ public class MailIntegrationTests {
         Integer[] response = {1};
 
         Mockito.when(sensorDAO.getAll()).thenReturn(sensors);
-        Mockito.when(restTemplate.getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3))
+        Mockito.when(restTemplate.getForObject("http://backend:8081/sensor/active", Integer[].class, sensorIds, 3))
                 .thenReturn(response);
 
         checkerUtil.checkForSensorFailure();
 
-        verify(restTemplate).getForObject("http://backend:8081/active", Integer[].class, sensorIds, 3);
+        verify(restTemplate).getForObject("http://backend:8081/sensor/active", Integer[].class, sensorIds, 3);
         verify(mailSender).login();
     }
 

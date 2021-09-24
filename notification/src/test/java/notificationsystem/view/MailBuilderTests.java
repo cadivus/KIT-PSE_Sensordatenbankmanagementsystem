@@ -52,7 +52,7 @@ public class MailBuilderTests {
 
         String body = "The Sensorthings sensor: " + sensor.getName() + " with the ID: " + sensor.getId() +
                 "at the location: " + sensor.getLocation() + " has malfunctioned and is currently not collecting data.";
-        String message = body + "/n" + "This E-Mail was sent automatically by the E-Mail Notification System" +
+        String message = body + "\n" + "This E-Mail was sent automatically by the E-Mail Notification System" +
                 " of the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' Project.";
         assertEquals(message, alert.getMessage());
     }
@@ -72,7 +72,7 @@ public class MailBuilderTests {
         Report report = mailBuilder.buildReport(mailAddress, sensor);
 
         assertEquals("test", report.getReceiverMail());
-        assertEquals("Report for Sensorthings sensor: test-name. /n", report.getSubject());
+        assertEquals("Report for Sensorthings sensor: test-name. \n", report.getSubject());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class MailBuilderTests {
         String body = "A log-in to the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' was attempted with this E-Mail." +
                 " Please enter the following code: " + confirmationMail.getConfirmCode()
                 + " to confirm that this is your E-Mail address and complete the log-in.";
-        String message = body + "/n" + "This E-Mail was sent automatically by the E-Mail Notification System" +
+        String message = body + "\n" + "This E-Mail was sent automatically by the E-Mail Notification System" +
                 " of the 'Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System' Project.";
         assertEquals(message, confirmationMail.getMessage());
     }

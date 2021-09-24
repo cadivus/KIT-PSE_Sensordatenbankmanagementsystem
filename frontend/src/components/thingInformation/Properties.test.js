@@ -5,10 +5,10 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
+} from '../../../test/mock/store/communication/restClientMock'
 import Properties from './Properties'
 import ThingStore from '../../store/ThingStore'
-import {thing1, thing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+import {thing1, thing1Id} from '../../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 
 jest.mock('../../store/communication/restClient')
