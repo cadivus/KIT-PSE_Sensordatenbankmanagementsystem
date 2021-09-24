@@ -18,10 +18,10 @@ It definitely works for Linux environments. We didn't experience problems with I
 The configuration can completely be changed in `docker-compose.yml`, when you use docker for deploying the project.
 
 ### Database connection settings
-The variables
-`spring.datasource.url` url of the database
-`spring.datasource.username` username of the database user
-`spring.datasource.password` password of the database user
+The variables  
+`spring.datasource.url` url of the database  
+`spring.datasource.username` username of the database user  
+`spring.datasource.password` password of the database user  
 are used to specify the database connection.
 
 ### System e-mail address
