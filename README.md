@@ -1,7 +1,7 @@
 # KIT-PSE_Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System
 
 ## Quick Start
-Using the KIT-PSE_Sensor Ultra-lightweight Supervision is a five-step process:
+Using the KIT-PSE_Sensor Ultra-lightweight Supervision is a six-step process:
 
 1. Clone this repository into a directory of your choise
 2. Modify environment variables in `docker-compose.yml`
