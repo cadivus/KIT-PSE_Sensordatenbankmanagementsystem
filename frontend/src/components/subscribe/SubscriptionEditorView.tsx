@@ -134,6 +134,7 @@ const SubscriptionEditorView = (props: any) => {
         if (!subscription) return
         if (notificationLevel) subscription.notificationLevel = notificationLevel
         if (typeof directNotification === 'boolean') subscription.directNotification = directNotification
+        history.push('/subscriptions')
       }
 
   return (
