@@ -24,8 +24,13 @@ The variables `MAIL_USERNAME` and `MAIL_PASSWORD` contain the e-mail address and
 This allows users to have the e-mails sent from custom mail addresses. Note however, that the mails are sent with Google's GMail. 
 The custom mails must therefore also be GMail addresses.
 Furthermore, to use your custom GMail address, you must allow less secure settings on that account. On your GMail account, go to 
-Settings > Accounts and Import > Other Google Account settings. Under Security, scroll down and enable access for less secure apps. Otherwise
-GMail blocks automated mail sending attempts.
+Settings > Accounts and Import > Other Google Account settings. Under Security, scroll down and enable access for less secure apps. Otherwise,
+GMail blocks automated mail sending attempts.  
+If you want to use other mail addresses other than GMail for sending the system's mail, you can change the smtp-server and port with the
+Docker environment variables
+`MAIL_SMTP_HOST`, `MAIL_SMTP_PORT`, and `MAIL_SMTP_SOCKETFACTORY_PORT`  
+in the `docker-compose.yml` file.  Currently, only STARTTLS is supported.
+
 If you don't want to use Docker, you can use the `application.properties` file in `notification/src/main/resources`.
 
 ## Using the project
