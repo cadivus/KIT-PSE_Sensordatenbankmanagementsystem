@@ -26,6 +26,12 @@ public class MailSender {
     private String password;
     @Value("${MAIL_USERNAME}")
     private String username;
+    @Value("${MAIL_SMTP_PORT}")
+    private String smtpPort;
+    @Value("${MAIL_SMTP_HOST}")
+    private String smtpHost;
+    @Value("${MAIL_SOCKETFACTORY_PORT}")
+    private String socketFactoryPort;
 
     /**
      * Constructs a new MailSender instance.
@@ -41,10 +47,10 @@ public class MailSender {
         Properties properties = new Properties();
 
         properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.socketFactory.port", "587");
+        properties.put("mail.smtp.socketFactory.port", socketFactoryPort);
         properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.host", smtpHost);
+        properties.put("mail.smtp.port", smtpPort);
         properties.put("mail.smtp.starttls.enable", "true");
 
         Authenticator authenticator = new Authenticator() {
