@@ -24,6 +24,9 @@ The variables
 `spring.datasource.password` password of the database user  
 are used to specify the database connection.
 
+Advanced settings can be found in the `application.properties` file in `notification/src/main/resources`.
+These settings can be overridden by `docker-compose.yml` too.
+
 ### System e-mail address
 The e-mail address with which the alert, report, and confirmation code e-mails are sent can be changed using Docker's environment variables
 in the `docker-compose.yml` file.  
