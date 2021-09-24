@@ -11,7 +11,7 @@ Using the KIT-PSE_Sensor Ultra-lightweight Supervision is a five-step process:
 6. Access the webapp `http://localhost:3001/`
 
 ## How to use the webseite
-To have the best user experience, it is important to **log in** first. For this you only need an email address. To access your account, you will receive a new login code for verification every time you log in. \\
+To have the best user experience, it is important to **log in** first. For this you only need an email address. To access your account, you will receive a new login code for verification every time you log in.
 
 After you have logged in, you can either **subscribe** to one or more things. Then, depending on your choice, you will receive an email if the specified thing is down or a regular report about this thing.\
 Alternatively you can **replay** one or more things. Using the replay page you can now decide about the time period and the speed with which the replay should be executed.\
