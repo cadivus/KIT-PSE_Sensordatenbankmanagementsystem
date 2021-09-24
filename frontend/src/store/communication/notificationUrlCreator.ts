@@ -30,3 +30,5 @@ export const getPostSubscriptionPath = (
 export const getUnsubscribePath = (email: EMail, thingID: Id): string => {
   return `${NOTIFICATION_PATH}/postUnsubscribe?mailAddress=${email.toString()}&sensorID=${thingID.toString()}`
 }
+
+export const LOGIN_SUCCESS_RESPONSE = 'Cookie created'

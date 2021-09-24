@@ -2,8 +2,13 @@ import EventEmitter from 'events'
 import User from '../types/User'
 import EMail from '../types/EMail'
 import LoginCode from '../types/LoginCode'
-import {getText} from './communication/restClient'
-import {getConfirmCodeUrl, getLoginUrl, LOGIN_STATE_PATH} from './communication/notificationUrlCreator'
+import {getText, postJsonGetText} from './communication/restClient'
+import {
+  getConfirmCodeUrl,
+  getLoginUrl,
+  LOGIN_STATE_PATH,
+  LOGIN_SUCCESS_RESPONSE,
+} from './communication/notificationUrlCreator'
 
 declare interface UserStore {
   on(event: 'login-change', listener: (name: string) => void): this
@@ -63,7 +68,7 @@ class UserStore extends EventEmitter {
    * @param loginCode Login code of the user
    * @return The user object on success, null otherwise
    */
-  requestUser = (email: EMail, loginCode: LoginCode): User | null => {
+  requestUser = (email: EMail, loginCode: LoginCode): Promise<User | null> => {
     const {implementUser} = this
 
     const logoutUser = () => {
@@ -71,22 +76,22 @@ class UserStore extends EventEmitter {
       this.emit('login-change')
     }
 
-    const success = true
-
     const path = getLoginUrl(email, loginCode)
-    getText(path).then(res => {
-      //
+
+    const resultPromise = new Promise<User | null>((resolve, reject) => {
+      getText(path).then(res => {
+        if (res === LOGIN_SUCCESS_RESPONSE) {
+          this.user = implementUser(email)
+          this.emit('login-change')
+          resolve(this.user)
+        } else {
+          this.user = null
+          resolve(null)
+        }
+      })
     })
 
-    if (success) {
-      this.user = implementUser(email)
-    } else {
-      this.user = null
-    }
-
-    const {user} = this
-    this.emit('login-change')
-    return user
+    return resultPromise
   }
 
   implementUser = (email: EMail): User => {
