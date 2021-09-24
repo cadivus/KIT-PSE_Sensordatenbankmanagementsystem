@@ -17,6 +17,13 @@ It definitely works for Linux environments. We didn't experience problems with I
 
 The configuration can completely be changed in `docker-compose.yml`, when you use docker for deploying the project.
 
+### Database connection settings
+The variables
+`spring.datasource.url` url of the database
+`spring.datasource.username` username of the database user
+`spring.datasource.password` password of the database user
+are used to specify the database connection.
+
 ### System e-mail address
 The e-mail address with which the alert, report, and confirmation code e-mails are sent can be changed using Docker's environment variables
 in the `docker-compose.yml` file.  
@@ -27,7 +34,7 @@ also be GMail addresses.
 If you don't want to use Docker, you can use the `application.properties` file in `notification/src/main/resources`.
 
 ## Using the project
-### How to use the webseite
+### How to use the website
 To have the best user experience, it is important to **log in** first. For this you only need an email address. To access your account, you will receive a new login code for verification every time you log in.
 
 After you have logged in, you can either **subscribe** to one or more things. Then, depending on your choice, you will receive an email if the specified thing is down or a regular report about this thing.\

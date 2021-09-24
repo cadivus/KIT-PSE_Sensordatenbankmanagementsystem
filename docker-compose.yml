@@ -11,10 +11,6 @@ services:
       - spring.datasource.username=sensorthings
       - spring.datasource.password=ChangeMe
 
-      - auth.db.url=jdbc:postgresql://smartaqnet-worker1-clone.dmz.teco.edu:5432/sensorthings
-      - auth.db.username=sensorthings
-      - auth.db.password=ChangeMe
-
   datenbank:
     build: notification/db-docker
     environment:
