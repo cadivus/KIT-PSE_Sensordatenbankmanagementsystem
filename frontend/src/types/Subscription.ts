@@ -21,8 +21,6 @@ abstract class Subscription extends EventEmitter {
   /**
    * Thing the subscription is for.
    */
-  // things: Array<Thing>
-
   thing: Thing
 
   /**
