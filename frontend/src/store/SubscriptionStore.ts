@@ -152,6 +152,18 @@ class SubscriptionStore {
     return resultPromise
   }
 
+  private updateSubscription = (subscription: Subscription) => {
+    postJsonGetText(
+      getPostSubscriptionPath(
+        subscription.owner.email,
+        subscription.thing.id,
+        subscription.notificationLevel.days,
+        subscription.directNotification,
+      ),
+      {},
+    )
+  }
+
   private implementSubscription = (
     id: Id,
     thing: Thing,
@@ -159,13 +171,17 @@ class SubscriptionStore {
     notificationLevel: NotificationLevel,
     owner: User,
   ): Subscription => {
-    const {unsubscribe: unsubscribeById} = this
+    const {unsubscribe: unsubscribeById, updateSubscription} = this
 
     const subscription = new (class extends Subscription {
       unsubscribe(): boolean {
         return unsubscribeById(id)
       }
     })(id, thing, directNotification, notificationLevel, owner)
+
+    subscription.on('directNotification-change', () => updateSubscription(subscription))
+
+    subscription.on('notificationLevel-change', () => updateSubscription(subscription))
 
     return subscription
   }
