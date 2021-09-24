@@ -4,8 +4,8 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
-import {renderWithProviders} from '../../test/jestHelper/customRender'
+} from '../../../test/mock/store/communication/restClientMock'
+import {renderWithProviders} from '../../../test/jestHelper/customRender'
 import SubscriptionSettings from './SubscriptionSettings'
 
 jest.mock('../../store/communication/restClient')

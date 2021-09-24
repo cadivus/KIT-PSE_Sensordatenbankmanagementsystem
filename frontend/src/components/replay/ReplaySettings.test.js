@@ -5,9 +5,9 @@ import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
+} from '../../../test/mock/store/communication/restClientMock'
 import ReplaySettings from './ReplaySettings'
-import {renderWithProviders} from '../../test/jestHelper/customRender'
+import {renderWithProviders} from '../../../test/jestHelper/customRender'
 
 jest.mock('../../store/communication/restClient')
 

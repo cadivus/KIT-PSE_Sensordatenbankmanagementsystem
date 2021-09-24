@@ -1,6 +1,6 @@
 /* eslint-disable */
-import {getExportDatastreamUrl} from '../../../../../../store/communication/backendUrlCreator'
-import Id from '../../../../../../types/Id'
+import {getExportDatastreamUrl} from '../../../../../../src/store/communication/backendUrlCreator'
+import Id from '../../../../../../src/types/Id'
 import {datastreamThing1Id, datastreamThing2Id, datastreamThing3Id} from './getJson'
 import {thing1Datastream1Csv, thing2Datastream1Csv, thing3Datastream1Csv} from './files/csvFiles'
 /* eslint-enable */

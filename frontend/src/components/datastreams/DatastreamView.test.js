@@ -1,15 +1,15 @@
 import React from 'react'
 import reactRouterDom from 'react-router-dom'
 import {waitFor} from '@testing-library/react'
-import {renderWithProviders} from '../../test/jestHelper/customRender'
+import {renderWithProviders} from '../../../test/jestHelper/customRender'
 import {getJson, getText, postJsonGetText} from '../../store/communication/restClient'
 import {
   getJson as getJsonMock,
   getText as getTextMock,
   postJsonGetText as postJsonGetTextMock,
-} from '../../test/mock/store/communication/restClientMock'
+} from '../../../test/mock/store/communication/restClientMock'
 import DatastreamView from './DatastreamView'
-import {datastreamThing1Id, thing1, thing1Id} from '../../test/mock/store/communication/mockData/backend/getJson'
+import {datastreamThing1Id, thing1, thing1Id} from '../../../test/mock/store/communication/mockData/backend/getJson'
 import DatastreamStore from '../../store/DatastreamStore'
 import Id from '../../types/Id'
 

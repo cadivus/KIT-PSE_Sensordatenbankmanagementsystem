@@ -1,9 +1,9 @@
-import EMail from '../../../../../../types/EMail'
+import EMail from '../../../../../../src/types/EMail'
 import {
   getConfirmCodeUrl,
   getLoginUrl,
   LOGIN_SUCCESS_RESPONSE,
-} from '../../../../../../store/communication/notificationUrlCreator'
+} from '../../../../../../src/store/communication/notificationUrlCreator'
 
 export const email1 = new EMail('test1@test.tld')
 export const email2 = new EMail('test2@test2.tttld')
