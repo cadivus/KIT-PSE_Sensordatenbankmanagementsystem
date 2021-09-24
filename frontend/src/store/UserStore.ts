@@ -91,6 +91,7 @@ class UserStore extends EventEmitter {
 
   implementUser = (email: EMail): User => {
     const logoutUser = () => {
+      document.cookie = `${email.toString().replace(/[^\w\s]/gi, '')}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
       this.user = null
       this.emit('login-change')
     }
