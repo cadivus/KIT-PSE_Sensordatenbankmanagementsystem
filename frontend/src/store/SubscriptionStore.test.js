@@ -27,7 +27,7 @@ const initLoggedInUser = async () => {
 
   const userStore = new UserStore()
   await userStore.requestStep1(email1)
-  const user = userStore.requestUser(email1, new LoginCode(confirm1))
+  const user = await userStore.requestUser(email1, new LoginCode(confirm1))
 
   const thingStore = new ThingStore(new DatastreamStore())
   const subscriptionStore = new SubscriptionStore(thingStore)
