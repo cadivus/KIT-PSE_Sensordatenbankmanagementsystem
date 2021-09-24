@@ -32,17 +32,22 @@ export default {
     'replaypage.request': 'Anfrage',
     'replaypage.help': 'Hilfe?',
     'replaypage.helpTextHedding': 'Brauchst du Hilfe?',
-    'replaypage.helpText':
-      'Lorem ipsum dolor sit amet, ' +
-      'consetetur sadipscing elitr, sed diam nonumy eirmod tempor ' +
-      'invidunt ut labore et et dolore magna aliquyam erat, sed diam ' +
-      'voluptua. At vero eos et accusam et justo duo dolores et ea rebum. ' +
-      'clita kasd gubergren, no sea takimata sanctus est Lorem ipsum ' +
-      'dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing ' +
-      'elitr, sed diam nonumy eirmod tempor invidunt ut labore et ' +
-      'dolore magna aliquyam erat, sed diam voluptua. At vero eos et ' +
-      'accusam et justo duo dolores et ea rebum. Stet clita kasd ' +
-      'gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+    'replaypage.helpText1':
+      'Über die Replayseite können die Einstellungen zum Replay getroffen werden. Nachdem Sie auf Play gedrückt haben, wird Ihnen ein ' +
+      'Link zu dem eigentlichen Replay angezeigt. Sobald Sie diesen erstmalig öffnen fängt das Replay an zu laufen.',
+    'replaypage.helpText2':
+      'Sollten Sie das Replay ohne die Webseite starten wollen, können Sie dies auch tun. Dazu müssen sie einen POST Http request ' +
+      'an .../api/backend/observation/newSSE machen. Dabei ist der Content-Type ein application/json. Als JSON ' +
+      'werden nun die Einstellungen manuell übergeben. Die JSON Datei hat das Format:',
+    'replaypage.helpText3':
+      '{"start":"TT/MM/JJJJ HH:MN:SS", "end":"TT/MM/JJJJ HH:MN:SS", "speed":NUM, "sensors":["thingID"]}',
+    'replaypage.helpText4': 'als Beispiel mit den Daten:',
+    'replaypage.helpText5': 'Start: 21/09/2021 12:00:00',
+    'replaypage.helpText6': 'End: 23/09/2021 12:00:00',
+    'replaypage.helpText7': 'Speed: 100',
+    'replaypage.helpText8': 'Thing: saqn:t:43ae704',
+    'replaypage.helpText9':
+      '{"start":"21/09/2021 12:00:00", "end":"23/09/2021 12:00:00", "speed":100, "sensors":["saqn:t:43ae704"]}',
     'replaypage.thing': 'Thing',
     'replaypage.value': 'Werte',
     // Subsciptionpage
