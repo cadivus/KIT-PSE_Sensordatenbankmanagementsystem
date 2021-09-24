@@ -37,24 +37,6 @@ abstract class Subscription extends EventEmitter {
 
   owner: User
 
-  /*
-  constructor(
-    id: Id,
-    things: Array<Thing>,
-    directNotification: boolean,
-    notificationLevel: NotificationLevel,
-    owner: User,
-  ) {
-    super()
-    this.id = id
-    this.things = things
-    this._directNotification = directNotification
-    this._notificationLevel = notificationLevel
-    this.owner = owner
-  }
-
-   */
-
   constructor(id: Id, thing: Thing, directNotification: boolean, notificationLevel: NotificationLevel, owner: User) {
     super()
     this.id = id
