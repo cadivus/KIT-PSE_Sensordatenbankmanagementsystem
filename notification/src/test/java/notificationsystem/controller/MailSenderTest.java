@@ -3,7 +3,9 @@ package notificationsystem.controller;
 import notificationsystem.view.Alert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 @RunWith(SpringRunner.class)
 public class MailSenderTest {
 
+    @Autowired
     private MailSender mailSender;
 
     @Test
     public void testLogin() {
-        mailSender = new MailSender();
         Alert alert = new Alert("test", "test", "test");
 
-        mailSender.login("sensornotificationsystemPSE@gmail.com", "cKqp4Wa83pLddBv");
+        mailSender.login();
 
         //Fails when no session active
         try {
@@ -38,9 +40,8 @@ public class MailSenderTest {
 
     @Test
     public void testSend() {
-        mailSender = new MailSender();
         Alert alert = new Alert("sensornotificationsystemPSE@gmail.com", "test", "test");
-        mailSender.login("sensornotificationsystemPSE@gmail.com", "cKqp4Wa83pLddBv");
+        mailSender.login();
 
         try {
             mailSender.send(alert);
@@ -51,6 +52,11 @@ public class MailSenderTest {
 
     @Configuration
     static class TestConfig {
+
+        @Bean
+        MailSender mailSender() {
+            return new MailSender();
+        }
     }
 
 }

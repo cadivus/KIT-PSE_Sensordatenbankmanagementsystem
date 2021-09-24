@@ -52,24 +52,16 @@ public class Controller {
     private final MailSender mailSender;
     private final SubscriptionDAO subscriptionDAO;
     private SensorDAO sensorDAO;
-    private final static long SYSTEMLOGIN_ID = 1;
     private final RestTemplate restTemplate;
 
     @Autowired
-    public Controller(SystemLoginDAO systemLoginDAO, SubscriptionDAO subscriptionDAO, RestTemplate restTemplate, MailSender mailSender, SensorDAO sensorDAO) throws Exception {
+    public Controller(SubscriptionDAO subscriptionDAO, RestTemplate restTemplate, MailSender mailSender, SensorDAO sensorDAO) {
         this.mailBuilder = new MailBuilder();
 
-        Optional<SystemLogin> loginOptional = systemLoginDAO.getLogin(SYSTEMLOGIN_ID);
-        SystemLogin login;
-        if (loginOptional.isPresent()) {
-            login = loginOptional.get();
-        } else {
-            throw new Exception(CONSTRUCTOR_ERROR);
-        }
 
         this.sensorDAO = sensorDAO;
         this.mailSender = mailSender;
-        mailSender.login(login.getUsername(), login.getPassword());
+        mailSender.login();
         this.subscriptionDAO = subscriptionDAO;
         this.restTemplate = restTemplate;
         this.hashMap = new HashMap<>();
