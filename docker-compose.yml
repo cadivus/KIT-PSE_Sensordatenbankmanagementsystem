@@ -7,7 +7,7 @@ services:
       - 8081:8081
       - 8080:8080
     environment:
-      - spring.datasource.url=jdbc:postgresql://smartaqnet-worker1-clone.dmz.teco.edu:5432/sensorthings?currentSchema=public
+      - spring.datasource.url=jdbc:postgresql://xxxxxxxxxx.teco.edu:5432/sensorthings?currentSchema=public
       - spring.datasource.username=sensorthings
       - spring.datasource.password=ChangeMe
 
@@ -30,8 +30,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=docker
       - SPRING_DATASOURCE_PASSWORD=docker
       - sensors.backend.url=http://backend:8081
-      - MAIL_PASSWORD=cKqp4Wa83pLddBv
-      - MAIL_USERNAME=sensornotificationsystemPSE@gmail.com
+      - MAIL_PASSWORD=xxxxxxxxxxxxx
+      - MAIL_USERNAME=sxxxxxxxxxxxx@gmail.com
       - MAIL_SMTP_HOST=smtp.gmail.com
       - MAIL_SMTP_PORT=587
       - MAIL_SOCKETFACTORY_PORT=587
