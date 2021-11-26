@@ -1,7 +1,6 @@
-// http://localhost:3000/subscriptions/subscriptionChangeView
-
 import React, {useState} from 'react'
 import {useParams, Redirect, useHistory} from 'react-router-dom'
+import {FormattedMessage} from 'react-intl'
 import {
   Button,
   Container,
@@ -19,7 +18,6 @@ import {
 } from '@material-ui/core'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
-import {FormattedMessage} from 'react-intl'
 import SubscriptionSettings from './SubscriptionSettings'
 import useSubscriptionStore from '../../hooks/UseSubscriptionStore'
 import Id from '../../types/Id'
@@ -82,10 +80,7 @@ const ErrorHandling = () => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const checkProps = (props: any) => {
-  if (!props) return false
-  if (!props.location) return false
-  if (!props.location.state) return false
-  if (!props.location.state.selectedThings) return false
+  if (!props?.location?.state?.selectedThings) return false
   if (props.location.state.selectedThings.size === 0) return false
 
   return true
