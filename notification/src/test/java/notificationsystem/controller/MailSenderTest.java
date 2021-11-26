@@ -2,6 +2,7 @@ package notificationsystem.controller;
 
 import notificationsystem.view.Alert;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,9 +39,10 @@ public class MailSenderTest {
         }
     }
 
+    @Ignore("There is no working test mail account")
     @Test
     public void testSend() {
-        Alert alert = new Alert("sensornotificationsystemPSE@gmail.com", "test", "test");
+        Alert alert = new Alert("test@gmail.com", "test", "test");
         mailSender.login();
 
         try {
