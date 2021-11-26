@@ -1,6 +1,13 @@
 # KIT-PSE_Sensor Ultra-lightweight Supervision: Active Meteorological Observation General Use System
 
-## Quick Start
+## About this project
+
+This project was developed in the context of the course Software Engineering Practice at Karlsruhe Institute of Technology.
+One of the formal requirements that had to be fulfilled was the implementation of a waterfall based, object-oriented approach. The project was implemented by a team of 5 students.
+Design documents and requirements are not part of this repository.
+The only given technical requirement was to use Java for the main part.
+
+## Quick start
 Using the KIT-PSE_Sensor Ultra-lightweight Supervision is a six-step process:
 
 1. Clone this repository into a directory of your choise
